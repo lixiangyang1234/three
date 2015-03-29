@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0442D49C1AC691620013F30E /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0442D49B1AC691620013F30E /* SearchViewController.m */; };
 		55E3728E1AC2B4C600C794DD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E3728D1AC2B4C600C794DD /* main.m */; };
 		55E372911AC2B4C600C794DD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E372901AC2B4C600C794DD /* AppDelegate.m */; };
 		55E372971AC2B4C600C794DD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55E372951AC2B4C600C794DD /* Main.storyboard */; };
@@ -125,6 +126,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0442D49A1AC691620013F30E /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchViewController.h; path = ../../../../../../../tianj/Documents/ThreeMan/ThreeMan/class/search/controll/SearchViewController.h; sourceTree = "<group>"; };
+		0442D49B1AC691620013F30E /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchViewController.m; path = ../../../../../../../tianj/Documents/ThreeMan/ThreeMan/class/search/controll/SearchViewController.m; sourceTree = "<group>"; };
 		55E372881AC2B4C600C794DD /* ThreeMan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ThreeMan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55E3728C1AC2B4C600C794DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		55E3728D1AC2B4C600C794DD /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -904,6 +907,8 @@
 		55E3737C1AC2B54200C794DD /* controll */ = {
 			isa = PBXGroup;
 			children = (
+				0442D49A1AC691620013F30E /* SearchViewController.h */,
+				0442D49B1AC691620013F30E /* SearchViewController.m */,
 			);
 			path = controll;
 			sourceTree = "<group>";
@@ -1049,6 +1054,7 @@
 				55E373901AC2B54200C794DD /* AFHTTPRequestOperation.m in Sources */,
 				55E373861AC2B54200C794DD /* CourseEightCell.m in Sources */,
 				55E373A61AC2B54200C794DD /* MJRefreshFooterView.m in Sources */,
+				0442D49C1AC691620013F30E /* SearchViewController.m in Sources */,
 				55E3739E1AC2B54200C794DD /* SystemConfig.m in Sources */,
 				55E373961AC2B54200C794DD /* AFXMLRequestOperation.m in Sources */,
 				55E373891AC2B54200C794DD /* NeedCollectionViewCell.m in Sources */,
@@ -1238,6 +1244,7 @@
 				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/ThreeMan/class/other/Macro/ThreeMan.pch";
 				INFOPLIST_FILE = ThreeMan/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1262,6 +1269,7 @@
 				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/ThreeMan/class/other/Macro/ThreeMan.pch";
 				INFOPLIST_FILE = ThreeMan/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
