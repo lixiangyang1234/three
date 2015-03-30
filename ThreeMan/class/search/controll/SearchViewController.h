@@ -7,11 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ResultHeaderView.h"
 
-@interface SearchViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+
+@interface SearchViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,ResultHeaderViewDelegate,UIScrollViewDelegate>
 {
     UITableView *_tableView;
     NSMutableArray *_dataArray;
     UITableView *_resultTableView;
+    NSMutableArray *_results;
+    UITextField *_textField;
+    CGRect frame;
 }
 @end

@@ -74,7 +74,7 @@
     
     UIButton * searchItem =[UIButton buttonWithType:UIButtonTypeCustom];
     searchItem.frame =CGRectMake(kWidth-50-40, 8, 30, 30);
-    [searchItem setImage:[UIImage imageNamed:@"img.png"] forState:UIControlStateNormal];
+    [searchItem setImage:[UIImage imageNamed:@"nav_search_btn"] forState:UIControlStateNormal];
     [searchItem addTarget:self action:@selector(search) forControlEvents:UIControlEventTouchUpInside];
     [backCollectView addSubview:searchItem];
     
