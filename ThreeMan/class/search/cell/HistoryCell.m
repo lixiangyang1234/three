@@ -25,6 +25,10 @@
         self.titleLabel.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:self.titleLabel];
         
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, height-1,kWidth,1)];
+        line.backgroundColor = [UIColor blackColor];
+        [self.contentView addSubview:line];
+        
     }
     return self;
 }

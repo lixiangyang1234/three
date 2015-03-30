@@ -32,13 +32,14 @@ static SaveTempDataTool *shareInstance = nil;
     return [NSHomeDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"Documents/%@.plist",fileName]];
 }
 
-+(void)archiveClass:(NSMutableArray *)array FileName:(NSString *)fileName
++(BOOL)archiveClass:(NSMutableArray *)array FileName:(NSString *)fileName
 {
     NSMutableData *data = [[NSMutableData alloc] initWithCapacity:0];
     NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
     [archiver encodeObject:array];
     [archiver finishEncoding];
-    [data writeToFile:[self getFilePathWithFileName:fileName] atomically:YES];
+    BOOL ret = [data writeToFile:[self getFilePathWithFileName:fileName] atomically:YES];
+    return ret;
 }
 
 + (NSMutableArray *)unarchiveClassWithFileName:(NSString *)fileName
@@ -50,13 +51,15 @@ static SaveTempDataTool *shareInstance = nil;
     return array;
 }
 
-+ (void)removeFile:(NSString *)fileName
++ (BOOL)removeFile:(NSString *)fileName
 {
     NSFileManager *manager = [NSFileManager defaultManager];
     NSString *path = [self getFilePathWithFileName:fileName];
+    BOOL ret = YES;
     if ([manager fileExistsAtPath:path]) {
-        [manager removeItemAtPath:path error:nil];
+      ret = [manager removeItemAtPath:path error:nil];
     }
+    return ret;
 }
 
 @end

@@ -111,18 +111,20 @@
 - (void)loadNavItems
 {
     //搜索框
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0,0, 230,32)];
+    CGFloat width = kWidth-140;
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0,0,width,32)];
     view.backgroundColor = [UIColor whiteColor];
     view.layer.cornerRadius = 32/2;
     view.layer.masksToBounds = YES;
-    _textField = [[UITextField alloc] initWithFrame:CGRectMake(32/2, 0,230-32/2, 32)];
+    _textField = [[UITextField alloc] initWithFrame:CGRectMake(32/2, 0,width-32/2, 32)];
+    _textField.backgroundColor = [UIColor clearColor];
     _textField.clearButtonMode = UITextFieldViewModeAlways;
     _textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     _textField.delegate  = self;
     [view addSubview:_textField];
     _textField.placeholder = @"搜索课程、企业";
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldChange) name:UITextFieldTextDidChangeNotification object:_textField];
     self.navigationItem.titleView = view;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldChange) name:UITextFieldTextDidChangeNotification object:_textField];
     
     //搜索按钮
     UIButton *searchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -156,7 +158,7 @@
         [arr addObject:item];
     }
     [_dataArray addObject:arr];
-    NSMutableArray *mutableArr = [SaveTempDataTool unarchiveClassWithFileName:@"searchHistory"];
+    NSMutableArray *mutableArr = [SaveTempDataTool unarchiveClassWithFileName:@"history"];
     if (mutableArr) {
         [_dataArray addObject:mutableArr];
     }
@@ -171,12 +173,17 @@
         [_textField resignFirstResponder];
         if (_dataArray.count<2) {
             NSMutableArray *array = [[NSMutableArray alloc] initWithObjects:_textField.text, nil];
-            [_dataArray addObject:array];
+            BOOL ret = [SaveTempDataTool archiveClass:array FileName:@"history"];
+            if (ret) {
+                [_dataArray addObject:array];
+            }
         }else{
             NSMutableArray *arr = [_dataArray objectAtIndex:1];
             [arr insertObject:_textField.text atIndex:0];
-            [_dataArray replaceObjectAtIndex:1 withObject:arr];
-            [SaveTempDataTool archiveClass:arr FileName:@"searchHistory"];
+            BOOL ret =  [SaveTempDataTool archiveClass:arr FileName:@"history"];
+            if (ret) {
+                [_dataArray replaceObjectAtIndex:1 withObject:arr];
+            }
         }
         [self loadResultData];
     }
@@ -493,7 +500,11 @@
 #pragma mark 清除历史纪录按钮点击
 - (void)clearHistory
 {
-    
+   BOOL ret = [SaveTempDataTool removeFile:@"history"];
+    if (ret) {
+        [_dataArray removeObjectAtIndex:1];
+        [_tableView reloadData];
+    }
 }
 
 

@@ -12,10 +12,10 @@
 
 + (NSString *)getFilePathWithFileName:(NSString *)fileName;
 
-+(void)archiveClass:(NSMutableArray *)array FileName:(NSString *)fileName;
++(BOOL)archiveClass:(NSMutableArray *)array FileName:(NSString *)fileName;
 
 + (NSMutableArray *)unarchiveClassWithFileName:(NSString *)fileName;
 
-+ (void)removeFile:(NSString *)fileName;
++ (BOOL)removeFile:(NSString *)fileName;
 
 @end
