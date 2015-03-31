@@ -17,27 +17,31 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        self.backgroundColor = HexRGB(0xf3f3f3);
+        self.backgroundColor = HexRGB(0xe8e8e8);
         CGFloat leftDis = 5,topDis = 5;
-        CGFloat height = 80;
+        CGFloat height = 47;
         
-        UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(10, 0, kWidth-10*2,height)];
+        UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(8, 0, kWidth-8*2,height)];
         bgView.backgroundColor = [UIColor whiteColor];
         [self.contentView addSubview:bgView];
         
-        _imgView = [[UIImageView alloc] initWithFrame:CGRectMake(leftDis, topDis, 100, height-topDis*2)];
+        _imgView = [[UIImageView alloc] initWithFrame:CGRectMake(leftDis, topDis,65, height-topDis*2)];
         [bgView addSubview:_imgView];
         
-        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftDis+_imgView.frame.size.width+10, topDis, 180, 25)];
+        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftDis+_imgView.frame.size.width+8, topDis, 180,20)];
         _titleLabel.backgroundColor = [UIColor clearColor];
+        _titleLabel.textColor = HexRGB(0x323232);
+        _titleLabel.font = [UIFont systemFontOfSize:16];
         [bgView addSubview:_titleLabel];
         
-        _desLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftDis+_imgView.frame.size.width+10, height-topDis-20, 180, 20)];
+        _desLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftDis+_imgView.frame.size.width+10, height-15-5, 180, 15)];
         _desLabel.backgroundColor = [UIColor clearColor];
+        _desLabel.textColor = HexRGB(0x959595);
+        _desLabel.font = [UIFont systemFontOfSize:13];
         [bgView addSubview:_desLabel];
         
         UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0,height-1,bgView.frame.size.width,1)];
-        line.backgroundColor = HexRGB(0xf3f3f3);
+        line.backgroundColor = HexRGB(0xe0e0e0);
         [bgView addSubview:line];
 
     }

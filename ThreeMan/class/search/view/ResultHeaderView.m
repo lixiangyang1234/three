@@ -29,17 +29,20 @@
     if (self = [super initWithFrame:frame]) {
         leftLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         leftLabel.backgroundColor = [UIColor clearColor];
+        leftLabel.textColor = HexRGB(0x7a7a7a);
         leftLabel.font = titleFont;
         [self addSubview:leftLabel];
         
         midLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         midLabel.backgroundColor = [UIColor clearColor];
         midLabel.textColor = [UIColor greenColor];
+        rigthLabel.textColor = HexRGB(0x1c8cc6);
         midLabel.font = titleFont;
         [self addSubview:midLabel];
         
         rigthLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         rigthLabel.backgroundColor = [UIColor clearColor];
+        rigthLabel.textColor = HexRGB(0x7a7a7a);
         rigthLabel.font = titleFont;
         [self addSubview:rigthLabel];
     }
@@ -78,18 +81,19 @@
 - (id)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]) {
-        self.backgroundColor = HexRGB(0xf3f3f3);
-        CGFloat topDis = 5;
-        CGFloat leftDis = 10;
-        UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(leftDis,topDis, frame.size.width-leftDis*2,frame.size.height-topDis*2)];
+        CGFloat topDis = 8;
+        CGFloat leftDis = 8;
+        UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(leftDis,topDis, frame.size.width-leftDis*2,33)];
         bgView.backgroundColor = [UIColor whiteColor];
         [self addSubview:bgView];
         
-        _imgView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, 40, bgView.frame.size.height)];
+        _imgView = [[UIImageView alloc] initWithFrame:CGRectMake(12,(bgView.frame.size.height-19)/2, 25,19)];
         [bgView addSubview:_imgView];
         
-        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_imgView.frame.origin.x+_imgView.frame.size.width+5, 0,80,bgView.frame.size.height)];
+        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_imgView.frame.origin.x+_imgView.frame.size.width+10, 0,80,bgView.frame.size.height)];
+        _titleLabel.font = titleFont;
         _titleLabel.backgroundColor = [UIColor clearColor];
+        _titleLabel.textColor = HexRGB(0x7a7a7a);
         [bgView addSubview:_titleLabel];
         
         
@@ -116,7 +120,7 @@
 {
     _imgView.image = image;
     _titleLabel.text = title;
-    [desView setLeftTitle:@"总共" rigthTitle:@"条结果" midTitle:count];
+    [desView setLeftTitle:@"总共 " rigthTitle:@" 条结果" midTitle:count];
 }
 
 - (void)btnDown

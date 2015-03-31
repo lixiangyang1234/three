@@ -17,16 +17,17 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        self.backgroundColor = HexRGB(0xf3f3f3);
+        self.backgroundColor = HexRGB(0xe8e8e8);
         CGFloat leftDis = 20;
         CGFloat height = 40;
         
         self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftDis, 0,kWidth-leftDis,height)];
         self.titleLabel.backgroundColor = [UIColor clearColor];
+        self.titleLabel.textColor = HexRGB(0x929292);
         [self.contentView addSubview:self.titleLabel];
         
         UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, height-1,kWidth,1)];
-        line.backgroundColor = [UIColor blackColor];
+        line.backgroundColor = HexRGB(0xe0e0e0);
         [self.contentView addSubview:line];
         
     }

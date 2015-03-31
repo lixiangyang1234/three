@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VideoViewController : UIViewController
+@interface VideoViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 {
-    
+    UITableView *_tableView;
+    NSMutableArray *_dataArray;
 }
 @end

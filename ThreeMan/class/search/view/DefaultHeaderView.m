@@ -15,13 +15,15 @@
 {
     if (self = [super initWithFrame:frame]) {
         self.backgroundColor = [UIColor whiteColor];
-        CGFloat imgWidth = 20;
-        _imgView = [[UIImageView alloc] initWithFrame:CGRectMake(20,(frame.size.height-imgWidth)/2,imgWidth,imgWidth)];
+        CGFloat imgWidth = 25;
+        CGFloat imgHeight = 20;
+        _imgView = [[UIImageView alloc] initWithFrame:CGRectMake(20,(frame.size.height-imgHeight)/2,imgWidth,imgHeight)];
         [self addSubview:_imgView];
         
-        CGFloat x = _imgView.frame.size.width+_imgView.frame.origin.x+5;
+        CGFloat x = _imgView.frame.size.width+_imgView.frame.origin.x+10;
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0, frame.size.width-x, frame.size.height)];
         _titleLabel.backgroundColor = [UIColor clearColor];
+        _titleLabel.textColor = HexRGB(0x7a7a7a);
         [self addSubview:_titleLabel];
         
     }

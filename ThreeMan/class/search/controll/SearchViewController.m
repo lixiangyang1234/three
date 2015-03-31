@@ -29,7 +29,7 @@
     [super viewDidLoad];
     
     // Do any additional setup after loading the view.
-    self.view.backgroundColor = HexRGB(0xf3f3f3);
+    self.view.backgroundColor = HexRGB(0xe8e8e8);
 
     _dataArray = [[NSMutableArray alloc] initWithCapacity:0];
     
@@ -86,9 +86,9 @@
     _tableView.dataSource = self;
     _tableView.delegate = self;
     _tableView.tag = 1000;
+    _tableView.backgroundColor = HexRGB(0xe8e8e8);
     _tableView.separatorColor = [UIColor clearColor];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _tableView.backgroundColor = HexRGB(0xf3f3f3);
     _tableView.sectionFooterHeight = 0;
     _tableView.sectionHeaderHeight = 0;
     [self.view addSubview:_tableView];
@@ -98,9 +98,9 @@
     _resultTableView.dataSource = self;
     _resultTableView.delegate = self;
     _resultTableView.tag = 1001;
+    _resultTableView.backgroundColor = HexRGB(0xe8e8e8);
     _resultTableView.separatorColor = [UIColor clearColor];
     _resultTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _resultTableView.backgroundColor = HexRGB(0xf3f3f3);
     _tableView.sectionFooterHeight = 0;
     _tableView.sectionHeaderHeight = 0;
     [self.view addSubview:_resultTableView];
@@ -292,7 +292,7 @@
                 cell.secondBtn.hidden = NO;
                 HotItem *item2 = [array objectAtIndex:indexPath.row*3+1];
                 [cell.secondBtn setTitle:item2.title forState:UIControlStateNormal];
-                cell.secondBtn.tag = 1000+indexPath.row*3;
+                cell.secondBtn.tag = 1000+indexPath.row*3+1;
                 [cell.secondBtn addTarget:self action:@selector(hotBtnDown:) forControlEvents:UIControlEventTouchUpInside];
 
                 if (array.count<indexPath.row*3+3) {
@@ -301,9 +301,8 @@
                     cell.thirdBtn.hidden = NO;
                     HotItem *item3 = [array objectAtIndex:indexPath.row*3+2];
                     [cell.thirdBtn setTitle:item3.title forState:UIControlStateNormal];
-                    cell.thirdBtn.tag = 1000+indexPath.row*3;
+                    cell.thirdBtn.tag = 1000+indexPath.row*3+2;
                     [cell.thirdBtn addTarget:self action:@selector(hotBtnDown:) forControlEvents:UIControlEventTouchUpInside];
-
                 }
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -330,7 +329,7 @@
             }
             NSMutableArray *array1 = [_results objectAtIndex:indexPath.section];
             FileItem *item = [array1 objectAtIndex:indexPath.row];
-            cell.imgView.image = [UIImage imageNamed:item.image];
+            cell.imgView.backgroundColor = [UIColor redColor];
             cell.titleLabel.text = item.title;
             cell.desLabel.text = item.desc;
             
@@ -345,7 +344,7 @@
             }
             NSMutableArray *array2 = [_results objectAtIndex:indexPath.section];
             EnterpriseItem *item = [array2 objectAtIndex:indexPath.section];
-            cell.imgView.image = [UIImage imageNamed:item.image];
+            cell.imgView.backgroundColor = [UIColor redColor];
             cell.titleLabel.text = item.title;
             cell.littleLabel.text = item.desc;
             cell.contentLabel.text = item.content;
@@ -361,7 +360,7 @@
             }
             NSMutableArray *array3 = [_results objectAtIndex:indexPath.section];
             FileItem *item = [array3 objectAtIndex:indexPath.row];
-            cell.imgView.image = [UIImage imageNamed:item.image];
+            cell.imgView.backgroundColor = [UIColor redColor];
             cell.titleLabel.text = item.title;
             cell.desLabel.text = item.desc;
             
@@ -378,41 +377,41 @@
 {
     if (tableView.tag == 1000) {
         if (section == 0) {
-            DefaultHeaderView *headerView = [[DefaultHeaderView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 50)];
-            [headerView setImgView:[UIImage imageNamed:@"home_hot"] title:@"热门搜索"];
+            DefaultHeaderView *headerView = [[DefaultHeaderView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 40)];
+            [headerView setImgView:[UIImage imageNamed:@"hot_search"] title:@"热门搜索"];
             return headerView;
         }else if (section == 1){
-            DefaultHeaderView *headerView = [[DefaultHeaderView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 50)];
-            [headerView setImgView:[UIImage imageNamed:@"home_history"] title:@"搜索历史"];
+            DefaultHeaderView *headerView = [[DefaultHeaderView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 40)];
+            [headerView setImgView:[UIImage imageNamed:@"history_search"] title:@"搜索历史"];
             return headerView;
         }
     }else{
         switch (section) {
             case 0:
             {
-                ResultHeaderView *headView = [[ResultHeaderView alloc] initWithFrame:CGRectMake(0, 0,kWidth,50)];
+                ResultHeaderView *headView = [[ResultHeaderView alloc] initWithFrame:CGRectMake(0, 0,kWidth,36)];
                 headView.tag = 1000;
                 headView.delegate = self;
-                [headView setImgView:[UIImage imageNamed:@""] title:@"视频" count:@"234"];
+                [headView setImgView:[UIImage imageNamed:@"video_search"] title:@"视频" count:@"234"];
                 return headView;
             }
                 break;
             case 1:
             {
-                ResultHeaderView *headView = [[ResultHeaderView alloc] initWithFrame:CGRectMake(0, 0,kWidth,50)];
+                ResultHeaderView *headView = [[ResultHeaderView alloc] initWithFrame:CGRectMake(0, 0,kWidth,36)];
                 headView.tag = 1001;
                 headView.delegate = self;
-                [headView setImgView:[UIImage imageNamed:@""] title:@"企业" count:@"234"];
+                [headView setImgView:[UIImage imageNamed:@"company_search"] title:@"企业" count:@"234"];
                 return headView;
 
             }
                 break;
             case 2:
             {
-                ResultHeaderView *headView = [[ResultHeaderView alloc] initWithFrame:CGRectMake(0, 0,kWidth,50)];
+                ResultHeaderView *headView = [[ResultHeaderView alloc] initWithFrame:CGRectMake(0, 0,kWidth,36)];
                 headView.tag = 1002;
                 headView.delegate = self;
-                [headView setImgView:[UIImage imageNamed:@""] title:@"课件" count:@"234"];
+                [headView setImgView:[UIImage imageNamed:@"document_search"] title:@"课件" count:@"234"];
                 return headView;
 
             }
@@ -433,19 +432,19 @@
             NSMutableArray *arr = [_dataArray objectAtIndex:indexPath.section];
             NSUInteger count =  arr.count%3==0?arr.count/3:arr.count/3+1;
             if (indexPath.row<count-1) {
-                return 45;
+                return 44;
             }else
-                return 45+10;
+                return 44+9;
         }else
             return 45;
 
     }else{
         if (indexPath.section == 0) {
-            return 80;
+            return 47;
         }else if(indexPath.section ==1){
-            return 150;
+            return 90;
         }else
-            return 80;
+            return 47;
     }
         return 0;
 }
@@ -467,7 +466,8 @@
             UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
             btn.frame = CGRectMake(0, 0, kWidth,50);
             [btn setTitle:@"清除历史纪录" forState:UIControlStateNormal];
-            [btn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+            btn.titleLabel.font = [UIFont systemFontOfSize:16];
+            [btn setTitleColor:HexRGB(0x1c8cc6) forState:UIControlStateNormal];
             [btn addTarget:self action:@selector(clearHistory) forControlEvents:UIControlEventTouchUpInside];
             return btn;
         }
@@ -479,9 +479,9 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (tableView.tag == 1000) {
-        return 50;
+        return 40;
     }else
-        return 50;
+        return 49;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -494,7 +494,7 @@
 #pragma mark 热门搜索按钮点击
 - (void)hotBtnDown:(UIButton *)btn
 {
-    
+    NSLog(@"%d",btn.tag);
 }
 
 #pragma mark 清除历史纪录按钮点击

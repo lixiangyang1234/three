@@ -8,6 +8,9 @@
 
 #import "RootViewController.h"
 
-@interface CompanyViewController : RootViewController
-
+@interface CompanyViewController : RootViewController<UITableViewDataSource,UITableViewDelegate>
+{
+    UITableView *_tableView;
+    NSMutableArray *_dataArray;
+}
 @end
