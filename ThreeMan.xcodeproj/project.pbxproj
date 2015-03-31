@@ -23,9 +23,7 @@
 		55C685AA1AC94A8D0049280F /* CourseDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C685A91AC94A8D0049280F /* CourseDetailController.m */; };
 		55E3728E1AC2B4C600C794DD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E3728D1AC2B4C600C794DD /* main.m */; };
 		55E372911AC2B4C600C794DD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E372901AC2B4C600C794DD /* AppDelegate.m */; };
-		55E372971AC2B4C600C794DD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55E372951AC2B4C600C794DD /* Main.storyboard */; };
 		55E372991AC2B4C600C794DD /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55E372981AC2B4C600C794DD /* Images.xcassets */; };
-		55E3729C1AC2B4C600C794DD /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55E3729A1AC2B4C600C794DD /* LaunchScreen.xib */; };
 		55E372A81AC2B4C600C794DD /* ThreeManTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E372A71AC2B4C600C794DD /* ThreeManTests.m */; };
 		55E3737F1AC2B54200C794DD /* CompanyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E372B51AC2B54200C794DD /* CompanyViewController.m */; };
 		55E373801AC2B54200C794DD /* CourseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E372BB1AC2B54200C794DD /* CourseViewController.m */; };
@@ -163,9 +161,7 @@
 		55E3728D1AC2B4C600C794DD /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		55E3728F1AC2B4C600C794DD /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		55E372901AC2B4C600C794DD /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		55E372961AC2B4C600C794DD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		55E372981AC2B4C600C794DD /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		55E3729B1AC2B4C600C794DD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		55E372A11AC2B4C600C794DD /* ThreeManTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ThreeManTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		55E372A61AC2B4C600C794DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		55E372A71AC2B4C600C794DD /* ThreeManTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThreeManTests.m; sourceTree = "<group>"; };
@@ -407,9 +403,7 @@
 				55E372B11AC2B54200C794DD /* class */,
 				55E3728F1AC2B4C600C794DD /* AppDelegate.h */,
 				55E372901AC2B4C600C794DD /* AppDelegate.m */,
-				55E372951AC2B4C600C794DD /* Main.storyboard */,
 				55E372981AC2B4C600C794DD /* Images.xcassets */,
-				55E3729A1AC2B4C600C794DD /* LaunchScreen.xib */,
 				55E3728B1AC2B4C600C794DD /* Supporting Files */,
 			);
 			path = ThreeMan;
@@ -942,7 +936,9 @@
 		55E3737B1AC2B54200C794DD /* search */ = {
 			isa = PBXGroup;
 			children = (
+				04C71A161AC94C2A00D136E0 /* subcontroller */,
 				55E3737C1AC2B54200C794DD /* controll */,
+				04C719E61AC8D0C800D136E0 /* cell */,
 				55E3737D1AC2B54200C794DD /* model */,
 				55E3737E1AC2B54200C794DD /* view */,
 			);
@@ -952,6 +948,8 @@
 		55E3737C1AC2B54200C794DD /* controll */ = {
 			isa = PBXGroup;
 			children = (
+				04C719E31AC8CD4500D136E0 /* SearchViewController.h */,
+				04C719E41AC8CD4500D136E0 /* SearchViewController.m */,
 			);
 			path = controll;
 			sourceTree = "<group>";
@@ -959,6 +957,12 @@
 		55E3737D1AC2B54200C794DD /* model */ = {
 			isa = PBXGroup;
 			children = (
+				04C719F31AC8EB0800D136E0 /* HotItem.h */,
+				04C719F41AC8EB0800D136E0 /* HotItem.m */,
+				04C71A101AC92C1900D136E0 /* FileItem.h */,
+				04C71A111AC92C1A00D136E0 /* FileItem.m */,
+				04C71A131AC92C2C00D136E0 /* EnterpriseItem.h */,
+				04C71A141AC92C2C00D136E0 /* EnterpriseItem.m */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -966,6 +970,10 @@
 		55E3737E1AC2B54200C794DD /* view */ = {
 			isa = PBXGroup;
 			children = (
+				04C719F61AC8EFBA00D136E0 /* DefaultHeaderView.h */,
+				04C719F71AC8EFBA00D136E0 /* DefaultHeaderView.m */,
+				04C71A0B1AC9258200D136E0 /* ResultHeaderView.h */,
+				04C71A0C1AC9258200D136E0 /* ResultHeaderView.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -1019,9 +1027,11 @@
 				TargetAttributes = {
 					55E372871AC2B4C600C794DD = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = 64Y2W23677;
 					};
 					55E372A01AC2B4C600C794DD = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = 64Y2W23677;
 						TestTargetID = 55E372871AC2B4C600C794DD;
 					};
 				};
@@ -1051,11 +1061,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04C71A0F1AC929B400D136E0 /* rightSore@2x.png in Resources */,
 				55E373CA1AC2B54200C794DD /* icon_rightarrow.png in Resources */,
 				55E373D01AC2B54200C794DD /* slide_linli_btn@2x.png in Resources */,
 				55E372971AC2B4C600C794DD /* Main.storyboard in Resources */,
 				55E373CE1AC2B54200C794DD /* slide_friend_btn_pressed@2x.png in Resources */,
+				04C719FF1AC901BF00D136E0 /* nav_search_btn@2x.png in Resources */,
 				55E373BD1AC2B54200C794DD /* ShareSDKLocalizable.strings in Resources */,
+				04C719FD1AC8FF5300D136E0 /* home_hot@2x.png in Resources */,
 				55E373A41AC2B54200C794DD /* MJRefresh.bundle in Resources */,
 				55E3729C1AC2B4C600C794DD /* LaunchScreen.xib in Resources */,
 				55E373BE1AC2B54200C794DD /* Resource.bundle in Resources */,
@@ -1068,6 +1081,7 @@
 				55E373CB1AC2B54200C794DD /* icon_rightarrow@2x.png in Resources */,
 				55E373C11AC2B54200C794DD /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				55E373C71AC2B54200C794DD /* ShareSDKFlatShareViewUI.bundle in Resources */,
+				04C719FC1AC8FF5300D136E0 /* home_history@2x.png in Resources */,
 				55E373D61AC2B54200C794DD /* nav_bg@2x.png in Resources */,
 				55E373CF1AC2B54200C794DD /* slide_line_btn@2x.png in Resources */,
 				55E373D71AC2B54200C794DD /* nav_return_pre@2x.png in Resources */,
@@ -1102,11 +1116,14 @@
 				55E373991AC2B54200C794DD /* UIBarButtonItem+MJ.m in Sources */,
 				55C6859D1AC92EC50049280F /* BusinessViewCell.m in Sources */,
 				55E373931AC2B54200C794DD /* AFNetworkActivityIndicatorManager.m in Sources */,
+				04C71A121AC92C1A00D136E0 /* FileItem.m in Sources */,
 				55E3738C1AC2B54200C794DD /* NewfeatureController.m in Sources */,
 				55E373AB1AC2B54200C794DD /* SDWebImageCompat.m in Sources */,
 				55E373AF1AC2B54200C794DD /* SDWebImageManager.m in Sources */,
+				04C719F81AC8EFBA00D136E0 /* DefaultHeaderView.m in Sources */,
 				55E3737F1AC2B54200C794DD /* CompanyViewController.m in Sources */,
 				55E373AA1AC2B54200C794DD /* SDImageCache.m in Sources */,
+				04C719EC1AC8D30600D136E0 /* HistoryCell.m in Sources */,
 				55E373941AC2B54200C794DD /* AFPropertyListRequestOperation.m in Sources */,
 				55B828161AC551C6008EAFA4 /* RootNavView.m in Sources */,
 				55E373AC1AC2B54200C794DD /* SDWebImageDecoder.m in Sources */,
@@ -1114,6 +1131,8 @@
 				55E373AD1AC2B54200C794DD /* SDWebImageDownloader.m in Sources */,
 				55C685A71AC945070049280F /* CompanyHomeViewCell.m in Sources */,
 				55E373801AC2B54200C794DD /* CourseViewController.m in Sources */,
+				04C719E51AC8CD4500D136E0 /* SearchViewController.m in Sources */,
+				04C719F21AC8D43900D136E0 /* EnterpriseCell.m in Sources */,
 				55E373A91AC2B54200C794DD /* NSData+GIF.m in Sources */,
 				55B828191AC55316008EAFA4 /* NineBlockController.m in Sources */,
 				55E373B31AC2B54200C794DD /* UIImage+MultiFormat.m in Sources */,
@@ -1142,6 +1161,7 @@
 				55E373B21AC2B54200C794DD /* UIImage+GIF.m in Sources */,
 				55E3739D1AC2B54200C794DD /* NSString+MD5.m in Sources */,
 				55E373B51AC2B54200C794DD /* UIImageView+WebCache.m in Sources */,
+				04C71A1C1AC951A100D136E0 /* SaveTempDataTool.m in Sources */,
 				55E3738E1AC2B54200C794DD /* TYPopoverView.m in Sources */,
 				55E373A81AC2B54200C794DD /* MKAnnotationView+WebCache.m in Sources */,
 				55E3728E1AC2B4C600C794DD /* main.m in Sources */,
@@ -1151,6 +1171,7 @@
 				55E373A11AC2B54200C794DD /* MBProgressHUD+GR.m in Sources */,
 				55E373921AC2B54200C794DD /* AFJSONRequestOperation.m in Sources */,
 				55E3739A1AC2B54200C794DD /* UIImage+MJ.m in Sources */,
+				04C719F51AC8EB0800D136E0 /* HotItem.m in Sources */,
 				55E3738D1AC2B54200C794DD /* RootViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1174,22 +1195,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		55E372951AC2B4C600C794DD /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				55E372961AC2B4C600C794DD /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		55E3729A1AC2B4C600C794DD /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				55E3729B1AC2B4C600C794DD /* Base */,
-			);
-			name = LaunchScreen.xib;
-			sourceTree = "<group>";
-		};
 		55E373471AC2B54200C794DD /* ShareSDKLocalizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1292,6 +1297,7 @@
 				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/ThreeMan/class/other/Macro/ThreeMan.pch";
 				INFOPLIST_FILE = ThreeMan/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1316,6 +1322,7 @@
 				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/ThreeMan/class/other/Macro/ThreeMan.pch";
 				INFOPLIST_FILE = ThreeMan/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1330,6 +1337,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -1341,6 +1350,7 @@
 				INFOPLIST_FILE = ThreeManTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ThreeMan.app/ThreeMan";
 			};
 			name = Debug;
@@ -1349,6 +1359,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -1356,6 +1368,7 @@
 				INFOPLIST_FILE = ThreeManTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ThreeMan.app/ThreeMan";
 			};
 			name = Release;

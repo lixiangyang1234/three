@@ -10,6 +10,7 @@
 #import "WBNavigationController.h"
 #import "UIBarButtonItem+MJ.h"
 #import "TYPopoverView.h"
+#import "SearchViewController.h"
 @interface MainControllerViewController ()<UINavigationControllerDelegate>
 {
 }
@@ -73,8 +74,8 @@
     
     UIButton * searchItem =[UIButton buttonWithType:UIButtonTypeCustom];
     searchItem.frame =CGRectMake(kWidth-50-40, 8, 30, 30);
-    [searchItem setImage:[UIImage imageNamed:@"img.png"] forState:UIControlStateNormal];
-//    [searchItem addTarget:self action:@selector(navItemRight:) forControlEvents:UIControlEventTouchUpInside];
+    [searchItem setImage:[UIImage imageNamed:@"nav_search_btn"] forState:UIControlStateNormal];
+    [searchItem addTarget:self action:@selector(search) forControlEvents:UIControlEventTouchUpInside];
     [backCollectView addSubview:searchItem];
     
     UIButton * menuItem =[UIButton buttonWithType:UIButtonTypeCustom];
@@ -156,7 +157,13 @@
 
     [rootVc loadCurrent];
 }
-#pragma mark 实现导航控制器代理方法
+
+#pragma mark 搜索按钮点击
+- (void)search
+{
+    SearchViewController *search = [[SearchViewController alloc] init];
+    [self.navigationController pushViewController:search animated:YES];
+}
 
 -(void)navItemRight:(UIButton *)nav{
     CGPoint point = CGPointMake(kWidth-60, nav.frame.origin.y + nav.frame.size.height+15);
@@ -172,6 +179,9 @@
     
     [popView show];
 }
+
+#pragma mark 实现导航控制器代理方法
+
 // 导航控制器即将显示新的控制器
 - (void)navigationController:(WBNavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
