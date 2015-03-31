@@ -10,12 +10,12 @@
 
 static const CGFloat kHeightOfTopScrollView = 40.0f;
 static const CGFloat kWidthOfButtonMargin = 16.0f-8-5;
-static const CGFloat kFontSizeOfTabButton = 16;
+static const CGFloat kFontSizeOfTabButton = 18;
 static const NSUInteger kTagOfRightSideButton = 999;
 
 static const  CGFloat kShowdowOriginalY = kHeightOfTopScrollView-2;
 static const  CGFloat kShowdowHeight = 2;
-static const CGFloat kShowdowFirstX =2;
+static const CGFloat kShowdowFirstX =0;
 
 #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
@@ -28,7 +28,7 @@ static const CGFloat kShowdowFirstX =2;
     //创建顶部可滑动的tab
     _topScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, kHeightOfTopScrollView)];
     _topScrollView.delegate = self;
-    _topScrollView.backgroundColor = [UIColor colorWithRed:0.93f green:0.93f blue:0.93f alpha:1.00f];
+    _topScrollView.backgroundColor = HexRGB(0xffffff);
     _topScrollView.pagingEnabled = NO;
     _topScrollView.showsHorizontalScrollIndicator = NO;
     _topScrollView.showsVerticalScrollIndicator = NO;
@@ -38,7 +38,7 @@ static const CGFloat kShowdowFirstX =2;
     
     UIView *topLine =[[UIView alloc]initWithFrame:CGRectMake(0, kHeightOfTopScrollView-1, kWidth, 1)];
     [_topScrollView addSubview:topLine];
-    topLine.backgroundColor =[UIColor lightGrayColor];
+    topLine.backgroundColor =HexRGB(0xe9eaec);
     
     //创建主滚动视图
     _rootScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, kHeightOfTopScrollView, self.bounds.size.width, self.bounds.size.height - kHeightOfTopScrollView)];
@@ -85,7 +85,7 @@ static const CGFloat kShowdowFirstX =2;
     [button removeFromSuperview];
     rigthSideButton.tag = kTagOfRightSideButton;
     _rigthSideButton = rigthSideButton;
-    _rigthSideButton.backgroundColor =[UIColor redColor];
+    _rigthSideButton.backgroundColor =HexRGB(0x9a9a9a);
     [self addSubview:_rigthSideButton];
     
 }
@@ -199,7 +199,7 @@ static const CGFloat kShowdowFirstX =2;
 # if  0
             _shadowImageView.frame = CGRectMake(0, 0, textSize.width+60, _shadowImage.size.height);
 #endif
-            _shadowImageView.frame = CGRectMake(kShowdowFirstX, kShowdowOriginalY, kWidth/3-2, kShowdowHeight);
+            _shadowImageView.frame = CGRectMake(kShowdowFirstX, kShowdowOriginalY, kWidth/3, kShowdowHeight);
             button.selected = YES;
 
         }
@@ -207,8 +207,9 @@ static const CGFloat kShowdowFirstX =2;
         button.alpha =0.7;
         [button setTitle:vc.title forState:UIControlStateNormal];
         button.titleLabel.font = [UIFont systemFontOfSize:kFontSizeOfTabButton];
-        [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [button setTitleColor:[UIColor redColor] forState:UIControlStateSelected];
+        
+        [button setTitleColor:HexRGB(0x9a9a9a) forState:UIControlStateNormal];
+        [button setTitleColor:HexRGB(0x1c8cc6) forState:UIControlStateSelected];
 
         [button addTarget:self action:@selector(selectNameButton:) forControlEvents:UIControlEventTouchUpInside];
         [_topScrollView addSubview:button];
@@ -273,7 +274,7 @@ static const CGFloat kShowdowFirstX =2;
                 [_shadowImageView setFrame:CGRectMake(-20, 0, sender.frame.size.width+50, _shadowImage.size.height)];
 #endif
                 CGRect  r= _shadowImageView.frame;
-                  [_shadowImageView setFrame:CGRectMake(kShowdowFirstX, r.origin.y, sender.frame.size.width-2, r.size.height)];
+                  [_shadowImageView setFrame:CGRectMake(kShowdowFirstX, r.origin.y, sender.frame.size.width, r.size.height)];
                 for(UIImageView *sv in _topScrollView.subviews)
                 {
                     if (sv.tag == 110)
@@ -298,8 +299,9 @@ static const CGFloat kShowdowFirstX =2;
 # if  0
                 [_shadowImageView setFrame:CGRectMake(sender.frame.origin.x, 0, sender.frame.size.width+45, _shadowImage.size.height)];
 #endif
+                //线条滑动的长度 ********红线
                 CGRect r = _shadowImageView.frame;
-                 [_shadowImageView setFrame:CGRectMake(sender.frame.origin.x, kShowdowOriginalY, sender.frame.size.width, r.size.height)];
+                 [_shadowImageView setFrame:CGRectMake(sender.frame.origin.x, kShowdowOriginalY, sender.frame.size.width+4, r.size.height)];
             }
 
             

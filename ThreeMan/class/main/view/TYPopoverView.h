@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TYPopoverView : UIView<UITableViewDataSource, UITableViewDelegate>
+@interface TYPopoverView : UIView
 
 @property (nonatomic, strong) NSArray       *titleArray;
 @property (nonatomic, strong) NSArray       *imageArray;

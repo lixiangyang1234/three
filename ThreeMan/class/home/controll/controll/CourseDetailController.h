@@ -1,5 +1,5 @@
 //
-//  CourseEightController.h
+//  CourseDetailController.h
 //  ThreeMan
 //
 //  Created by YY on 15-3-30.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CourseEightController : UIViewController
+@interface CourseDetailController : UIViewController
 
 @end
