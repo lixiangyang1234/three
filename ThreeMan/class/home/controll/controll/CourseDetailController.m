@@ -27,6 +27,7 @@
 }
 //添加广告图片
 -(void)addUIBannerView{
+    
     UIImageView *bannerImage =[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, kWidth, 180)];
     [self.view addSubview:bannerImage];
     bannerImage.backgroundColor =[UIColor purpleColor];

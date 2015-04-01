@@ -12,6 +12,7 @@
 #import "NineBlockController.h"
 #import "NeedViewController.h"
 #import "BusinessController.h"
+#import "ThreeBlockController.h"
 #define BANNER    135           //banner高度
 #define EIGHTH    95          //八大课程体系
 #define NEEDH     135         //按需求
@@ -90,22 +91,22 @@ static NSString * const reuseIdentifier = @"Cell";
         
         UIButton *courseButtTitle =[UIButton buttonWithType:UIButtonTypeCustom];
         
-        courseButtTitle.frame =CGRectMake(18+c%4*(courseImage.frame.size.width+betweenW), courseImage.frame.origin.y+30+c/4, 70, 30);
+        courseButtTitle.frame =CGRectMake(courseBorderW-5+c%4*(courseImage.frame.size.width+betweenW), courseImage.frame.origin.y+30+c/4, imageWith+10, 30);
         [self.backScrollView addSubview:courseButtTitle];
         [courseButtTitle setTitle:self.noticeArray[c] forState:UIControlStateNormal];
         [courseButtTitle setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        courseButtTitle.titleLabel.font =[UIFont systemFontOfSize:PxFont(20)];
+        courseButtTitle.titleLabel.font =[UIFont systemFontOfSize:PxFont(12)];
         [courseButtTitle setTitleColor:HexRGB(0x404040) forState:UIControlStateNormal];
         [courseButtTitle setBackgroundColor:[UIColor clearColor]];
         
         
         UIButton *courseBtn =[UIButton buttonWithType:UIButtonTypeCustom];
-        courseBtn.frame =CGRectMake(30+c%4*(courseButtTitle.frame.size.width), courseImage.frame.origin.y+c/4, 50,60);
+        courseBtn.frame =CGRectMake(courseBorderW-10+c%4*(imageWith+betweenW), courseImage.frame.origin.y+c/4, 50,60);
         [courseBtn setTitle:self.noticeArray[c] forState:UIControlStateNormal  ];
         [courseBtn setTitleColor:[UIColor clearColor] forState:UIControlStateNormal];
         [_backScrollView addSubview:courseBtn];
-        //        courseBtn.backgroundColor =[UIColor yellowColor];
-        //        courseBtn.alpha =.4;
+//                courseBtn.backgroundColor =[UIColor yellowColor];
+//                courseBtn.alpha =.4;
         //        CategoryButt.tag=[hotCategoryModel.cateid intValue]+100;
         
         courseImage.tag = courseBtn.tag+10000;
@@ -223,8 +224,8 @@ static NSString * const reuseIdentifier = @"Cell";
         NineBlockController *nineVc =[[NineBlockController alloc]init];
         [self.nav pushViewController:nineVc animated:YES];
     }else if (more.tag ==NEEDTAG+1 ){
-        NineBlockController *nineVc =[[NineBlockController alloc]init];
-        [self.nav pushViewController:nineVc animated:YES];
+        ThreeBlockController *ThreeVc =[[ThreeBlockController alloc]init];
+        [self.nav pushViewController:ThreeVc animated:YES];
     }else{
         NeedViewController *needVc =[[NeedViewController alloc]init];
         [self.nav pushViewController:needVc animated:YES];

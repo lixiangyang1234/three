@@ -189,6 +189,7 @@
     return _titleBtn;
 }
 -(void)titleBtnClick:(UIButton *)index{
+    
     if (self.selectRowAtIndex)
     {
         self.selectRowAtIndex(index.tag);

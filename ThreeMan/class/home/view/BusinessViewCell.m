@@ -8,8 +8,10 @@
 
 #import "BusinessViewCell.h"
 
-#define YYBorderX 10
-#define YYBorderY 10
+#define YYBorderX 8
+#define borderH 10
+#define borderW 12
+#define between 25
 @implementation BusinessViewCell
 
 @synthesize businessImage,businessNeed,businessTtile,bussinessLabel;
@@ -19,39 +21,44 @@
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self =[super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        UIView *backCell =[[UIView alloc]initWithFrame:CGRectMake(YYBorderX, YYBorderX, kWidth-YYBorderX*2, 120)];
+        UIView *backCell =[[UIView alloc]initWithFrame:CGRectMake(YYBorderX, 0, kWidth-YYBorderX*2, 99.5)];
         [self addSubview:backCell];
         backCell.backgroundColor =[UIColor whiteColor];
         
-        businessImage =[[UIImageView alloc]initWithFrame:CGRectMake(YYBorderX, YYBorderY, 60, 60)];
+        businessImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderW, borderH, 38, 38)];
         [backCell addSubview:businessImage];
         businessImage.backgroundColor =[UIColor redColor];
         businessImage.userInteractionEnabled =YES;
-        businessImage.layer.cornerRadius =30;
+        businessImage.layer.cornerRadius =19;
         businessImage.layer.masksToBounds=YES;
+        businessImage.layer.borderWidth=1.0f;
+        businessImage.layer.borderColor =HexRGB(0xdde5eb) .CGColor;
+        CGFloat imageW =businessImage.frame.origin.x+businessImage.frame.size.width;
         
-        
-        businessTtile =[[UILabel alloc]initWithFrame:CGRectMake(YYBorderX*2+60, YYBorderY, kWidth-YYBorderX*2-90, 30)];
+        businessTtile =[[UILabel alloc]initWithFrame:CGRectMake(imageW+between, 2, kWidth-imageW-between-borderW*3 , 30)];
         businessTtile.backgroundColor =[UIColor clearColor];
         businessTtile.text =@"首行缩进根据用户昵称自动调整 ";
         [backCell addSubview:businessTtile];
         businessTtile.numberOfLines =2;
-        businessTtile.font =[UIFont systemFontOfSize:20];
+        businessTtile.font =[UIFont systemFontOfSize:PxFont(22)];
+        businessTtile.textColor =HexRGB(0x323232);
         
-        
-        businessNeed =[[UILabel alloc]initWithFrame:CGRectMake(YYBorderX*2+60, YYBorderY*2+30, kWidth-YYBorderX*2-90, 20)];
+        CGFloat titleH =businessTtile.frame.origin.y+businessTtile.frame.size.height-3;
+        businessNeed =[[UILabel alloc]initWithFrame:CGRectMake(imageW+between, titleH, kWidth-imageW-between-borderW*3, 20)];
         businessNeed.backgroundColor =[UIColor clearColor];
         businessNeed.text =@"需求 21 ";
         [backCell addSubview:businessNeed];
-        businessNeed.font =[UIFont systemFontOfSize:14];
- 
-        bussinessLabel =[[UILabel alloc]initWithFrame:CGRectMake(YYBorderX*2+60, YYBorderY*2+50, kWidth-YYBorderX*2-90, 50)];
+        businessNeed.font =[UIFont systemFontOfSize:PxFont(14)];
+        businessNeed.textColor =HexRGB(0x959595);
+        CGFloat needH =businessNeed.frame.origin.y+businessNeed.frame.size.height-3;
+
+        bussinessLabel =[[UILabel alloc]initWithFrame:CGRectMake(imageW+between, needH,kWidth-imageW-between-borderW*3 , 50)];
         bussinessLabel.backgroundColor =[UIColor clearColor];
         bussinessLabel.text =@"首行缩进根据用户昵称自动调整首行缩进根据用户昵称自动调整首行缩进根据用户昵称自动调整首行缩进根据用户昵称自动调整首行缩进根据用户昵称自动调整 ";
         [backCell addSubview:bussinessLabel];
         bussinessLabel.numberOfLines =3;
-        bussinessLabel.font =[UIFont systemFontOfSize:15];
-        
+        bussinessLabel.font =[UIFont systemFontOfSize:PxFont(15)];
+        bussinessLabel.textColor =HexRGB(0x1c8cc6);
 
         
         

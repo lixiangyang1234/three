@@ -31,7 +31,7 @@
 - (void)setBorderColor:(UIColor *)borderColor TextColor:(UIColor *)textColor{
     self.layer.borderColor = borderColor.CGColor;
     self.layer.borderWidth = 1.0f;
-    self.layer.cornerRadius=8;
+    self.layer.cornerRadius=7;
     self.layer.masksToBounds=YES;
 
     [self setTitleColor:textColor forState:UIControlStateNormal];

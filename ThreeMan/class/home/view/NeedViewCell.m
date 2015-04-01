@@ -8,8 +8,11 @@
 
 #import "NeedViewCell.h"
 
-#define YYBorderX 10
-#define YYBorderY 10
+#define YYBorderX    8         //外边界宽
+#define YYBorderY    4        //外边界高
+#define borderW      5       //内边界
+#define imageW       124    //图片宽
+#define imageH       70    //图片高
 @implementation NeedViewCell
 
 @synthesize needImage,needSmailImage,needTitle,zanBtn;
@@ -23,22 +26,23 @@
         [self addSubview:backCell];
         backCell.backgroundColor =[UIColor whiteColor];
         
-        needImage =[[UIImageView alloc]initWithFrame:CGRectMake(YYBorderX, YYBorderY, 80, 60)];
+        needImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderW, borderW,imageW, imageH)];
         [backCell addSubview:needImage];
         needImage.backgroundColor =[UIColor redColor];
         needImage.userInteractionEnabled =YES;
         
-        needSmailImage =[[UIImageView alloc]initWithFrame:CGRectMake(YYBorderX*2+80, YYBorderY, 30, 20)];
+        needSmailImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderW*2+imageW, YYBorderY+borderW, 30, 20)];
         [backCell addSubview:needSmailImage];
         needSmailImage.backgroundColor =[UIColor redColor];
         needSmailImage.userInteractionEnabled =YES;
 
         
-        needTitle =[[UILabel alloc]initWithFrame:CGRectMake(YYBorderX*2+80, YYBorderY, kWidth-YYBorderX*2-110, 50)];
+        needTitle =[[UILabel alloc]initWithFrame:CGRectMake(borderW*2+imageW, YYBorderY, kWidth-YYBorderX*2-imageW-borderW*2, 50)];
         needTitle.backgroundColor =[UIColor clearColor];
         needTitle.text =@"首行缩进根据用户昵称自动调整 ";
         [backCell addSubview:needTitle];
 //        [needTitle sizeToFit];
+        needTitle.textColor =HexRGB(0x323232);
         self . needTitle . adjustsFontSizeToFitWidth  =  YES ;
         
 //        self . needTitle . adjustsLetterSpacingToFitWidth  =  YES ;
@@ -47,21 +51,21 @@
         needTitle.numberOfLines =2;
         needTitle.font =[UIFont systemFontOfSize:20];
         
-        UILabel*  needRed =[[UILabel alloc]initWithFrame:CGRectMake(YYBorderX*2+80, YYBorderY*2+30, 50, 30)];
-        needRed.backgroundColor =[UIColor clearColor];
-        needRed.text =@"浏览量";
+        UILabel*  needRed =[[UILabel alloc]initWithFrame:CGRectMake(borderW*2+imageW, borderW+needTitle.frame.size.height, 60, 20)];
+        needRed.backgroundColor =[UIColor redColor];
+        needRed.text =@"新东方恒仁大学";
         [backCell addSubview:needRed];
         needRed.font =[UIFont systemFontOfSize:12];
-        
+        needRed.textColor=HexRGB(0x959595);
     
         zanBtn =[UIButton buttonWithType:UIButtonTypeCustom];
         [backCell addSubview:zanBtn];
-        zanBtn.frame =CGRectMake(200, YYBorderY*2+30, 70, 20);
+        zanBtn.frame =CGRectMake(backCell.frame.size.width-80, borderW+needTitle.frame.size.height, 70, 20);
         [zanBtn setTitle:@"23" forState:UIControlStateNormal];
 
         [zanBtn setImage:[UIImage imageNamed:@"nav_return_pre"] forState:UIControlStateNormal];
         [zanBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-        
+        [zanBtn setBackgroundColor:[UIColor redColor]];
         
                 
         [self resetContent];
@@ -77,6 +81,7 @@
     
     paragraphStyle. alignment = NSTextAlignmentLeft ;
     
+    
 //    paragraphStyle. maximumLineHeight = 40 ;  //最大的行高
     
     paragraphStyle. lineSpacing = 3 ;  //行自定义行高度
@@ -88,6 +93,8 @@
     self . needTitle . attributedText = attributedString;
     
     [ self . needTitle sizeToFit ];
+    needTitle.font =[UIFont systemFontOfSize:PxFont(23)];
+
     
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
