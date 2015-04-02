@@ -1,25 +1,22 @@
 //
-//  PatternDetailController.m
+//  DownloadListController.m
 //  ThreeMan
 //
-//  Created by tianj on 15/3/31.
+//  Created by tianj on 15/4/2.
 //  Copyright (c) 2015年 ___普马克___. All rights reserved.
 //
 
-#import "PatternDetailController.h"
+#import "DownloadListController.h"
 
-@interface PatternDetailController ()
+@interface DownloadListController ()
 
 @end
 
-@implementation PatternDetailController
+@implementation DownloadListController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.view.backgroundColor = HexRGB(0xe8e8e8);
-    self.title = @"详情";
-    [self setLeftTitle:@"详情"];
 }
 
 - (void)didReceiveMemoryWarning {

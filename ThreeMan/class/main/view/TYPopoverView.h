@@ -8,7 +8,23 @@
 
 #import <UIKit/UIKit.h>
 
+@class TYPopoverView;
+@protocol TYPopoverViewDelegate <NSObject>
+
+@optional
+
+- (void)TYPopoverViewTouch:(UIButton *)btn view:(TYPopoverView *)view;
+
+@end
+
 @interface TYPopoverView : UIView
+
+
+
+@property (nonatomic,strong) UIImageView *iconView;
+@property (nonatomic,strong) UIButton *loginBtn;
+@property (nonatomic,strong) UIButton *registBtn;
+@property (nonatomic,strong) UILabel *nameLabel;
 
 @property (nonatomic, strong) NSArray       *titleArray;
 @property (nonatomic, strong) NSArray       *imageArray;
@@ -20,6 +36,8 @@
 @property (nonatomic, copy) UIColor         *borderColor;
 
 @property (nonatomic, copy) void (^selectRowAtIndex)(NSInteger index);
+
+@property (nonatomic,strong) id<TYPopoverViewDelegate> delegate;
 
 -(id)initWithPoint:(CGPoint)point titles:(NSArray *)titles images:(NSArray *)images;
 -(void)show;

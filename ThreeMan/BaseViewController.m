@@ -9,8 +9,12 @@
 #import "BaseViewController.h"
 #import "SearchViewController.h"
 #import "TYPopoverView.h"
+#import "VideoCenterController.h"
+#import "SettingController.h"
+#import "AccountController.h"
+#import "MessageController.h"
 
-@interface BaseViewController ()
+@interface BaseViewController ()<TYPopoverViewDelegate>
 
 @end
 
@@ -23,6 +27,17 @@
     [self loadNavItems];
     
 
+}
+
+- (void)setLeftTitle:(NSString *)leftTitle
+{
+    UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth,44)];
+    titleView.backgroundColor = [UIColor clearColor];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(-15, 0, 150, 44)];
+    label.backgroundColor = [UIColor clearColor];
+    label.text = leftTitle;
+    [titleView addSubview:label];
+    self.navigationItem.titleView = titleView;
 }
 
 - (void)loadNavItems
@@ -59,17 +74,79 @@
 {
     CGPoint point = CGPointMake(kWidth-60, btn.frame.origin.y + btn.frame.size.height+15);
     
-    NSArray * titles = @[@"登陆", @"| 注销", @"分享",@"建议",@"建议"];
-    NSArray *  images = @[@"nav_return_pre", @"nav_return_pre", @"nav_return_pre", @"nav_return_pre", @"nav_return_pre"];
+    NSArray * titles = @[@"我的成长", @"账户", @"消息",@"设置"];
+    NSArray *  images = @[@"video", @"account", @"message", @"setting"];
     
     TYPopoverView *popView = [[TYPopoverView alloc] initWithPoint:point titles:titles images:images];
+    popView.delegate = self;
     popView.selectRowAtIndex = ^(NSInteger index)
     {
         NSLog(@"select index:%ld", (long)index);
     };
     
     [popView show];
+}
 
+- (void)TYPopoverViewTouch:(UIButton *)btn view:(TYPopoverView *)view
+{
+    NSArray *array = self.navigationController.viewControllers;
+    switch (btn.tag) {
+        case -1:
+        {
+            
+        }
+            break;
+        case -2:
+        {
+            
+        }
+            break;
+        case 0:
+        {
+            VideoCenterController *center = [[VideoCenterController alloc] init];
+            [self.navigationController pushViewController:center animated:YES];
+        }
+            break;
+        case 1:
+        {
+            for (UIViewController *subVC in array) {
+                if ([subVC isKindOfClass:[AccountController class]]) {
+                    [self.navigationController popToViewController:subVC animated:NO];
+                    return;
+                }
+            }
+            AccountController *account = [[AccountController alloc] init];
+            [self.navigationController pushViewController:account animated:YES];
+        }
+            break;
+        case 2:
+        {
+            for (UIViewController *subVC in array) {
+                if ([subVC isKindOfClass:[MessageController class]]) {
+                    [self.navigationController popToViewController:subVC animated:NO];
+                    return;
+                }
+            }
+            MessageController *message = [[MessageController alloc] init];
+            [self.navigationController pushViewController:message animated:YES];
+        }
+            break;
+        case 3:
+        {
+            for (UIViewController *subVC in array) {
+                if ([subVC isKindOfClass:[SettingController class]]) {
+                    [self.navigationController popToViewController:subVC animated:NO];
+                    return;
+                }
+            }
+            SettingController *set = [[SettingController alloc] init];
+            [self.navigationController pushViewController:set animated:YES];
+        }
+            break;
+            
+        default:
+            break;
+    }
 }
 
 
