@@ -7,7 +7,8 @@
 //
 
 #import "CourseViewController.h"
-@interface CourseViewController ()
+#import "CourseViewCell.h"
+@interface CourseViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property(nonatomic,strong)UITableView *tableView;
 @end
@@ -16,8 +17,54 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.view.backgroundColor =[UIColor yellowColor];
+    [self.view setBackgroundColor:HexRGB(0xe0e0e0)];
+    [self addTableView];
 }
+-(void)addTableView{
+    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 6, kWidth, kHeight-64-6) style:UITableViewStylePlain];
+    _tableView.delegate =self;
+    _tableView.dataSource =self;
+    _tableView.backgroundColor =[UIColor whiteColor];
+    
+    _tableView.showsHorizontalScrollIndicator = NO;
+    _tableView.showsVerticalScrollIndicator = NO;
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    [self.view addSubview:_tableView];
+}
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 5;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *cellIndexfider =@"CourseCell";
+    
+    CourseViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndexfider];
+    if (!cell) {
+        cell =[[CourseViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndexfider];
+        [cell setBackgroundColor:HexRGB(0xe0e0e0)];
+        cell.selectionStyle =UITableViewCellSelectionStyleNone;
+    }
+    
+    
+    return cell;
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//    CompanyHomeControll *companyHomeVC=[[CompanyHomeControll alloc]init];
+//    [self.navigationController pushViewController:companyHomeVC animated:YES];
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 65;
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

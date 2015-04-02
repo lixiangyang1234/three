@@ -25,7 +25,7 @@
     
     // 设置尺寸
 //    btn.bounds = (CGRect){CGPointZero, image.size};
-    btn.frame =CGRectMake(0, 0, image.size.width, image.size.height);
+    btn.frame =CGRectMake(-10, 0, image.size.width, image.size.height);
     [btn addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
     [viewItem addSubview:btn];
     return [self initWithCustomView:viewItem];

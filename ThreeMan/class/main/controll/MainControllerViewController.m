@@ -106,9 +106,9 @@
     self.home =[[HomeViewController alloc]init];
     self.home.title =@"首页";
     self.course =[[CourseViewController alloc]init];
-    self.course.title =@"课程";
+    self.course.title =@"三身行";
     self.company =[[CompanyViewController alloc]init];
-    self.company.title =@"企业";
+    self.company.title =@"标杆案例";
     [self.sliderSwitchView buildUI];
     
 
