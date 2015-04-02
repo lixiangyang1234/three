@@ -18,6 +18,7 @@
 #import "EnterpriseItem.h"
 #import "VideoViewController.h"
 #import "SaveTempDataTool.h"
+#import "CompySearchController.h"
 
 @interface SearchViewController ()
 
@@ -527,15 +528,17 @@
             break;
         case 1:
         {
-            
+            CompySearchController *csc = [[CompySearchController alloc] init];
+            [self.navigationController pushViewController:csc animated:YES];
         }
             break;
         case 2:
         {
-            
+            VideoViewController *video = [[VideoViewController alloc] init];
+            [self.navigationController pushViewController:video animated:YES];
         }
             break;
-
+            
         default:
             break;
     }

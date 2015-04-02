@@ -424,6 +424,8 @@
 		04C71A161AC94C2A00D136E0 /* subcontroller */ = {
 			isa = PBXGroup;
 			children = (
+				04CD898F1ACBF72A0005788F /* CompySearchController.h */,
+				04CD89901ACBF72A0005788F /* CompySearchController.m */,
 				04CC331E1ACA802D008A85B5 /* VideoViewController.h */,
 				04CC331F1ACA802D008A85B5 /* VideoViewController.m */,
 			);
@@ -586,6 +588,8 @@
 				55E372B11AC2B54200C794DD /* class */,
 				55E3728F1AC2B4C600C794DD /* AppDelegate.h */,
 				55E372901AC2B4C600C794DD /* AppDelegate.m */,
+				04CD89921ACBF83E0005788F /* BaseViewController.h */,
+				04CD89931ACBF83F0005788F /* BaseViewController.m */,
 				55E372981AC2B4C600C794DD /* Images.xcassets */,
 				55E3728B1AC2B4C600C794DD /* Supporting Files */,
 			);
@@ -1222,6 +1226,7 @@
 			files = (
 				55E373B11AC2B54200C794DD /* UIButton+WebCache.m in Sources */,
 				55E3739B1AC2B54200C794DD /* UIScrollView+UITouch.m in Sources */,
+				04CD89911ACBF72A0005788F /* CompySearchController.m in Sources */,
 				55E373911AC2B54200C794DD /* AFImageRequestOperation.m in Sources */,
 				04CC33391ACA808B008A85B5 /* SearchViewController.m in Sources */,
 				55C24F8A1ACB8EE500BFEBED /* ThreeBlockController.m in Sources */,
@@ -1267,6 +1272,7 @@
 				55E373B41AC2B54200C794DD /* UIImage+WebP.m in Sources */,
 				55E3739F1AC2B54200C794DD /* labelColor.m in Sources */,
 				04CC33331ACA8062008A85B5 /* PatternDetailController.m in Sources */,
+				04CD89941ACBF83F0005788F /* BaseViewController.m in Sources */,
 				55C24F901ACB8EE500BFEBED /* YYSearchButton.m in Sources */,
 				55B828011AC53873008EAFA4 /* KDCycleBannerView.m in Sources */,
 				04CC332D1ACA8042008A85B5 /* HotCell.m in Sources */,

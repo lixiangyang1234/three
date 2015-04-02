@@ -7,6 +7,7 @@
 //
 
 #import "VideoViewController.h"
+#import "CompanyHomeViewCell.h"
 
 @interface VideoViewController ()
 
@@ -17,14 +18,24 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.view.backgroundColor = [UIColor whiteColor];
-    
     _dataArray = [[NSMutableArray alloc] initWithCapacity:0];
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kHeight-64) style:UITableViewStylePlain];
     _tableView.delegate = self;
     _tableView.dataSource = self;
+    _tableView.separatorColor = [UIColor clearColor];
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _tableView.backgroundColor = HexRGB(0xe8e8e8);
     [self.view addSubview:_tableView];
+    [self loadData];
+}
+
+- (void)loadData
+{
+    for (int i = 0 ; i< 10; i++) {
+        [_dataArray addObject:@"1"];
+    }
+    [_tableView reloadData];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -36,11 +47,18 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identify = @"identify";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identify];
+    CompanyHomeViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identify];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify];
+        cell = [[CompanyHomeViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify];
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
+}
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 100;
 }
 
 - (void)didReceiveMemoryWarning {
