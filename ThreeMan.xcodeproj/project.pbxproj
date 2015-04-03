@@ -22,6 +22,8 @@
 		04CC33511ACA8118008A85B5 /* FileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CC334D1ACA8118008A85B5 /* FileItem.m */; };
 		04CC33521ACA8118008A85B5 /* HotItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CC334F1ACA8118008A85B5 /* HotItem.m */; };
 		55B714FA1ACCC0DD00959DF8 /* CourseViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B714F91ACCC0DD00959DF8 /* CourseViewCell.m */; };
+		55B714FD1ACCC2DA00959DF8 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B714FC1ACCC2DA00959DF8 /* BaseViewController.m */; };
+		55B715001ACCC32000959DF8 /* CompySearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B714FF1ACCC32000959DF8 /* CompySearchController.m */; };
 		55B828011AC53873008EAFA4 /* KDCycleBannerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B828001AC53873008EAFA4 /* KDCycleBannerView.m */; };
 		55B828031AC53A54008EAFA4 /* img.png in Resources */ = {isa = PBXBuildFile; fileRef = 55B828021AC53A54008EAFA4 /* img.png */; };
 		55C24F831ACB8EE500BFEBED /* BusinessController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C24F661ACB8EE500BFEBED /* BusinessController.m */; };
@@ -180,6 +182,10 @@
 		04CC334F1ACA8118008A85B5 /* HotItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotItem.m; sourceTree = "<group>"; };
 		55B714F81ACCC0DD00959DF8 /* CourseViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseViewCell.h; sourceTree = "<group>"; };
 		55B714F91ACCC0DD00959DF8 /* CourseViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseViewCell.m; sourceTree = "<group>"; };
+		55B714FB1ACCC2DA00959DF8 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
+		55B714FC1ACCC2DA00959DF8 /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
+		55B714FE1ACCC32000959DF8 /* CompySearchController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompySearchController.h; sourceTree = "<group>"; };
+		55B714FF1ACCC32000959DF8 /* CompySearchController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompySearchController.m; sourceTree = "<group>"; };
 		55B827FF1AC53873008EAFA4 /* KDCycleBannerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KDCycleBannerView.h; sourceTree = "<group>"; };
 		55B828001AC53873008EAFA4 /* KDCycleBannerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KDCycleBannerView.m; sourceTree = "<group>"; };
 		55B828021AC53A54008EAFA4 /* img.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img.png; sourceTree = "<group>"; };
@@ -424,8 +430,8 @@
 		04C71A161AC94C2A00D136E0 /* subcontroller */ = {
 			isa = PBXGroup;
 			children = (
-				04CD898F1ACBF72A0005788F /* CompySearchController.h */,
-				04CD89901ACBF72A0005788F /* CompySearchController.m */,
+				55B714FE1ACCC32000959DF8 /* CompySearchController.h */,
+				55B714FF1ACCC32000959DF8 /* CompySearchController.m */,
 				04CC331E1ACA802D008A85B5 /* VideoViewController.h */,
 				04CC331F1ACA802D008A85B5 /* VideoViewController.m */,
 			);
@@ -481,6 +487,13 @@
 			path = view;
 			sourceTree = "<group>";
 		};
+		55B715011ACCC6C000959DF8 /* model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
 		55B827FE1AC53873008EAFA4 /* banner */ = {
 			isa = PBXGroup;
 			children = (
@@ -493,6 +506,7 @@
 		55C24F631ACB8EE500BFEBED /* home */ = {
 			isa = PBXGroup;
 			children = (
+				55B715011ACCC6C000959DF8 /* model */,
 				55C24F641ACB8EE500BFEBED /* controll */,
 				55C24F761ACB8EE500BFEBED /* view */,
 			);
@@ -588,8 +602,8 @@
 				55E372B11AC2B54200C794DD /* class */,
 				55E3728F1AC2B4C600C794DD /* AppDelegate.h */,
 				55E372901AC2B4C600C794DD /* AppDelegate.m */,
-				04CD89921ACBF83E0005788F /* BaseViewController.h */,
-				04CD89931ACBF83F0005788F /* BaseViewController.m */,
+				55B714FB1ACCC2DA00959DF8 /* BaseViewController.h */,
+				55B714FC1ACCC2DA00959DF8 /* BaseViewController.m */,
 				55E372981AC2B4C600C794DD /* Images.xcassets */,
 				55E3728B1AC2B4C600C794DD /* Supporting Files */,
 			);
@@ -1226,7 +1240,6 @@
 			files = (
 				55E373B11AC2B54200C794DD /* UIButton+WebCache.m in Sources */,
 				55E3739B1AC2B54200C794DD /* UIScrollView+UITouch.m in Sources */,
-				04CD89911ACBF72A0005788F /* CompySearchController.m in Sources */,
 				55E373911AC2B54200C794DD /* AFImageRequestOperation.m in Sources */,
 				04CC33391ACA808B008A85B5 /* SearchViewController.m in Sources */,
 				55C24F8A1ACB8EE500BFEBED /* ThreeBlockController.m in Sources */,
@@ -1272,11 +1285,12 @@
 				55E373B41AC2B54200C794DD /* UIImage+WebP.m in Sources */,
 				55E3739F1AC2B54200C794DD /* labelColor.m in Sources */,
 				04CC33331ACA8062008A85B5 /* PatternDetailController.m in Sources */,
-				04CD89941ACBF83F0005788F /* BaseViewController.m in Sources */,
 				55C24F901ACB8EE500BFEBED /* YYSearchButton.m in Sources */,
+				55B714FD1ACCC2DA00959DF8 /* BaseViewController.m in Sources */,
 				55B828011AC53873008EAFA4 /* KDCycleBannerView.m in Sources */,
 				04CC332D1ACA8042008A85B5 /* HotCell.m in Sources */,
 				04CC332B1ACA8042008A85B5 /* FileCell.m in Sources */,
+				55B715001ACCC32000959DF8 /* CompySearchController.m in Sources */,
 				55E373D21AC2B54200C794DD /* SUNSlideSwitchView.m in Sources */,
 				55E373951AC2B54200C794DD /* AFURLConnectionOperation.m in Sources */,
 				55E373981AC2B54200C794DD /* NSString+MJ.m in Sources */,
@@ -1422,8 +1436,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Ma xundong (Q9AV45MB6G)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ma xundong (Q9AV45MB6G)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ThreeMan/class/other/ShareSDK/Connection",
@@ -1442,7 +1456,7 @@
 					"$(PROJECT_DIR)/ThreeMan/class/other/ShareSDK/Extend/WeChatSDK",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "1b12a7cd-93ba-4dcd-b200-b4f46a7801db";
 			};
 			name = Debug;
 		};
@@ -1450,8 +1464,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Ma xundong (Q9AV45MB6G)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ma xundong (Q9AV45MB6G)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ThreeMan/class/other/ShareSDK/Connection",
@@ -1470,7 +1484,7 @@
 					"$(PROJECT_DIR)/ThreeMan/class/other/ShareSDK/Extend/WeChatSDK",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "1b12a7cd-93ba-4dcd-b200-b4f46a7801db";
 			};
 			name = Release;
 		};

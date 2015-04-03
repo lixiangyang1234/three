@@ -156,7 +156,7 @@
     viewLine.frame=CGRectMake(0, 20, kHeight, kHeight);
     [self addSubview:viewLine];
     viewLine.backgroundColor =HexRGB(0xeaebec);
-    viewLine.backgroundColor =[UIColor blackColor];
+    viewLine.backgroundColor =[UIColor whiteColor];
     viewLine.alpha =.4;
 
 //    CGRect rect = self.frame;
@@ -197,9 +197,10 @@
         [self.titleBtn setTitleColor:HexRGB(0x178ac5) forState:UIControlStateSelected];
         
         UIView *viewLine =[[UIView alloc]init];
-        viewLine.frame=CGRectMake(0, 53+i%4*(44), kWidth, 1);
-        [self addSubview:viewLine];
+        viewLine.frame=CGRectMake(0, 43, kWidth, 1);
+        [self.titleBtn addSubview:viewLine];
         viewLine.backgroundColor =HexRGB(0xeaebec);
+//          viewLine.backgroundColor =[UIColor redColor];
         
     }
        return _titleBtn;
@@ -212,7 +213,7 @@
         [self.categoryTitleBtn setTitleColor:HexRGB(0x178ac5) forState:UIControlStateSelected];
 
         [self.categoryTitleBtn addTarget:self action:@selector(titleBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-        self.categoryTitleBtn.frame=CGRectMake(210, 54+i%7*(44)-43, 150, 44);
+        self.categoryTitleBtn.frame=CGRectMake(210, 55+i%7*(44)-43, 150, 44);
         if (i==4||i==5||i==6||i==7) {
             self.categoryTitleBtn.frame=CGRectMake(0, 54+i%8*(44)-43, kWidth, 44);
             self.categoryTitleBtn.titleEdgeInsets =UIEdgeInsetsMake(0, kWidth-110, 0, 20);
@@ -232,6 +233,7 @@
         viewLine.frame=CGRectMake(0, 42, kWidth, 1);
         [self.categoryTitleBtn addSubview:viewLine];
         viewLine.backgroundColor =HexRGB(0xeaebec);
+//        viewLine.backgroundColor =[UIColor redColor];
         [self addSubview:self.categoryTitleBtn];
         self.frame =[self getViewFrameCategory];
 
@@ -290,7 +292,7 @@
     [popoverPath addLineToPoint:CGPointMake(xMin, yMax)];       //左下角
     
     //填充颜色
-    [[UIColor whiteColor] setFill];
+    [[UIColor cyanColor] setFill];
     
     [popoverPath fill];
     
