@@ -25,6 +25,13 @@
 		04C64B9D1ACD451900825EF0 /* AccountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C64B9C1ACD451900825EF0 /* AccountCell.m */; };
 		04C64BA01ACD459A00825EF0 /* AccountItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C64B9F1ACD459A00825EF0 /* AccountItem.m */; };
 		04C64BA31ACD4F7500825EF0 /* PayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C64BA21ACD4F7500825EF0 /* PayViewController.m */; };
+		04C73A201ACE2524007B1283 /* DrawViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C73A1F1ACE2524007B1283 /* DrawViewController.m */; };
+		04C73A241ACE40BF007B1283 /* FavoriteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C73A231ACE40BF007B1283 /* FavoriteCell.m */; };
+		04C73A281ACE44A2007B1283 /* FavoriteItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C73A271ACE44A2007B1283 /* FavoriteItem.m */; };
+		04C73A2C1ACE51F8007B1283 /* EditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C73A2B1ACE51F8007B1283 /* EditView.m */; };
+		04C73A2F1ACE7C49007B1283 /* SectionHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C73A2E1ACE7C49007B1283 /* SectionHeadView.m */; };
+		04C73A341ACE7CB5007B1283 /* DefaultHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C73A311ACE7CB5007B1283 /* DefaultHeaderView.m */; };
+		04C73A351ACE7CB5007B1283 /* ResultHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C73A331ACE7CB5007B1283 /* ResultHeaderView.m */; };
 		04CC33201ACA802D008A85B5 /* VideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CC331F1ACA802D008A85B5 /* VideoViewController.m */; };
 		04CC332A1ACA8042008A85B5 /* EnterpriseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CC33231ACA8042008A85B5 /* EnterpriseCell.m */; };
 		04CC332B1ACA8042008A85B5 /* FileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CC33251ACA8042008A85B5 /* FileCell.m */; };
@@ -34,8 +41,6 @@
 		04CC33331ACA8062008A85B5 /* PatternDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CC33321ACA8062008A85B5 /* PatternDetailController.m */; };
 		04CC33361ACA8072008A85B5 /* PatternItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CC33351ACA8072008A85B5 /* PatternItem.m */; };
 		04CC33391ACA808B008A85B5 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CC33381ACA808B008A85B5 /* SearchViewController.m */; };
-		04CC333E1ACA80B2008A85B5 /* DefaultHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CC333B1ACA80B2008A85B5 /* DefaultHeaderView.m */; };
-		04CC333F1ACA80B2008A85B5 /* ResultHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CC333D1ACA80B2008A85B5 /* ResultHeaderView.m */; };
 		04CC33501ACA8118008A85B5 /* EnterpriseItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CC334B1ACA8118008A85B5 /* EnterpriseItem.m */; };
 		04CC33511ACA8118008A85B5 /* FileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CC334D1ACA8118008A85B5 /* FileItem.m */; };
 		04CC33521ACA8118008A85B5 /* HotItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CC334F1ACA8118008A85B5 /* HotItem.m */; };
@@ -204,6 +209,20 @@
 		04C64B9F1ACD459A00825EF0 /* AccountItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountItem.m; sourceTree = "<group>"; };
 		04C64BA11ACD4F7500825EF0 /* PayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayViewController.h; sourceTree = "<group>"; };
 		04C64BA21ACD4F7500825EF0 /* PayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PayViewController.m; sourceTree = "<group>"; };
+		04C73A1E1ACE2524007B1283 /* DrawViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawViewController.h; sourceTree = "<group>"; };
+		04C73A1F1ACE2524007B1283 /* DrawViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawViewController.m; sourceTree = "<group>"; };
+		04C73A221ACE40BF007B1283 /* FavoriteCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoriteCell.h; sourceTree = "<group>"; };
+		04C73A231ACE40BF007B1283 /* FavoriteCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoriteCell.m; sourceTree = "<group>"; };
+		04C73A261ACE44A2007B1283 /* FavoriteItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoriteItem.h; sourceTree = "<group>"; };
+		04C73A271ACE44A2007B1283 /* FavoriteItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoriteItem.m; sourceTree = "<group>"; };
+		04C73A2A1ACE51F8007B1283 /* EditView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditView.h; sourceTree = "<group>"; };
+		04C73A2B1ACE51F8007B1283 /* EditView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditView.m; sourceTree = "<group>"; };
+		04C73A2D1ACE7C49007B1283 /* SectionHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SectionHeadView.h; sourceTree = "<group>"; };
+		04C73A2E1ACE7C49007B1283 /* SectionHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SectionHeadView.m; sourceTree = "<group>"; };
+		04C73A301ACE7CB5007B1283 /* DefaultHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultHeaderView.h; sourceTree = "<group>"; };
+		04C73A311ACE7CB5007B1283 /* DefaultHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DefaultHeaderView.m; sourceTree = "<group>"; };
+		04C73A321ACE7CB5007B1283 /* ResultHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultHeaderView.h; sourceTree = "<group>"; };
+		04C73A331ACE7CB5007B1283 /* ResultHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResultHeaderView.m; sourceTree = "<group>"; };
 		04CC331E1ACA802D008A85B5 /* VideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoViewController.h; sourceTree = "<group>"; };
 		04CC331F1ACA802D008A85B5 /* VideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoViewController.m; sourceTree = "<group>"; };
 		04CC33221ACA8042008A85B5 /* EnterpriseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnterpriseCell.h; sourceTree = "<group>"; };
@@ -222,10 +241,6 @@
 		04CC33351ACA8072008A85B5 /* PatternItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PatternItem.m; sourceTree = "<group>"; };
 		04CC33371ACA808B008A85B5 /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
 		04CC33381ACA808B008A85B5 /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
-		04CC333A1ACA80B2008A85B5 /* DefaultHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultHeaderView.h; sourceTree = "<group>"; };
-		04CC333B1ACA80B2008A85B5 /* DefaultHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DefaultHeaderView.m; sourceTree = "<group>"; };
-		04CC333C1ACA80B2008A85B5 /* ResultHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultHeaderView.h; sourceTree = "<group>"; };
-		04CC333D1ACA80B2008A85B5 /* ResultHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResultHeaderView.m; sourceTree = "<group>"; };
 		04CC334A1ACA8118008A85B5 /* EnterpriseItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnterpriseItem.h; sourceTree = "<group>"; };
 		04CC334B1ACA8118008A85B5 /* EnterpriseItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnterpriseItem.m; sourceTree = "<group>"; };
 		04CC334C1ACA8118008A85B5 /* FileItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileItem.h; sourceTree = "<group>"; };
@@ -490,6 +505,9 @@
 		04C64B631ACCEB0700825EF0 /* video */ = {
 			isa = PBXGroup;
 			children = (
+				04C73A291ACE51E2007B1283 /* view */,
+				04C73A251ACE448F007B1283 /* model */,
+				04C73A211ACE4082007B1283 /* cell */,
 				04C64B641ACCEB3A00825EF0 /* controller */,
 				04C64B671ACCEB3A00825EF0 /* subcontroller */,
 			);
@@ -536,6 +554,8 @@
 				04C64B791ACCED1E00825EF0 /* AccountController.m */,
 				04C64BA11ACD4F7500825EF0 /* PayViewController.h */,
 				04C64BA21ACD4F7500825EF0 /* PayViewController.m */,
+				04C73A1E1ACE2524007B1283 /* DrawViewController.h */,
+				04C73A1F1ACE2524007B1283 /* DrawViewController.m */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -659,6 +679,35 @@
 				04C64B4A1ACCC5B200825EF0 /* CompySearchController.m */,
 			);
 			path = subcontroller;
+			sourceTree = "<group>";
+		};
+		04C73A211ACE4082007B1283 /* cell */ = {
+			isa = PBXGroup;
+			children = (
+				04C73A221ACE40BF007B1283 /* FavoriteCell.h */,
+				04C73A231ACE40BF007B1283 /* FavoriteCell.m */,
+			);
+			path = cell;
+			sourceTree = "<group>";
+		};
+		04C73A251ACE448F007B1283 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				04C73A261ACE44A2007B1283 /* FavoriteItem.h */,
+				04C73A271ACE44A2007B1283 /* FavoriteItem.m */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		04C73A291ACE51E2007B1283 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				04C73A2A1ACE51F8007B1283 /* EditView.h */,
+				04C73A2B1ACE51F8007B1283 /* EditView.m */,
+				04C73A2D1ACE7C49007B1283 /* SectionHeadView.h */,
+				04C73A2E1ACE7C49007B1283 /* SectionHeadView.m */,
+			);
+			path = view;
 			sourceTree = "<group>";
 		};
 		04CC33061ACA288D008A85B5 /* cell */ = {
@@ -901,10 +950,6 @@
 		55E372B71AC2B54200C794DD /* view */ = {
 			isa = PBXGroup;
 			children = (
-				04CC333A1ACA80B2008A85B5 /* DefaultHeaderView.h */,
-				04CC333B1ACA80B2008A85B5 /* DefaultHeaderView.m */,
-				04CC333C1ACA80B2008A85B5 /* ResultHeaderView.h */,
-				04CC333D1ACA80B2008A85B5 /* ResultHeaderView.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -1329,6 +1374,10 @@
 		55E3737E1AC2B54200C794DD /* view */ = {
 			isa = PBXGroup;
 			children = (
+				04C73A301ACE7CB5007B1283 /* DefaultHeaderView.h */,
+				04C73A311ACE7CB5007B1283 /* DefaultHeaderView.m */,
+				04C73A321ACE7CB5007B1283 /* ResultHeaderView.h */,
+				04C73A331ACE7CB5007B1283 /* ResultHeaderView.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -1481,7 +1530,6 @@
 				04C64B801ACCEDDE00825EF0 /* SettingController.m in Sources */,
 				55E3738C1AC2B54200C794DD /* NewfeatureController.m in Sources */,
 				04C64B861ACD0ED900825EF0 /* SettingCell.m in Sources */,
-				04CC333F1ACA80B2008A85B5 /* ResultHeaderView.m in Sources */,
 				55C24F891ACB8EE500BFEBED /* NineBlockController.m in Sources */,
 				55E373AB1AC2B54200C794DD /* SDWebImageCompat.m in Sources */,
 				55E373AF1AC2B54200C794DD /* SDWebImageManager.m in Sources */,
@@ -1490,9 +1538,9 @@
 				55E3737F1AC2B54200C794DD /* CompanyViewController.m in Sources */,
 				55E373AA1AC2B54200C794DD /* SDImageCache.m in Sources */,
 				55E373941AC2B54200C794DD /* AFPropertyListRequestOperation.m in Sources */,
-				04CC333E1ACA80B2008A85B5 /* DefaultHeaderView.m in Sources */,
 				55C24F881ACB8EE500BFEBED /* NeedViewController.m in Sources */,
 				55C24F851ACB8EE500BFEBED /* CourseDetailController.m in Sources */,
+				04C73A341ACE7CB5007B1283 /* DefaultHeaderView.m in Sources */,
 				55E373AC1AC2B54200C794DD /* SDWebImageDecoder.m in Sources */,
 				55C24F861ACB8EE500BFEBED /* CourseEightController.m in Sources */,
 				55E373971AC2B54200C794DD /* UIImageView+AFNetworking.m in Sources */,
@@ -1505,8 +1553,10 @@
 				55E373B31AC2B54200C794DD /* UIImage+MultiFormat.m in Sources */,
 				04CC33511ACA8118008A85B5 /* FileItem.m in Sources */,
 				55E373D31AC2B54200C794DD /* HttpTool.m in Sources */,
+				04C73A201ACE2524007B1283 /* DrawViewController.m in Sources */,
 				55E372911AC2B4C600C794DD /* AppDelegate.m in Sources */,
 				55E373B41AC2B54200C794DD /* UIImage+WebP.m in Sources */,
+				04C73A281ACE44A2007B1283 /* FavoriteItem.m in Sources */,
 				55E3739F1AC2B54200C794DD /* labelColor.m in Sources */,
 				04C64B9A1ACD412200825EF0 /* AccountHeadView.m in Sources */,
 				04CC33331ACA8062008A85B5 /* PatternDetailController.m in Sources */,
@@ -1536,15 +1586,19 @@
 				55B714FA1ACCC0DD00959DF8 /* CourseViewCell.m in Sources */,
 				55E373B21AC2B54200C794DD /* UIImage+GIF.m in Sources */,
 				55E3739D1AC2B54200C794DD /* NSString+MD5.m in Sources */,
+				04C73A351ACE7CB5007B1283 /* ResultHeaderView.m in Sources */,
 				55E373B51AC2B54200C794DD /* UIImageView+WebCache.m in Sources */,
 				55E3738E1AC2B54200C794DD /* TYPopoverView.m in Sources */,
+				04C73A241ACE40BF007B1283 /* FavoriteCell.m in Sources */,
 				55C24F931ACB940E00BFEBED /* categoryView.m in Sources */,
 				04C64B701ACCEB3A00825EF0 /* FavoriteViewController.m in Sources */,
 				55E373A81AC2B54200C794DD /* MKAnnotationView+WebCache.m in Sources */,
 				04C64B7D1ACCED5200825EF0 /* MessageController.m in Sources */,
 				55E3728E1AC2B4C600C794DD /* main.m in Sources */,
+				04C73A2F1ACE7C49007B1283 /* SectionHeadView.m in Sources */,
 				55E373AE1AC2B54200C794DD /* SDWebImageDownloaderOperation.m in Sources */,
 				04CC332C1ACA8042008A85B5 /* HistoryCell.m in Sources */,
+				04C73A2C1ACE51F8007B1283 /* EditView.m in Sources */,
 				55E373A31AC2B54200C794DD /* MBProgressHUD.m in Sources */,
 				55E373A11AC2B54200C794DD /* MBProgressHUD+GR.m in Sources */,
 				55E373921AC2B54200C794DD /* AFJSONRequestOperation.m in Sources */,

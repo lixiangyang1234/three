@@ -10,4 +10,7 @@
 
 @interface DownloadListController : RootViewController
 
+
+- (void)edit:(BOOL)editting;
+
 @end

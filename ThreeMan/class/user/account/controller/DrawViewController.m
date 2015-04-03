@@ -1,39 +1,42 @@
 //
-//  PayViewController.m
+//  DrawViewController.m
 //  ThreeMan
 //
-//  Created by tianj on 15/4/2.
+//  Created by tianj on 15/4/3.
 //  Copyright (c) 2015年 ___普马克___. All rights reserved.
 //
 
-#import "PayViewController.h"
+#import "DrawViewController.h"
 #import "AdaptationSize.h"
 #import "RemindView.h"
 
-@interface PayViewController ()<UITextFieldDelegate>
+@interface DrawViewController ()<UITextFieldDelegate>
 {
     UITextField *_textField;
     UILabel *_payLabel;
+    UITextField *_zfbTextField;
 }
+
+
 @end
 
-@implementation PayViewController
+@implementation DrawViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self setLeftTitle:@"充值"];
+    [self setLeftTitle:@"提现"];
     
     [self buildUI];
 }
 
 - (void)buildUI
 {
-    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(8, 8, kWidth-8*2, 131)];
+    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(8, 8, kWidth-8*2, 31+50*3)];
     bgView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:bgView];
     
-    for (int i = 0 ; i< 3; i++) {
+    for (int i = 0 ; i< 4; i++) {
         UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
         line.backgroundColor = HexRGB(0xe0e0e0);
         [bgView addSubview:line];
@@ -43,7 +46,7 @@
         }else if (i==1){
             frame.origin.y = 50+30;
         }else{
-            frame.origin.y = bgView.frame.size.height-1;
+            frame.origin.y = 31+50*i-1;
         }
         line.frame = frame;
         [bgView addSubview:line];
@@ -66,17 +69,26 @@
     nickLabel.textColor = HexRGB(0x323232);
     nickLabel.font = [UIFont systemFontOfSize:18];
     [bgView addSubview:nickLabel];
-
+    
     //剩余蜕变豆
-    UILabel *amountLabel = [[UILabel alloc] initWithFrame:CGRectMake(12,50,140,31)];
+    UILabel *amountLabel = [[UILabel alloc] initWithFrame:CGRectMake(12,telLabel.frame.origin.y+telLabel.frame.size.height,140,31)];
     amountLabel.backgroundColor = [UIColor clearColor];
     amountLabel.text = @"剩余蜕变豆:28";
     amountLabel.textColor = HexRGB(0x959595);
     amountLabel.font = [UIFont systemFontOfSize:14];
     [bgView addSubview:amountLabel];
     
-    _textField = [[UITextField alloc] initWithFrame:CGRectMake(12, 50+31, bgView.frame.size.width-12,50)];
-    _textField.placeholder = @"请输入充值数量(1元=1蜕变豆)";
+    
+    _zfbTextField = [[UITextField alloc] initWithFrame:CGRectMake(12,amountLabel.frame.origin.y+amountLabel.frame.size.height, bgView.frame.size.width-12,50)];
+    _zfbTextField.placeholder = @"请输入支付宝账号";
+    _zfbTextField.keyboardType = UIKeyboardTypeNumberPad;
+    _zfbTextField.backgroundColor = [UIColor clearColor];
+    _zfbTextField.delegate = self;
+    [bgView addSubview:_zfbTextField];
+
+    
+    _textField = [[UITextField alloc] initWithFrame:CGRectMake(12,_zfbTextField.frame.origin.y+_zfbTextField.frame.size.height, bgView.frame.size.width-12,50)];
+    _textField.placeholder = @"请输入提现金额(1元=1蜕变豆)";
     _textField.keyboardType = UIKeyboardTypeNumberPad;
     _textField.backgroundColor = [UIColor clearColor];
     _textField.delegate = self;
@@ -91,7 +103,7 @@
     payTitle.textColor = HexRGB(0x323232);
     payTitle.font = [UIFont systemFontOfSize:18];
     [self.view addSubview:payTitle];
-
+    
     
     _payLabel = [[UILabel alloc] initWithFrame:CGRectMake(payTitle.frame.origin.x+payTitle.frame.size.width+5, payTitle.frame.origin.y,160, 20)];
     _payLabel.backgroundColor = [UIColor clearColor];
@@ -99,11 +111,11 @@
     _payLabel.textColor = HexRGB(0x1c8cc6);
     _payLabel.font = [UIFont systemFontOfSize:18];
     [self.view addSubview:_payLabel];
-
+    
     
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.frame = CGRectMake(bgView.frame.origin.x, _payLabel.frame.origin.y+_payLabel.frame.size.height+20, bgView.frame.size.width, 40);
-    [btn setTitle:@"支付宝支付" forState:UIControlStateNormal];
+    [btn setTitle:@"支付宝提现" forState:UIControlStateNormal];
     [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [btn addTarget:self action:@selector(btnDown) forControlEvents:UIControlEventTouchUpInside];
     [btn setBackgroundImage:[UIImage imageNamed:@"sure"] forState:UIControlStateNormal];
@@ -112,11 +124,16 @@
 
 - (void)btnDown
 {
-    if (_textField.text.length==0) {
-        [RemindView showViewWithTitle:@"请输入购买数量" location:TOP];
+    if (_zfbTextField.text.length==0) {
+        [RemindView showViewWithTitle:@"请输入支付宝账号" location:TOP];
         return ;
     }
-    //支付操作
+    if (_textField.text.length==0) {
+        [RemindView showViewWithTitle:@"请输入提现金额" location:TOP];
+        return ;
+    }
+    //提现请求
+    
 }
 
 - (void)textFieldChange
@@ -145,6 +162,7 @@
 {
     [self.view endEditing:YES];
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

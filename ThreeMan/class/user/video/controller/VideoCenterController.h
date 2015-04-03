@@ -11,8 +11,10 @@
 #import "FavoriteViewController.h"
 #import "RecordController.h"
 #import "SUNSlideSwitchView.h"
+#import "TYPopoverView.h"
 
-@interface VideoCenterController : RootViewController<SUNSlideSwitchViewDelegate>
+
+@interface VideoCenterController : RootViewController<SUNSlideSwitchViewDelegate,TYPopoverViewDelegate>
 @property(nonatomic,strong)DownloadListController *listVC;
 @property(nonatomic,strong)FavoriteViewController *favoriteVC;
 @property(nonatomic,strong)RecordController *recordVC;

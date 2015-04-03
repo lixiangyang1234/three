@@ -61,10 +61,12 @@
 {
     NSArray *arr = self.navigationController.viewControllers;
     for (UIViewController *subView in arr) {
-        [subView isKindOfClass:[SearchViewController class]];
-        [self.navigationController popToViewController:subView animated:NO];
-        return;
+        if ([subView isKindOfClass:[SearchViewController class]]) {
+            [self.navigationController popToViewController:subView animated:NO];
+            return;
+        }
     }
+    
     SearchViewController *search = [[SearchViewController alloc] init];
     [self.navigationController pushViewController:search animated:YES];
 }
