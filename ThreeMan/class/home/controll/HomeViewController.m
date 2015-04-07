@@ -52,7 +52,7 @@ static NSString * const reuseIdentifier = @"Cell";
     self.backScrollView =[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, kWidth, kHeight-104)];
     self.backScrollView.backgroundColor =[UIColor whiteColor];
     [self.view addSubview:self.backScrollView];
-    self.backScrollView.contentSize =CGSizeMake(kWidth, 592+EIGHTH);
+    self.backScrollView.contentSize =CGSizeMake(kWidth, 590+EIGHTH);
     self.backScrollView.bounces=NO;
     self.backScrollView.showsHorizontalScrollIndicator =NO;
     self.backScrollView.showsVerticalScrollIndicator=NO;
@@ -164,24 +164,33 @@ static NSString * const reuseIdentifier = @"Cell";
         
     }
     
-    UIView *needBackView =[[UIView alloc]initWithFrame:CGRectMake(0, needHeight+40-1, kWidth, NEEDH)];
+    UIView *needBackView =[[UIView alloc]initWithFrame:CGRectMake(0, needHeight+40-1, kWidth, NEEDH+2)];
     [self.backScrollView addSubview:needBackView];
     needBackView.backgroundColor =HexRGB(0xeaebec);
     
-    NSArray *needTitleArray =@[@"九大项",@"三大委员会",@"客户管理",@"外勤管理",@"内勤管理",@"营销活动"];
+    NSArray *needTitleArray =@[@"九大项",@" 三大委员会",@"客户管理",@"外勤管理",@"内勤管理",@"营销活动 "];
     for (int i=0; i<6; i++) {
         UIButton* needBtn =[UIButton buttonWithType:UIButtonTypeCustom];
         [self.backScrollView addSubview:needBtn];
-        [needBtn setImage:[UIImage imageNamed:@"nav_return_pre"] forState:UIControlStateNormal];
+        [needBtn .titleLabel setFont:[UIFont systemFontOfSize:PxFont(18)]];
+
+        [needBtn setImage:[UIImage imageNamed:[NSString stringWithFormat:@"need_img%d",i]] forState:UIControlStateNormal];
         [needBtn setTitle:needTitleArray[i] forState:UIControlStateNormal];
-        [needBtn setTitleColor:HexRGB(0x808080) forState:UIControlStateNormal];
+        [needBtn setTitleColor:HexRGB(0x404040) forState:UIControlStateNormal];
         needBtn.backgroundColor =[UIColor whiteColor];
         if (i==0) {
             needBtn.frame =CGRectMake(0, needHeight+40, kWidth-150, 90);
+            [needBtn .titleLabel setFont:[UIFont systemFontOfSize:PxFont(25)]];
+            needBtn.titleEdgeInsets =UIEdgeInsetsMake(0, 0, 30, 0);
+
+            
         }else if (i==1){
             needBtn.frame =CGRectMake(kWidth-149, needHeight+40, 150, 44);
         }else if (i==2){
             needBtn.frame =CGRectMake(kWidth-149, needHeight+40+45, 150, 45);
+            needBtn.titleEdgeInsets =UIEdgeInsetsMake(0, -80, 0, 0);
+            needBtn.imageEdgeInsets =UIEdgeInsetsMake(0, 80, 0, 0);
+
             
         }else{
             needBtn.frame =CGRectMake(i%3*(kWidth/3+1), needHeight+40+91, kWidth/3, 45);
@@ -197,23 +206,38 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 //4、添加行业
 -(void)addUIBusiness{
-    UIView *needBackView =[[UIView alloc]initWithFrame:CGRectMake(0, NEEDH+BANNER+EIGHTH+127, kWidth, BUSINESS)];
+    
+     NSArray *businessArray =@[@"家居建材",@"生产制造",@"批发零件",@"生活服务",@"地产贸易",@"其它行业"];
+    NSArray *subTitleArray =@[@"高品质",@"产业链",@"快消品",@"快捷性",@"房地产",@"大数据"];
+    
+    UIView *needBackView =[[UIView alloc]initWithFrame:CGRectMake(0, NEEDH+BANNER+EIGHTH+124, kWidth, BUSINESS)];
     [self.backScrollView addSubview:needBackView];
     needBackView.backgroundColor =HexRGB(0xeaebec);
     //    needBackView.backgroundColor =[UIColor redColor];
     for (int i=0; i<6; i++) {
         UIButton* businessBtn =[UIButton buttonWithType:UIButtonTypeCustom];
-        businessBtn.frame =CGRectMake(0+i/3*(kWidth/2+1),NEEDH+ BANNER+EIGHTH+128+i%3*61, (kWidth)/2, 60 );
+        businessBtn.frame =CGRectMake(i%2*(kWidth/2+1),NEEDH+ BANNER+EIGHTH+125+i/2*61, (kWidth)/2, 60 );
         [self.backScrollView addSubview:businessBtn];
-        [businessBtn setImage:[UIImage imageNamed:@"nav_return_pre"] forState:UIControlStateNormal];
-        [businessBtn setTitle:@"课程推荐" forState:UIControlStateNormal];
-        //            [businessBtn setTitleColor:HexRGB(0x808080) forState:UIControlStateNormal];
+        businessBtn.titleEdgeInsets =UIEdgeInsetsMake(-10, -(kWidth)/3, 0, 0);
+        businessBtn.imageEdgeInsets =UIEdgeInsetsMake(0, (kWidth)/4, 0, 0);
+
+        [businessBtn setImage:[UIImage imageNamed:[NSString stringWithFormat:@"business_img%d",i]] forState:UIControlStateNormal];
+        [businessBtn setTitle:businessArray[i] forState:UIControlStateNormal];
+        [businessBtn setTitleColor:HexRGB(0x404040) forState:UIControlStateNormal];
+        [businessBtn .titleLabel setFont:[UIFont systemFontOfSize:PxFont(20)]];
         businessBtn.backgroundColor =[UIColor whiteColor];
         
         [businessBtn addTarget:self action:@selector(businessBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         
         businessBtn.tag =i+10;
         
+        UILabel *subTitleLabel =[[UILabel alloc]initWithFrame:CGRectMake(45+i%2*(kWidth/2), NEEDH+BANNER+EIGHTH+138+i/2*60, kWidth/2, 60)];
+        [self.backScrollView addSubview:subTitleLabel];
+        subTitleLabel.text =subTitleArray[i];
+        [subTitleLabel setTextColor:HexRGB(0x9a9a9a)];
+        subTitleLabel.font =[UIFont systemFontOfSize:PxFont(16)];
+        subTitleLabel.backgroundColor =[UIColor clearColor];
+
     }
     
 }
