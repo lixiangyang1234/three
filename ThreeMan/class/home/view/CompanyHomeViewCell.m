@@ -21,7 +21,7 @@
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self =[super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        UIView *backCell =[[UIView alloc]initWithFrame:CGRectMake(YYBorderX, YYBorderX, kWidth-YYBorderX*2, 80)];
+        UIView *backCell =[[UIView alloc]initWithFrame:CGRectMake(YYBorderX, 0, kWidth-YYBorderX*2, 80)];
         [self addSubview:backCell];
         backCell.backgroundColor =[UIColor whiteColor];
         

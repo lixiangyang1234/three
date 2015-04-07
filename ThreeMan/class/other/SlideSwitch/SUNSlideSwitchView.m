@@ -204,7 +204,7 @@ static const CGFloat kShowdowFirstX =0;
 
         }
          // button.backgroundColor =[UIColor greenColor];
-        button.alpha =0.7;
+        button.alpha =1.0;
         [button setTitle:vc.title forState:UIControlStateNormal];
         button.titleLabel.font = [UIFont systemFontOfSize:kFontSizeOfTabButton];
         

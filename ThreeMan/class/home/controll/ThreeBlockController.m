@@ -23,7 +23,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self.view setBackgroundColor:HexRGB(0xffffff)];
     //    [self addUINavView];
     [self addTableView];
     [self addUIChooseBtn];//添加筛选按钮
@@ -76,7 +76,7 @@
     _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 44, kWidth, kHeight-64-44) style:UITableViewStylePlain];
     _tableView.delegate =self;
     _tableView.dataSource =self;
-    _tableView.backgroundColor =[UIColor whiteColor];
+    [_tableView setBackgroundColor:HexRGB(0xe0e0e0)];
     
     _tableView.showsHorizontalScrollIndicator = NO;
     _tableView.showsVerticalScrollIndicator = NO;
@@ -129,7 +129,7 @@
     NeedViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndexfider];
     if (!cell) {
         cell =[[NeedViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndexfider];
-        cell.backgroundColor =[UIColor lightGrayColor];
+        [cell setBackgroundColor:HexRGB(0xe0e0e0)];
         cell.selectionStyle =UITableViewCellSelectionStyleNone;
     }
     

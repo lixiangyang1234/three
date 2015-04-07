@@ -8,6 +8,10 @@
 
 #import "CourseDetailController.h"
 #import "CompanyHomeControll.h"
+#import "CourseRecommendViewCell.h"
+#import "CourseAnswerViewCell.h"
+
+
 #define BANNERH         167   //banner高度
 #define YYBORDERWH        8  //外边界
 #define borderw            5 //内边界
@@ -95,6 +99,7 @@
         [companyBtn setTitle:companyArr[p] forState:UIControlStateNormal];
         
         companyBtn.tag =20+p;
+        
         if (companyBtn.tag ==20)
         {
             companyBtn.selected = YES;
@@ -127,13 +132,13 @@
     categoryScrollView.tag = 9999;
     categoryScrollView.userInteractionEnabled = YES;
     categoryScrollView.backgroundColor =HexRGB(0xffffff);
-    categoryScrollView.backgroundColor =[UIColor redColor];
+    categoryScrollView.backgroundColor =[UIColor clearColor];
     
     categoryScrollView.delegate = self;
     [self.backScrollView addSubview:categoryScrollView];
     [self addDetailView];
-    [self addAnswerTableview];
-    [self addRecommendTableview];
+//    [self addAnswerTableview];
+//    [self addRecommendTableview];
 }
 #pragma mark----详情
 -(void)addDetailView{
@@ -220,12 +225,14 @@
 #pragma mark 推荐
 -(void)addRecommendTableview
 {
-   UITableView *recommendTableView =[[UITableView alloc]initWithFrame:CGRectMake(kWidth-YYBORDERWH*2, 0, kWidth,categoryScrollView.frame.size.height ) style:UITableViewStylePlain];
+   UITableView *recommendTableView =[[UITableView alloc]initWithFrame:CGRectMake(kWidth-YYBORDERWH*2, 0, kWidth,categoryScrollView.frame.size.height-8 ) style:UITableViewStylePlain];
     recommendTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [categoryScrollView addSubview:recommendTableView];
-    recommendTableView.backgroundColor =[UIColor yellowColor];
-//    recommendTableView.delegate =self;
-//    recommendTableView.dataSource = self;
+    recommendTableView.backgroundColor =[UIColor whiteColor];
+    recommendTableView.showsHorizontalScrollIndicator =NO;
+    recommendTableView.showsVerticalScrollIndicator= NO;
+    recommendTableView.delegate =self;
+    recommendTableView.dataSource = self;
 }
 
 
@@ -233,12 +240,14 @@
 #pragma mark 答疑
 -(void)addAnswerTableview
 {
-   UITableView * answerTableView =[[UITableView alloc]initWithFrame:CGRectMake(kWidth*2, 0, kWidth, categoryScrollView.frame.size.height) style:UITableViewStylePlain];
+   UITableView * answerTableView =[[UITableView alloc]initWithFrame:CGRectMake(kWidth*2, 0, kWidth, categoryScrollView.frame.size.height-8) style:UITableViewStylePlain];
     answerTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [categoryScrollView addSubview:answerTableView];
-    answerTableView.backgroundColor =[UIColor greenColor];
-//    answerTableView.delegate =self;
-//    answerTableView.dataSource = self;
+    answerTableView.backgroundColor =[UIColor whiteColor];
+    answerTableView.delegate =self;
+    answerTableView.dataSource = self;
+    answerTableView.showsHorizontalScrollIndicator =NO;
+    answerTableView.showsVerticalScrollIndicator= NO;
 }
 
 //添加分类
@@ -247,16 +256,20 @@
     _selectedBtn = sender;
     if (sender.tag == 20)
     {
+        [self addDetailView];
 //        _footer.scrollView = _allTableView;
         [categoryScrollView setContentOffset:CGPointMake(0, 0) animated:YES];
     }
     else if(sender.tag ==21)
     {
+        [self addRecommendTableview];
 //        _footer.scrollView = recommendTableView;
         [categoryScrollView setContentOffset:CGPointMake(kWidth, 0) animated:YES];
     }
     else if(sender.tag ==22)
     {
+        [self addAnswerTableview];
+
 //        _footer.scrollView = answerTableView;
         [categoryScrollView setContentOffset:CGPointMake(kWidth*2, 0) animated:YES];
     }
@@ -270,7 +283,7 @@
     UIView *downloadView =[[UIView alloc]initWithFrame:CGRectMake(0, kHeight-64-50, kWidth, 50)];
     [self.view addSubview:downloadView];
     downloadView.backgroundColor =[UIColor whiteColor];
-    UIView *line =[[UIView alloc]initWithFrame:CGRectMake(0, 0, kWidth-YYBORDERWH*2, 1)];
+    UIView *line =[[UIView alloc]initWithFrame:CGRectMake(0, 0, kWidth, 1)];
     [downloadView addSubview:line];
     line.backgroundColor =HexRGB(0xd1d1d1);
     for (int i=0; i<3; i++) {
@@ -301,6 +314,64 @@
     }
 
 }
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 5;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"%d",_selectedBtn.tag);
+    if (_selectedBtn.tag ==21) {
+        static NSString *cellIndexfider =@"RecommendCell";
+        
+        CourseRecommendViewCell *RecommandCell = [tableView dequeueReusableCellWithIdentifier:cellIndexfider];
+        if (!RecommandCell) {
+            RecommandCell =[[CourseRecommendViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndexfider];
+            [RecommandCell setBackgroundColor:HexRGB(0xe0e0e0)];
+            RecommandCell.selectionStyle =UITableViewCellSelectionStyleNone;
+        }
+        
+        
+        return RecommandCell;
+
+    }else if (_selectedBtn.tag ==22){
+        static NSString *cellIndexfider =@"AnswerCell";
+        
+        CourseAnswerViewCell *answerCell = [tableView dequeueReusableCellWithIdentifier:cellIndexfider];
+        if (!answerCell) {
+            answerCell =[[CourseAnswerViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndexfider];
+            [answerCell setBackgroundColor:HexRGB(0xe0e0e0)];
+            answerCell.selectionStyle =UITableViewCellSelectionStyleNone;
+        }
+        
+        
+        return answerCell;
+
+    }
+    return nil;
+    
+    }
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    CompanyHomeControll *companyHomeVC=[[CompanyHomeControll alloc]init];
+    [self.navigationController pushViewController:companyHomeVC animated:YES];
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (_selectedBtn.tag ==21) {
+         return 118;
+    }else if(_selectedBtn.tag ==22){
+        return 128;
+    }
+    return 118;
+}
+
 #pragma mark  ------scrollview_delegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
@@ -340,6 +411,9 @@
                     if (btn.tag ==21) {
                         _selectedBtn=btn;
                         _selectedBtn.selected=YES;
+                        [self addRecommendTableview];
+
+                        
                         
                     }else{
                         btn.selected = NO;
@@ -349,6 +423,7 @@
             }
         }
         else if(scrollView.contentOffset.x==kWidth*2){
+           
 //            _footer.scrollView = answerTableView;
             for (UIView *subView in categoryView.subviews) {
                 if ([subView isKindOfClass:[UIButton class]]) {
@@ -356,6 +431,7 @@
                     if (btn.tag ==22) {
                         _selectedBtn=btn;
                         _selectedBtn.selected=YES;
+                         [self addAnswerTableview];
                     }else{
                         btn.selected = NO;
                     }
