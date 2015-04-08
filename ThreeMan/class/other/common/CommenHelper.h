@@ -13,5 +13,7 @@
 
 + (double)avaibleMemory;
 
++ (double)totalMemory;
+
 
 @end

@@ -23,7 +23,7 @@
 {
     UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth,44)];
     titleView.backgroundColor = [UIColor clearColor];
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(-15, 0, 150, 44)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(-10, 0, 150, 44)];
     label.backgroundColor = [UIColor clearColor];
     label.textColor = HexRGB(0xffffff);
     label.text = leftTitle;

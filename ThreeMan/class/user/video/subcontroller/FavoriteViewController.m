@@ -10,9 +10,11 @@
 #import "FavoriteCell.h"
 #import "FavoriteItem.h"
 #import "EditView.h"
+#import "CourseDetailController.h"
 
 @interface FavoriteViewController ()<EditViewDelegate>
 {
+    BOOL isEditting;
     EditView *editView;
 }
 @end
@@ -60,6 +62,7 @@
 
 - (void)edit:(BOOL)editting
 {
+    isEditting = editting;
     [_tableView setEditing:editting animated:YES];
     //编辑状态
     if (editting) {
@@ -114,6 +117,14 @@
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return UITableViewCellEditingStyleDelete|UITableViewCellEditingStyleInsert;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (!isEditting) {
+        CourseDetailController *detail = [[CourseDetailController alloc] init];
+        [self.nav pushViewController:detail animated:YES];
+    }
 }
 
 #pragma mark editView_delegate

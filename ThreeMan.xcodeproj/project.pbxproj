@@ -55,6 +55,7 @@
 		04D0872A1AD4B7480070184A /* CommenHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D087291AD4B7480070184A /* CommenHelper.m */; };
 		04D0872D1AD4C0AD0070184A /* RecommendController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D0872C1AD4C0AC0070184A /* RecommendController.m */; };
 		04D087301AD4C0C00070184A /* QuestionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D0872F1AD4C0C00070184A /* QuestionController.m */; };
+		04D087331AD508230070184A /* MemorySizeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D087321AD508230070184A /* MemorySizeView.m */; };
 		55B714FA1ACCC0DD00959DF8 /* CourseViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B714F91ACCC0DD00959DF8 /* CourseViewCell.m */; };
 		55B714FD1ACCC2DA00959DF8 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B714FC1ACCC2DA00959DF8 /* BaseViewController.m */; };
 		55B828011AC53873008EAFA4 /* KDCycleBannerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B828001AC53873008EAFA4 /* KDCycleBannerView.m */; };
@@ -283,6 +284,8 @@
 		04D0872C1AD4C0AC0070184A /* RecommendController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommendController.m; sourceTree = "<group>"; };
 		04D0872E1AD4C0C00070184A /* QuestionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestionController.h; sourceTree = "<group>"; };
 		04D0872F1AD4C0C00070184A /* QuestionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuestionController.m; sourceTree = "<group>"; };
+		04D087311AD508230070184A /* MemorySizeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemorySizeView.h; sourceTree = "<group>"; };
+		04D087321AD508230070184A /* MemorySizeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemorySizeView.m; sourceTree = "<group>"; };
 		55B714F81ACCC0DD00959DF8 /* CourseViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseViewCell.h; sourceTree = "<group>"; };
 		55B714F91ACCC0DD00959DF8 /* CourseViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseViewCell.m; sourceTree = "<group>"; };
 		55B714FB1ACCC2DA00959DF8 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
@@ -658,6 +661,8 @@
 				04B9A2821AD3B55C009446D1 /* RegistView.m */,
 				04B9A2841AD3BFA5009446D1 /* ResetSecretView.h */,
 				04B9A2851AD3BFA5009446D1 /* ResetSecretView.m */,
+				04D087311AD508230070184A /* MemorySizeView.h */,
+				04D087321AD508230070184A /* MemorySizeView.m */,
 				04B9A2801AD3AF3E009446D1 /* KeyboardDelegate.h */,
 			);
 			path = view;
@@ -1597,6 +1602,7 @@
 				04B9A27F1AD3A063009446D1 /* ValidateView.m in Sources */,
 				55C24F8A1ACB8EE500BFEBED /* ThreeBlockController.m in Sources */,
 				04C64B6F1ACCEB3A00825EF0 /* DownloadListController.m in Sources */,
+				04D087331AD508230070184A /* MemorySizeView.m in Sources */,
 				04C64BA31ACD4F7500825EF0 /* PayViewController.m in Sources */,
 				04CC33361ACA8072008A85B5 /* PatternItem.m in Sources */,
 				55E373901AC2B54200C794DD /* AFHTTPRequestOperation.m in Sources */,

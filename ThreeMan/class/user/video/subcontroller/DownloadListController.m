@@ -14,10 +14,15 @@
 #import "CommenHelper.h"
 #import "RecommendController.h"
 #import "QuestionController.h"
+#import "CourseDetailController.h"
+#import "SectionHeadView.h"
+#import "MemorySizeView.h"
 
 @interface DownloadListController ()<EditViewDelegate>
 {
+    BOOL isEditting;
     EditView *editView;
+    MemorySizeView *memoryView;
 }
 
 
@@ -30,15 +35,14 @@
     // Do any additional setup after loading the view.
     _dataArray = [[NSMutableArray alloc] initWithCapacity:0];
     
-    [self loadTableView];
+    [self addView];
     
     [self loadData];
-
 }
 
-- (void)loadTableView
+- (void)addView
 {
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kHeight-64-40) style:UITableViewStyleGrouped];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kHeight-64-40-40) style:UITableViewStyleGrouped];
     _tableView.dataSource = self;
     _tableView.delegate = self;
     _tableView.backgroundColor = HexRGB(0xe8e8e8);
@@ -54,7 +58,10 @@
     editView.frame = CGRectMake(0,self.view.frame.size.height,editView.frame.size.width, editView.frame.size.height);
     [self.view addSubview:editView];
     
-    NSLog(@"%f",[CommenHelper avaibleMemory]);
+    memoryView = [[MemorySizeView alloc] init];
+    NSLog(@"%f",memoryView.frame.size.height);
+    memoryView.frame = CGRectMake(0,_tableView.frame.size.height,memoryView.frame.size.width,memoryView.frame.size.height);
+    [self.view addSubview:memoryView];
 }
 
 - (void)loadData
@@ -82,6 +89,7 @@
 
 - (void)edit:(BOOL)editting
 {
+    isEditting = editting;
     [_tableView setEditing:editting animated:YES];
     //编辑状态
     if (editting) {
@@ -147,19 +155,19 @@
     return UITableViewCellEditingStyleDelete|UITableViewCellEditingStyleInsert;
 }
 
-//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-//{
-//    if (section == 0) {
-//        SectionHeadView *headView = [[SectionHeadView alloc] initWithFrame:CGRectMake(0, 0,kWidth,36)];
-//        [headView setImgView:[UIImage imageNamed:@"video_search"] title:@"昨天"];
-//        return headView;
-//    }else{
-//        SectionHeadView *headView = [[SectionHeadView alloc] initWithFrame:CGRectMake(0, 0,kWidth,36)];
-//        [headView setImgView:[UIImage imageNamed:@"video_search"] title:@"更早"];
-//        return headView;
-//    }
-//    return nil;
-//}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if (section == 0) {
+        SectionHeadView *headView = [[SectionHeadView alloc] initWithFrame:CGRectMake(0, 0,kWidth,36)];
+        [headView setImgView:[UIImage imageNamed:@"finish"] title:@"完成"];
+        return headView;
+    }else{
+        SectionHeadView *headView = [[SectionHeadView alloc] initWithFrame:CGRectMake(0, 0,kWidth,36)];
+        [headView setImgView:[UIImage imageNamed:@"unfinish"] title:@"未完成"];
+        return headView;
+    }
+    return nil;
+}
 
 #pragma mark editView_delegate
 - (void)btnClicked:(UIButton *)btn view:(EditView *)view
@@ -223,6 +231,15 @@
         //        [_tableView deleteRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationNone];
     }
 }
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (!isEditting) {
+        CourseDetailController *detail = [[CourseDetailController alloc] init];
+        [self.nav pushViewController:detail animated:YES];
+    }
+}
+
 
 - (void)deleteSections:(NSArray *)sections rows:(NSArray *)rows
 {

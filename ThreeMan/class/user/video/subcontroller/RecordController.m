@@ -11,9 +11,11 @@
 #import "FavoriteItem.h"
 #import "FavoriteCell.h"
 #import "SectionHeadView.h"
+#import "CourseDetailController.h"
 
 @interface RecordController ()<EditViewDelegate>
 {
+    BOOL isEditting;
     EditView *editView;
 }
 @end
@@ -69,6 +71,7 @@
 
 - (void)edit:(BOOL)editting
 {
+    isEditting = editting;
     [_tableView setEditing:editting animated:YES];
     //编辑状态
     if (editting) {
@@ -134,15 +137,24 @@
 {
     if (section == 0) {
         SectionHeadView *headView = [[SectionHeadView alloc] initWithFrame:CGRectMake(0, 0,kWidth,36)];
-        [headView setImgView:[UIImage imageNamed:@"video_search"] title:@"昨天"];
+        [headView setImgView:[UIImage imageNamed:@"yesterday"] title:@"今天"];
         return headView;
     }else{
         SectionHeadView *headView = [[SectionHeadView alloc] initWithFrame:CGRectMake(0, 0,kWidth,36)];
-        [headView setImgView:[UIImage imageNamed:@"video_search"] title:@"更早"];
+        [headView setImgView:[UIImage imageNamed:@"earlier"] title:@"更早"];
         return headView;
     }
     return nil;
 }
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (!isEditting) {
+        CourseDetailController *detail = [[CourseDetailController alloc] init];
+        [self.nav pushViewController:detail animated:YES];
+    }
+}
+
 
 #pragma mark editView_delegate
 - (void)btnClicked:(UIButton *)btn view:(EditView *)view
