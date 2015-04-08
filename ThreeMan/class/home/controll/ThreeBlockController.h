@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface ThreeBlockController : UIViewController
-
+@property(nonatomic,strong)UIButton *selectedIntem;
 @end

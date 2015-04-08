@@ -252,7 +252,7 @@
 
 //添加分类
 -(void)categoryBtnClick:(UIButton *)sender{
-    NSLog(@"dddd;;");
+        NSLog(@"dddd;;");
     _selectedBtn = sender;
     if (sender.tag == 20)
     {
@@ -301,6 +301,7 @@
         }if (i==1) {
             categoryBtn.frame =CGRectMake(83, 9, 160, 32) ;
             [categoryBtn setBackgroundImage:[UIImage imageNamed:@"buy_img"] forState:UIControlStateNormal];
+        
             [categoryBtn setTitle:@"购买课程" forState:UIControlStateNormal];
             [categoryBtn setTitleColor:HexRGB(0xffffff) forState:UIControlStateNormal];
 

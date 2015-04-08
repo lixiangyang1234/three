@@ -32,7 +32,8 @@
     return self;
 }
 
--(id)initWithPoint:(CGPoint)point titles:(NSArray *)titles categoryTitles:(NSArray *)category{
+-(id)initWithPoint:(CGPoint)point titles:(NSArray *)titles categoryTitles:(NSArray *)category
+{
     self = [super init];
     if (self)
     {
@@ -156,34 +157,32 @@
     viewLine.frame=CGRectMake(0, 20, kHeight, kHeight);
     [self addSubview:viewLine];
     viewLine.backgroundColor =HexRGB(0xeaebec);
-    viewLine.backgroundColor =[UIColor whiteColor];
-    viewLine.alpha =.4;
-
-//    CGRect rect = self.frame;
-//    rect.origin.x = SPACE;
-//    rect.origin.y = kArrowHeight + SPACE;
-//    rect.size.width -= SPACE * 2;
-//    rect.size.height -= (SPACE - kArrowHeight);
+    viewLine.backgroundColor =[UIColor blackColor];
+    viewLine.alpha =.6;
     
     for (int i=0; i<4; i++) {
         
         self.titleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         self.titleBtn.frame=CGRectMake(0, 54+i%4*(44)-43, kWidth, 44);
+        
+        [self.titleBtn setTitleColor:HexRGB(0x808080) forState:UIControlStateNormal];
+        self.selectedIndex =self.titleBtn;
+
+//        self.titleBtn.selected =YES;
+        [self.titleBtn setTitle:[self.titleArray objectAtIndex:i] forState:UIControlStateNormal];
+        [self.titleBtn setBackgroundColor:[UIColor whiteColor]];
+        [self addSubview:self.titleBtn];
+        self.titleBtn.tag =100+i;
+        self.titleBtn.contentHorizontalAlignment =UIControlContentHorizontalAlignmentLeft;
         if (i==0) {
             UIImageView *jiaoLine =[[UIImageView alloc]initWithFrame:CGRectMake(-10, -8, kWidth+10, 20)];
             [self.titleBtn addSubview:jiaoLine];
             jiaoLine.image =[UIImage imageNamed:@"jiaoLine"];
             jiaoLine.backgroundColor =[UIColor whiteColor];
-            
-//            self.titleBtn.selected=YES;
+            [self.titleBtn setTitleColor:HexRGB(0x178ac5) forState:UIControlStateNormal];
+
             self.titleBtnSelected =self.titleBtn;
         }
-        [self.titleBtn setTitle:[self.titleArray objectAtIndex:i] forState:UIControlStateNormal];
-        [self.titleBtn setBackgroundColor:[UIColor whiteColor]];
-        [self.titleBtn setTitleColor:HexRGB(0x808080) forState:UIControlStateNormal];
-        [self addSubview:self.titleBtn];
-        self.titleBtn.tag =100+i;
-        self.titleBtn.contentHorizontalAlignment =UIControlContentHorizontalAlignmentLeft;
         if (i==1) {
             self.titleBtn.frame=CGRectMake(0, 54+i%5*(44)-43, kWidth, 44);
             [self.titleBtn addTarget:self action:@selector(categoryBtnClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -194,7 +193,6 @@
             [self.titleBtn addTarget:self action:@selector(titleBtnClick:) forControlEvents:UIControlEventTouchUpInside];
 
         }
-        [self.titleBtn setTitleColor:HexRGB(0x178ac5) forState:UIControlStateSelected];
         
         UIView *viewLine =[[UIView alloc]init];
         viewLine.frame=CGRectMake(0, 43, kWidth, 1);
@@ -206,6 +204,7 @@
        return _titleBtn;
 }
 -(void)categoryBtnClick:(UIButton *)btn{
+    [btn setTitleColor:HexRGB(0x178ac5) forState:UIControlStateNormal];
     btn.selected=YES;
     for (int i=0; i<7; i++) {
         
@@ -242,17 +241,26 @@
 }
 -(void)titleBtnClick:(UIButton *)index{
     
-    if (index!=self.titleBtnSelected) {
-        
-        self.titleBtnSelected.selected =NO;
-        index.selected =YES;
-        self.titleBtnSelected=index;
-    }
+    index.selected = YES;
+//    NSLog(@"%d----%d",self.titleBtnSelected.tag,self.titleBtn.tag);
+//    self.selectedIndex =index;
+//    if (self.titleBtnSelected.tag!=index.tag) {
+//        
+//        [self.titleBtn setTitleColor:HexRGB(0x808080) forState:UIControlStateNormal];
+//        [index setTitleColor:HexRGB(0x178ac5) forState:UIControlStateNormal];
+//        self.titleBtnSelected.tag =index.tag;
+//        
+//    }
+    
     if (self.selectRowAtIndex)
     {
+        
+        
         self.selectRowAtIndex(index.tag);
     }
-    [self dismiss:YES];}
+    [self dismiss:YES];
+    
+}
 #pragma mark - UITableView DataSource
 
 
@@ -261,43 +269,10 @@
 {
     [self.borderColor set];                                     //设置线条颜色
     
-    CGRect frame = CGRectMake(0, 10, self.bounds.size.width, self.bounds.size.height - kArrowHeight);
-    
-    float xMin = CGRectGetMinX(frame);
-    float yMin = CGRectGetMinY(frame);
-    
-    float xMax = CGRectGetMaxX(frame);
-    float yMax = CGRectGetMaxY(frame);
-    
-    CGPoint arrowPoint = [self convertPoint:self.showPoint fromView:_handerView];
-    
-    UIBezierPath *popoverPath = [UIBezierPath bezierPath];
-//        [popoverPath moveToPoint:CGPointMake(xMin, yMin)];          //左上角
-    
-//    *******************向上的箭头*********************
-        [popoverPath addLineToPoint:CGPointMake(arrowPoint.x - kArrowCurvature, yMin)];//left side
-    
-        [popoverPath addLineToPoint:CGPointMake(arrowPoint.x, arrowPoint.y)];
-    
-        [popoverPath addLineToPoint:CGPointMake(arrowPoint.x + kArrowCurvature, yMin)];
-    
-    
-    /********************向上的箭头**********************/
-    
-    
-    [popoverPath addLineToPoint:CGPointMake(xMax, yMin)];       //右上角
-    
-    [popoverPath addLineToPoint:CGPointMake(xMax, yMax)];       //右下角
-    
-    [popoverPath addLineToPoint:CGPointMake(xMin, yMax)];       //左下角
     
     //填充颜色
-    [[UIColor cyanColor] setFill];
+    [[UIColor whiteColor] setFill];
     
-    [popoverPath fill];
-    
-    [popoverPath closePath];
-    [popoverPath stroke];
 }
 -(CGRect)getViewFrameCategory
 {

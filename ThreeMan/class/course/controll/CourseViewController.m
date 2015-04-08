@@ -21,7 +21,7 @@
     [self addTableView];
 }
 -(void)addTableView{
-    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 6, kWidth, kHeight-64-6) style:UITableViewStylePlain];
+    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 6, kWidth, kHeight-64-6-40) style:UITableViewStylePlain];
     _tableView.delegate =self;
     _tableView.dataSource =self;
     [_tableView setBackgroundColor:HexRGB(0xe0e0e0)];

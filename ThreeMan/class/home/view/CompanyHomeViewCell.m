@@ -25,18 +25,18 @@
         [self addSubview:backCell];
         backCell.backgroundColor =[UIColor whiteColor];
         
-        companyHomeImage =[[UIImageView alloc]initWithFrame:CGRectMake(YYBorderX, YYBorderY, 80, 60)];
+        companyHomeImage =[[UIImageView alloc]initWithFrame:CGRectMake(YYBorderX, YYBorderY, 90, 60)];
         [backCell addSubview:companyHomeImage];
         companyHomeImage.backgroundColor =[UIColor redColor];
         companyHomeImage.userInteractionEnabled =YES;
         
-        companyHomeSmailImage =[[UIImageView alloc]initWithFrame:CGRectMake(YYBorderX*2+80, YYBorderY, 30, 20)];
+        companyHomeSmailImage =[[UIImageView alloc]initWithFrame:CGRectMake(YYBorderX*2+90, YYBorderY, 30, 20)];
         [backCell addSubview:companyHomeSmailImage];
         companyHomeSmailImage.backgroundColor =[UIColor redColor];
         companyHomeSmailImage.userInteractionEnabled =YES;
         
         
-        companyHomeTitle =[[UILabel alloc]initWithFrame:CGRectMake(YYBorderX*2+80, YYBorderY, kWidth-YYBorderX*2-110, 50)];
+        companyHomeTitle =[[UILabel alloc]initWithFrame:CGRectMake(YYBorderX*2+90, YYBorderY, kWidth-YYBorderX*2-115, 50)];
         companyHomeTitle.backgroundColor =[UIColor clearColor];
         companyHomeTitle.text =@"首行缩进根据用户昵称自动调整 ";
         [backCell addSubview:companyHomeTitle];
@@ -47,23 +47,25 @@
         
         
         companyHomeTitle.numberOfLines =2;
-        companyHomeTitle.font =[UIFont systemFontOfSize:20];
+        companyHomeTitle.font =[UIFont systemFontOfSize:PxFont(22)];
         
         downLoadBtn =[UIButton buttonWithType:UIButtonTypeCustom];
         [backCell addSubview:downLoadBtn];
-        downLoadBtn.frame =CGRectMake(YYBorderX*2+80, YYBorderY*2+40, 100, 20);
+        downLoadBtn.frame =CGRectMake(YYBorderX*2+90, YYBorderY*2+35, 100, 20);
         [downLoadBtn setTitle:@"230" forState:UIControlStateNormal];
+        downLoadBtn.contentHorizontalAlignment =UIControlContentHorizontalAlignmentLeft;
         
-        [downLoadBtn setImage:[UIImage imageNamed:@"nav_return_pre"] forState:UIControlStateNormal];
-        [downLoadBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+        [downLoadBtn setImage:[UIImage imageNamed:@"companyDownload_img"] forState:UIControlStateNormal];
+        [downLoadBtn setTitleColor:HexRGB(0xa8a8a8) forState:UIControlStateNormal];
         
         zanBtn =[UIButton buttonWithType:UIButtonTypeCustom];
         [backCell addSubview:zanBtn];
-        zanBtn.frame =CGRectMake(200, YYBorderY*2+40, 100, 20);
+        zanBtn.frame =CGRectMake(200, YYBorderY*2+35, 100, 20);
         [zanBtn setTitle:@"23" forState:UIControlStateNormal];
-        
+        zanBtn.contentHorizontalAlignment =UIControlContentHorizontalAlignmentLeft;
+
         [zanBtn setImage:[UIImage imageNamed:@"nav_return_pre"] forState:UIControlStateNormal];
-        [zanBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+        [zanBtn setTitleColor:HexRGB(0x1c8cc6) forState:UIControlStateNormal];
         
         
         

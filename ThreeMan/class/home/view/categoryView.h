@@ -20,10 +20,10 @@
 @property (nonatomic, strong) UIButton      *categoryTitleBtnSelected;
 
 @property (nonatomic, copy) UIColor         *borderColor;
-
+@property(nonatomic,strong)UIButton *selectedIndex;
 @property (nonatomic, copy) void (^selectRowAtIndex)(NSInteger index);
 
--(id)initWithPoint:(CGPoint)point titles:(NSArray *)titles categoryTitles:(NSArray *)category;
+-(id)initWithPoint:(CGPoint)point titles:(NSArray *)titles categoryTitles:(NSArray *)category  ;
 -(void)show;
 -(void)dismiss;
 -(void)dismiss:(BOOL)animated;

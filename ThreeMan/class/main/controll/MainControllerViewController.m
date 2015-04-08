@@ -63,30 +63,33 @@
     
     //    添加左边
     UIButton * logoBtn =[UIButton buttonWithType:UIButtonTypeCustom];
-    logoBtn.frame =CGRectMake(0, 8, 30, 30);
+    logoBtn.frame =CGRectMake(0, 0, 80, 44);
     logoBtn. titleLabel.font =[UIFont systemFontOfSize:PxFont(15)];
-    [logoBtn setImage:[UIImage imageNamed:@"img.png"] forState:UIControlStateNormal];
+    [logoBtn setImage:[UIImage imageNamed:@"logo"] forState:UIControlStateNormal];
     [backCollectView addSubview:logoBtn];
     
-    UIButton * titleItem =[UIButton buttonWithType:UIButtonTypeCustom];
-    titleItem.frame =CGRectMake(30, 8, 60, 30);
-    titleItem. titleLabel.font =[UIFont systemFontOfSize:PxFont(15)];
-    [titleItem setTitle:@"三身行" forState:UIControlStateNormal];
-    [titleItem setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    titleItem.titleLabel.font =[UIFont systemFontOfSize:PxFont(22)];
-    [backCollectView addSubview:titleItem];
+//    UIButton * titleItem =[UIButton buttonWithType:UIButtonTypeCustom];
+//    titleItem.frame =CGRectMake(75, 8, 60, 30);
+//    titleItem. titleLabel.font =[UIFont systemFontOfSize:PxFont(15)];
+//    [titleItem setTitle:@"三身行" forState:UIControlStateNormal];
+//    [titleItem setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//    titleItem.titleLabel.font =[UIFont systemFontOfSize:PxFont(22)];
+//    [backCollectView addSubview:titleItem];
     
     //    添加右边
     
     UIButton * searchItem =[UIButton buttonWithType:UIButtonTypeCustom];
-    searchItem.frame =CGRectMake(kWidth-50-40, 8, 30, 30);
-    [searchItem setImage:[UIImage imageNamed:@"nav_search_btn"] forState:UIControlStateNormal];
+    searchItem.frame =CGRectMake(kWidth-50-54, 0, 44, 44);
+    [searchItem setImage:[UIImage imageNamed:@"nav_search"] forState:UIControlStateNormal];
+    [searchItem setImage:[UIImage imageNamed:@"nav_search_rep"] forState:UIControlStateHighlighted];
+
     [searchItem addTarget:self action:@selector(search) forControlEvents:UIControlEventTouchUpInside];
     [backCollectView addSubview:searchItem];
     
     UIButton * menuItem =[UIButton buttonWithType:UIButtonTypeCustom];
-    menuItem.frame =CGRectMake(kWidth-50, 8, 30, 30);
-    [menuItem setImage:[UIImage imageNamed:@"img.png"] forState:UIControlStateNormal];
+    menuItem.frame =CGRectMake(kWidth-60, 0, 44, 44);
+    [menuItem setImage:[UIImage imageNamed:@"nav_more"] forState:UIControlStateNormal];
+    [menuItem setImage:[UIImage imageNamed:@"nav_more_rep"] forState:UIControlStateHighlighted];
     [menuItem addTarget:self action:@selector(navItemRight:) forControlEvents:UIControlEventTouchUpInside];
     [backCollectView addSubview:menuItem];
     
