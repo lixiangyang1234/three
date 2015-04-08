@@ -203,7 +203,7 @@
             [_dataArray addObjectsFromArray:mutableArr];
         }
         [_tableView reloadData];
-        [_tableView deleteRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationNone];
+//        [_tableView deleteRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationNone];
     }
 }
 

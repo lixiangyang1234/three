@@ -9,13 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface BaseViewController : UIViewController
-{
-    NSString *_leftTitle;
-}
-
-//@property (nonatomic,copy) NSString *leftTitle;
-
-- (void)setLeftTitle:(NSString *)leftTitle;
-
 
 @end

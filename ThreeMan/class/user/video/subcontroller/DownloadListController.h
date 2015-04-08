@@ -8,8 +8,11 @@
 
 #import "RootViewController.h"
 
-@interface DownloadListController : RootViewController
-
+@interface DownloadListController : RootViewController<UITableViewDataSource,UITableViewDelegate>
+{
+    NSMutableArray *_dataArray;
+    UITableView *_tableView;
+}
 
 - (void)edit:(BOOL)editting;
 

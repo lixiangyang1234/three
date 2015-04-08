@@ -6,9 +6,9 @@
 //  Copyright (c) 2015年 ___普马克___. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "LeftTitleController.h"
 
-@interface FeedBackController : BaseViewController<UITextViewDelegate>
+@interface FeedBackController : LeftTitleController<UITextViewDelegate>
 {
     UITextView *_textView;
     UIScrollView *_scrollView;

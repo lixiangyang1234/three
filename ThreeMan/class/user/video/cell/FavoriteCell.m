@@ -35,8 +35,9 @@
         
         
         CGFloat x = _imgView.frame.size.width+_imgView.frame.origin.x+13;
-        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(x,5,bgView.frame.size.width-x-10,50)];
+        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(x,5,bgView.frame.size.width-x-35,50)];
         _titleLabel.backgroundColor = [UIColor clearColor];
+        _titleLabel.font = [UIFont systemFontOfSize:14];
         _titleLabel.textColor = HexRGB(0x323232);
         _titleLabel.numberOfLines = 2;
         [bgView addSubview:_titleLabel];

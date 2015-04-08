@@ -10,9 +10,12 @@
 #import "SettingCell.h"
 #import "AboutUsController.h"
 #import "FeedBackController.h"
+#import "ResetSecretView.h"
 
-@interface SettingController ()
-
+@interface SettingController ()<ResetSecretViewDelegate,KeyboardDelegate>
+{
+    UIView *windownView;
+}
 @end
 
 @implementation SettingController
@@ -37,6 +40,10 @@
     
     [self loadData];
     [_tableView reloadData];
+    
+    windownView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kHeight)];
+    windownView.backgroundColor = [UIColor blackColor];
+    windownView.alpha = 0.4;
 }
 
 - (void)loadData
@@ -107,7 +114,16 @@
             //修改密码
             case 0:
             {
-                
+                ResetSecretView *resetView = [[ResetSecretView alloc] init];
+                resetView.center = CGPointMake(kWidth/2, kHeight+resetView.frame.size.height/2);
+                resetView.delegate = self;
+                resetView.keyboardDelegate = self;
+                UIWindow *window = [UIApplication sharedApplication].keyWindow;
+                [window addSubview:windownView];
+                [window addSubview:resetView];
+                [UIView animateWithDuration:0.3 animations:^{
+                    resetView.center = CGPointMake(kWidth/2, kHeight/2);
+                }];
             }
                 break;
             //意见反馈
@@ -156,6 +172,46 @@
 {
     NSLog(@"%d",control.selectedSegmentIndex);
 }
+
+#pragma mark keyboard_delegate
+- (void)keyboardShow:(UIView *)view frame:(CGRect)frame
+{
+    [UIView animateWithDuration:0.3 animations:^{
+        view.center = CGPointMake(kWidth/2, view.frame.size.height/2+20);
+    }];
+}
+
+- (void)keyboardHiden:(UIView *)view
+{
+    [UIView animateWithDuration:0.3 animations:^{
+        view.center = CGPointMake(kWidth/2, kHeight/2);
+    }];
+}
+
+#pragma mark resetView_delegate
+- (void)resetViewBtnClick:(UIButton *)btn view:(ResetSecretView *)view
+{
+    switch (btn.tag) {
+        case 1:
+        {
+            [windownView removeFromSuperview];
+            [UIView animateWithDuration:0.3 animations:^{
+                view.center = CGPointMake(kWidth/2, kHeight+view.frame.size.height/2);
+            } completion:^(BOOL finished) {
+                [view removeFromSuperview];
+            }];
+        }
+            break;
+        case 2:
+        {
+            
+        }
+            break;
+        default:
+            break;
+    }
+}
+
 
 
 - (void)didReceiveMemoryWarning {

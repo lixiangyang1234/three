@@ -13,9 +13,17 @@
 #import "SettingController.h"
 #import "AccountController.h"
 #import "MessageController.h"
+#import "LoginView.h"
+#import "FindPsWordView.h"
+#import "ValidateView.h"
+#import "KeyboardDelegate.h"
+#import "RegistView.h"
 
-@interface BaseViewController ()<TYPopoverViewDelegate>
 
+@interface BaseViewController ()<TYPopoverViewDelegate,LoginViewDelegate,FindPsWordViewDelegate,KeyboardDelegate,ValidateViewDelegate,RegistViewDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
+{
+    UIView *windowView;
+}
 @end
 
 @implementation BaseViewController
@@ -26,19 +34,12 @@
     self.view.backgroundColor = HexRGB(0xe8e8e8);
     [self loadNavItems];
     
-
+    windowView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,kWidth,kHeight)];
+    windowView.backgroundColor = [UIColor blackColor];
+    windowView.alpha = 0.4;
+    
 }
 
-- (void)setLeftTitle:(NSString *)leftTitle
-{
-    UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth,44)];
-    titleView.backgroundColor = [UIColor clearColor];
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(-15, 0, 150, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.text = leftTitle;
-    [titleView addSubview:label];
-    self.navigationItem.titleView = titleView;
-}
 
 - (void)loadNavItems
 {
@@ -89,17 +90,39 @@
     [popView show];
 }
 
+#pragma mark TYPopoverView_delegate
 - (void)TYPopoverViewTouch:(UIButton *)btn view:(TYPopoverView *)view
 {
     NSArray *array = self.navigationController.viewControllers;
     switch (btn.tag) {
         case -1:
         {
+            UIWindow *window = [UIApplication sharedApplication].keyWindow;
+            [window addSubview:windowView];
+            LoginView *loginView = [[LoginView alloc] init];
+            loginView.center = CGPointMake(kWidth/2, kHeight+loginView.frame.size.height/2);
+            loginView.delegate = self;
+            loginView.keyboardDelegate = self;
+            [window addSubview:loginView];
             
+            [UIView animateWithDuration:0.3 animations:^{
+                loginView.center = CGPointMake(kWidth/2, kHeight/2);
+            }];
         }
             break;
         case -2:
         {
+            UIWindow *window = [UIApplication sharedApplication].keyWindow;
+            [window addSubview:windowView];
+            RegistView *loginView = [[RegistView alloc] init];
+            loginView.center = CGPointMake(kWidth/2, kHeight+loginView.frame.size.height/2);
+            loginView.delegate = self;
+            loginView.keyboardDelegate = self;
+            [window addSubview:loginView];
+            
+            [UIView animateWithDuration:0.3 animations:^{
+                loginView.center = CGPointMake(kWidth/2, kHeight/2);
+            }];
             
         }
             break;
@@ -151,11 +174,200 @@
     }
 }
 
+- (void)imageViewClick:(TYPopoverView *)view
+{
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    picker.allowsEditing = YES;
+    picker.delegate = self;
+    [self presentViewController:picker animated:YES completion:nil];
+}
+
+
+#pragma mark LoginView_delegate
+- (void)loginViewBtnClick:(UIButton *)btn view:(LoginView *)view
+{
+    switch (btn.tag) {
+            //移除
+        case 1:
+        {
+            [windowView removeFromSuperview];
+            [UIView animateWithDuration:0.3 animations:^{
+                view.center = CGPointMake(kWidth/2, kHeight+view.frame.size.height/2);
+            } completion:^(BOOL finished) {
+                [view removeFromSuperview];
+            }];
+        }
+            break;
+            //登录
+        case 2:
+        {
+            
+        }
+            break;
+            //忘记密码
+        case 3:
+        {
+            FindPsWordView *findView = [[FindPsWordView alloc] init];
+            UIWindow *window = [UIApplication sharedApplication].keyWindow;
+            findView.center = CGPointMake(kWidth/2, kHeight+findView.frame.size.height/2);
+            findView.delegate = self;
+            findView.keyboardDelegate = self;
+            [window addSubview:findView];
+            [UIView animateWithDuration:0.3 animations:^{
+                view.center = CGPointMake(kWidth/2,-view.frame.size.height/2);
+                findView.center = CGPointMake(kWidth/2, kHeight/2);
+            } completion:^(BOOL finished) {
+                [view removeFromSuperview];
+            }];
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
+
+
+#pragma mark findView_delegate
+- (void)findViewBtnClick:(UIButton *)btn view:(FindPsWordView *)view
+{
+    switch (btn.tag) {
+            //移除
+        case 1:
+        {
+            [windowView removeFromSuperview];
+            [UIView animateWithDuration:0.3 animations:^{
+                view.center = CGPointMake(kWidth/2, kHeight+view.frame.size.height/2);
+            } completion:^(BOOL finished) {
+                [view removeFromSuperview];
+            }];
+        }
+            break;
+            //验证码验证
+        case 2:
+        {
+            ValidateView *validateView = [[ValidateView alloc] initWithTitle:@"1545454554"];
+            validateView.delegate = self;
+            validateView.keyboardDelegate = self;
+            UIWindow *window = [UIApplication sharedApplication].keyWindow;
+            validateView.center = CGPointMake(kWidth/2, kHeight+validateView.frame.size.height/2);
+            [window addSubview:validateView];
+            [UIView animateWithDuration:0.3 animations:^{
+                view.center = CGPointMake(kWidth/2,-view.frame.size.height/2);
+                validateView.center = CGPointMake(kWidth/2, kHeight/2);
+            } completion:^(BOOL finished) {
+                [view removeFromSuperview];
+            }];
+            
+        }
+            break;
+        default:
+            break;
+    }
+}
+
+#pragma mark validateView_delegate
+- (void)validateViewBtnClick:(UIButton *)btn view:(UIView *)view
+{
+    switch (btn.tag) {
+        case 1:
+        {
+            [windowView removeFromSuperview];
+            [UIView animateWithDuration:0.3 animations:^{
+                view.center = CGPointMake(kWidth/2, kHeight+view.frame.size.height/2);
+            } completion:^(BOOL finished) {
+                [view removeFromSuperview];
+            }];
+        }
+            break;
+        case 2:
+        {
+            
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
+
+#pragma mark registView_delegate
+- (void)registViewBtnClick:(UIButton *)btn view:(RegistView *)view
+{
+    switch (btn.tag) {
+        case 1:
+        {
+            [windowView removeFromSuperview];
+            [UIView animateWithDuration:0.3 animations:^{
+                view.center = CGPointMake(kWidth/2, kHeight+view.frame.size.height/2);
+            } completion:^(BOOL finished) {
+                [view removeFromSuperview];
+            }];
+        }
+            break;
+        case 2:
+        {
+            ValidateView *validateView = [[ValidateView alloc] initWithTitle:@"1545454554"];
+            validateView.delegate = self;
+            validateView.keyboardDelegate = self;
+            UIWindow *window = [UIApplication sharedApplication].keyWindow;
+            validateView.center = CGPointMake(kWidth/2, kHeight+validateView.frame.size.height/2);
+            [window addSubview:validateView];
+            [UIView animateWithDuration:0.3 animations:^{
+                view.center = CGPointMake(kWidth/2,-view.frame.size.height/2);
+                validateView.center = CGPointMake(kWidth/2, kHeight/2);
+            } completion:^(BOOL finished) {
+                [view removeFromSuperview];
+            }];
+        }
+            break;
+            //
+        case 3:
+        {
+            
+        }
+            break;
+        default:
+            break;
+    }
+}
+
+#pragma mark keyboard_delegate
+- (void)keyboardShow:(UIView *)view frame:(CGRect)frame
+{
+    [UIView animateWithDuration:0.3 animations:^{
+        view.center = CGPointMake(kWidth/2, view.frame.size.height/2+20);
+    }];
+}
+
+- (void)keyboardHiden:(UIView *)view
+{
+    [UIView animateWithDuration:0.3 animations:^{
+        view.center = CGPointMake(kWidth/2, kHeight/2);
+    }];
+}
+
+#pragma mark UIImagePickerControllerDelegate
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
+    UIImage *portraitImg = [info objectForKey:@"UIImagePickerControllerEditedImage"];
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
 
 /*
 #pragma mark - Navigation

@@ -6,9 +6,9 @@
 //  Copyright (c) 2015年 ___普马克___. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "BaseViewController.h"
 #import "WBNavigationController.h"
-@interface RootViewController : UIViewController
+@interface RootViewController : BaseViewController
 @property (nonatomic,strong) WBNavigationController *nav;
 @property (nonatomic,strong) UIScrollView * scroll;
 -(void)loadCurrent;

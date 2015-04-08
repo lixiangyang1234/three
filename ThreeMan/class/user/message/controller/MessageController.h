@@ -6,9 +6,9 @@
 //  Copyright (c) 2015年 ___普马克___. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "LeftTitleController.h"
 
-@interface MessageController : BaseViewController<UITableViewDataSource,UITableViewDelegate>
+@interface MessageController : LeftTitleController<UITableViewDataSource,UITableViewDelegate>
 {
     
     UITableView *_tableView;

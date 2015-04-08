@@ -26,7 +26,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self setLeftTitle:@"视频中心"];
+    [self setLeftTitle:@"我的成长"];
     [self addUI];
     [self loadRigthNavItems];
     
@@ -45,21 +45,19 @@
 
 - (void)loadRigthNavItems
 {
-    UIButton * searchItem =[UIButton buttonWithType:UIButtonTypeCustom];
-    searchItem.frame =CGRectMake(kWidth-50-40, 8, 44, 44);
-    [searchItem setImage:[UIImage imageNamed:@"nav_delete"] forState:UIControlStateNormal];
-    [searchItem setImage:[UIImage imageNamed:@"nav_delete_pre"] forState:UIControlStateSelected];
-    [searchItem addTarget:self action:@selector(delete:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *item1= [[UIBarButtonItem alloc] initWithCustomView:searchItem];
     
-    UIButton * menuItem =[UIButton buttonWithType:UIButtonTypeCustom];
-    menuItem.frame =CGRectMake(kWidth-50, 8, 30, 30);
-    [menuItem setImage:[UIImage imageNamed:@"img.png"] forState:UIControlStateNormal];
-    UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithCustomView:menuItem];
-    [menuItem addTarget:self action:@selector(navItemRight:) forControlEvents:UIControlEventTouchUpInside];
+    UIButton *deleteItem =[UIButton buttonWithType:UIButtonTypeCustom];
+    deleteItem.frame =CGRectMake(kWidth-50-40, 8, 44, 44);
+    [deleteItem setImage:[UIImage imageNamed:@"nav_delete"] forState:UIControlStateNormal];
+    [deleteItem setImage:[UIImage imageNamed:@"nav_delete_pre"] forState:UIControlStateSelected];
+    [deleteItem addTarget:self action:@selector(delete:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *item1= [[UIBarButtonItem alloc] initWithCustomView:deleteItem];
     
-    self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:item2,item1, nil];
-
+    NSArray *array = self.navigationItem.rightBarButtonItems;
+    
+    NSMutableArray *arr = [[NSMutableArray alloc] initWithArray:array];
+    [arr addObject:item1];
+    self.navigationItem.rightBarButtonItems = arr;
 }
 
 
@@ -81,7 +79,7 @@
     self.favoriteVC =[[FavoriteViewController alloc]init];
     self.favoriteVC.title =@"我的收藏";
     self.recordVC =[[RecordController alloc]init];
-    self.recordVC.title =@"浏览记录";
+    self.recordVC.title =@"成长记录";
     [self.sliderSwitchView buildUI];
     self.selectedIndex = 0;
     
@@ -174,92 +172,5 @@
             break;
     }
 }
-
-
-- (void)navItemRight:(UIButton *)btn
-{
-    CGPoint point = CGPointMake(kWidth-60, btn.frame.origin.y + btn.frame.size.height+15);
-    
-    NSArray * titles = @[@"我的成长", @"账户", @"消息",@"设置"];
-    NSArray *  images = @[@"video", @"account", @"message", @"setting"];
-    
-    TYPopoverView *popView = [[TYPopoverView alloc] initWithPoint:point titles:titles images:images];
-    popView.delegate = self;
-    popView.selectRowAtIndex = ^(NSInteger index)
-    {
-        NSLog(@"select index:%ld", (long)index);
-    };
-    
-    [popView show];
-}
-
-- (void)TYPopoverViewTouch:(UIButton *)btn view:(TYPopoverView *)view
-{
-    NSArray *array = self.navigationController.viewControllers;
-    switch (btn.tag) {
-        case -1:
-        {
-            
-        }
-            break;
-        case -2:
-        {
-            
-        }
-            break;
-        case 0:
-        {
-            for (UIViewController *subVC in array) {
-                if ([subVC isKindOfClass:[VideoCenterController class]]) {
-                    [self.navigationController popToViewController:subVC animated:NO];
-                    return;
-                }
-            }
-            VideoCenterController *center = [[VideoCenterController alloc] init];
-            [self.navigationController pushViewController:center animated:YES];
-        }
-            break;
-        case 1:
-        {
-            for (UIViewController *subVC in array) {
-                if ([subVC isKindOfClass:[AccountController class]]) {
-                    [self.navigationController popToViewController:subVC animated:NO];
-                    return;
-                }
-            }
-            AccountController *account = [[AccountController alloc] init];
-            [self.navigationController pushViewController:account animated:YES];
-        }
-            break;
-        case 2:
-        {
-            for (UIViewController *subVC in array) {
-                if ([subVC isKindOfClass:[MessageController class]]) {
-                    [self.navigationController popToViewController:subVC animated:NO];
-                    return;
-                }
-            }
-            MessageController *message = [[MessageController alloc] init];
-            [self.navigationController pushViewController:message animated:YES];
-        }
-            break;
-        case 3:
-        {
-            for (UIViewController *subVC in array) {
-                if ([subVC isKindOfClass:[SettingController class]]) {
-                    [self.navigationController popToViewController:subVC animated:NO];
-                    return;
-                }
-            }
-            SettingController *set = [[SettingController alloc] init];
-            [self.navigationController pushViewController:set animated:YES];
-        }
-            break;
-            
-        default:
-            break;
-    }
-}
-
 
 @end

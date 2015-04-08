@@ -57,7 +57,11 @@
 {
     self.iconView = [[UIImageView alloc] initWithFrame:CGRectMake(23, 12, 40, 40)];
     self.iconView.backgroundColor = [UIColor redColor];
+    self.iconView.userInteractionEnabled = YES;
     [self addSubview:self.iconView];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapDown)];
+    [self.iconView addGestureRecognizer:tap];
     
     CGFloat x = 23+40;
     CGFloat width = (self.frame.size.width-x)/2;
@@ -109,6 +113,14 @@
         [btn addTarget:self action:@selector(btnDown:) forControlEvents:UIControlEventTouchUpInside];
         btn.tag = i;
         [self addSubview:btn];
+    }
+}
+
+- (void)tapDown
+{
+    [self dismiss];
+    if ([self.delegate respondsToSelector:@selector(imageViewClick:)]) {
+        [self.delegate imageViewClick:self];
     }
 }
 
