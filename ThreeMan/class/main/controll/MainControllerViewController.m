@@ -57,19 +57,19 @@
 //添加导航按钮
 -(void)addNavItem{
 
-    UIView *backCollectView =[[UIView alloc]init];
-    backCollectView.frame = CGRectMake(0, 10, kWidth-20, 44);
-    backCollectView.backgroundColor =[UIColor clearColor];
-    self.navigationItem.titleView = backCollectView;
-    
-    
-    //    添加左边
-    UIButton * logoBtn =[UIButton buttonWithType:UIButtonTypeCustom];
-    logoBtn.frame =CGRectMake(0, 0, 80, 44);
-    logoBtn. titleLabel.font =[UIFont systemFontOfSize:PxFont(15)];
-    [logoBtn setImage:[UIImage imageNamed:@"logo"] forState:UIControlStateNormal];
-    [backCollectView addSubview:logoBtn];
-    
+//    UIView *backCollectView =[[UIView alloc]init];
+//    backCollectView.frame = CGRectMake(0, 10, kWidth-20, 44);
+//    backCollectView.backgroundColor =[UIColor clearColor];
+//    self.navigationItem.titleView = backCollectView;
+//    
+//    
+//    //    添加左边
+//    UIButton * logoBtn =[UIButton buttonWithType:UIButtonTypeCustom];
+//    logoBtn.frame =CGRectMake(0, 0, 80, 44);
+//    logoBtn. titleLabel.font =[UIFont systemFontOfSize:PxFont(15)];
+//    [logoBtn setImage:[UIImage imageNamed:@"logo"] forState:UIControlStateNormal];
+//    [backCollectView addSubview:logoBtn];
+//    
 //    UIButton * titleItem =[UIButton buttonWithType:UIButtonTypeCustom];
 //    titleItem.frame =CGRectMake(75, 8, 60, 30);
 //    titleItem. titleLabel.font =[UIFont systemFontOfSize:PxFont(15)];
@@ -92,9 +92,17 @@
 //    [menuItem addTarget:self action:@selector(navItemRight:) forControlEvents:UIControlEventTouchUpInside];
 //    [backCollectView addSubview:menuItem];
     
-
+//   UIButton * menuItem =[UIButton buttonWithType:UIButtonTypeCustom];
+//    menuItem.frame =CGRectMake(kWidth-60, 0, 44, 44);
+//  [menuItem setImage:[UIImage imageNamed:@"nav_more"] forState:UIControlStateNormal];
+//  [menuItem setImage:[UIImage imageNamed:@"nav_more_rep"] forState:UIControlStateHighlighted];
+//  [menuItem addTarget:self action:@selector(navItemRight:) forControlEvents:UIControlEventTouchUpInside];
+//   [backCollectView addSubview:menuItem];
     
 
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0,78,27)];
+    imageView.image = [UIImage imageNamed:@"logo"];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:imageView];
 //    self.navigationItem.rightBarButtonItem = [UIBarButtonItem itemWithSearch:@"nav_return_pre" highlightedSearch:@"nav_add" target:(self) action:@selector(navItemRight:)];
 //    self.navigationItem.leftBarButtonItem = [UIBarButtonItem itemWithSearch:@"nav_return_pre" highlightedSearch:@"nav_add" target:(self) action:nil];
 

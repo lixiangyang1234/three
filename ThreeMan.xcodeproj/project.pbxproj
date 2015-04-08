@@ -1589,6 +1589,7 @@
 			files = (
 				04C64B8C1ACD1DAB00825EF0 /* FeedBackController.m in Sources */,
 				55E373B11AC2B54200C794DD /* UIButton+WebCache.m in Sources */,
+				55C122E71ACE19BA00D53630 /* CourseRecommendViewCell.m in Sources */,
 				04D0872D1AD4C0AD0070184A /* RecommendController.m in Sources */,
 				55E3739B1AC2B54200C794DD /* UIScrollView+UITouch.m in Sources */,
 				55E373911AC2B54200C794DD /* AFImageRequestOperation.m in Sources */,

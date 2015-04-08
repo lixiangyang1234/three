@@ -10,7 +10,7 @@
 
 static const CGFloat kHeightOfTopScrollView = 40.0f;
 static const CGFloat kWidthOfButtonMargin = 16.0f-8-5;
-static const CGFloat kFontSizeOfTabButton = 18;
+static const CGFloat kFontSizeOfTabButton = 15;
 static const NSUInteger kTagOfRightSideButton = 999;
 
 static const  CGFloat kShowdowOriginalY = kHeightOfTopScrollView-2;
@@ -204,7 +204,7 @@ static const CGFloat kShowdowFirstX =0;
 
         }
          // button.backgroundColor =[UIColor greenColor];
-//        button.alpha =0.7;
+        button.alpha =1.0;
         [button setTitle:vc.title forState:UIControlStateNormal];
         button.titleLabel.font = [UIFont systemFontOfSize:kFontSizeOfTabButton];
         
