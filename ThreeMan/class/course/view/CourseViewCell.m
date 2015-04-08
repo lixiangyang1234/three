@@ -50,7 +50,6 @@
         [backCell addSubview:contentLabel];
         contentLabel.font =[UIFont systemFontOfSize:PxFont(14)];
         contentLabel.textColor =HexRGB(0x737373);
-        CGFloat needH =contentLabel.frame.origin.y+contentLabel.frame.size.height-3;
         
         
         

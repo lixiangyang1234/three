@@ -64,7 +64,7 @@
         [zanBtn setTitle:@"23" forState:UIControlStateNormal];
 
         [zanBtn setImage:[UIImage imageNamed:@"nav_return_pre"] forState:UIControlStateNormal];
-        [zanBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+        [zanBtn setTitleColor:HexRGB(0x1c8cc6) forState:UIControlStateNormal];
         [zanBtn setBackgroundColor:[UIColor redColor]];
         
                 

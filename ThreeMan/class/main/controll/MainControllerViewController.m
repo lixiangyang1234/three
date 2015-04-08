@@ -65,18 +65,18 @@
     
     //    添加左边
     UIButton * logoBtn =[UIButton buttonWithType:UIButtonTypeCustom];
-    logoBtn.frame =CGRectMake(0, 8, 30, 30);
+    logoBtn.frame =CGRectMake(0, 0, 80, 44);
     logoBtn. titleLabel.font =[UIFont systemFontOfSize:PxFont(15)];
-    [logoBtn setImage:[UIImage imageNamed:@"img.png"] forState:UIControlStateNormal];
+    [logoBtn setImage:[UIImage imageNamed:@"logo"] forState:UIControlStateNormal];
     [backCollectView addSubview:logoBtn];
     
-    UIButton * titleItem =[UIButton buttonWithType:UIButtonTypeCustom];
-    titleItem.frame =CGRectMake(30, 8, 60, 30);
-    titleItem. titleLabel.font =[UIFont systemFontOfSize:PxFont(15)];
-    [titleItem setTitle:@"三身行" forState:UIControlStateNormal];
-    [titleItem setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    titleItem.titleLabel.font =[UIFont systemFontOfSize:PxFont(22)];
-    [backCollectView addSubview:titleItem];
+//    UIButton * titleItem =[UIButton buttonWithType:UIButtonTypeCustom];
+//    titleItem.frame =CGRectMake(75, 8, 60, 30);
+//    titleItem. titleLabel.font =[UIFont systemFontOfSize:PxFont(15)];
+//    [titleItem setTitle:@"三身行" forState:UIControlStateNormal];
+//    [titleItem setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//    titleItem.titleLabel.font =[UIFont systemFontOfSize:PxFont(22)];
+//    [backCollectView addSubview:titleItem];
     
     //    添加右边
     
@@ -104,7 +104,7 @@
     self.sliderSwitchView  =[[SUNSlideSwitchView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kHeight-64)];
     self.sliderSwitchView.tabItemNormalColor = [UIColor lightGrayColor];
     self.sliderSwitchView.tabItemSelectedColor = [UIColor colorWithRed:0.99f green:0.16f blue:0.17f alpha:1.00f];
-    self.sliderSwitchView.shadowImage = [[UIImage imageNamed:@"redLine.png"]
+    self.sliderSwitchView.shadowImage = [[UIImage imageNamed:@"BlueLine.png"]
                                          stretchableImageWithLeftCapWidth:59.0f topCapHeight:0.0f];
     self.sliderSwitchView.backgroundColor =[UIColor whiteColor];
     self.sliderSwitchView.slideSwitchViewDelegate=self;
@@ -185,7 +185,7 @@
         navigationController.view.frame = frame;
         
         // 3.添加左上角的返回按钮
-        viewController.navigationItem.leftBarButtonItem = [UIBarButtonItem itemWithIcon:@"nav_return_pre" highlightedIcon:@"nav_return_pre.png" target:self action:@selector(backItem)];
+        viewController.navigationItem.leftBarButtonItem = [UIBarButtonItem itemWithIcon:@"nav_return" highlightedIcon:@"nav_return.png" target:self action:@selector(backItem)];
         
     }
 }

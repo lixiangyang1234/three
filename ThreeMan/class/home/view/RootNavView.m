@@ -19,7 +19,7 @@
         if (self.itemType==1) {
             //    添加左边
             UIButton * titleItem =[UIButton buttonWithType:UIButtonTypeCustom];
-            titleItem.frame =CGRectMake(-5, NAVHEIGHT, 150, 30);
+            titleItem.frame =CGRectMake(-30, NAVHEIGHT, 150, 30);
             titleItem. titleLabel.font =[UIFont systemFontOfSize:PxFont(15)];
             [titleItem setTitle:title forState:UIControlStateNormal];
             [titleItem setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
@@ -54,7 +54,7 @@
 
             //    添加左边
             UIButton * titleItem =[UIButton buttonWithType:UIButtonTypeCustom];
-            titleItem.frame =CGRectMake(-15, NAVHEIGHT, 150, 30);
+            titleItem.frame =CGRectMake(-30, NAVHEIGHT, 150, 30);
             titleItem. titleLabel.font =[UIFont systemFontOfSize:PxFont(15)];
             [titleItem setTitle:title forState:UIControlStateNormal];
             [titleItem setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];

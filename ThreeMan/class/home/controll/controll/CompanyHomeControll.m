@@ -10,10 +10,10 @@
 #import "CompanyHomeViewCell.h"
 #import "CourseDetailController.h"
 #define KStartY 20
-
+#define BannerH  195
 #define DEGREES_TO_RADIANS(angle) ((angle)/180.0 *M_PI)
 
-@interface CompanyHomeControll ()<UITableViewDataSource,UITableViewDataSource>
+@interface CompanyHomeControll ()<UITableViewDataSource,UITableViewDelegate>
 {
     UIImageView *headerImage;
     
@@ -40,14 +40,14 @@
         starY = 0;
     }
     
-    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self.view setBackgroundColor:HexRGB(0xe0e0e0)];
     [self addUIBannerView];
     [self addTableView];
     
     // Do any additional setup after loading the view.
 }
 -(void)addUIBannerView{
-    UIImageView *bannerImage =[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, kWidth, 195)];
+    UIImageView *bannerImage =[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, kWidth, BannerH)];
     [self.view addSubview:bannerImage];
     //    bannerImage.backgroundColor =[UIColor purpleColor];
     bannerImage.userInteractionEnabled=YES;
@@ -99,7 +99,7 @@
     titleLabel.textColor =HexRGB(0xffffff);
     contentLabel.textColor =HexRGB(0xf1f1f1);
     contentLabel.shadowColor =HexRGB(0xa2a2a2);
-    contentLabel.shadowOffset =CGSizeMake(0, -4);
+    contentLabel.shadowOffset =CGSizeMake(0, 3);
     contentLabel.numberOfLines =5;
     [animationView addSubview:contentLabel];
     NSLog(@"%f---%f",headerImage.frame.size.height,headerImage.frame.origin.y);
@@ -107,7 +107,7 @@
     
     contentLabel.text =@"卡卡姐看了卡拉卡积分离开的房间卡了附近垃圾地方卡上辣椒粉考虑到看来；桑德菲杰卢卡斯看大家说；卡了附近磕掉了交罚款了舒服肯定放假阿喀琉斯； 抵抗力交罚款了舒抵抗力交罚款了舒抵抗力交罚款了舒服；";
     
-    alpha =[[UIImageView alloc]initWithFrame:CGRectMake(0, 22, kWidth, 80)];
+    alpha =[[UIImageView alloc]initWithFrame:CGRectMake(0, 32, kWidth, 80)];
     [animationView addSubview:alpha];
     alpha.image =[UIImage imageNamed:@"alphabg"];
     alpha.hidden =NO;
@@ -120,13 +120,16 @@
     [animationBtn setImage:[UIImage imageNamed:@"animationBtn"] forState:UIControlStateNormal];
     [animationBtn addTarget:self action:@selector(animationBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
+    UIView *lineView =[[UIView alloc]initWithFrame:CGRectMake(0, BannerH-8, kWidth, 8)];
+    [lineView setBackgroundColor:HexRGB(0xe0e0e0)];
+    [bannerImage addSubview:lineView];
     NSLog(@"1111/////------>%f",animationView.frame.origin.y);
 }
 -(void)addTableView{
-    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 180, kWidth, kHeight-180) style:UITableViewStylePlain];
+    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, BannerH, kWidth, kHeight-BannerH) style:UITableViewStylePlain];
     _tableView.delegate =self;
     _tableView.dataSource =self;
-    _tableView.backgroundColor =[UIColor whiteColor];
+    [_tableView setBackgroundColor:HexRGB(0xe0e0e0)];
     
     _tableView.showsHorizontalScrollIndicator = NO;
     _tableView.showsVerticalScrollIndicator = NO;
@@ -152,7 +155,7 @@
     CompanyHomeViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndexfider];
     if (!cell) {
         cell =[[CompanyHomeViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndexfider];
-        cell.backgroundColor =[UIColor lightGrayColor];
+        [cell setBackgroundColor:HexRGB(0xe0e0e0)];
         cell.selectionStyle =UITableViewCellSelectionStyleNone;
     }
     
@@ -188,7 +191,7 @@
     
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 100;
+    return 88;
 }
 
 -(void)animationBtnClick:(UIButton *)sender{
@@ -223,7 +226,7 @@
         headerImage.frame =CGRectMake((kWidth-70)/2, 30, 70, 70);
         
         animationView.frame =CGRectMake(0, 107, kWidth, 88);
-        alpha.frame =CGRectMake(0, 22, kWidth, 80);
+        alpha.frame =CGRectMake(0, 32, kWidth, 80);
         
         
         [UIView animateWithDuration:0.001 animations:^{

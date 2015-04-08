@@ -27,7 +27,7 @@
     _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 8, kWidth, kHeight-64-5) style:UITableViewStylePlain];
     _tableView.delegate =self;
     _tableView.dataSource =self;
-    _tableView.backgroundColor =[UIColor whiteColor];
+    _tableView.backgroundColor =HexRGB(0xe0e0e0);
     
     _tableView.showsHorizontalScrollIndicator = NO;
     _tableView.showsVerticalScrollIndicator = NO;

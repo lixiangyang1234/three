@@ -21,10 +21,10 @@
     [self addTableView];
 }
 -(void)addTableView{
-    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 6, kWidth, kHeight-64-6) style:UITableViewStylePlain];
+    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 6, kWidth, kHeight-64-6-40) style:UITableViewStylePlain];
     _tableView.delegate =self;
     _tableView.dataSource =self;
-    _tableView.backgroundColor =[UIColor whiteColor];
+    [_tableView setBackgroundColor:HexRGB(0xe0e0e0)];
     
     _tableView.showsHorizontalScrollIndicator = NO;
     _tableView.showsVerticalScrollIndicator = NO;
@@ -39,7 +39,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 5;
+    return 7;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -51,8 +51,9 @@
         [cell setBackgroundColor:HexRGB(0xe0e0e0)];
         cell.selectionStyle =UITableViewCellSelectionStyleNone;
     }
-    
-    
+    cell.headerImage .image =[UIImage imageNamed:[NSString stringWithFormat:@"threeMan_img%ld",(long)indexPath.row]];
+    NSArray *titleArray =@[@"了解企业",@"了解领袖",@"了解团队",@"了解产品",@"您的需求",@"课程风采",@"服务展示"];
+    cell.titleLabel.text =[titleArray objectAtIndex:indexPath.row];
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

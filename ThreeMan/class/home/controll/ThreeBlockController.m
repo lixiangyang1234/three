@@ -12,6 +12,10 @@
 #import "YYSearchButton.h"
 #import "RootNavView.h"
 #import "categoryView.h"
+
+#define DEGREES_TO_RADIANS(angle) ((angle)/180.0 *M_PI)
+
+
 @interface ThreeBlockController ()<UITableViewDelegate,UITableViewDataSource>
 {
     UITableView *_tableView;
@@ -23,7 +27,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self.view setBackgroundColor:HexRGB(0xffffff)];
     //    [self addUINavView];
     [self addTableView];
     [self addUIChooseBtn];//添加筛选按钮
@@ -76,7 +80,7 @@
     _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 44, kWidth, kHeight-64-44) style:UITableViewStylePlain];
     _tableView.delegate =self;
     _tableView.dataSource =self;
-    _tableView.backgroundColor =[UIColor whiteColor];
+    [_tableView setBackgroundColor:HexRGB(0xe0e0e0)];
     
     _tableView.showsHorizontalScrollIndicator = NO;
     _tableView.showsVerticalScrollIndicator = NO;
@@ -88,6 +92,8 @@
 //筛选按钮
 -(void)chooseBtnClick:(YYSearchButton *)sender{
 //    _selectedItem.isSelected =NO;
+    NSLog(@"%d----%d",_selectedItem.tag,sender.tag);
+
 
     if (sender!=_selectedItem) {
 
@@ -97,7 +103,11 @@
     }
 }
 -(void)categoryBtnClick:(UIButton *)sender{
+    [UIView animateWithDuration:0.001 animations:^{
+        sender.imageView.transform = CGAffineTransformRotate(sender.imageView.transform, DEGREES_TO_RADIANS(180));
+    }];
     
+
     CGPoint point = CGPointMake(kWidth-60, sender.frame.origin.y + sender.frame.size.height+60);
     
     NSArray * titles = @[@"   全部类型", @" 落地实操委员会", @"   落地实操辅助委",@"   落地实操反馈委"];
@@ -106,6 +116,7 @@
     categoryView *popView = [[categoryView alloc] initWithPoint:point titles:titles categoryTitles:category];
     popView.selectRowAtIndex = ^(NSInteger index)
     {
+                
         NSLog(@"select index:%ld", (long)index);
     };
     
@@ -129,7 +140,7 @@
     NeedViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndexfider];
     if (!cell) {
         cell =[[NeedViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndexfider];
-        cell.backgroundColor =[UIColor lightGrayColor];
+        [cell setBackgroundColor:HexRGB(0xe0e0e0)];
         cell.selectionStyle =UITableViewCellSelectionStyleNone;
     }
     
