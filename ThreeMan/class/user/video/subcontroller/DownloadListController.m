@@ -59,7 +59,6 @@
     [self.view addSubview:editView];
     
     memoryView = [[MemorySizeView alloc] init];
-    NSLog(@"%f",memoryView.frame.size.height);
     memoryView.frame = CGRectMake(0,_tableView.frame.size.height,memoryView.frame.size.width,memoryView.frame.size.height);
     [self.view addSubview:memoryView];
 }

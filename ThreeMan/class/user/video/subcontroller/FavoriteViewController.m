@@ -39,7 +39,6 @@
     _tableView.sectionHeaderHeight = 0;
     [self.view addSubview:_tableView];
 
-    
     editView = [[EditView alloc] init];
     editView.delegate = self;
     editView.frame = CGRectMake(0,self.view.frame.size.height,editView.frame.size.width, editView.frame.size.height);

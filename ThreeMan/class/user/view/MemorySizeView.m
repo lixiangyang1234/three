@@ -68,7 +68,7 @@
     imageView.image = [UIImage imageNamed:@"space"];
     [self addSubview:imageView];
     
-    usedLabel = [[UILabel alloc] initWithFrame:CGRectMake(imageView.frame.origin.x+imageView.frame.size.width+5,imageView.frame.origin.y,60,10)];
+    usedLabel = [[UILabel alloc] initWithFrame:CGRectMake(imageView.frame.origin.x+imageView.frame.size.width+5,imageView.frame.origin.y,150,10)];
     usedLabel.backgroundColor = [UIColor clearColor];
     usedLabel.font = [UIFont systemFontOfSize:11];
     usedLabel.textColor = HexRGB(0x323232);

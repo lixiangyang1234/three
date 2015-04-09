@@ -112,7 +112,7 @@
     self.sliderSwitchView  =[[SUNSlideSwitchView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kHeight-64)];
     self.sliderSwitchView.tabItemNormalColor = [UIColor lightGrayColor];
     self.sliderSwitchView.tabItemSelectedColor = [UIColor colorWithRed:0.99f green:0.16f blue:0.17f alpha:1.00f];
-    self.sliderSwitchView.shadowImage = [[UIImage imageNamed:@"BlueLine.png"]
+    self.sliderSwitchView.shadowImage = [[UIImage imageNamed:@"BlueLine"]
                                          stretchableImageWithLeftCapWidth:59.0f topCapHeight:0.0f];
     self.sliderSwitchView.backgroundColor =[UIColor whiteColor];
     self.sliderSwitchView.slideSwitchViewDelegate=self;
