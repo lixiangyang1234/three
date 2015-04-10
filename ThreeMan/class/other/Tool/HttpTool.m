@@ -3,12 +3,13 @@
 #import "AFHTTPRequestOperationManager.h"
 #import <objc/message.h>
 #import "AFHTTPRequestOperation.h"
+#import "SystemConfig.h"
 
 @implementation HttpTool
 
 + (void)postWithPath:(NSString *)path params:(NSDictionary *)params success:(HttpSuccessBlock)success failure:(HttpFailureBlock)failure
 {
-    NSString *pathStr = [NSString stringWithFormat:@"http://ebingoo.bingoso.com/index.php?s=/Home/Api/%@",path];
+    NSString *pathStr = [NSString stringWithFormat:@"http://192.168.1.122/sanshenxing/index.php?s=/Home/Api/%@",path];
     
     NSMutableDictionary *allParams = [NSMutableDictionary dictionary];
     //拼接传进来的参数
@@ -17,7 +18,7 @@
     }
     NSString *time =[DateManeger getCurrentTimeStamps];
     NSString *uuid = [SystemConfig sharedInstance].uuidStr;
-    NSString *md5 = [NSString stringWithFormat:@"%@%@%@",uuid,time,@"ju34s4&6d567nuwe678l89kjdf56o34iw!e"];
+    NSString *md5 = [NSString stringWithFormat:@"%@%@%@",uuid,time,@"lsjf390FfleL98034PMWEbiua"];
     md5 = [md5 md5Encrypt];
     NSString *ios =@"ios";
     NSString *key = @"CFBundleShortVersionString";
@@ -28,7 +29,11 @@
     [allParams setObject:uuid forKey:@"uuid"];
     [allParams setObject:md5 forKey:@"secret"];
     [allParams setObject:version forKey:@"version"];
-    
+    if ([SystemConfig sharedInstance].isUserLogin) {
+        [allParams setObject:[SystemConfig sharedInstance].uid forKey:@"uid"];
+    }else{
+        [allParams setObject:@"0" forKey:@"uid"];
+    }
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     

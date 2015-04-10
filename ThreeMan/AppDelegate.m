@@ -10,6 +10,9 @@
 #import "NewfeatureController.h"
 #import "WBNavigationController.h"
 #import "MainControllerViewController.h"
+#import "SystemConfig.h"
+#import "SSKeychain.h"
+
 @interface AppDelegate ()
 
 @end
@@ -21,6 +24,22 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
+    
+    
+    
+    
+    //获取用户uuid
+    NSString *retrieveuuid = [SSKeychain passwordForService:@"com.promo.Manicure" account:@"uuid"];
+    //第一次下载程序的时候存储
+    if (retrieveuuid == nil || [retrieveuuid isEqualToString:@""]) {
+        CFUUIDRef uuid = CFUUIDCreate(NULL);
+        assert(uuid!=NULL);
+        CFStringRef uuidStr = CFUUIDCreateString(NULL, uuid);
+        retrieveuuid = [NSString stringWithFormat:@"%@",uuidStr];
+        [SSKeychain setPassword:retrieveuuid forService:@"com.promo.Manicure" account:@"uuid"];
+    }
+    [SystemConfig sharedInstance].uuidStr = retrieveuuid;
+    
     
     NSString *key = (NSString *)kCFBundleVersionKey;
     

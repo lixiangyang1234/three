@@ -40,6 +40,8 @@
 		04C73A2F1ACE7C49007B1283 /* SectionHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C73A2E1ACE7C49007B1283 /* SectionHeadView.m */; };
 		04C73A341ACE7CB5007B1283 /* DefaultHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C73A311ACE7CB5007B1283 /* DefaultHeaderView.m */; };
 		04C73A351ACE7CB5007B1283 /* ResultHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C73A331ACE7CB5007B1283 /* ResultHeaderView.m */; };
+		04C743AB1AD79E1B007D772B /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C743A81AD79E1B007D772B /* SSKeychain.m */; };
+		04C743AC1AD79E1B007D772B /* SSKeychainQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C743AA1AD79E1B007D772B /* SSKeychainQuery.m */; };
 		04CC33201ACA802D008A85B5 /* VideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CC331F1ACA802D008A85B5 /* VideoViewController.m */; };
 		04CC332A1ACA8042008A85B5 /* EnterpriseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CC33231ACA8042008A85B5 /* EnterpriseCell.m */; };
 		04CC332B1ACA8042008A85B5 /* FileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CC33251ACA8042008A85B5 /* FileCell.m */; };
@@ -261,6 +263,10 @@
 		04C73A311ACE7CB5007B1283 /* DefaultHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DefaultHeaderView.m; sourceTree = "<group>"; };
 		04C73A321ACE7CB5007B1283 /* ResultHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultHeaderView.h; sourceTree = "<group>"; };
 		04C73A331ACE7CB5007B1283 /* ResultHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResultHeaderView.m; sourceTree = "<group>"; };
+		04C743A71AD79E1B007D772B /* SSKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSKeychain.h; sourceTree = "<group>"; };
+		04C743A81AD79E1B007D772B /* SSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychain.m; sourceTree = "<group>"; };
+		04C743A91AD79E1B007D772B /* SSKeychainQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSKeychainQuery.h; sourceTree = "<group>"; };
+		04C743AA1AD79E1B007D772B /* SSKeychainQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychainQuery.m; sourceTree = "<group>"; };
 		04CC331E1ACA802D008A85B5 /* VideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoViewController.h; sourceTree = "<group>"; };
 		04CC331F1ACA802D008A85B5 /* VideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoViewController.m; sourceTree = "<group>"; };
 		04CC33221ACA8042008A85B5 /* EnterpriseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnterpriseCell.h; sourceTree = "<group>"; };
@@ -1461,6 +1467,10 @@
 		55E3736B1AC2B54200C794DD /* Tool */ = {
 			isa = PBXGroup;
 			children = (
+				04C743A71AD79E1B007D772B /* SSKeychain.h */,
+				04C743A81AD79E1B007D772B /* SSKeychain.m */,
+				04C743A91AD79E1B007D772B /* SSKeychainQuery.h */,
+				04C743AA1AD79E1B007D772B /* SSKeychainQuery.m */,
 				55E3736C1AC2B54200C794DD /* HttpTool.h */,
 				55E3736D1AC2B54200C794DD /* HttpTool.m */,
 			);
@@ -1683,6 +1693,7 @@
 				55E3737F1AC2B54200C794DD /* CompanyViewController.m in Sources */,
 				55E373AA1AC2B54200C794DD /* SDImageCache.m in Sources */,
 				55C24F881ACB8EE500BFEBED /* NeedViewController.m in Sources */,
+				04C743AC1AD79E1B007D772B /* SSKeychainQuery.m in Sources */,
 				55C24F851ACB8EE500BFEBED /* CourseDetailController.m in Sources */,
 				04C73A341ACE7CB5007B1283 /* DefaultHeaderView.m in Sources */,
 				55E373AC1AC2B54200C794DD /* SDWebImageDecoder.m in Sources */,
@@ -1764,6 +1775,7 @@
 				55E3739A1AC2B54200C794DD /* UIImage+MJ.m in Sources */,
 				04DECE2B1AD67DAF00EC53D2 /* AFURLRequestSerialization.m in Sources */,
 				04DECDA81AD616F100EC53D2 /* FMResultSet.m in Sources */,
+				04C743AB1AD79E1B007D772B /* SSKeychain.m in Sources */,
 				04C64B7A1ACCED1E00825EF0 /* AccountController.m in Sources */,
 				55C24F8E1ACB8EE500BFEBED /* NeedViewCell.m in Sources */,
 				04B9A27C1AD37456009446D1 /* FindPsWordView.m in Sources */,
