@@ -99,6 +99,9 @@
 		55C3D1571ACA89FE00778940 /* AdaptationSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C3D1521ACA89FE00778940 /* AdaptationSize.m */; };
 		55C3D1581ACA89FE00778940 /* RemindView.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C3D1541ACA89FE00778940 /* RemindView.m */; };
 		55C3D1591ACA89FE00778940 /* SaveTempDataTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C3D1561ACA89FE00778940 /* SaveTempDataTool.m */; };
+		55D730491AD7A4EA002222F7 /* homeViewControllTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D730481AD7A4EA002222F7 /* homeViewControllTool.m */; };
+		55D7304C1AD7AA45002222F7 /* homeViewControllModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D7304B1AD7AA45002222F7 /* homeViewControllModel.m */; };
+		55D7304F1AD7B03A002222F7 /* homeViewArrayModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D7304E1AD7B03A002222F7 /* homeViewArrayModel.m */; };
 		55E3728E1AC2B4C600C794DD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E3728D1AC2B4C600C794DD /* main.m */; };
 		55E372911AC2B4C600C794DD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E372901AC2B4C600C794DD /* AppDelegate.m */; };
 		55E372991AC2B4C600C794DD /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55E372981AC2B4C600C794DD /* Images.xcassets */; };
@@ -380,6 +383,12 @@
 		55C3D1541ACA89FE00778940 /* RemindView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemindView.m; sourceTree = "<group>"; };
 		55C3D1551ACA89FE00778940 /* SaveTempDataTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaveTempDataTool.h; sourceTree = "<group>"; };
 		55C3D1561ACA89FE00778940 /* SaveTempDataTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaveTempDataTool.m; sourceTree = "<group>"; };
+		55D730471AD7A4EA002222F7 /* homeViewControllTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = homeViewControllTool.h; sourceTree = "<group>"; };
+		55D730481AD7A4EA002222F7 /* homeViewControllTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = homeViewControllTool.m; sourceTree = "<group>"; };
+		55D7304A1AD7AA45002222F7 /* homeViewControllModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = homeViewControllModel.h; sourceTree = "<group>"; };
+		55D7304B1AD7AA45002222F7 /* homeViewControllModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = homeViewControllModel.m; sourceTree = "<group>"; };
+		55D7304D1AD7B03A002222F7 /* homeViewArrayModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = homeViewArrayModel.h; sourceTree = "<group>"; };
+		55D7304E1AD7B03A002222F7 /* homeViewArrayModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = homeViewArrayModel.m; sourceTree = "<group>"; };
 		55E372881AC2B4C600C794DD /* ThreeMan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ThreeMan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55E3728C1AC2B4C600C794DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		55E3728D1AC2B4C600C794DD /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -913,6 +922,10 @@
 		55B715011ACCC6C000959DF8 /* model */ = {
 			isa = PBXGroup;
 			children = (
+				55D7304A1AD7AA45002222F7 /* homeViewControllModel.h */,
+				55D7304B1AD7AA45002222F7 /* homeViewControllModel.m */,
+				55D7304D1AD7B03A002222F7 /* homeViewArrayModel.h */,
+				55D7304E1AD7B03A002222F7 /* homeViewArrayModel.m */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -940,6 +953,7 @@
 		55C24F631ACB8EE500BFEBED /* home */ = {
 			isa = PBXGroup;
 			children = (
+				55D730461AD7A348002222F7 /* tool */,
 				55B715011ACCC6C000959DF8 /* model */,
 				55C24F641ACB8EE500BFEBED /* controll */,
 				55C24F761ACB8EE500BFEBED /* view */,
@@ -950,13 +964,13 @@
 		55C24F641ACB8EE500BFEBED /* controll */ = {
 			isa = PBXGroup;
 			children = (
+				55C24F6E1ACB8EE500BFEBED /* HomeViewController.h */,
+				55C24F6F1ACB8EE500BFEBED /* HomeViewController.m */,
 				55C24F671ACB8EE500BFEBED /* controll */,
 				55C24F651ACB8EE500BFEBED /* BusinessController.h */,
 				55C24F661ACB8EE500BFEBED /* BusinessController.m */,
 				55C24F6C1ACB8EE500BFEBED /* CourseEightController.h */,
 				55C24F6D1ACB8EE500BFEBED /* CourseEightController.m */,
-				55C24F6E1ACB8EE500BFEBED /* HomeViewController.h */,
-				55C24F6F1ACB8EE500BFEBED /* HomeViewController.m */,
 				55C24F701ACB8EE500BFEBED /* NeedViewController.h */,
 				55C24F711ACB8EE500BFEBED /* NeedViewController.m */,
 				55C24F721ACB8EE500BFEBED /* NineBlockController.h */,
@@ -1011,6 +1025,15 @@
 				04D087291AD4B7480070184A /* CommenHelper.m */,
 			);
 			path = common;
+			sourceTree = "<group>";
+		};
+		55D730461AD7A348002222F7 /* tool */ = {
+			isa = PBXGroup;
+			children = (
+				55D730471AD7A4EA002222F7 /* homeViewControllTool.h */,
+				55D730481AD7A4EA002222F7 /* homeViewControllTool.m */,
+			);
+			path = tool;
 			sourceTree = "<group>";
 		};
 		55E3727F1AC2B4C600C794DD = {
@@ -1663,6 +1686,7 @@
 				55C24F8A1ACB8EE500BFEBED /* ThreeBlockController.m in Sources */,
 				04DECE2A1AD67DAF00EC53D2 /* AFURLConnectionOperation.m in Sources */,
 				04C64B6F1ACCEB3A00825EF0 /* DownloadListController.m in Sources */,
+				55D730491AD7A4EA002222F7 /* homeViewControllTool.m in Sources */,
 				04D087331AD508230070184A /* MemorySizeView.m in Sources */,
 				04C64BA31ACD4F7500825EF0 /* PayViewController.m in Sources */,
 				04CC33361ACA8072008A85B5 /* PatternItem.m in Sources */,
@@ -1691,6 +1715,7 @@
 				55C122E31ACE168600D53630 /* CompySearchController.m in Sources */,
 				04C64B6E1ACCEB3A00825EF0 /* VideoCenterController.m in Sources */,
 				55E3737F1AC2B54200C794DD /* CompanyViewController.m in Sources */,
+				55D7304F1AD7B03A002222F7 /* homeViewArrayModel.m in Sources */,
 				55E373AA1AC2B54200C794DD /* SDImageCache.m in Sources */,
 				55C24F881ACB8EE500BFEBED /* NeedViewController.m in Sources */,
 				04C743AC1AD79E1B007D772B /* SSKeychainQuery.m in Sources */,
@@ -1702,6 +1727,7 @@
 				04B9A2791AD36259009446D1 /* LoginView.m in Sources */,
 				55E373AD1AC2B54200C794DD /* SDWebImageDownloader.m in Sources */,
 				55E373801AC2B54200C794DD /* CourseViewController.m in Sources */,
+				55D7304C1AD7AA45002222F7 /* homeViewControllModel.m in Sources */,
 				55C24F871ACB8EE500BFEBED /* HomeViewController.m in Sources */,
 				55C3D1591ACA89FE00778940 /* SaveTempDataTool.m in Sources */,
 				04B9A2861AD3BFA5009446D1 /* ResetSecretView.m in Sources */,

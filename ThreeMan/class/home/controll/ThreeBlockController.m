@@ -20,6 +20,7 @@
 {
     UITableView *_tableView;
     YYSearchButton *_selectedItem;
+    UIButton *topBtn;
 }
 @end
 
@@ -32,7 +33,26 @@
     [self addTableView];
     [self addUIChooseBtn];//添加筛选按钮
     [self addCategoryBtn];
+    [self addTopBtn];
 }
+-(void)addTopBtn
+{
+    //回顶部按钮
+    topBtn =[UIButton buttonWithType:UIButtonTypeCustom];
+    [self.view addSubview:topBtn];
+    topBtn.frame =CGRectMake(kWidth-50, kHeight-80-64, 30, 30);
+    [topBtn setTitle:@"23" forState:UIControlStateNormal];
+    topBtn.contentHorizontalAlignment =UIControlContentHorizontalAlignmentLeft;
+    topBtn.hidden =YES;
+    [topBtn setImage:[UIImage imageNamed:@"nav_return_pre"] forState:UIControlStateNormal];
+    [topBtn addTarget:self action:@selector(topBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [topBtn setTitle:@"定都" forState:UIControlStateNormal];
+    [topBtn setTitleColor:HexRGB(0x1c8cc6) forState:UIControlStateNormal];
+    [topBtn.titleLabel setFont:[UIFont systemFontOfSize:PxFont(12)]];
+    topBtn.tag =900;
+    
+}
+
 //-(void)addUINavView{
 //    RootNavView *rootView =[[RootNavView alloc ]init];
 //    self.navigationItem.titleView =rootView;
@@ -91,12 +111,12 @@
 #pragma mark ----chooseBtn categoryBtn 筛选按钮
 //筛选按钮
 -(void)chooseBtnClick:(YYSearchButton *)sender{
-//    _selectedItem.isSelected =NO;
+    //    _selectedItem.isSelected =NO;
     NSLog(@"%d----%d",_selectedItem.tag,sender.tag);
-
-
+    
+    
     if (sender!=_selectedItem) {
-
+        
         _selectedItem.isSelected =NO;
         sender.isSelected =YES;
         _selectedItem=sender;
@@ -107,7 +127,7 @@
         sender.imageView.transform = CGAffineTransformRotate(sender.imageView.transform, DEGREES_TO_RADIANS(180));
     }];
     
-
+    
     CGPoint point = CGPointMake(kWidth-60, sender.frame.origin.y + sender.frame.size.height+60);
     
     NSArray * titles = @[@"   全部类型", @" 落地实操委员会", @"   落地实操辅助委",@"   落地实操反馈委"];
@@ -116,12 +136,12 @@
     categoryView *popView = [[categoryView alloc] initWithPoint:point titles:titles categoryTitles:category];
     popView.selectRowAtIndex = ^(NSInteger index)
     {
-                
+        
         NSLog(@"select index:%ld", (long)index);
     };
     
     [popView show];
-
+    
 }
 #pragma mark - Table view data source
 
@@ -130,7 +150,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 5;
+    return 25;
 }
 
 
@@ -143,6 +163,14 @@
         [cell setBackgroundColor:HexRGB(0xe0e0e0)];
         cell.selectionStyle =UITableViewCellSelectionStyleNone;
     }
+    NSLog(@"%f---%d",cell.frame.size.height,indexPath.row);
+    if (indexPath.row>=8) {
+        topBtn.hidden =NO;
+    }else if (indexPath.row<=4){
+        topBtn.hidden =YES;
+    }
+    
+    
     
     
     return cell;
@@ -156,7 +184,12 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 88;
 }
-
+-(void)topBtnClick:(UIButton *)top{
+    //    NSIndexPath *indePath = [NSIndexPath indexPathForRow:0 inSection:0];
+    //    [_infoTableView scrollToRowAtIndexPath:indePath atScrollPosition:UITableViewScrollPositionNone animated:YES];
+    NSIndexPath *indePath =[NSIndexPath indexPathForRow:0 inSection:0];
+    [_tableView scrollToRowAtIndexPath:indePath atScrollPosition:UITableViewScrollPositionNone animated:YES];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
