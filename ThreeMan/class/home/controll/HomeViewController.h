@@ -9,5 +9,8 @@
 #import "RootViewController.h"
 
 @interface HomeViewController : RootViewController
+@property(nonatomic,strong)NSMutableArray *courseArray;
+@property(nonatomic,strong)NSMutableArray *categoryArray;
+@property(nonatomic,strong)NSMutableArray *tradeArray;
 
 @end
