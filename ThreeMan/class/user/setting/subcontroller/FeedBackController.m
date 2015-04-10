@@ -18,7 +18,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.title = @"意见反馈";
+    [self setLeftTitle:@"意见反馈"];
     _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0,kWidth,kHeight-64)];
     _scrollView.backgroundColor = HexRGB(0xf3f3f3);
     [self.view addSubview:_scrollView];

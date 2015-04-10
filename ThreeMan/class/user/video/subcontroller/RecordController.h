@@ -8,6 +8,12 @@
 
 #import "RootViewController.h"
 
-@interface RecordController : RootViewController
+@interface RecordController : RootViewController<UITableViewDataSource,UITableViewDelegate>
+{
+    NSMutableArray *_dataArray;
+    UITableView *_tableView;
+}
+- (void)edit:(BOOL)editting;
+
 
 @end

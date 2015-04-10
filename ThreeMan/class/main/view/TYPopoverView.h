@@ -15,6 +15,8 @@
 
 - (void)TYPopoverViewTouch:(UIButton *)btn view:(TYPopoverView *)view;
 
+- (void)imageViewClick:(TYPopoverView *)view;
+
 @end
 
 @interface TYPopoverView : UIView

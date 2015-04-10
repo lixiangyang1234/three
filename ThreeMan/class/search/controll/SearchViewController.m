@@ -129,8 +129,8 @@
     
     //搜索按钮
     UIButton *searchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    searchBtn.frame = CGRectMake(0, 0, 50, 30);
-    [searchBtn setImage:[UIImage imageNamed:@"nav_search_btn"] forState:UIControlStateNormal];
+    searchBtn.frame = CGRectMake(0, 0, 44, 44);
+    [searchBtn setImage:[UIImage imageNamed:@"nav_search"] forState:UIControlStateNormal];
     [searchBtn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
     [searchBtn addTarget:self action:@selector(search) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:searchBtn];

@@ -62,7 +62,7 @@
         cell = [[PatternCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify];
     }
     PatternItem *item =[_dataArray objectAtIndex:indexPath.row];
-    cell.imgView.backgroundColor = [UIColor redColor];
+    cell.imgView.image = [UIImage imageNamed:@"img"];
     cell.titleLabel.text = item.title;
     cell.readLabel.text = item.readAmount;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;

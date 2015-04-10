@@ -7,9 +7,14 @@
 //
 
 #import "PayViewController.h"
+#import "AdaptationSize.h"
+#import "RemindView.h"
 
-@interface PayViewController ()
-
+@interface PayViewController ()<UITextFieldDelegate>
+{
+    UITextField *_textField;
+    UILabel *_payLabel;
+}
 @end
 
 @implementation PayViewController
@@ -70,16 +75,75 @@
     amountLabel.font = [UIFont systemFontOfSize:14];
     [bgView addSubview:amountLabel];
     
-    UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(12, 50+31, bgView.frame.size.width-12,50)];
-    textField.placeholder = @"请输入充值数量(1元=1蜕变豆)";
-    textField.backgroundColor = [UIColor clearColor];
-    [bgView addSubview:textField];
+    _textField = [[UITextField alloc] initWithFrame:CGRectMake(12, 50+31, bgView.frame.size.width-12,50)];
+    _textField.placeholder = @"请输入充值数量(1元=1蜕变豆)";
+    _textField.keyboardType = UIKeyboardTypeNumberPad;
+    _textField.backgroundColor = [UIColor clearColor];
+    _textField.delegate = self;
+    [bgView addSubview:_textField];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldChange) name:UITextFieldTextDidChangeNotification object:_textField];
+    
+    NSString *str = @"支付宝付款:";
+    CGSize size = [AdaptationSize getSizeFromString:str Font:[UIFont systemFontOfSize:18] withHight:20 withWidth:CGFLOAT_MAX];
+    UILabel *payTitle = [[UILabel alloc] initWithFrame:CGRectMake(20,bgView.frame.origin.y+bgView.frame.size.height+20,size.width,20)];
+    payTitle.backgroundColor = [UIColor clearColor];
+    payTitle.text = str;
+    payTitle.textColor = HexRGB(0x323232);
+    payTitle.font = [UIFont systemFontOfSize:18];
+    [self.view addSubview:payTitle];
+
+    
+    _payLabel = [[UILabel alloc] initWithFrame:CGRectMake(payTitle.frame.origin.x+payTitle.frame.size.width+5, payTitle.frame.origin.y,160, 20)];
+    _payLabel.backgroundColor = [UIColor clearColor];
+    _payLabel.text = @"0.00元";
+    _payLabel.textColor = HexRGB(0x1c8cc6);
+    _payLabel.font = [UIFont systemFontOfSize:18];
+    [self.view addSubview:_payLabel];
+
     
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn.frame = CGRectMake(bgView.frame.origin.x, _payLabel.frame.origin.y+_payLabel.frame.size.height+20, bgView.frame.size.width, 40);
     [btn setTitle:@"支付宝支付" forState:UIControlStateNormal];
     [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [btn addTarget:self action:@selector(btnDown) forControlEvents:UIControlEventTouchUpInside];
     [btn setBackgroundImage:[UIImage imageNamed:@"sure"] forState:UIControlStateNormal];
     [self.view addSubview:btn];
+}
+
+- (void)btnDown
+{
+    if (_textField.text.length==0) {
+        [RemindView showViewWithTitle:@"请输入购买数量" location:TOP];
+        return ;
+    }
+    //支付操作
+}
+
+- (void)textFieldChange
+{
+    _payLabel.text = [NSString stringWithFormat:@"%.2f元",[_textField.text floatValue]];
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    NSCharacterSet *cs = [[NSCharacterSet characterSetWithCharactersInString:@"123456789\n"] invertedSet];
+    NSString *filtered = [[string componentsSeparatedByCharactersInSet:cs] componentsJoinedByString:@""];
+    BOOL basic = [string isEqualToString:filtered];
+    if (!basic) {
+        return NO;
+    }
+    return YES;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [self.view endEditing:YES];
+    return YES;
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self.view endEditing:YES];
 }
 
 - (void)didReceiveMemoryWarning {

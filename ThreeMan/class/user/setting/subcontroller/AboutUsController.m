@@ -27,7 +27,7 @@
     CGFloat y = 54;
     //图标
     UIImageView *iconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 55, 55)];
-    iconImageView.image = [UIImage imageNamed:@"logo"];
+    iconImageView.image = [UIImage imageNamed:@"smallLogo"];
     iconImageView.center = CGPointMake(kWidth/2, y+iconImageView.frame.size.height/2);
     [self.view addSubview:iconImageView];
     

@@ -17,8 +17,9 @@
 #import "MessageController.h"
 
 
-@interface MainControllerViewController ()<UINavigationControllerDelegate,TYPopoverViewDelegate>
+@interface MainControllerViewController ()<UINavigationControllerDelegate>
 {
+    UIView *windowView;
 }
 @end
 
@@ -51,23 +52,24 @@
     // Do any additional setup after loading the view.
     [self addUI];//添加容器
     [self addNavItem];//添加导航按钮
+    
 }
 //添加导航按钮
 -(void)addNavItem{
 
-    UIView *backCollectView =[[UIView alloc]init];
-    backCollectView.frame = CGRectMake(0, 10, kWidth-20, 44);
-    backCollectView.backgroundColor =[UIColor clearColor];
-    self.navigationItem.titleView = backCollectView;
-    
-    
-    //    添加左边
-    UIButton * logoBtn =[UIButton buttonWithType:UIButtonTypeCustom];
-    logoBtn.frame =CGRectMake(0, 0, 80, 44);
-    logoBtn. titleLabel.font =[UIFont systemFontOfSize:PxFont(15)];
-    [logoBtn setImage:[UIImage imageNamed:@"logo"] forState:UIControlStateNormal];
-    [backCollectView addSubview:logoBtn];
-    
+//    UIView *backCollectView =[[UIView alloc]init];
+//    backCollectView.frame = CGRectMake(0, 10, kWidth-20, 44);
+//    backCollectView.backgroundColor =[UIColor clearColor];
+//    self.navigationItem.titleView = backCollectView;
+//    
+//    
+//    //    添加左边
+//    UIButton * logoBtn =[UIButton buttonWithType:UIButtonTypeCustom];
+//    logoBtn.frame =CGRectMake(0, 0, 80, 44);
+//    logoBtn. titleLabel.font =[UIFont systemFontOfSize:PxFont(15)];
+//    [logoBtn setImage:[UIImage imageNamed:@"logo"] forState:UIControlStateNormal];
+//    [backCollectView addSubview:logoBtn];
+//    
 //    UIButton * titleItem =[UIButton buttonWithType:UIButtonTypeCustom];
 //    titleItem.frame =CGRectMake(75, 8, 60, 30);
 //    titleItem. titleLabel.font =[UIFont systemFontOfSize:PxFont(15)];
@@ -78,24 +80,29 @@
     
     //    添加右边
     
-    UIButton * searchItem =[UIButton buttonWithType:UIButtonTypeCustom];
-    searchItem.frame =CGRectMake(kWidth-50-54, 0, 44, 44);
-    [searchItem setImage:[UIImage imageNamed:@"nav_search"] forState:UIControlStateNormal];
-    [searchItem setImage:[UIImage imageNamed:@"nav_search_rep"] forState:UIControlStateHighlighted];
-
-    [searchItem addTarget:self action:@selector(search) forControlEvents:UIControlEventTouchUpInside];
-    [backCollectView addSubview:searchItem];
+//    UIButton * searchItem =[UIButton buttonWithType:UIButtonTypeCustom];
+//    searchItem.frame =CGRectMake(kWidth-50-40, 8, 30, 30);
+//    [searchItem setImage:[UIImage imageNamed:@"nav_search_btn"] forState:UIControlStateNormal];
+//    [searchItem addTarget:self action:@selector(search) forControlEvents:UIControlEventTouchUpInside];
+//    [backCollectView addSubview:searchItem];
+//    
+//    UIButton * menuItem =[UIButton buttonWithType:UIButtonTypeCustom];
+//    menuItem.frame =CGRectMake(kWidth-50, 8, 30, 30);
+//    [menuItem setImage:[UIImage imageNamed:@"img.png"] forState:UIControlStateNormal];
+//    [menuItem addTarget:self action:@selector(navItemRight:) forControlEvents:UIControlEventTouchUpInside];
+//    [backCollectView addSubview:menuItem];
     
-    UIButton * menuItem =[UIButton buttonWithType:UIButtonTypeCustom];
-    menuItem.frame =CGRectMake(kWidth-60, 0, 44, 44);
-    [menuItem setImage:[UIImage imageNamed:@"nav_more"] forState:UIControlStateNormal];
-    [menuItem setImage:[UIImage imageNamed:@"nav_more_rep"] forState:UIControlStateHighlighted];
-    [menuItem addTarget:self action:@selector(navItemRight:) forControlEvents:UIControlEventTouchUpInside];
-    [backCollectView addSubview:menuItem];
+//   UIButton * menuItem =[UIButton buttonWithType:UIButtonTypeCustom];
+//    menuItem.frame =CGRectMake(kWidth-60, 0, 44, 44);
+//  [menuItem setImage:[UIImage imageNamed:@"nav_more"] forState:UIControlStateNormal];
+//  [menuItem setImage:[UIImage imageNamed:@"nav_more_rep"] forState:UIControlStateHighlighted];
+//  [menuItem addTarget:self action:@selector(navItemRight:) forControlEvents:UIControlEventTouchUpInside];
+//   [backCollectView addSubview:menuItem];
     
 
-    
-
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0,78,27)];
+    imageView.image = [UIImage imageNamed:@"logo"];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:imageView];
 //    self.navigationItem.rightBarButtonItem = [UIBarButtonItem itemWithSearch:@"nav_return_pre" highlightedSearch:@"nav_add" target:(self) action:@selector(navItemRight:)];
 //    self.navigationItem.leftBarButtonItem = [UIBarButtonItem itemWithSearch:@"nav_return_pre" highlightedSearch:@"nav_add" target:(self) action:nil];
 
@@ -105,7 +112,7 @@
     self.sliderSwitchView  =[[SUNSlideSwitchView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kHeight-64)];
     self.sliderSwitchView.tabItemNormalColor = [UIColor lightGrayColor];
     self.sliderSwitchView.tabItemSelectedColor = [UIColor colorWithRed:0.99f green:0.16f blue:0.17f alpha:1.00f];
-    self.sliderSwitchView.shadowImage = [[UIImage imageNamed:@"BlueLine.png"]
+    self.sliderSwitchView.shadowImage = [[UIImage imageNamed:@"BlueLine"]
                                          stretchableImageWithLeftCapWidth:59.0f topCapHeight:0.0f];
     self.sliderSwitchView.backgroundColor =[UIColor whiteColor];
     self.sliderSwitchView.slideSwitchViewDelegate=self;
@@ -167,31 +174,7 @@
     [rootVc loadCurrent];
 }
 
-#pragma mark 搜索按钮点击
-- (void)search
-{
-    SearchViewController *search = [[SearchViewController alloc] init];
-    [self.navigationController pushViewController:search animated:YES];
-}
-
--(void)navItemRight:(UIButton *)nav{
-    CGPoint point = CGPointMake(kWidth-60, nav.frame.origin.y + nav.frame.size.height+15);
-    
-    NSArray * titles = @[@"我的成长", @"账户", @"消息",@"设置"];
-    NSArray *  images = @[@"video", @"account", @"message", @"setting"];
-    
-    TYPopoverView *popView = [[TYPopoverView alloc] initWithPoint:point titles:titles images:images];
-    popView.delegate = self;
-    popView.selectRowAtIndex = ^(NSInteger index)
-    {
-        NSLog(@"select index:%ld", (long)index);
-    };
-    
-    [popView show];
-}
-
 #pragma mark 实现导航控制器代理方法
-
 // 导航控制器即将显示新的控制器
 - (void)navigationController:(WBNavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
@@ -215,75 +198,11 @@
     }
 }
 
-- (void)TYPopoverViewTouch:(UIButton *)btn view:(TYPopoverView *)view
+- (void)backItem
 {
-    NSArray *array = self.navigationController.viewControllers;
-    switch (btn.tag) {
-        case -1:
-        {
-            
-        }
-            break;
-        case -2:
-        {
-            
-        }
-            break;
-        case 0:
-        {
-            VideoCenterController *center = [[VideoCenterController alloc] init];
-            [self.navigationController pushViewController:center animated:YES];
-        }
-            break;
-        case 1:
-        {
-            for (UIViewController *subVC in array) {
-                if ([subVC isKindOfClass:[AccountController class]]) {
-                    [self.navigationController popToViewController:subVC animated:NO];
-                    return;
-                }
-            }
-            AccountController *account = [[AccountController alloc] init];
-            [self.navigationController pushViewController:account animated:YES];
-        }
-            break;
-        case 2:
-        {
-            for (UIViewController *subVC in array) {
-                if ([subVC isKindOfClass:[MessageController class]]) {
-                    [self.navigationController popToViewController:subVC animated:NO];
-                    return;
-                }
-            }
-            MessageController *message = [[MessageController alloc] init];
-            [self.navigationController pushViewController:message animated:YES];
-        }
-            break;
-        case 3:
-        {
-            for (UIViewController *subVC in array) {
-                if ([subVC isKindOfClass:[SettingController class]]) {
-                    [self.navigationController popToViewController:subVC animated:NO];
-                    return;
-                }
-            }
-            SettingController *set = [[SettingController alloc] init];
-            [self.navigationController pushViewController:set animated:YES];
-        }
-            break;
-            
-        default:
-            break;
-    }
-}
-
--(void)backItem{
     [self.navigationController popViewControllerAnimated:YES];
 }
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
+
 
 /*
 #pragma mark - Navigation

@@ -1,16 +1,17 @@
 
 #import "HttpTool.h"
-#import "AFHTTPClient.h"
+#import "AFHTTPRequestOperationManager.h"
 #import <objc/message.h>
 #import "AFHTTPRequestOperation.h"
+
 @implementation HttpTool
-+ (void)requestWithPath:(NSString *)path params:(NSDictionary *)params success:(HttpSuccessBlock)success failure:(HttpFailureBlock)failure method:(NSString *)method
+
++ (void)postWithPath:(NSString *)path params:(NSDictionary *)params success:(HttpSuccessBlock)success failure:(HttpFailureBlock)failure
 {
-    // 1.创建post请求
-    AFHTTPClient *client = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:kBaseURL]];
+    NSString *pathStr = [NSString stringWithFormat:@"http://ebingoo.bingoso.com/index.php?s=/Home/Api/%@",path];
     
     NSMutableDictionary *allParams = [NSMutableDictionary dictionary];
-    //    // 拼接传进来的参数
+    //拼接传进来的参数
     if (params) {
         [allParams setDictionary:params];
     }
@@ -28,34 +29,19 @@
     [allParams setObject:md5 forKey:@"secret"];
     [allParams setObject:version forKey:@"version"];
     
-    NSString *pathStr = [NSString stringWithFormat:@"/index.php?s=/Home/Api/%@",path];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     
-    NSURLRequest *request = [client requestWithMethod:method path:pathStr parameters:allParams];
-    
-    AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [manager POST:pathStr parameters:allParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
         success(responseObject);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         failure(error);
     }];
-    [op start];
-    
-    
-    
-}
-
-
-
-
-+ (void)postWithPath:(NSString *)path params:(NSDictionary *)params success:(HttpSuccessBlock)success failure:(HttpFailureBlock)failure
-{
-    [self requestWithPath:path params:params success:success failure:failure method:@"POST"];
 }
 
 + (void)getWithPath:(NSString *)path params:(NSDictionary *)params success:(HttpSuccessBlock)success failure:(HttpFailureBlock)failure
 {
     
-    [self requestWithPath:path params:params success:success failure:failure method:@"GET"];
 }
 + (void)downloadImage:(NSString *)url place:(UIImage *)place imageView:(UIImageView *)imageView
 {

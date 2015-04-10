@@ -11,6 +11,7 @@
 #import "AccountCell.h"
 #import "AccountItem.h"
 #import "PayViewController.h"
+#import "DrawViewController.h"
 
 @interface AccountController ()
 {
@@ -49,8 +50,16 @@
 
 - (void)btnDown
 {
-    PayViewController *pay = [[PayViewController alloc] init];
-    [self.navigationController pushViewController:pay animated:YES];
+    if (1) {
+        //支付
+        PayViewController *pay = [[PayViewController alloc] init];
+        [self.navigationController pushViewController:pay animated:YES];
+
+    }else{
+        //提现
+        DrawViewController *draw = [[DrawViewController alloc] init];
+        [self.navigationController pushViewController:draw animated:YES];
+    }
 }
 
 - (void)loadData

@@ -8,6 +8,14 @@
 
 #import "RootViewController.h"
 
-@interface FavoriteViewController : RootViewController
+@interface FavoriteViewController : RootViewController<UITableViewDataSource,UITableViewDelegate>
+{
+    NSMutableArray *_dataArray;
+    UITableView *_tableView;
+}
+
+
+- (void)edit:(BOOL)editting;
+
 
 @end
