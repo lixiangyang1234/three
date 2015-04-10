@@ -6,7 +6,7 @@
 #import "UIImageView+WebCache.h"
 
 
-typedef void (^HttpSuccessBlock)(id JSON);
+typedef void (^HttpSuccessBlock)(id JSON,int code,NSString *msg);
 typedef void (^HttpFailureBlock)(NSError *error);
 
 @interface HttpTool : NSObject
