@@ -47,6 +47,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
 }
 //1区
+#pragma mark 创建scrollView
 -(void)addUIBanner{
     //添加滑动背景
     self.backScrollView =[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, kWidth, kHeight-104)];
