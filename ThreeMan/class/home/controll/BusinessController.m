@@ -19,21 +19,28 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     [self.view setBackgroundColor:HexRGB(0xe0e0e0)];
     [self addTableView];
+    
+    
 }
--(void)addTableView{
-    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 8, kWidth, kHeight-64-5) style:UITableViewStylePlain];
-    _tableView.delegate =self;
-    _tableView.dataSource =self;
-    _tableView.backgroundColor =HexRGB(0xe0e0e0);
+#pragma mark---创建TableView
+
+-(UITableView *)addTableView{
+    if (!_tableView) {
+        _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 8, kWidth, kHeight-64-5) style:UITableViewStylePlain];
+        _tableView.delegate =self;
+        _tableView.dataSource =self;
+        _tableView.backgroundColor =HexRGB(0xe0e0e0);
+        
+        _tableView.showsHorizontalScrollIndicator = NO;
+        _tableView.showsVerticalScrollIndicator = NO;
+        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        [self.view addSubview:_tableView];
+        
+    }
     
-    _tableView.showsHorizontalScrollIndicator = NO;
-    _tableView.showsVerticalScrollIndicator = NO;
-    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
-    [self.view addSubview:_tableView];
+    return _tableView;
 }
 #pragma mark - Table view data source
 
@@ -54,7 +61,6 @@
         [cell setBackgroundColor:HexRGB(0xe0e0e0)];
         cell.selectionStyle =UITableViewCellSelectionStyleNone;
     }
-    
     
     return cell;
 }
