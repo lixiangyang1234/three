@@ -34,6 +34,7 @@
     }else{
         [allParams setObject:@"0" forKey:@"uid"];
     }
+    
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     
