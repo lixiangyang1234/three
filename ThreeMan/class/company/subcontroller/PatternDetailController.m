@@ -22,6 +22,17 @@
     [self setLeftTitle:@"详情"];
 }
 
+- (void)loadData
+{
+    [HttpTool postWithPath:@"getCaseDetails" params:nil success:^(id JSON, int code, NSString *msg) {
+        if (code == 100) {
+            
+        }
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

@@ -15,6 +15,7 @@
 #import "MBProgressHUD.h"
 #import "ShareView.h"
 #import "UIButton+WebCache.h"
+#import "RemindView.h"
 
 //#import "UIImageView+WebCache.h"
 
