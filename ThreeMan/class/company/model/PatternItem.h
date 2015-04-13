@@ -10,8 +10,12 @@
 
 @interface PatternItem : NSObject
 
-@property (nonatomic,strong) NSString *image;
+@property (nonatomic,strong) NSString *uid;
+@property (nonatomic,strong) NSString *imgurl;
 @property (nonatomic,strong) NSString *title;
-@property (nonatomic,strong) NSString *readAmount;
+@property (nonatomic,strong) NSString *number;
+
+
+- (void)setValue:(id)value forUndefinedKey:(NSString *)key;
 
 @end

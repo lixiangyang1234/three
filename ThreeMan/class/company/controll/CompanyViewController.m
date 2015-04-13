@@ -10,7 +10,8 @@
 #import "PatternCell.h"
 #import "PatternItem.h"
 #import "PatternDetailController.h"
-
+#import "HttpTool.h"
+#import "UIImageView+WebCache.h"
 
 @interface CompanyViewController ()
 
@@ -39,14 +40,22 @@
 #pragma mark 请求数据
 - (void)loadData
 {
-    for (int i = 0 ; i< 10;i++) {
-        PatternItem *item = [[PatternItem alloc] init];
-        item.image = @"";
-        item.title = @"第五届三身行优秀企业标杆案例";
-        item.readAmount = @"255";
-        [_dataArray addObject:item];
-    }
-    [_tableView reloadData];
+    [HttpTool postWithPath:@"getCaseList" params:nil success:^(id JSON, int code, NSString *msg) {
+        if (code == 100) {
+            NSDictionary *dic = [JSON objectForKey:@"data"];
+            NSArray *array = [dic objectForKey:@"case"];
+            if (![array isKindOfClass:[NSNull class]]) {
+                for (NSDictionary *dict in array) {
+                    PatternItem *item = [[PatternItem alloc] init];
+                    [item setValuesForKeysWithDictionary:dict];
+                    [_dataArray addObject:item];
+                }
+            }
+            [_tableView reloadData];
+        }
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+    }];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -62,9 +71,9 @@
         cell = [[PatternCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify];
     }
     PatternItem *item =[_dataArray objectAtIndex:indexPath.row];
-    cell.imgView.image = [UIImage imageNamed:@"img"];
+    [cell.imgView setImageWithURL:[NSURL URLWithString:item.imgurl] placeholderImage:[UIImage imageNamed:@""]];
     cell.titleLabel.text = item.title;
-    cell.readLabel.text = item.readAmount;
+    cell.readLabel.text = item.number;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
