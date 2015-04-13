@@ -18,5 +18,9 @@
     NSMutableArray *_results;
     UITextField *_textField;
     CGRect frame;
+    
+    NSMutableArray *_videoArray;
+    NSMutableArray *_companyArray;
+    NSMutableArray *_subjectArray;
 }
 @end

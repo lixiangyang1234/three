@@ -19,6 +19,7 @@
 #import "VideoViewController.h"
 #import "SaveTempDataTool.h"
 #import "CompySearchController.h"
+#import "UIImageView+WebCache.h"
 
 @interface SearchViewController ()
 
@@ -33,6 +34,12 @@
     self.view.backgroundColor = HexRGB(0xe8e8e8);
 
     _dataArray = [[NSMutableArray alloc] initWithCapacity:0];
+    
+    _videoArray = [[NSMutableArray alloc] initWithCapacity:0];
+    
+    _companyArray = [[NSMutableArray alloc] initWithCapacity:0];
+    
+    _subjectArray = [[NSMutableArray alloc] initWithCapacity:0];
     
     _results = [[NSMutableArray alloc] initWithCapacity:0];
     
@@ -159,7 +166,7 @@
         [arr addObject:item];
     }
     [_dataArray addObject:arr];
-    NSMutableArray *mutableArr = [SaveTempDataTool unarchiveClassWithFileName:@"history"];
+    NSMutableArray *mutableArr = [SaveTempDataTool unarchiveClassWithFileName:@"search"];
     if (mutableArr) {
         [_dataArray addObject:mutableArr];
     }
@@ -172,59 +179,96 @@
         [RemindView showViewWithTitle:@"搜索内容不能为空" location:TOP];
     }else{
         [_textField resignFirstResponder];
-        if (_dataArray.count<2) {
-            NSMutableArray *array = [[NSMutableArray alloc] initWithObjects:_textField.text, nil];
-            BOOL ret = [SaveTempDataTool archiveClass:array FileName:@"history"];
-            if (ret) {
-                [_dataArray addObject:array];
+        NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:_textField.text,@"keywords", nil];
+        [HttpTool postWithPath:@"getSelect" params:param success:^(id JSON, int code, NSString *msg) {
+            if (code == 100) {
+                NSLog(@"%@",JSON);
+                [self loadResultData:JSON];
+                [self addToRecord];
             }
-        }else{
-            NSMutableArray *arr = [_dataArray objectAtIndex:1];
-            [arr insertObject:_textField.text atIndex:0];
-            BOOL ret =  [SaveTempDataTool archiveClass:arr FileName:@"history"];
-            if (ret) {
-                [_dataArray replaceObjectAtIndex:1 withObject:arr];
-            }
+        } failure:^(NSError *error) {
+            NSLog(@"%@",error);
+        }];
+    }
+}
+
+
+//添加搜索关键词到历史纪录
+- (void)addToRecord
+{
+    //没搜索历史
+    if (_dataArray.count<2) {
+        NSMutableArray *array = [[NSMutableArray alloc] initWithObjects:_textField.text, nil];
+        BOOL ret = [SaveTempDataTool archiveClass:array FileName:@"search"];
+        if (ret) {
+            [_dataArray addObject:array];
         }
-        [self loadResultData];
+    }else{
+        NSMutableArray *arr = [_dataArray objectAtIndex:1];
+        int count = 0;
+        for (int i = 0 ; i < arr.count; i++) {
+            NSString *str = [arr objectAtIndex:i];
+            if ([_textField.text isEqualToString:str]) {
+                break;
+            }
+            count++;
+        }
+        if (count<arr.count) {
+            return;
+        }
+        [arr insertObject:_textField.text atIndex:0];
+        BOOL ret =  [SaveTempDataTool archiveClass:arr FileName:@"search"];
+        if (ret) {
+            [_dataArray replaceObjectAtIndex:1 withObject:arr];
+        }
     }
 }
 
 #pragma mark 请求搜索结果
-- (void)loadResultData
+- (void)loadResultData:(NSDictionary *)response
 {
     [_results removeAllObjects];
+    [_videoArray removeAllObjects];
+    [_companyArray removeAllObjects];
+    [_subjectArray removeAllObjects];
     
-    NSMutableArray *firstArr = [[NSMutableArray alloc] initWithCapacity:0];
-    for (int i = 0 ; i< 10 ; i++) {
-        FileItem *item = [[FileItem alloc] init];
-        item.image = @"";
-        item.title = @"与大师有约门票";
-        item.desc = @"王大妈老师";
-        [firstArr addObject:item];
+    NSDictionary *data = [response objectForKey:@"data"];
+    NSArray *select_video = [data objectForKey:@"select_video"];
+    if (![select_video isKindOfClass:[NSNull class]]) {
+        for (NSDictionary *dic in select_video) {
+            FileItem *item = [[FileItem alloc] init];
+            [item setValuesForKeysWithDictionary:dic];
+            [_videoArray addObject:item];
+        }
     }
-    [_results addObject:firstArr];
+    if (_videoArray.count!=0) {
+        [_results addObject:_videoArray];
+    }
     
-    NSMutableArray *secondArr = [[NSMutableArray alloc] initWithCapacity:0];
-    for (int i = 0 ; i< 10 ; i++) {
-        EnterpriseItem *item = [[EnterpriseItem alloc] init];
-        item.image = @"";
-        item.title = @"途牛旅游网";
-        item.desc = @"课程21";
-        item.content = @"途牛旅游网-中国知名的在线旅游预订平台，提供北京、上海、广州、深圳等64个城市出发的旅游度假产品预订服务，包括跟团游、自助游、自驾游、邮轮、公司旅游、酒店以及景区门票预订等，产品全面，价格透明，全年365天4007-999-999电话预订，提供丰富的后续服务和保障。";
-        [secondArr addObject:item];
+    NSArray *select_company = [data objectForKey:@"select_company"];
+    if (![select_company isKindOfClass:[NSNull class]]) {
+        for (NSDictionary *dic in select_company) {
+            EnterpriseItem *item = [[EnterpriseItem alloc] init];
+            [item setValuesForKeysWithDictionary:dic];
+            [_companyArray addObject:item];
+        }
     }
-    [_results addObject:secondArr];
+    if (_companyArray.count!=0) {
+        [_results addObject:_companyArray];
+    }
 
-    NSMutableArray *thirdArr = [[NSMutableArray alloc] initWithCapacity:0];
-    for (int i = 0 ; i< 10 ; i++) {
-        FileItem *item = [[FileItem alloc] init];
-        item.image = @"";
-        item.title = @"与大师有约门票";
-        item.desc = @"王大妈老师";
-        [thirdArr addObject:item];
+    NSArray *select_subject = [data objectForKey:@"select_subject"];
+    if (![select_subject isKindOfClass:[NSNull class]]) {
+        for (NSDictionary *dic in select_subject) {
+            FileItem *item = [[FileItem alloc] init];
+            [item setValuesForKeysWithDictionary:dic];
+            [_subjectArray addObject:item];
+        }
     }
-    [_results addObject:thirdArr];
+    if (_subjectArray.count!=0) {
+        [_results addObject:_subjectArray];
+    }
+    
 
     if (_resultTableView.hidden) {
         _tableView.hidden = YES;
@@ -321,40 +365,77 @@
         }
     //搜索列表
     }else{
-        //视频
+        static NSString *identify3 = @"identify3";
+        static NSString *identify4 = @"identify4";
+        static NSString *identify5 = @"identify5";
+
         if (indexPath.section == 0) {
-            static NSString *identify3 = @"identify3";
-            FileCell *cell = [tableView dequeueReusableCellWithIdentifier:identify3];
-            if (cell == nil) {
-                cell = [[FileCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify3];
+            //视频、企业、文件三者都有
+            if (_results.count==3) {
+                FileCell *cell = [tableView dequeueReusableCellWithIdentifier:identify3];
+                if (cell == nil) {
+                    cell = [[FileCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify3];
+                }
+                NSMutableArray *array1 = [_results objectAtIndex:indexPath.section];
+                FileItem *item = [array1 objectAtIndex:indexPath.row];
+                [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:[UIImage imageNamed:@""]];
+                cell.titleLabel.text = item.title;
+                cell.desLabel.text = item.content;
+                
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                return cell;
+
+            }else if(_results.count==2){
+                //无企业或课件搜索结果 第一组为视频搜索结果
+                if (_companyArray.count==0||_subjectArray.count==0) {
+                    FileCell *cell = [tableView dequeueReusableCellWithIdentifier:identify3];
+                    if (cell == nil) {
+                        cell = [[FileCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify3];
+                    }
+                    NSMutableArray *array1 = [_results objectAtIndex:indexPath.section];
+                    FileItem *item = [array1 objectAtIndex:indexPath.row];
+                    [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:[UIImage imageNamed:@""]];
+                    cell.titleLabel.text = item.title;
+                    cell.desLabel.text = item.content;
+                    
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    return cell;
+
+                }
+                //无视频搜索结果 第一组为企业搜索结果
+                if (_videoArray.count==0) {
+                    EnterpriseCell *cell = [tableView dequeueReusableCellWithIdentifier:identify4];
+                    if (cell == nil) {
+                        cell = [[EnterpriseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify4];
+                    }
+                    NSMutableArray *array2 = [_results objectAtIndex:indexPath.section];
+                    EnterpriseItem *item = [array2 objectAtIndex:indexPath.row];
+                    cell.imgView.backgroundColor = [UIColor redColor];
+                    cell.titleLabel.text = item.companyname;
+                    cell.littleLabel.text = [NSString stringWithFormat:@"课程%@",item.scorenums];
+                    cell.contentLabel.text = item.introduce;
+                    
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    return cell;
+                }
             }
-            NSMutableArray *array1 = [_results objectAtIndex:indexPath.section];
-            FileItem *item = [array1 objectAtIndex:indexPath.row];
-            cell.imgView.backgroundColor = [UIColor redColor];
-            cell.titleLabel.text = item.title;
-            cell.desLabel.text = item.desc;
-            
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            return cell;
-        //企业
+         //企业
         }else if(indexPath.section == 1){
-            static NSString *identify4 = @"identify4";
             EnterpriseCell *cell = [tableView dequeueReusableCellWithIdentifier:identify4];
             if (cell == nil) {
                 cell = [[EnterpriseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify4];
             }
             NSMutableArray *array2 = [_results objectAtIndex:indexPath.section];
-            EnterpriseItem *item = [array2 objectAtIndex:indexPath.section];
+            EnterpriseItem *item = [array2 objectAtIndex:indexPath.row];
             cell.imgView.backgroundColor = [UIColor redColor];
-            cell.titleLabel.text = item.title;
-            cell.littleLabel.text = item.desc;
-            cell.contentLabel.text = item.content;
+            cell.titleLabel.text = item.companyname;
+            cell.littleLabel.text = [NSString stringWithFormat:@"课程%@",item.scorenums];
+            cell.contentLabel.text = item.introduce;
             
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             return cell;
         //课件
         }else{
-            static NSString *identify5 = @"identify5";
             FileCell *cell = [tableView dequeueReusableCellWithIdentifier:identify5];
             if (cell == nil) {
                 cell = [[FileCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify5];
@@ -363,7 +444,7 @@
             FileItem *item = [array3 objectAtIndex:indexPath.row];
             cell.imgView.backgroundColor = [UIColor redColor];
             cell.titleLabel.text = item.title;
-            cell.desLabel.text = item.desc;
+            cell.desLabel.text = item.content;
             
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             return cell;
@@ -449,6 +530,7 @@
     }
         return 0;
 }
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {

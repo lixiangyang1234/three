@@ -42,6 +42,7 @@
 		04C73A351ACE7CB5007B1283 /* ResultHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C73A331ACE7CB5007B1283 /* ResultHeaderView.m */; };
 		04C743AB1AD79E1B007D772B /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C743A81AD79E1B007D772B /* SSKeychain.m */; };
 		04C743AC1AD79E1B007D772B /* SSKeychainQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C743AA1AD79E1B007D772B /* SSKeychainQuery.m */; };
+		04C91A621ADB5B1C00D1B5ED /* PatternDetailItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C91A611ADB5B1C00D1B5ED /* PatternDetailItem.m */; };
 		04CC33201ACA802D008A85B5 /* VideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CC331F1ACA802D008A85B5 /* VideoViewController.m */; };
 		04CC332A1ACA8042008A85B5 /* EnterpriseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CC33231ACA8042008A85B5 /* EnterpriseCell.m */; };
 		04CC332B1ACA8042008A85B5 /* FileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CC33251ACA8042008A85B5 /* FileCell.m */; };
@@ -270,6 +271,8 @@
 		04C743A81AD79E1B007D772B /* SSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychain.m; sourceTree = "<group>"; };
 		04C743A91AD79E1B007D772B /* SSKeychainQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSKeychainQuery.h; sourceTree = "<group>"; };
 		04C743AA1AD79E1B007D772B /* SSKeychainQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychainQuery.m; sourceTree = "<group>"; };
+		04C91A601ADB5B1C00D1B5ED /* PatternDetailItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PatternDetailItem.h; sourceTree = "<group>"; };
+		04C91A611ADB5B1C00D1B5ED /* PatternDetailItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PatternDetailItem.m; sourceTree = "<group>"; };
 		04CC331E1ACA802D008A85B5 /* VideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoViewController.h; sourceTree = "<group>"; };
 		04CC331F1ACA802D008A85B5 /* VideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoViewController.m; sourceTree = "<group>"; };
 		04CC33221ACA8042008A85B5 /* EnterpriseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnterpriseCell.h; sourceTree = "<group>"; };
@@ -1139,6 +1142,8 @@
 			children = (
 				04CC33341ACA8072008A85B5 /* PatternItem.h */,
 				04CC33351ACA8072008A85B5 /* PatternItem.m */,
+				04C91A601ADB5B1C00D1B5ED /* PatternDetailItem.h */,
+				04C91A611ADB5B1C00D1B5ED /* PatternDetailItem.m */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -1746,6 +1751,7 @@
 				04DECE261AD67DAF00EC53D2 /* AFHTTPRequestOperationManager.m in Sources */,
 				55C24F901ACB8EE500BFEBED /* YYSearchButton.m in Sources */,
 				04B9A28F1AD3E4BE009446D1 /* UnfinishedCell.m in Sources */,
+				04C91A621ADB5B1C00D1B5ED /* PatternDetailItem.m in Sources */,
 				55B714FD1ACCC2DA00959DF8 /* BaseViewController.m in Sources */,
 				04DECE281AD67DAF00EC53D2 /* AFNetworkReachabilityManager.m in Sources */,
 				55B828011AC53873008EAFA4 /* KDCycleBannerView.m in Sources */,
@@ -1934,7 +1940,7 @@
 				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/ThreeMan/class/other/Macro/ThreeMan.pch";
 				INFOPLIST_FILE = ThreeMan/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1962,7 +1968,7 @@
 				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/ThreeMan/class/other/Macro/ThreeMan.pch";
 				INFOPLIST_FILE = ThreeMan/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

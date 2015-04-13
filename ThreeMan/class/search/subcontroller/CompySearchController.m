@@ -42,10 +42,10 @@
 {
     for (int i = 0 ; i< 10 ; i++) {
         EnterpriseItem *item = [[EnterpriseItem alloc] init];
-        item.image = @"";
-        item.title = @"途牛旅游网";
-        item.desc = @"课程21";
-        item.content = @"途牛旅游网-中国知名的在线旅游预订平台，提供北京、上海、广州、深圳等64个城市出发的旅游度假产品预订服务，包括跟团游、自助游、自驾游、邮轮、公司旅游、酒店以及景区门票预订等，产品全面，价格透明，全年365天4007-999-999电话预订，提供丰富的后续服务和保障。";
+//        item.image = @"";
+//        item.title = @"途牛旅游网";
+//        item.desc = @"课程21";
+//        item.content = @"途牛旅游网-中国知名的在线旅游预订平台，提供北京、上海、广州、深圳等64个城市出发的旅游度假产品预订服务，包括跟团游、自助游、自驾游、邮轮、公司旅游、酒店以及景区门票预订等，产品全面，价格透明，全年365天4007-999-999电话预订，提供丰富的后续服务和保障。";
         [_dataArray addObject:item];
     }
     [_tableView reloadData];
@@ -65,10 +65,10 @@
     }
     EnterpriseItem *item = [_dataArray objectAtIndex:indexPath.row];
     
-    cell.imgView.backgroundColor = [UIColor redColor];
-    cell.titleLabel.text = item.title;
-    cell.littleLabel.text = item.desc;
-    cell.contentLabel.text = item.content;
+//    cell.imgView.backgroundColor = [UIColor redColor];
+//    cell.titleLabel.text = item.title;
+//    cell.littleLabel.text = item.desc;
+//    cell.contentLabel.text = item.content;
 
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;

@@ -1,14 +1,14 @@
 //
-//  EnterpriseItem.m
+//  PatternDetailItem.m
 //  ThreeMan
 //
-//  Created by tianj on 15/3/30.
+//  Created by tianj on 15/4/13.
 //  Copyright (c) 2015年 ___普马克___. All rights reserved.
 //
 
-#import "EnterpriseItem.h"
+#import "PatternDetailItem.h"
 
-@implementation EnterpriseItem
+@implementation PatternDetailItem
 
 - (void)setValue:(id)value forUndefinedKey:(NSString *)key
 {
