@@ -8,7 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
+#import "TitleButtonModel.h"
+
 @interface categoryView : UIView
+
+
+@property (nonatomic,assign) int selectIndex;
+@property (nonatomic,assign) int titlseSelectIndex;
+
+
+@property (nonatomic,retain) TitleButtonModel *titleBModle;
+
+
+
 @property (nonatomic, strong) NSArray       *titleArray;
 @property (nonatomic, strong) NSArray       *categoryArray;
 @property (nonatomic) CGPoint               showPoint;
@@ -20,11 +32,18 @@
 @property (nonatomic, strong) UIButton      *categoryTitleBtnSelected;
 
 @property (nonatomic, copy) UIColor         *borderColor;
-@property(nonatomic,strong)UIButton *selectedIndex;
+@property(nonatomic,retain)UIButton         *selectedButton;
+
+@property (nonatomic,assign) BOOL           isSecondSelected;
+
+
+
 @property (nonatomic, copy) void (^selectRowAtIndex)(NSInteger index);
+
 
 -(id)initWithPoint:(CGPoint)point titles:(NSArray *)titles categoryTitles:(NSArray *)category  ;
 -(void)show;
 -(void)dismiss;
 -(void)dismiss:(BOOL)animated;
+
 @end

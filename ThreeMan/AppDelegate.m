@@ -25,7 +25,8 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     
-    
+    [[DBTool shareDBToolClass] openDB];
+
     
     
     //获取用户uuid

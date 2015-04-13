@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RootNavView.h"
-@interface NineBlockController : UIViewController<RootNavViewDelegate>
-@property(nonatomic,strong)RootNavView *rootNavView;
+//#import "RootNavView.h"
+@interface NineBlockController : LeftTitleController
+//@property(nonatomic,strong)RootNavView *rootNavView;
 @end

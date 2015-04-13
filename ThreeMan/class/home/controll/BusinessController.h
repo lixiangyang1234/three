@@ -8,5 +8,5 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BusinessController : UIViewController
+@interface BusinessController : LeftTitleController
 @end

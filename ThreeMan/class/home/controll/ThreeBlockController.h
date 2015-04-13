@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ThreeBlockController : UIViewController
+@interface ThreeBlockController : LeftTitleController
 @property(nonatomic,strong)UIButton *selectedIntem;
 @end

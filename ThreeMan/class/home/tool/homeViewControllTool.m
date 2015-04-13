@@ -24,7 +24,7 @@
 
         
         
-        NSLog(@"--------%@",dict);
+//        NSLog(@"--------%@",dict);
         success (statuses);
     } failure:^(NSError *error) {
         

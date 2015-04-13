@@ -8,5 +8,5 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CompanyHomeControll : UIViewController
+@interface CompanyHomeControll : LeftTitleController
 @end
