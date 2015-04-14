@@ -10,8 +10,12 @@
 
 @interface FileItem : NSObject
 
-@property (nonatomic,strong) NSString *image;
+@property (nonatomic,strong) NSString *img;
 @property (nonatomic,strong) NSString *title;
-@property (nonatomic,strong) NSString *desc;
+@property (nonatomic,strong) NSString *content;
+@property (nonatomic,strong) NSString *uid;
+
+- (void)setValue:(id)value forUndefinedKey:(NSString *)key;
+
 
 @end

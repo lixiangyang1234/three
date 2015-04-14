@@ -15,9 +15,8 @@
 #import "MBProgressHUD.h"
 #import "ShareView.h"
 #import "UIButton+WebCache.h"
-#import "LeftTitleController.h"
-#import "DBTool.h"
-#import "NetFailView.h"
+#import "RemindView.h"
+
 //#import "UIImageView+WebCache.h"
 
 // Include any system framework and library headers here that should be included in all compilation units.

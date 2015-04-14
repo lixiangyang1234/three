@@ -10,10 +10,12 @@
 
 @interface EnterpriseItem : NSObject
 
-@property (nonatomic,strong) NSString *image;
-@property (nonatomic,strong) NSString *title;
-@property (nonatomic,strong) NSString *desc;
-@property (nonatomic,strong) NSString *content;
+@property (nonatomic,strong) NSString *logo;
+@property (nonatomic,strong) NSString *companyname;
+@property (nonatomic,strong) NSString *scorenums;
+@property (nonatomic,strong) NSString *introduce;
+@property (nonatomic,strong) NSString *uid;
 
+- (void)setValue:(id)value forUndefinedKey:(NSString *)key;
 
 @end

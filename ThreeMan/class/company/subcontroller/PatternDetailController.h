@@ -10,4 +10,6 @@
 
 @interface PatternDetailController : LeftTitleController
 
+@property (nonatomic,copy) NSString *uid;
+
 @end

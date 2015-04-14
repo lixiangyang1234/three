@@ -80,7 +80,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    PatternItem *item = [_dataArray objectAtIndex:indexPath.row];
     PatternDetailController *detail = [[PatternDetailController alloc] init];
+    detail.uid = item.uid;
     [self.nav pushViewController:detail animated:YES];
 }
 
