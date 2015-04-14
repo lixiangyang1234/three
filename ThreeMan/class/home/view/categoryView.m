@@ -27,7 +27,6 @@
     {
         self.borderColor =HexRGB(0xeaebec);
         self.backgroundColor = [UIColor clearColor];
-        
     }
     return self;
 }
@@ -42,7 +41,7 @@
         self.categoryArray = category;
         
         self.frame = [self getViewFrame];
-        [self addSubview:self.titleBtn];
+        [self getButtons];
         
     }
     return self;
@@ -52,16 +51,13 @@
 {
     CGRect frame = CGRectZero;
     
-   
+    
     frame.size.height = [self.titleArray count] * ROW_HEIGHT + SPACE + kArrowHeight;
-
     
     
     for (NSString *title in self.titleArray)
     {
         CGFloat width =  kWidth-140;
-        
-        
         
         frame.size.width = MAX(width, frame.size.width);
     }
@@ -146,123 +142,266 @@
 
 #pragma mark -UIButton
 
--(UIButton *)titleBtn
+- (void)getButtons
 {
-    if (_titleBtn != nil)
-    {
-        return _titleBtn;
-    }
     
     UIView *viewLine =[[UIView alloc]init];
     viewLine.frame=CGRectMake(0, 20, kHeight, kHeight);
     [self addSubview:viewLine];
-    viewLine.backgroundColor =HexRGB(0xeaebec);
-    viewLine.backgroundColor =[UIColor blackColor];
+    viewLine.backgroundColor = HexRGB(0xeaebec);
+    viewLine.backgroundColor = [UIColor blackColor];
     viewLine.alpha =.6;
     
-    for (int i=0; i<4; i++) {
+    
+    for (int i=0; i<4; i++)
+    {
+        _titleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _titleBtn.frame=CGRectMake(0, 54+i%4*(44)-43, kWidth, 44);
         
-        self.titleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.titleBtn.frame=CGRectMake(0, 54+i%4*(44)-43, kWidth, 44);
+        [_titleBtn setTitleColor:HexRGB(0x808080) forState:UIControlStateNormal];
+        [_titleBtn setTitleColor:HexRGB(0x178ac5) forState:UIControlStateSelected];
         
-        [self.titleBtn setTitleColor:HexRGB(0x808080) forState:UIControlStateNormal];
-        self.selectedIndex =self.titleBtn;
-
-//        self.titleBtn.selected =YES;
-        [self.titleBtn setTitle:[self.titleArray objectAtIndex:i] forState:UIControlStateNormal];
-        [self.titleBtn setBackgroundColor:[UIColor whiteColor]];
-        [self addSubview:self.titleBtn];
-        self.titleBtn.tag =100+i;
-        self.titleBtn.contentHorizontalAlignment =UIControlContentHorizontalAlignmentLeft;
-        if (i==0) {
+        
+        [_titleBtn setTitle:[self.titleArray objectAtIndex:i] forState:UIControlStateNormal];
+        [_titleBtn setBackgroundColor:[UIColor whiteColor]];
+        [self addSubview:_titleBtn];
+        _titleBtn.tag =100+i;
+        _titleBtn.contentHorizontalAlignment =UIControlContentHorizontalAlignmentLeft;
+        
+        [_titleBtn addTarget:self action:@selector(titleBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        
+        
+        if (i==0)
+        {
             UIImageView *jiaoLine =[[UIImageView alloc]initWithFrame:CGRectMake(-10, -8, kWidth+10, 20)];
-            [self.titleBtn addSubview:jiaoLine];
+            [_titleBtn addSubview:jiaoLine];
             jiaoLine.image =[UIImage imageNamed:@"jiaoLine"];
             jiaoLine.backgroundColor =[UIColor whiteColor];
-            [self.titleBtn setTitleColor:HexRGB(0x178ac5) forState:UIControlStateNormal];
-
-            self.titleBtnSelected =self.titleBtn;
+            
+            
         }
-        if (i==1) {
-            self.titleBtn.frame=CGRectMake(0, 54+i%5*(44)-43, kWidth, 44);
-            [self.titleBtn addTarget:self action:@selector(categoryBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-            [self.titleBtn setImage:[UIImage imageNamed:@"lower"] forState:UIControlStateNormal];
-            [self.titleBtn setImage:[UIImage imageNamed:@"lower_rep"] forState:UIControlStateSelected];
-            self.titleBtn.imageEdgeInsets =UIEdgeInsetsMake(0, 150, 0, 10);
-        }else {
-            [self.titleBtn addTarget:self action:@selector(titleBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-
+        if (i==1)
+        {
+            _titleBtn.frame=CGRectMake(0, 54+i%5*(44)-43, kWidth, 44);
+            [_titleBtn setImage:[UIImage imageNamed:@"lower"] forState:UIControlStateNormal];
+            [_titleBtn setImage:[UIImage imageNamed:@"lower_rep"] forState:UIControlStateSelected];
+            _titleBtn.imageEdgeInsets =UIEdgeInsetsMake(0, 150, 0, 10);
         }
+        
+        
         
         UIView *viewLine =[[UIView alloc]init];
         viewLine.frame=CGRectMake(0, 43, kWidth, 1);
-        [self.titleBtn addSubview:viewLine];
+        [_titleBtn addSubview:viewLine];
         viewLine.backgroundColor =HexRGB(0xeaebec);
-//          viewLine.backgroundColor =[UIColor redColor];
+        //          viewLine.backgroundColor =[UIColor redColor];
+        
+        
         
     }
-       return _titleBtn;
-}
--(void)categoryBtnClick:(UIButton *)btn{
-    [btn setTitleColor:HexRGB(0x178ac5) forState:UIControlStateNormal];
-    btn.selected=YES;
-    for (int i=0; i<7; i++) {
-        
-        self.categoryTitleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.categoryTitleBtn setTitleColor:HexRGB(0x178ac5) forState:UIControlStateSelected];
-
-        [self.categoryTitleBtn addTarget:self action:@selector(titleBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-        self.categoryTitleBtn.frame=CGRectMake(210, 55+i%7*(44)-43, 150, 44);
-        if (i==4||i==5||i==6||i==7) {
-            self.categoryTitleBtn.frame=CGRectMake(0, 54+i%8*(44)-43, kWidth, 44);
-            self.categoryTitleBtn.titleEdgeInsets =UIEdgeInsetsMake(0, kWidth-110, 0, 20);
-
-        }
-
-
-        [self.categoryTitleBtn setTitle:[self.categoryArray objectAtIndex:i] forState:UIControlStateNormal];
-        [self.categoryTitleBtn setBackgroundColor:[UIColor whiteColor]];
-        [self.categoryTitleBtn setTitleColor:HexRGB(0x808080) forState:UIControlStateNormal];
-        
-        self.categoryTitleBtn.tag =10+i;
-        self.categoryTitleBtn.contentHorizontalAlignment =UIControlContentHorizontalAlignmentLeft;
-        
-        
-        UIView *viewLine =[[UIView alloc]init];
-        viewLine.frame=CGRectMake(0, 42, kWidth, 1);
-        [self.categoryTitleBtn addSubview:viewLine];
-        viewLine.backgroundColor =HexRGB(0xeaebec);
-//        viewLine.backgroundColor =[UIColor redColor];
-        [self addSubview:self.categoryTitleBtn];
-        self.frame =[self getViewFrameCategory];
-
-    }
-
-}
--(void)titleBtnClick:(UIButton *)index{
     
-    index.selected = YES;
-//    NSLog(@"%d----%d",self.titleBtnSelected.tag,self.titleBtn.tag);
-//    self.selectedIndex =index;
-//    if (self.titleBtnSelected.tag!=index.tag) {
-//        
-//        [self.titleBtn setTitleColor:HexRGB(0x808080) forState:UIControlStateNormal];
-//        [index setTitleColor:HexRGB(0x178ac5) forState:UIControlStateNormal];
-//        self.titleBtnSelected.tag =index.tag;
-//        
-//    }
+    
+    NSArray *array = [[DBTool shareDBToolClass] getNewTitleButtonArray];
+    
+    NSLog(@"----> %@",array);
+    
+    for (int j=0; j < self.titleArray.count; j++)
+    {
+        if (array.count == 0)
+        {
+            _selectIndex = 100;
+            
+            NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:self.titleArray[j],@"t_title",[NSString stringWithFormat:@"%d",100+j],@"t_tag",@"",@"c_title",@"",@"c_tag", nil];
+            
+            
+            [[DBTool shareDBToolClass] saveTitleButtonWithEntity:dict];
+            
+        }
+        else
+        {
+            _titleBModle = [array objectAtIndex:0];
+            _selectIndex = [_titleBModle.t_tag intValue];
+        }
+        
+        
+        
+        if (j == _selectIndex-100)
+        {
+            _selectedButton = (UIButton *)[self viewWithTag:_selectIndex];
+            _selectedButton.selected = YES;
+            
+            
+            if (_selectIndex == 101)
+            {
+                _isSecondSelected = YES;
+                [self categoryBtnClick:_selectedButton withCTag:_titleBModle.c_tag];
+            }
+        }
+        
+        
+    }
+    
+    
+    
+    
+    
+    
+    //    return _titleBtn;
+}
+- (void)categoryBtnClick:(UIButton *)btn withCTag:(NSString *)c_tag
+{
+    
+    if (self.categoryTitleBtn)
+    {
+        
+    }
+    else
+    {
+        for (int i=0; i<7; i++)
+        {
+            
+            self.categoryTitleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+            
+            [self.categoryTitleBtn setTitleColor:HexRGB(0x178ac5) forState:UIControlStateSelected];
+            [_categoryTitleBtn setTitleColor:HexRGB(0x808080) forState:UIControlStateNormal];
+            
+            [self.categoryTitleBtn addTarget:self action:@selector(categoryTitleBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+            self.categoryTitleBtn.frame=CGRectMake(210, 55+i%7*(44)-43, 150, 44);
+            if (i==4||i==5||i==6||i==7)
+            {
+                self.categoryTitleBtn.frame=CGRectMake(0, 54+i%8*(44)-43, kWidth, 44);
+                self.categoryTitleBtn.titleEdgeInsets =UIEdgeInsetsMake(0, kWidth-110, 0, 20);
+                
+            }
+            
+            
+            [self.categoryTitleBtn setTitle:[self.categoryArray objectAtIndex:i] forState:UIControlStateNormal];
+            [self.categoryTitleBtn setBackgroundColor:[UIColor whiteColor]];
+            
+            self.categoryTitleBtn.tag =10+i;
+            self.categoryTitleBtn.contentHorizontalAlignment =UIControlContentHorizontalAlignmentLeft;
+            
+            
+            UIView *viewLine =[[UIView alloc]init];
+            viewLine.frame=CGRectMake(0, 42, kWidth, 1);
+            [self.categoryTitleBtn addSubview:viewLine];
+            viewLine.backgroundColor =HexRGB(0xeaebec);
+            //        viewLine.backgroundColor =[UIColor redColor];
+            [self addSubview:self.categoryTitleBtn];
+            self.frame =[self getViewFrameCategory];
+            
+            
+            
+            
+        }
+        
+        
+        
+        NSArray *array = [[DBTool shareDBToolClass] getNewTitleButtonArray];
+        
+        
+        for (int j=0; j<7; j++)
+        {
+            if (array.count != 0)
+            {
+                _titlseSelectIndex = [c_tag intValue];
+            }
+            else
+            {
+                _titlseSelectIndex = 10;
+            }
+            
+            if (j == _titlseSelectIndex-10)
+            {
+                _titleBtnSelected = (UIButton *)[self viewWithTag:_titlseSelectIndex];
+                _titleBtnSelected.selected = YES;
+            }
+            
+            
+        }
+    }
+    
+}
+
+- (void)titleBtnClick:(UIButton *)index
+{
+    _selectedButton.selected = !_selectedButton.selected;
+    
+    _selectedButton = index;
+    _selectedButton.selected = YES;
+    
+    
+    switch (index.tag)
+    {
+        case 100:
+        {
+            
+        }
+            break;
+            
+        case 101:
+        {
+            [self categoryBtnClick:_selectedButton withCTag:@"10"];
+        }
+            break;
+            
+        case 102:
+        {
+            
+        }
+            break;
+            
+        case 103:
+        {
+            
+        }
+            break;
+            
+            
+        default:
+            break;
+    }
+    
     
     if (self.selectRowAtIndex)
     {
-        
-        
         self.selectRowAtIndex(index.tag);
     }
-    [self dismiss:YES];
+    
+    if (index.tag != 101)
+    {
+        [[DBTool shareDBToolClass] updateSelectedStyleByTTag:[NSString stringWithFormat:@"%ld",(long)_selectedButton.tag] withCTag:@""];
+        [self dismiss:YES];
+    }
+    else
+    {
+        [[DBTool shareDBToolClass] updateSelectedStyleByTTag:[NSString stringWithFormat:@"%ld",(long)_selectedButton.tag] withCTag:@"10"];
+    }
+    
+    NSLog(@"%ld",(long)_selectedButton.tag);
+    
+    
+    
+    
     
 }
-#pragma mark - UITableView DataSource
 
+
+
+- (void)categoryTitleBtnClick:(UIButton *)sender
+{
+    _titleBtnSelected.selected = !_titleBtnSelected.selected;
+    
+    _titleBtnSelected = sender;
+    _titleBtnSelected.selected = YES;
+    
+    [[DBTool shareDBToolClass] updateSelectedStyleByTTag:[NSString stringWithFormat:@"%ld",(long)_selectedButton.tag] withCTag:[NSString stringWithFormat:@"%ld",(long)_titleBtnSelected.tag]];
+    
+    
+    [self dismiss:YES];
+}
+
+#pragma mark - UITableView DataSource
 
 
 - (void)drawRect:(CGRect)rect
@@ -286,7 +425,6 @@
     for (NSString *title in self.titleArray)
     {
         CGFloat width =  kWidth-140;
-        
         
         
         frame.size.width = MAX(width, frame.size.width);
@@ -317,5 +455,7 @@
     
     return frame;
 }
+
+
 
 @end

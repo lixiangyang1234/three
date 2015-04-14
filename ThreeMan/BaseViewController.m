@@ -44,13 +44,13 @@
 - (void)loadNavItems
 {
     UIButton * searchItem =[UIButton buttonWithType:UIButtonTypeCustom];
-    searchItem.frame =CGRectMake(kWidth-50-40, 8, 44, 44);
+    searchItem.frame =CGRectMake(kWidth-150, 0, 44, 44);
     [searchItem setImage:[UIImage imageNamed:@"nav_search"] forState:UIControlStateNormal];
     [searchItem addTarget:self action:@selector(search) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *item1= [[UIBarButtonItem alloc] initWithCustomView:searchItem];
     
     UIButton * menuItem =[UIButton buttonWithType:UIButtonTypeCustom];
-    menuItem.frame =CGRectMake(kWidth-50, 8, 44, 44);
+    menuItem.frame =CGRectMake(searchItem.frame.origin.x+searchItem.frame.size.width-4, 0, 44, 44);
     [menuItem setImage:[UIImage imageNamed:@"nav_more"] forState:UIControlStateNormal];
     UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithCustomView:menuItem];
     [menuItem addTarget:self action:@selector(navItemRight:) forControlEvents:UIControlEventTouchUpInside];

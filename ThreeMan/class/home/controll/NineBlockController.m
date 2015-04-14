@@ -25,9 +25,7 @@
     [self addScrollView];
 
     [self addCateGoryButton];
-    self.rootNavView =[[RootNavView alloc]initWithFrame:CGRectMake(0, 0, kWidth, 44) withTitle:@"九大模块" withType:2];
-    self.rootNavView.Rootdelegate =self;
-    self.navigationItem.titleView = self.rootNavView;
+   
     
 }
 -(void)addScrollView

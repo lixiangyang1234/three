@@ -9,5 +9,6 @@
 #import "RootViewController.h"
 
 @interface CourseViewController : RootViewController
+@property(nonatomic,strong)NSMutableArray *courseArray;
 
 @end

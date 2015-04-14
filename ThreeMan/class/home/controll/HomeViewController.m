@@ -229,18 +229,32 @@ static NSString * const reuseIdentifier = @"Cell";
 //        [needBtn setImage:imgName forState:UIControlStateNormal];
         
         [needBtn setImageWithURL:[NSURL URLWithString:homeModel.categoryImgurl] forState:UIControlStateNormal placeholderImage:placeHoderImage];
-        NSLog(@"sssssssss%@---%@",homeModel.categoryImgurl,homeModel.categoryName);
         [needBtn setTitle:homeModel.categoryName forState:UIControlStateNormal];
         [needBtn setTitleColor:HexRGB(0x404040) forState:UIControlStateNormal];
         needBtn.backgroundColor =[UIColor whiteColor];
+        
+        
+        UILabel *  needLabel =[[UILabel alloc]init];
+        needLabel.backgroundColor =[UIColor clearColor];
+        needLabel.text =homeModel.categorySubTitle;
+        NSLog(@"-----%@",homeModel.categorySubTitle);
+        [self.backScrollView addSubview:needLabel];
+        needLabel.font =[UIFont systemFontOfSize:PxFont(16)];
+        needLabel.textColor =HexRGB(0x9a9a9a);
+        needLabel.textAlignment=NSTextAlignmentRight;
+        
         if (i==0) {
             needBtn.frame =CGRectMake(0, needHeight+40, kWidth-150, 90);
             [needBtn .titleLabel setFont:[UIFont systemFontOfSize:PxFont(25)]];
             needBtn.titleEdgeInsets =UIEdgeInsetsMake(0, 0, 30, 0);
+            needLabel.frame =CGRectMake(0, needHeight+80, kWidth-160, 20);
 
             
         }else if (i==1){
             needBtn.frame =CGRectMake(kWidth-149, needHeight+40, 150, 44);
+            needBtn.titleEdgeInsets =UIEdgeInsetsMake(0, 0, 20, 0);
+            needLabel.frame =CGRectMake(kWidth-150, needHeight+60, 130, 20);
+
         }else if (i==2){
             needBtn.frame =CGRectMake(kWidth-149, needHeight+40+45, 150, 45);
             needBtn.titleEdgeInsets =UIEdgeInsetsMake(0, -80, 0, 0);
@@ -253,6 +267,8 @@ static NSString * const reuseIdentifier = @"Cell";
         [needBtn addTarget:self action:@selector(needBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         
         needBtn.tag =i+NEEDTAG;
+        
+        
         
     }
     
@@ -272,7 +288,7 @@ static NSString * const reuseIdentifier = @"Cell";
         UIButton* businessBtn =[UIButton buttonWithType:UIButtonTypeCustom];
         businessBtn.frame =CGRectMake(i%2*(kWidth/2+1),NEEDH+ BANNER+EIGHTH+125+i/2*61, (kWidth)/2, 60 );
         [self.backScrollView addSubview:businessBtn];
-        businessBtn.titleEdgeInsets =UIEdgeInsetsMake(0, -(kWidth)/2-20, 0, 0);
+        businessBtn.titleEdgeInsets =UIEdgeInsetsMake(-10, -(kWidth)/3, 0, 0);
         businessBtn.imageEdgeInsets =UIEdgeInsetsMake(0, (kWidth)/4, 0, 0);
         [businessBtn setImageWithURL:[NSURL URLWithString:homeModel.tradeImgurl] forState:UIControlStateNormal placeholderImage:placeHoderImage];
 //        [businessBtn setImage:[NSString stringWithFormat:homeModel.tradeImgurl] forState:UIControlStateNormal];
@@ -287,7 +303,7 @@ static NSString * const reuseIdentifier = @"Cell";
         
         UILabel *subTitleLabel =[[UILabel alloc]initWithFrame:CGRectMake(45+i%2*(kWidth/2), NEEDH+BANNER+EIGHTH+138+i/2*60, kWidth/2, 60)];
         [self.backScrollView addSubview:subTitleLabel];
-//        subTitleLabel.text =subTitleArray[i];
+        subTitleLabel.text =homeModel.tradeSubTitle;
         [subTitleLabel setTextColor:HexRGB(0x9a9a9a)];
         subTitleLabel.font =[UIFont systemFontOfSize:PxFont(16)];
         subTitleLabel.backgroundColor =[UIColor clearColor];

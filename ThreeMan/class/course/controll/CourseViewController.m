@@ -8,6 +8,8 @@
 
 #import "CourseViewController.h"
 #import "CourseViewCell.h"
+#import "CourseViewVCTool.h"
+#import "CourseViewVCModel.h"
 @interface CourseViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property(nonatomic,strong)UITableView *tableView;
@@ -18,13 +20,26 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self.view setBackgroundColor:HexRGB(0xe0e0e0)];
-    [self addTableView];
+    _courseArray =[[NSMutableArray alloc]initWithCapacity:0];
+    
+    [self addLoadStatus];
+}
+-(void)addLoadStatus{
+    [CourseViewVCTool statusesWithCourseSuccess:^(NSMutableArray *statues) {
+        NSLog(@"%@",statues);
+//        CourseViewVCModel *courseModel =[[CourseViewVCModel alloc]initWithDictionaryForCourse:statues];
+        [_courseArray addObjectsFromArray:statues];
+        [self addTableView];
+        [_tableView reloadData];
+    } failure:^(NSError *error) {
+        
+    }];
 }
 -(void)addTableView{
-    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 6, kWidth, kHeight-64-6-40) style:UITableViewStylePlain];
+    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 6, kWidth, kHeight-64-6) style:UITableViewStylePlain];
     _tableView.delegate =self;
     _tableView.dataSource =self;
-    [_tableView setBackgroundColor:HexRGB(0xe0e0e0)];
+    _tableView.backgroundColor =[UIColor whiteColor];
     
     _tableView.showsHorizontalScrollIndicator = NO;
     _tableView.showsVerticalScrollIndicator = NO;
@@ -39,7 +54,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 7;
+    return _courseArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -50,10 +65,13 @@
         cell =[[CourseViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndexfider];
         [cell setBackgroundColor:HexRGB(0xe0e0e0)];
         cell.selectionStyle =UITableViewCellSelectionStyleNone;
+        CourseViewVCModel *courseModel =[_courseArray objectAtIndex:indexPath.row];
+        [cell.headerImage setImageWithURL:[NSURL URLWithString:courseModel.courseHeaderImage]placeholderImage:placeHoderImage];
+        
+        
     }
-    cell.headerImage .image =[UIImage imageNamed:[NSString stringWithFormat:@"threeMan_img%ld",(long)indexPath.row]];
-    NSArray *titleArray =@[@"了解企业",@"了解领袖",@"了解团队",@"了解产品",@"您的需求",@"课程风采",@"服务展示"];
-    cell.titleLabel.text =[titleArray objectAtIndex:indexPath.row];
+    
+    
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

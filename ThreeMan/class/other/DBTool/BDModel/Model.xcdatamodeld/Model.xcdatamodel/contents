@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6751" systemVersion="13F1066" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="TitleButtonModel" representedClassName="TitleButtonModel" syncable="YES">
+        <attribute name="c_tag" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="c_title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="t_isselected" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="t_tag" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="t_title" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="TitleButtonModel" positionX="-54" positionY="-9" width="128" height="120"/>
+    </elements>
+</model>

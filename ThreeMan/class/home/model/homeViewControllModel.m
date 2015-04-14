@@ -9,7 +9,7 @@
 #import "homeViewControllModel.h"
 
 @implementation homeViewControllModel
-@synthesize imgurl,courseImgurl,courseName,tradeImgurl,tradeName,categoryImgurl,categoryName;
+@synthesize imgurl,courseImgurl,courseName,tradeImgurl,tradeName,categoryImgurl,categoryName,tradeSubTitle,categorySubTitle;
 - (instancetype)initWithDictionaryForHomeAds:(NSDictionary *)dict{
     if ([super self]) {
         self.imgurl =dict[@"imgurl"];
@@ -28,7 +28,8 @@
     if ([super self]) {
         self.categoryImgurl =dict[@"imgurl"];
         self.categoryName =dict[@"title"];
-//                NSLog(@"sssss%@",self.categoryName);
+        self.categorySubTitle =dict[@"mark"];
+                NSLog(@"sssss%@",self.categorySubTitle);
     }
     return self;
 }
@@ -36,6 +37,8 @@
     if ([super self]) {
         self.tradeImgurl =dict[@"imgurl"];
         self.tradeName =dict[@"title"];
+        self.tradeSubTitle =dict[@"mark"];
+
         //        NSLog(@"sssss%@",self.courseImgurl);
     }
     return self;

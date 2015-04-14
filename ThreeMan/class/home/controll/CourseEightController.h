@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CourseEightController : UIViewController
+@interface CourseEightController : LeftTitleController
 
 @end
