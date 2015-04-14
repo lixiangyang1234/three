@@ -239,6 +239,17 @@
     NSLog(@"ddddd;;");
     
 }
+
+//没有网络
+-(void)notNetFailView{
+    NetFailView *failView =[[NetFailView alloc]initWithFrame:self.view.bounds backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"对不起，网络不给力!请检查您的网络设置! "];
+    [self.view addSubview:failView];
+}
+//没有需求
+-(void)notCompanyStatuse{
+    NetFailView *failView =[[NetFailView alloc]initWithFrame:self.view.bounds backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"对不起，该企业还未发布需求！去其他企业看看吧! "];
+    [self.view addSubview:failView];
+}
 #pragma mark 控件将要显示
 - (void)viewWillAppear:(BOOL)animated
 {

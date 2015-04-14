@@ -12,5 +12,5 @@ typedef void (^StatusSuccessBlock)(NSMutableArray *statues);
 typedef void (^StatusFailureBlock)(NSError *error);
 
 @interface CourseViewVCTool : NSObject
-+ (void)statusesWithCourseSuccess:(StatusSuccessBlock)success failure:(StatusFailureBlock)failure;
++ (void)statusesWithCourseID:(NSString *)course_id CourseSuccess:(StatusSuccessBlock)success failure:(StatusFailureBlock)failure;
 @end

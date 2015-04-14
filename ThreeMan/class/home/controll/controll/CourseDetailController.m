@@ -10,14 +10,14 @@
 #import "CompanyHomeControll.h"
 #import "CourseRecommendViewCell.h"
 #import "CourseAnswerViewCell.h"
-
+#import "byCourseView.h"
 
 #define BANNERH         167   //banner高度
 #define YYBORDERWH        8  //外边界
 #define borderw            5 //内边界
 #define BUTTONH           40  //按钮高度
 
-@interface CourseDetailController ()<UIScrollViewDelegate,UITableViewDataSource,UITableViewDelegate>
+@interface CourseDetailController ()<UIScrollViewDelegate,UITableViewDataSource,UITableViewDelegate,byCourseViewDelegate>
 {
     UIView *_orangLin;
     UIScrollView *_scrollView;
@@ -27,9 +27,11 @@
     CGFloat bannerHeightLine   ;
     
     UIButton *topBtn;
+    byCourseView *byCourse;
 }
 
 @property(nonatomic,strong)UIScrollView *backScrollView;
+@property(nonatomic,strong)NSString *douNumber;
 
 @end
 
@@ -43,6 +45,7 @@
     [self addUICategoryView];
     [self addUIDownloadView];
     [self addTopBtn];
+
     // Do any additional setup after loading the view.
 }
 -(void)addTopBtn
@@ -149,7 +152,7 @@
 #pragma mark分类背景CategoryScrollview
 -(void)addCategoryBackScrollView
 {
-    categoryScrollView =[[UIScrollView alloc]initWithFrame:CGRectMake(0, bannerHeightLine+BUTTONH, kWidth, kHeight-BUTTONH-50-64+YYBORDERWH)];
+    categoryScrollView =[[UIScrollView alloc]initWithFrame:CGRectMake(0, bannerHeightLine+BUTTONH, kWidth, kHeight-BUTTONH-50-64-bannerHeightLine)];
     categoryScrollView.contentSize = CGSizeMake(kWidth*3, categoryScrollView.frame.size.height);
     categoryScrollView.showsHorizontalScrollIndicator = NO;
     categoryScrollView.showsVerticalScrollIndicator = NO;
@@ -266,6 +269,7 @@
 #pragma mark 答疑
 -(void)addAnswerTableview
 {
+//    [self notByAnswer];
     UITableView * answerTableView =[[UITableView alloc]initWithFrame:CGRectMake(kWidth*2, 0, kWidth, categoryScrollView.frame.size.height-8) style:UITableViewStylePlain];
     answerTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [categoryScrollView addSubview:answerTableView];
@@ -337,6 +341,7 @@
             [categoryBtn setImage:[UIImage imageNamed:@"tab_collect_pre"] forState:UIControlStateSelected];
             
         }
+        [categoryBtn addTarget:self action:@selector(categoryBtnItem:) forControlEvents:UIControlEventTouchUpInside];
         
     }
     
@@ -353,7 +358,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"%d",_selectedBtn.tag);
+//    NSLog(@"%d",_selectedBtn.tag);
     if (_selectedBtn.tag ==21) {
         static NSString *cellIndexfider =@"RecommendCell";
         
@@ -508,6 +513,57 @@
     }
     
 }
+#pragma mark -----topView
+//底部按钮  购买失败   购买提示
+-(void)addTopViewFail{
+    NSArray *titleArr =@[@"取消",@"立即充值"];
+    byCourse =[[byCourseView alloc]initWithFrame:self.view.bounds byTitle:@"购买失败" contentLabel:@"抱歉！您的蜕变豆余额不足!" buttonTitle:titleArr];
+    byCourse.delegate =self;
+    [self.view addSubview:byCourse];
+    byCourse.hidden =NO;
+
+}
+//购买提示
+-(void)addTopViewPrompt{
+    NSArray *titleArr =@[@"否",@"是"];
+    byCourse =[[byCourseView alloc]initWithFrame:self.view.bounds byTitle:@"购买提示" contentLabel:@"抱歉！尊敬的企业会员，购买权限只限普通会员，是否立即成为普通会员？" buttonTitle:titleArr];
+    byCourse.delegate =self;
+    [self.view addSubview:byCourse];
+    byCourse.hidden =NO;
+}
+//购买支付
+-(void)addTopViewBy{
+    CGFloat BACKVIEWw=230;
+    NSArray *titleArr =@[@"取消",@"支付"];
+    NSString *str =[NSString stringWithFormat:@"您本次需要支付100%@蜕变豆，确认支付吗？",self.douNumber];
+    byCourse =[[byCourseView alloc]initWithFrame:CGRectMake((kWidth-BACKVIEWw)/2, kHeight-310, BACKVIEWw, 140) byTitle:@"购买提示" contentLabel:str buttonTitle:titleArr];
+    byCourse.delegate =self;
+    [self.view addSubview:byCourse];
+    byCourse.hidden =NO;
+    
+}
+-(void)categoryBtnItem:(UIButton *)item{
+        [self addTopViewBy];
+   
+    
+    
+}
+-(void)chooseBtn:(UIButton *)choose chooseTag:(NSInteger)tag{
+    [UIView animateWithDuration:.3 animations:^{
+        byCourse.center =CGPointMake(kWidth/2, kHeight);
+
+    } completion:^(BOOL finished) {
+        byCourse.hidden =YES;
+    }];
+
+//    byCourse.hidden =YES;
+
+    if (tag==333) {
+        
+    }else if (tag==334){
+        
+    }
+}
 -(void)topBtnClick:(UIButton *)top{
     [self.backScrollView setContentOffset:CGPointMake(0, 0) animated:YES];
 }
@@ -516,5 +572,19 @@
     CompanyHomeControll *companyHomeVC=[[CompanyHomeControll alloc]init];
     [self.navigationController pushViewController:companyHomeVC animated:YES];
 }
-
+// 推荐 没有推荐
+-(void)notByRecommend{
+    NetFailView *failView =[[NetFailView alloc]initWithFrameForDetail:self.view.bounds backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"抱歉！该需求暂时还没有推荐！"];
+    [self.view addSubview:failView];
+}
+// 答疑 没有购买课程
+-(void)notByAnswer{
+    NetFailView *failView =[[NetFailView alloc]initWithFrameForDetail:self.view.bounds backImage:[UIImage imageNamed:@"netFailImg_2"] promptTitle:@"抱歉！您还未购买该课程！点击下方“购买”按钮购买！"];
+    [self.view addSubview:failView];
+}
+//没有网络
+-(void)notNetFailView{
+    NetFailView *failView =[[NetFailView alloc]initWithFrame:self.view.bounds backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"对不起，网络不给力!请检查您的网络设置! "];
+    [self.view addSubview:failView];
+}
 @end

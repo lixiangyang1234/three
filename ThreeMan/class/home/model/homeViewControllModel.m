@@ -43,4 +43,36 @@
     }
     return self;
 }
+//-(void)encodeWithCoder:(NSCoder *)coder{
+//    [coder encodeObject:self.imgurl forKey:@"imgurl"];
+//    
+//    [coder encodeObject:self.courseImgurl forKey:@"imgurl"];
+//    [coder encodeObject:self.courseName forKey:@"name"];
+//    
+//    [coder encodeObject:self.categoryImgurl forKey:@"imgurl"];
+//    [coder encodeObject:self.categoryName forKey:@"title"];
+//    [coder encodeObject:self.categorySubTitle forKey:@"mark"];
+//    
+//    [coder encodeObject:self.tradeImgurl forKey:@"imgurl"];
+//    [coder encodeObject:self.tradeName forKey:@"title"];
+//    [coder encodeObject:self.tradeSubTitle forKey:@"mark"];
+//}
+//-(instancetype)initWithCoder:(NSCoder *)decoder{
+//    self =[super init];
+//    if (self) {
+//        self.imgurl =[decoder decodeObjectForKey:@"imgurl"];
+//        
+//        self.courseImgurl =[decoder decodeObjectForKey:@"imgurl"];
+//        self.courseName=[decoder decodeObjectForKey:@"name"];
+//        
+//        self.categoryImgurl =[decoder decodeObjectForKey:@"imgurl"];
+//        self.categoryName =[decoder decodeObjectForKey:@"title"];
+//        self.categorySubTitle =[decoder decodeObjectForKey:@"mark"];
+//        
+//        self.tradeImgurl =[decoder decodeObjectForKey:@"imgurl"];
+//        self.tradeName =[decoder decodeObjectForKey:@"title"];
+//        self.tradeSubTitle =[decoder decodeObjectForKey:@"mark"];
+//    }
+//    return self;
+//}
 @end

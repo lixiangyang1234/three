@@ -8,8 +8,8 @@
 
 #import "CourseViewController.h"
 #import "CourseViewCell.h"
-#import "CourseViewVCTool.h"
 #import "CourseViewVCModel.h"
+#import "CourseDetaileControll.h"
 @interface CourseViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property(nonatomic,strong)UITableView *tableView;
@@ -21,25 +21,36 @@
     // Do any additional setup after loading the view.
     [self.view setBackgroundColor:HexRGB(0xe0e0e0)];
     _courseArray =[[NSMutableArray alloc]initWithCapacity:0];
-    
+    [self addTableView];
+
     [self addLoadStatus];
 }
 -(void)addLoadStatus{
-    [CourseViewVCTool statusesWithCourseSuccess:^(NSMutableArray *statues) {
-        NSLog(@"%@",statues);
-//        CourseViewVCModel *courseModel =[[CourseViewVCModel alloc]initWithDictionaryForCourse:statues];
-        [_courseArray addObjectsFromArray:statues];
-        [self addTableView];
-        [_tableView reloadData];
+    [HttpTool postWithPath:@"getSsxList" params:nil success:^(id JSON, int code, NSString *msg) {
+        if (code == 100) {
+            NSDictionary *dic = [JSON objectForKey:@"data"];
+            NSArray *array = [dic objectForKey:@"ssx"];
+            if (![array isKindOfClass:[NSNull class]]) {
+                for (NSDictionary *dict in array) {
+                    CourseViewVCModel *item = [[CourseViewVCModel alloc] init];
+                    [item setValuesForKeysWithDictionary:dict];
+                    [_courseArray addObject:item];
+                }
+            }
+            [_tableView reloadData];
+        }
     } failure:^(NSError *error) {
-        
+        NSLog(@"%@",error);
+        NSLog(@"ddddddfffffddddssss");
     }];
+
 }
 -(void)addTableView{
-    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 6, kWidth, kHeight-64-6) style:UITableViewStylePlain];
+    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 6, kWidth, kHeight-64-6-39) style:UITableViewStylePlain];
     _tableView.delegate =self;
     _tableView.dataSource =self;
-    _tableView.backgroundColor =[UIColor whiteColor];
+    _tableView.backgroundColor =  HexRGB(0xe0e0e0);
+;
     
     _tableView.showsHorizontalScrollIndicator = NO;
     _tableView.showsVerticalScrollIndicator = NO;
@@ -49,9 +60,7 @@
 }
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return _courseArray.count;
@@ -66,8 +75,10 @@
         [cell setBackgroundColor:HexRGB(0xe0e0e0)];
         cell.selectionStyle =UITableViewCellSelectionStyleNone;
         CourseViewVCModel *courseModel =[_courseArray objectAtIndex:indexPath.row];
-        [cell.headerImage setImageWithURL:[NSURL URLWithString:courseModel.courseHeaderImage]placeholderImage:placeHoderImage];
-        
+        cell.titleLabel.text =courseModel.title;
+        cell.contentLabel.text =courseModel.description;
+        [cell.headerImage setImageWithURL:[NSURL URLWithString:courseModel.imgurl]placeholderImage:placeHoderImage];
+       
         
     }
     
@@ -75,10 +86,13 @@
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSLog(@"ddddd");
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    CourseViewVCModel *courseModel =[_courseArray objectAtIndex:indexPath.row];
     
-//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//    CompanyHomeControll *companyHomeVC=[[CompanyHomeControll alloc]init];
-//    [self.navigationController pushViewController:companyHomeVC animated:YES];
+    CourseDetaileControll *courseVc=[[CourseDetaileControll alloc]init];
+    courseVc.courseIndex =courseModel.courseID;
+    [self.nav pushViewController:courseVc animated:YES];
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 65;
