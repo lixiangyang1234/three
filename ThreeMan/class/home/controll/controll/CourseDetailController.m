@@ -282,7 +282,7 @@
 
 //添加分类
 -(void)categoryBtnClick:(UIButton *)sender{
-    NSLog(@"dddd;;");
+//    NSLog(@"dddd;;");
     _selectedBtn = sender;
     if (sender.tag == 20)
     {
@@ -408,7 +408,7 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if (scrollView.tag ==998) {
-        NSLog(@"%f----%f",scrollView.contentOffset.y,bannerHeightLine);
+//        NSLog(@"%f----%f",scrollView.contentOffset.y,bannerHeightLine);
         if (scrollView.contentOffset.y>=bannerHeightLine) {
             //            scrollView.contentOffset =CGPointMake(0, 0);
             topBtn.hidden =NO;

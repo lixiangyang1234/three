@@ -49,11 +49,10 @@ static NSString * const reuseIdentifier = @"Cell";
     _slideImages =[[NSMutableArray alloc]initWithCapacity:0];
     _adsImage =[[NSMutableArray alloc]initWithCapacity:0];
 
-    _courseArrayOffLine =[[NSMutableArray alloc]initWithCapacity:0];
-    _categoryArrayOffLine =[[NSMutableArray alloc]initWithCapacity:0];
-    _tradeArrayOffLine =[[NSMutableArray alloc]initWithCapacity:0];
-    _slideImagesOffLine =[[NSMutableArray alloc]initWithCapacity:0];
-    _adsImageOffLine =[[NSMutableArray alloc]initWithCapacity:0];
+    self.courseArrayOffLine =[NSMutableArray array];
+    self.categoryArrayOffLine =[NSMutableArray array];
+    self.tradeArrayOffLine =[NSMutableArray array];
+    self.adsImageOffLine =[NSMutableArray array];
         [self addLoadStatus];
     
 }
@@ -86,31 +85,35 @@ static NSString * const reuseIdentifier = @"Cell";
             [_tradeArray addObject:homeModel];
         }
 //        //归档离线数据
-//        [NSKeyedArchiver archiveRootObject:_adsImage toFile:kadsImageFilePath];
-//        [NSKeyedArchiver archiveRootObject:_courseArray toFile:kcourseFilePath];
-//        [NSKeyedArchiver archiveRootObject:_categoryArray toFile:kcategoryFilePath];
-//        [NSKeyedArchiver archiveRootObject:_tradeArray toFile:ktradeFilePath];
+        [NSKeyedArchiver archiveRootObject:_adsImage toFile:kadsImageFilePath];
+        [NSKeyedArchiver archiveRootObject:_courseArray toFile:kcourseFilePath];
+        [NSKeyedArchiver archiveRootObject:_categoryArray toFile:kcategoryFilePath];
+        [NSKeyedArchiver archiveRootObject:_tradeArray toFile:ktradeFilePath];
         
         [self addADSimageBtn:_adsImage];
         [self addUIBanner];//1区
         [self addUICourse:_courseArray];//2区添加八大课程体系
         [self addUICategory:_categoryArray];
         [self addUITrade:_tradeArray];
-        NSLog(@"--------%d",_tradeArray.count);
+//        NSLog(@"--------%d",_tradeArray.count);
 
     } failure:^(NSError *error) {
         NSLog(@"哈1122222哈哈哈哈");
+
+//        NSLog(@"%d---%d",_adsImageOffLine.count,_courseArrayOffLine.count);
+
 //        //反归档数据
-//        self.adsImageOffLine = [NSKeyedUnarchiver unarchiveObjectWithFile:kadsImageFilePath];
-//        self.courseArrayOffLine =[NSKeyedUnarchiver unarchiveObjectWithFile:kcourseFilePath];
-//        self.tradeArrayOffLine =[NSKeyedUnarchiver unarchiveObjectWithFile:ktradeFilePath];
-//        self.categoryArrayOffLine =[NSKeyedUnarchiver unarchiveObjectWithFile:kcategoryFilePath];
-//        [self addUIBanner];//1区
-//        [self addADSimageBtn:_adsImageOffLine];
-//        [self addUICourse:_courseArrayOffLine];//2区添加八大课程体系
-//        [self addUICategory:_categoryArrayOffLine];
-//        [self addUITrade:_tradeArrayOffLine];
-//        NSLog(@"%d",_tradeArrayOffLine.count);
+        self.adsImageOffLine = [NSKeyedUnarchiver unarchiveObjectWithFile:kadsImageFilePath];
+        self.courseArrayOffLine =[NSKeyedUnarchiver unarchiveObjectWithFile:kcourseFilePath];
+        self.tradeArrayOffLine =[NSKeyedUnarchiver unarchiveObjectWithFile:ktradeFilePath];
+        self.categoryArrayOffLine =[NSKeyedUnarchiver unarchiveObjectWithFile:kcategoryFilePath];
+        [self addUIBanner];//1区
+        NSLog(@"%d",_tradeArrayOffLine.count);
+        [self addADSimageBtn:_adsImageOffLine];
+
+        [self addUICourse:_courseArrayOffLine];//2区添加八大课程体系
+        [self addUICategory:_categoryArrayOffLine];
+        [self addUITrade:_tradeArrayOffLine];
         
 
 
@@ -147,7 +150,7 @@ static NSString * const reuseIdentifier = @"Cell";
 //    NSLog(@"ffffffff%@",course);
 
    
-    for (int c=0; c<_courseArray.count; c++)
+    for (int c=0; c<course.count; c++)
     {
         homeViewControllModel *homeModel =[course objectAtIndex:c];
 //        NSLog(@"-----%@",homeModel.courseImgurl);
@@ -244,7 +247,7 @@ static NSString * const reuseIdentifier = @"Cell";
     [self.backScrollView addSubview:needBackView];
     needBackView.backgroundColor =HexRGB(0xeaebec);
     
-    for (int i=0; i<_categoryArray.count; i++) {
+    for (int i=0; i<category.count; i++) {
         
         homeViewControllModel *homeModel =[category objectAtIndex:i];
 
@@ -305,9 +308,9 @@ static NSString * const reuseIdentifier = @"Cell";
     [self.backScrollView addSubview:needBackView];
     needBackView.backgroundColor =HexRGB(0xeaebec);
     //    needBackView.backgroundColor =[UIColor redColor];
-    for (int i=0; i<_tradeArray.count; i++) {
+    for (int i=0; i<trade.count; i++) {
         homeViewControllModel *homeModel =[trade objectAtIndex:i];
-
+        NSLog(@"%@---%2----%@---%@",homeModel.tradeImgurl,homeModel.tradeName,homeModel.tradeSubTitle);
         UIButton* businessBtn =[UIButton buttonWithType:UIButtonTypeCustom];
         businessBtn.frame =CGRectMake(i%2*(kWidth/2+1),NEEDH+ BANNER+EIGHTH+125+i/2*61, (kWidth)/2, 60 );
         [self.backScrollView addSubview:businessBtn];

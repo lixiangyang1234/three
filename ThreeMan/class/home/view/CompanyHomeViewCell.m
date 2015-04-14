@@ -21,9 +21,13 @@
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self =[super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        UIView *backCell =[[UIView alloc]initWithFrame:CGRectMake(YYBorderX, 0, kWidth-YYBorderX*2, 80)];
+        UIView *backCell =[[UIView alloc]initWithFrame:CGRectMake(YYBorderX, 8, kWidth-YYBorderX*2, 80)];
         [self addSubview:backCell];
         backCell.backgroundColor =[UIColor whiteColor];
+        //底部线条
+        UIView *topLie =[[UIView alloc]initWithFrame:CGRectMake(0, backCell.frame.size.height-1, backCell.frame.size.width, 1)];
+        [backCell addSubview:topLie];
+        topLie.backgroundColor =HexRGB(0xcacaca);
         
         companyHomeImage =[[UIImageView alloc]initWithFrame:CGRectMake(YYBorderX, YYBorderY, 90, 60)];
         [backCell addSubview:companyHomeImage];

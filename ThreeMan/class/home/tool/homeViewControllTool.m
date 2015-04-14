@@ -28,7 +28,7 @@
         success (statuses);
 
     } failure:^(NSError *error) {
-        
+        failure(error);
        
     }];
 }

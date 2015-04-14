@@ -13,5 +13,5 @@
 @property (nonatomic,strong)UILabel *businessTtile;
 @property (nonatomic,strong)UILabel *businessNeed;
 @property (nonatomic,strong)UILabel *bussinessLabel;
-
+@property(nonatomic,strong)UIView *backCell;
 @end

@@ -28,7 +28,7 @@
 
 -(UITableView *)addTableView{
     if (!_tableView) {
-        _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 8, kWidth, kHeight-64-5) style:UITableViewStylePlain];
+        _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, kWidth, kHeight-64) style:UITableViewStylePlain];
         _tableView.delegate =self;
         _tableView.dataSource =self;
         _tableView.backgroundColor =HexRGB(0xe0e0e0);
@@ -60,6 +60,9 @@
         cell =[[BusinessViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndexfider];
         [cell setBackgroundColor:HexRGB(0xe0e0e0)];
         cell.selectionStyle =UITableViewCellSelectionStyleNone;
+        if (indexPath.row==0) {
+            cell.backCell.frame =CGRectMake(8, 8, kWidth-16, 99.5);
+        }
     }
     
     return cell;
@@ -71,6 +74,12 @@
         [self.navigationController pushViewController:companyHomeVC animated:YES];
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.row==0) {
+        return 108;
+    }else{
+        return 100;
+  
+    }
     return 100;
 }
 

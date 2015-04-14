@@ -120,13 +120,13 @@
     [animationBtn setImage:[UIImage imageNamed:@"animationBtn"] forState:UIControlStateNormal];
     [animationBtn addTarget:self action:@selector(animationBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
-    UIView *lineView =[[UIView alloc]initWithFrame:CGRectMake(0, BannerH-8, kWidth, 8)];
-    [lineView setBackgroundColor:HexRGB(0xe0e0e0)];
-    [bannerImage addSubview:lineView];
-    NSLog(@"1111/////------>%f",animationView.frame.origin.y);
+//    UIView *lineView =[[UIView alloc]initWithFrame:CGRectMake(0, BannerH-8, kWidth, 8)];
+//    [lineView setBackgroundColor:HexRGB(0xe0e0e0)];
+//    [bannerImage addSubview:lineView];
+//    NSLog(@"1111/////------>%f",animationView.frame.origin.y);
 }
 -(void)addTableView{
-    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, BannerH, kWidth, kHeight-BannerH) style:UITableViewStylePlain];
+    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, BannerH-8, kWidth, kHeight-BannerH+8) style:UITableViewStylePlain];
     _tableView.delegate =self;
     _tableView.dataSource =self;
     [_tableView setBackgroundColor:HexRGB(0xe0e0e0)];
