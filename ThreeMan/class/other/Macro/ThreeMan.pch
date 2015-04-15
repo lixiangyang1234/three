@@ -17,6 +17,9 @@
 #import "UIButton+WebCache.h"
 #import "RemindView.h"
 
+#import "LeftTitleController.h"
+#import "DBTool.h"
+#import "NetFailView.h"
 //#import "UIImageView+WebCache.h"
 
 // Include any system framework and library headers here that should be included in all compilation units.

@@ -22,5 +22,10 @@
     NSMutableArray *_videoArray;
     NSMutableArray *_companyArray;
     NSMutableArray *_subjectArray;
+    NSMutableArray *_defaultHeadViewArray; //默认搜索分组视图
+    NSMutableArray *_resultHeadViewArray;  //搜索结果分组视图
+    BOOL existHots;   //是否有热门搜索
+    NSString *_keywords; //当前搜索的关键词
+    
 }
 @end

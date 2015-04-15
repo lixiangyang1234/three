@@ -7,10 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-//#import "CompanyInfoItem.h"
-//#import "MySupplyItem.h"
-//#import "MyPurchaseItem.h"
-//#import "VipInfoItem.h"
+#import "UserItem.h"
 
 @interface SystemConfig : NSObject
 
@@ -18,9 +15,7 @@
 @property (nonatomic,assign) BOOL isUserLogin;       //是否登录
 @property (nonatomic,copy) NSString *viptype;       //会员类型
 @property (nonatomic,copy) NSString *uid;    //登录后的公司ID
-//@property (nonatomic,strong) CompanyInfoItem *companyInfo;    //登录用户公司基本信息
-//@property (nonatomic,strong) VipInfoItem *vipInfo;   //vip用户相关信息
-//@property (nonatomic,assign) long maxTagNum;        //用户可订阅的最大标签数
+@property (nonatomic,strong) UserItem *item;  //用户数据
 
 + (SystemConfig *)sharedInstance;
 

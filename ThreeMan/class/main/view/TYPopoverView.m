@@ -7,6 +7,7 @@
 //
 
 #import "TYPopoverView.h"
+#import "SystemConfig.h"
 
 #define kArrowHeight 10.f
 #define kArrowCurvature 6.f
@@ -57,6 +58,8 @@
 {
     self.iconView = [[UIImageView alloc] initWithFrame:CGRectMake(23, 12, 40, 40)];
     self.iconView.backgroundColor = [UIColor redColor];
+    self.iconView.layer.masksToBounds = YES;
+    self.iconView.layer.cornerRadius = self.iconView.frame.size.width/2;
     self.iconView.userInteractionEnabled = YES;
     [self addSubview:self.iconView];
     
@@ -65,28 +68,43 @@
     
     CGFloat x = 23+40;
     CGFloat width = (self.frame.size.width-x)/2;
-
-    NSArray *array = [NSArray arrayWithObjects:@"登录",@"注册", nil];
-    for (int i = 0 ; i<2; i++) {
-        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-        btn.frame = CGRectMake(x+width*i, 12, width, 40);
-        btn.backgroundColor = [UIColor clearColor];
-        [btn setTitle:[array objectAtIndex:i] forState:UIControlStateNormal];
-        [btn setTitleColor:HexRGB(0x959595) forState:UIControlStateNormal];
-        btn.titleLabel.font = [UIFont systemFontOfSize:15];
-        if (i == 0) {
-            self.loginBtn = btn;
-            self.loginBtn.tag = -1;
-            UIView *line = [[UIView alloc] initWithFrame:CGRectMake(width, (40-15)/2, 1, 15)];
-            line.backgroundColor = HexRGB(0xcecece);
-            [self.loginBtn addSubview:line];
-            [self addSubview:self.loginBtn];
-            [self.loginBtn addTarget:self action:@selector(btnDown:) forControlEvents:UIControlEventTouchUpInside];
-        }else{
-            self.registBtn = btn;
-            self.registBtn.tag = -2;
-            [self.registBtn addTarget:self action:@selector(btnDown:) forControlEvents:UIControlEventTouchUpInside];
-            [self addSubview:self.registBtn];
+    //如果登陆  显示头像和用户名 否则显示登录 注册按钮
+    if ([SystemConfig sharedInstance].isUserLogin) {
+        UserItem *item = [SystemConfig sharedInstance].item;
+        if (item.img&&![item.img isKindOfClass:[NSNull class]]&&item.img.length!=0) {
+            [self.iconView setImageWithURL:[NSURL URLWithString:[SystemConfig sharedInstance].item.img] placeholderImage:[UIImage imageNamed:@""]];
+        }
+        UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(x+11,12, width*2-16, 40)];
+        nameLabel.backgroundColor = [UIColor clearColor];
+        nameLabel.text = item.username;
+        nameLabel.numberOfLines = 0;
+        nameLabel.textColor = HexRGB(0x323232);
+        nameLabel.font = [UIFont systemFontOfSize:16];
+        [self addSubview:nameLabel];
+        
+    }else{
+        NSArray *array = [NSArray arrayWithObjects:@"登录",@"注册", nil];
+        for (int i = 0 ; i<2; i++) {
+            UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+            btn.frame = CGRectMake(x+width*i, 12, width, 40);
+            btn.backgroundColor = [UIColor clearColor];
+            [btn setTitle:[array objectAtIndex:i] forState:UIControlStateNormal];
+            [btn setTitleColor:HexRGB(0x959595) forState:UIControlStateNormal];
+            btn.titleLabel.font = [UIFont systemFontOfSize:15];
+            if (i == 0) {
+                self.loginBtn = btn;
+                self.loginBtn.tag = -1;
+                UIView *line = [[UIView alloc] initWithFrame:CGRectMake(width, (40-15)/2, 1, 15)];
+                line.backgroundColor = HexRGB(0xcecece);
+                [self.loginBtn addSubview:line];
+                [self addSubview:self.loginBtn];
+                [self.loginBtn addTarget:self action:@selector(btnDown:) forControlEvents:UIControlEventTouchUpInside];
+            }else{
+                self.registBtn = btn;
+                self.registBtn.tag = -2;
+                [self.registBtn addTarget:self action:@selector(btnDown:) forControlEvents:UIControlEventTouchUpInside];
+                [self addSubview:self.registBtn];
+            }
         }
     }
     

@@ -13,4 +13,7 @@
     UITableView *_tableView;
     NSMutableArray *_dataArray;
 }
+
+@property (nonatomic,copy) NSString *keywords;
+
 @end
