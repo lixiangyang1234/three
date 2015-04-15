@@ -120,13 +120,13 @@
     [animationBtn setImage:[UIImage imageNamed:@"animationBtn"] forState:UIControlStateNormal];
     [animationBtn addTarget:self action:@selector(animationBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
-    UIView *lineView =[[UIView alloc]initWithFrame:CGRectMake(0, BannerH-8, kWidth, 8)];
-    [lineView setBackgroundColor:HexRGB(0xe0e0e0)];
-    [bannerImage addSubview:lineView];
-    NSLog(@"1111/////------>%f",animationView.frame.origin.y);
+//    UIView *lineView =[[UIView alloc]initWithFrame:CGRectMake(0, BannerH-8, kWidth, 8)];
+//    [lineView setBackgroundColor:HexRGB(0xe0e0e0)];
+//    [bannerImage addSubview:lineView];
+//    NSLog(@"1111/////------>%f",animationView.frame.origin.y);
 }
 -(void)addTableView{
-    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, BannerH, kWidth, kHeight-BannerH) style:UITableViewStylePlain];
+    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, BannerH-8, kWidth, kHeight-BannerH+8) style:UITableViewStylePlain];
     _tableView.delegate =self;
     _tableView.dataSource =self;
     [_tableView setBackgroundColor:HexRGB(0xe0e0e0)];
@@ -238,6 +238,17 @@
     
     NSLog(@"ddddd;;");
     
+}
+
+//没有网络
+-(void)notNetFailView{
+    NetFailView *failView =[[NetFailView alloc]initWithFrame:self.view.bounds backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"对不起，网络不给力!请检查您的网络设置! "];
+    [self.view addSubview:failView];
+}
+//没有需求
+-(void)notCompanyStatuse{
+    NetFailView *failView =[[NetFailView alloc]initWithFrame:self.view.bounds backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"对不起，该企业还未发布需求！去其他企业看看吧! "];
+    [self.view addSubview:failView];
 }
 #pragma mark 控件将要显示
 - (void)viewWillAppear:(BOOL)animated

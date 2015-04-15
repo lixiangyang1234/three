@@ -21,15 +21,18 @@
 #define NEEDH     135         //按需求
 #define BUSINESS  183       //按行业
 #define NEEDTAG  100
+
+#define kcourseFilePath [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"course.data"]
+#define kcategoryFilePath [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"category.data"]
+#define ktradeFilePath [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"trade.data"]
+#define kadsImageFilePath [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"adsImage.data"]
+
+
 @interface HomeViewController ()<KDCycleBannerViewDataource,KDCycleBannerViewDelegate>
 {
     KDCycleBannerView *_bannerView;
 }
 @property(nonatomic,strong)KDCycleBannerView *_bannerView;
-@property(nonatomic,strong)UIScrollView *backScrollView;
-@property(nonatomic,copy)NSArray *noticeArray;
-@property(nonatomic,copy)NSMutableArray *slideImages;
-@property(nonatomic,strong)NSMutableArray *adsImage;
 
 @end
 
@@ -43,23 +46,22 @@ static NSString * const reuseIdentifier = @"Cell";
     _courseArray =[[NSMutableArray alloc]initWithCapacity:0];
     _categoryArray =[[NSMutableArray alloc]initWithCapacity:0];
     _tradeArray =[[NSMutableArray alloc]initWithCapacity:0];
-
     _slideImages =[[NSMutableArray alloc]initWithCapacity:0];
     _adsImage =[[NSMutableArray alloc]initWithCapacity:0];
 
-//    [_bannerArray addObject:@"img"];
-//    [_bannerArray addObject:@"img"];
-//    [_bannerArray addObject:@"img"];
-    
-//    [self addUICourse];//2区添加八大课程体系
-//    [self addUINeed];//3添加需求
-//    [self addUIBusiness];//添加行业
-    [self addLoadStatus];
+    self.courseArrayOffLine =[NSMutableArray array];
+    self.categoryArrayOffLine =[NSMutableArray array];
+    self.tradeArrayOffLine =[NSMutableArray array];
+    self.adsImageOffLine =[NSMutableArray array];
+        [self addLoadStatus];
     
 }
 //添加数据
 -(void)addLoadStatus{
+
     [homeViewControllTool statusesWithSuccess:^(NSMutableArray *statues) {
+        NSLog(@"哈11111哈哈哈哈");
+
         homeViewArrayModel * homeArrayModel =[statues objectAtIndex:0];
         for (NSDictionary *dict in homeArrayModel.ads) {
             
@@ -67,26 +69,54 @@ static NSString * const reuseIdentifier = @"Cell";
             [_adsImage addObject:homeModel];
             
         }
+        
         for (NSDictionary *couseDict in homeArrayModel.course) {
             homeViewControllModel *homeModel =[[homeViewControllModel alloc]initWithDictionaryForHomeCourse:couseDict];
             [_courseArray addObject:homeModel];
         }
+        
         for (NSDictionary *categoryDict in homeArrayModel.category) {
             homeViewControllModel *homeModel =[[homeViewControllModel alloc]initWithDictionaryForHomeCategory:categoryDict];
             [_categoryArray addObject:homeModel];
         }
+        
         for (NSDictionary *tradeDict in homeArrayModel.trade) {
             homeViewControllModel *homeModel =[[homeViewControllModel alloc]initWithDictionaryForHomeTrade:tradeDict];
             [_tradeArray addObject:homeModel];
         }
+//        //归档离线数据
+        [NSKeyedArchiver archiveRootObject:_adsImage toFile:kadsImageFilePath];
+        [NSKeyedArchiver archiveRootObject:_courseArray toFile:kcourseFilePath];
+        [NSKeyedArchiver archiveRootObject:_categoryArray toFile:kcategoryFilePath];
+        [NSKeyedArchiver archiveRootObject:_tradeArray toFile:ktradeFilePath];
+        
         [self addADSimageBtn:_adsImage];
         [self addUIBanner];//1区
         [self addUICourse:_courseArray];//2区添加八大课程体系
         [self addUICategory:_categoryArray];
         [self addUITrade:_tradeArray];
+//        NSLog(@"--------%d",_tradeArray.count);
+
     } failure:^(NSError *error) {
-        NSLog(@"dd111111ddd");
+        NSLog(@"哈1122222哈哈哈哈");
+
+//        NSLog(@"%d---%d",_adsImageOffLine.count,_courseArrayOffLine.count);
+
+//        //反归档数据
+        self.adsImageOffLine = [NSKeyedUnarchiver unarchiveObjectWithFile:kadsImageFilePath];
+        self.courseArrayOffLine =[NSKeyedUnarchiver unarchiveObjectWithFile:kcourseFilePath];
+        self.tradeArrayOffLine =[NSKeyedUnarchiver unarchiveObjectWithFile:ktradeFilePath];
+        self.categoryArrayOffLine =[NSKeyedUnarchiver unarchiveObjectWithFile:kcategoryFilePath];
+        [self addUIBanner];//1区
+        NSLog(@"%d",_tradeArrayOffLine.count);
+        [self addADSimageBtn:_adsImageOffLine];
+
+        [self addUICourse:_courseArrayOffLine];//2区添加八大课程体系
+        [self addUICategory:_categoryArrayOffLine];
+        [self addUITrade:_tradeArrayOffLine];
         
+
+
     }];
 }
 
@@ -117,10 +147,10 @@ static NSString * const reuseIdentifier = @"Cell";
 //2八大课程体系
 -(void)addUICourse:(NSMutableArray *)course{
    
-    NSLog(@"ffffffff%@",course);
+//    NSLog(@"ffffffff%@",course);
 
    
-    for (int c=0; c<_courseArray.count; c++)
+    for (int c=0; c<course.count; c++)
     {
         homeViewControllModel *homeModel =[course objectAtIndex:c];
 //        NSLog(@"-----%@",homeModel.courseImgurl);
@@ -217,17 +247,13 @@ static NSString * const reuseIdentifier = @"Cell";
     [self.backScrollView addSubview:needBackView];
     needBackView.backgroundColor =HexRGB(0xeaebec);
     
-    for (int i=0; i<_categoryArray.count; i++) {
+    for (int i=0; i<category.count; i++) {
         
         homeViewControllModel *homeModel =[category objectAtIndex:i];
 
         UIButton* needBtn =[UIButton buttonWithType:UIButtonTypeCustom];
         [self.backScrollView addSubview:needBtn];
         [needBtn .titleLabel setFont:[UIFont systemFontOfSize:PxFont(18)]];
-//        NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:homeModel.categoryImgurl]];
-//        UIImage *imgName = [UIImage imageWithData:data];
-//        [needBtn setImage:imgName forState:UIControlStateNormal];
-        
         [needBtn setImageWithURL:[NSURL URLWithString:homeModel.categoryImgurl] forState:UIControlStateNormal placeholderImage:placeHoderImage];
         [needBtn setTitle:homeModel.categoryName forState:UIControlStateNormal];
         [needBtn setTitleColor:HexRGB(0x404040) forState:UIControlStateNormal];
@@ -237,7 +263,7 @@ static NSString * const reuseIdentifier = @"Cell";
         UILabel *  needLabel =[[UILabel alloc]init];
         needLabel.backgroundColor =[UIColor clearColor];
         needLabel.text =homeModel.categorySubTitle;
-        NSLog(@"-----%@",homeModel.categorySubTitle);
+//        NSLog(@"-----%@",homeModel.categorySubTitle);
         [self.backScrollView addSubview:needLabel];
         needLabel.font =[UIFont systemFontOfSize:PxFont(16)];
         needLabel.textColor =HexRGB(0x9a9a9a);
@@ -282,9 +308,9 @@ static NSString * const reuseIdentifier = @"Cell";
     [self.backScrollView addSubview:needBackView];
     needBackView.backgroundColor =HexRGB(0xeaebec);
     //    needBackView.backgroundColor =[UIColor redColor];
-    for (int i=0; i<_tradeArray.count; i++) {
+    for (int i=0; i<trade.count; i++) {
         homeViewControllModel *homeModel =[trade objectAtIndex:i];
-
+        NSLog(@"%@---%2----%@---%@",homeModel.tradeImgurl,homeModel.tradeName,homeModel.tradeSubTitle);
         UIButton* businessBtn =[UIButton buttonWithType:UIButtonTypeCustom];
         businessBtn.frame =CGRectMake(i%2*(kWidth/2+1),NEEDH+ BANNER+EIGHTH+125+i/2*61, (kWidth)/2, 60 );
         [self.backScrollView addSubview:businessBtn];
@@ -371,7 +397,10 @@ static NSString * const reuseIdentifier = @"Cell";
 //        detail.urlStr = item.content;
 //        [self.navigationController pushViewController:detail animated:YES];
 }
-
+-(void)notNetFailView{
+    NetFailView *failView =[[NetFailView alloc]initWithFrame:self.view.bounds backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"对不起，网络不给力!请检查您的网络设置! "];
+    [self.view addSubview:failView];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

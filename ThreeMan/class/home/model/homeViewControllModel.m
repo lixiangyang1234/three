@@ -43,4 +43,37 @@
     }
     return self;
 }
+-(void)encodeWithCoder:(NSCoder *)coder{
+    
+    [coder encodeObject:self.imgurl forKey:@"imgurl1"];
+
+    [coder encodeObject:self.courseImgurl forKey:@"imgurl2"];
+    [coder encodeObject:self.courseName forKey:@"name2"];
+    
+    [coder encodeObject:self.categoryImgurl forKey:@"imgurl3"];
+    [coder encodeObject:self.categoryName forKey:@"title3"];
+    [coder encodeObject:self.categorySubTitle forKey:@"mark3"];
+    
+    [coder encodeObject:self.tradeImgurl forKey:@"imgurl4"];
+    [coder encodeObject:self.tradeName forKey:@"title4"];
+    [coder encodeObject:self.tradeSubTitle forKey:@"mark4"];
+}
+-(instancetype)initWithCoder:(NSCoder *)decoder{
+    self =[super init];
+    if (self) {
+        self.imgurl =[decoder decodeObjectForKey:@"imgurl1"];
+        
+        self.courseImgurl =[decoder decodeObjectForKey:@"imgurl2"];
+        self.courseName=[decoder decodeObjectForKey:@"name2"];
+        
+        self.categoryImgurl =[decoder decodeObjectForKey:@"imgurl3"];
+        self.categoryName =[decoder decodeObjectForKey:@"title3"];
+        self.categorySubTitle =[decoder decodeObjectForKey:@"mark3"];
+//
+        self.tradeImgurl =[decoder decodeObjectForKey:@"imgurl4"];
+        self.tradeName =[decoder decodeObjectForKey:@"title4"];
+        self.tradeSubTitle =[decoder decodeObjectForKey:@"mark4"];
+    }
+    return self;
+}
 @end

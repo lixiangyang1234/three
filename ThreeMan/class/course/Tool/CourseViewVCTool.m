@@ -9,32 +9,25 @@
 #import "CourseViewVCTool.h"
 #import "CourseViewVCModel.h"
 @implementation CourseViewVCTool
-+(void)statusesWithCourseSuccess:(StatusSuccessBlock)success failure:(StatusFailureBlock)failure{
-    [HttpTool postWithPath:@"getSsxList" params:nil success:^(id JSON, int code, NSString *msg) {
-        NSMutableArray *statuses =[NSMutableArray array];
++ (void)statusesWithCourseID:(NSString *)course_id CourseSuccess:(StatusSuccessBlock)success failure:(StatusFailureBlock)failure{
+    NSDictionary *parmDict =[NSDictionary dictionaryWithObjectsAndKeys:course_id,@"id", nil];
+    [HttpTool postWithPath:@"getSsxDetail" params:parmDict success:^(id JSON, int code, NSString *msg) {
+        NSMutableArray *status =[[NSMutableArray alloc]init];
+        NSDictionary *dict =JSON[@"data"][@"ssx_detail"];
+        NSLog(@"%@",dict);
+        if (![dict isKindOfClass:[NSNull class]]) {
+            CourseViewVCModel *courseDetailModel =[[CourseViewVCModel alloc]initWithDictionaryForCourseDetail:dict];
+            [status addObject:courseDetailModel];
+            success(status);
 
-        success(statuses);
+        }else{
+            success(nil);
+            
+        }
+//        success(status);
 
     } failure:^(NSError *error) {
         
     }];
-//    [HttpTool postWithPath:@"getSsxList" params:nil success:^(id JSON) {
-//        NSDictionary *dict =JSON[@"response"][@"data"][@"ssx"];
-//        NSLog(@"%@",dict);
-//        NSMutableArray *statuses =[NSMutableArray array];
-//
-////        if (![dict isKindOfClass:[NSNull class]]) {
-////            CourseViewVCModel *courseModel =[[CourseViewVCModel alloc]initWithDictionaryForCourse:dict];
-////            [statuses addObject:courseModel];
-//            success(statuses);
-////
-////        }else{
-////            success (nil);
-////        }
-//
-//    } failure:^(NSError *error) {
-//        
-//    }];
-    
 }
 @end

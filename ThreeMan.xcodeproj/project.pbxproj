@@ -89,6 +89,8 @@
 		55B8BE061ADB68290008C21F /* CourseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B8BE051ADB68290008C21F /* CourseViewController.m */; };
 		55B8BE091ADB6A840008C21F /* CourseViewVCTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B8BE081ADB6A840008C21F /* CourseViewVCTool.m */; };
 		55B8BE0C1ADB6BA40008C21F /* CourseViewVCModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B8BE0B1ADB6BA40008C21F /* CourseViewVCModel.m */; };
+		55B8BE121ADB96B50008C21F /* CourseDetaileControll.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B8BE111ADB96B50008C21F /* CourseDetaileControll.m */; };
+		55B8BE181ADBBFB70008C21F /* byCourseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B8BE171ADBBFB70008C21F /* byCourseView.m */; };
 		55C122E31ACE168600D53630 /* CompySearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C122E21ACE168600D53630 /* CompySearchController.m */; };
 		55C122E71ACE19BA00D53630 /* CourseRecommendViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C122E61ACE19BA00D53630 /* CourseRecommendViewCell.m */; };
 		55C122EA1ACE19E900D53630 /* CourseAnswerViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C122E91ACE19E900D53630 /* CourseAnswerViewCell.m */; };
@@ -372,6 +374,10 @@
 		55B8BE081ADB6A840008C21F /* CourseViewVCTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseViewVCTool.m; sourceTree = "<group>"; };
 		55B8BE0A1ADB6BA40008C21F /* CourseViewVCModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseViewVCModel.h; sourceTree = "<group>"; };
 		55B8BE0B1ADB6BA40008C21F /* CourseViewVCModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseViewVCModel.m; sourceTree = "<group>"; };
+		55B8BE101ADB96B50008C21F /* CourseDetaileControll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseDetaileControll.h; sourceTree = "<group>"; };
+		55B8BE111ADB96B50008C21F /* CourseDetaileControll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseDetaileControll.m; sourceTree = "<group>"; };
+		55B8BE161ADBBFB70008C21F /* byCourseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = byCourseView.h; sourceTree = "<group>"; };
+		55B8BE171ADBBFB70008C21F /* byCourseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = byCourseView.m; sourceTree = "<group>"; };
 		55C122E11ACE168600D53630 /* CompySearchController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompySearchController.h; sourceTree = "<group>"; };
 		55C122E21ACE168600D53630 /* CompySearchController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompySearchController.m; sourceTree = "<group>"; };
 		55C122E51ACE19BA00D53630 /* CourseRecommendViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseRecommendViewCell.h; sourceTree = "<group>"; };
@@ -1015,6 +1021,8 @@
 			children = (
 				55B8BE041ADB68290008C21F /* CourseViewController.h */,
 				55B8BE051ADB68290008C21F /* CourseViewController.m */,
+				55B8BE101ADB96B50008C21F /* CourseDetaileControll.h */,
+				55B8BE111ADB96B50008C21F /* CourseDetaileControll.m */,
 			);
 			path = controll;
 			sourceTree = "<group>";
@@ -1022,6 +1030,8 @@
 		55C122E41ACE198700D53630 /* detailView */ = {
 			isa = PBXGroup;
 			children = (
+				55B8BE161ADBBFB70008C21F /* byCourseView.h */,
+				55B8BE171ADBBFB70008C21F /* byCourseView.m */,
 				55C122E51ACE19BA00D53630 /* CourseRecommendViewCell.h */,
 				55C122E61ACE19BA00D53630 /* CourseRecommendViewCell.m */,
 				55C122E81ACE19E900D53630 /* CourseAnswerViewCell.h */,
@@ -1822,6 +1832,7 @@
 				04C73A281ACE44A2007B1283 /* FavoriteItem.m in Sources */,
 				55E3739F1AC2B54200C794DD /* labelColor.m in Sources */,
 				04C64B9A1ACD412200825EF0 /* AccountHeadView.m in Sources */,
+				55B8BE121ADB96B50008C21F /* CourseDetaileControll.m in Sources */,
 				55B8BE0C1ADB6BA40008C21F /* CourseViewVCModel.m in Sources */,
 				04D0872A1AD4B7480070184A /* CommenHelper.m in Sources */,
 				04CC33331ACA8062008A85B5 /* PatternDetailController.m in Sources */,
@@ -1881,6 +1892,7 @@
 				55E373AE1AC2B54200C794DD /* SDWebImageDownloaderOperation.m in Sources */,
 				04CC332C1ACA8042008A85B5 /* HistoryCell.m in Sources */,
 				04C73A2C1ACE51F8007B1283 /* EditView.m in Sources */,
+				55B8BE181ADBBFB70008C21F /* byCourseView.m in Sources */,
 				04DECDA61AD616F100EC53D2 /* FMDatabasePool.m in Sources */,
 				55B8BE091ADB6A840008C21F /* CourseViewVCTool.m in Sources */,
 				55E373A31AC2B54200C794DD /* MBProgressHUD.m in Sources */,

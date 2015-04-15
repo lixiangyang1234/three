@@ -9,14 +9,24 @@
 #import "CourseViewVCModel.h"
 
 @implementation CourseViewVCModel
-@synthesize courseContent,courseHeaderImage,courseTitle,courseID;
--(instancetype)initWithDictionaryForCourse:(NSDictionary *)dict{
-    if (self=[super init]) {
-        courseTitle =dict[@"title"];
-        courseHeaderImage =dict[@"imgurl"];
-        courseContent=dict[@"description"];
-        courseID =[dict[@"id"]intValue];
+@synthesize imgurl,title,description ,courseID,detailContent,detailDescription,detaileImgurl,detailTitle,debugDescription;
+
+- (void)setValue:(id)value forUndefinedKey:(NSString *)key
+{
+    if ([key isEqualToString:@"id"]) {
+        self.courseID = value;
+    }
+}
+-(instancetype)initWithDictionaryForCourseDetail:(NSDictionary *)dict{
+    if (self =[super init]) {
+        detailTitle =dict[@"title"];
+        detaileImgurl =dict[@"imgurl"];
+        detailDescription=dict[@"description"];
+        detailContent=dict[@"content"];
+  
     }
     return self;
 }
+
+
 @end

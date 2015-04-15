@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface homeViewControllModel : NSObject
+@interface homeViewControllModel : NSObject<NSCoding>
 @property(nonatomic,strong)NSString *imgurl;//广告条图片
 
 @property(nonatomic,strong)NSString *courseImgurl;//课程图片

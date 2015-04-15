@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface NetFailView : UIView
+-(id)initWithFrame:(CGRect)frame backImage:(UIImage *)img promptTitle:(NSString *)title;
+-(id)initWithFrameForDetail:(CGRect)frame backImage:(UIImage *)img promptTitle:(NSString *)title;
 
 @end

@@ -14,14 +14,14 @@
 #define between 25
 @implementation BusinessViewCell
 
-@synthesize businessImage,businessNeed,businessTtile,bussinessLabel;
+@synthesize businessImage,businessNeed,businessTtile,bussinessLabel,backCell;
 - (void)awakeFromNib {
     // Initialization code
 }
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self =[super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        UIView *backCell =[[UIView alloc]initWithFrame:CGRectMake(YYBorderX, 0, kWidth-YYBorderX*2, 99.5)];
+        backCell =[[UIView alloc]initWithFrame:CGRectMake(YYBorderX, 0, kWidth-YYBorderX*2, 99.5)];
         [self addSubview:backCell];
         backCell.backgroundColor =[UIColor whiteColor];
         

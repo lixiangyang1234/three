@@ -20,7 +20,7 @@
     self.view.backgroundColor = HexRGB(0xe8e8e8);
 //    self.title = @"详情";
     [self setLeftTitle:@"课程详情"];
-    NetFailView *failView =[[NetFailView alloc]initWithFrame:self.view.bounds];
+    NetFailView *failView =[[NetFailView alloc]initWithFrame:self.view.bounds backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"对不起，网络不给力!请检查您的网络设置! "];
     [self.view addSubview:failView];
     
     
