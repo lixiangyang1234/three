@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0463870C1ADFAEE700A35D16 /* MessageDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0463870B1ADFAEE700A35D16 /* MessageDetailController.m */; };
+		0463870F1ADFB60C00A35D16 /* MessageDetailItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0463870E1ADFB60C00A35D16 /* MessageDetailItem.m */; };
 		04B9A2761AD35F0C009446D1 /* ImageFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B9A2751AD35F0C009446D1 /* ImageFieldView.m */; };
 		04B9A2791AD36259009446D1 /* LoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B9A2781AD36259009446D1 /* LoginView.m */; };
 		04B9A27C1AD37456009446D1 /* FindPsWordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B9A27B1AD37456009446D1 /* FindPsWordView.m */; };
@@ -211,6 +213,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0463870A1ADFAEE700A35D16 /* MessageDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageDetailController.h; sourceTree = "<group>"; };
+		0463870B1ADFAEE700A35D16 /* MessageDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageDetailController.m; sourceTree = "<group>"; };
+		0463870D1ADFB60C00A35D16 /* MessageDetailItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageDetailItem.h; sourceTree = "<group>"; };
+		0463870E1ADFB60C00A35D16 /* MessageDetailItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageDetailItem.m; sourceTree = "<group>"; };
 		04B9A2741AD35F0C009446D1 /* ImageFieldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageFieldView.h; sourceTree = "<group>"; };
 		04B9A2751AD35F0C009446D1 /* ImageFieldView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageFieldView.m; sourceTree = "<group>"; };
 		04B9A2771AD36259009446D1 /* LoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginView.h; sourceTree = "<group>"; };
@@ -697,6 +703,8 @@
 			children = (
 				04C64B7B1ACCED5200825EF0 /* MessageController.h */,
 				04C64B7C1ACCED5200825EF0 /* MessageController.m */,
+				0463870A1ADFAEE700A35D16 /* MessageDetailController.h */,
+				0463870B1ADFAEE700A35D16 /* MessageDetailController.m */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -776,6 +784,8 @@
 			children = (
 				04C64B921ACD2F3A00825EF0 /* MessageItem.h */,
 				04C64B931ACD2F3A00825EF0 /* MessageItem.m */,
+				0463870D1ADFB60C00A35D16 /* MessageDetailItem.h */,
+				0463870E1ADFB60C00A35D16 /* MessageDetailItem.m */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -1829,6 +1839,7 @@
 				04C73A201ACE2524007B1283 /* DrawViewController.m in Sources */,
 				55E372911AC2B4C600C794DD /* AppDelegate.m in Sources */,
 				55E373B41AC2B54200C794DD /* UIImage+WebP.m in Sources */,
+				0463870C1ADFAEE700A35D16 /* MessageDetailController.m in Sources */,
 				04C73A281ACE44A2007B1283 /* FavoriteItem.m in Sources */,
 				55E3739F1AC2B54200C794DD /* labelColor.m in Sources */,
 				04C64B9A1ACD412200825EF0 /* AccountHeadView.m in Sources */,
@@ -1891,6 +1902,7 @@
 				04C73A2F1ACE7C49007B1283 /* SectionHeadView.m in Sources */,
 				55E373AE1AC2B54200C794DD /* SDWebImageDownloaderOperation.m in Sources */,
 				04CC332C1ACA8042008A85B5 /* HistoryCell.m in Sources */,
+				0463870F1ADFB60C00A35D16 /* MessageDetailItem.m in Sources */,
 				04C73A2C1ACE51F8007B1283 /* EditView.m in Sources */,
 				55B8BE181ADBBFB70008C21F /* byCourseView.m in Sources */,
 				04DECDA61AD616F100EC53D2 /* FMDatabasePool.m in Sources */,

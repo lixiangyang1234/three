@@ -7,7 +7,7 @@
 //
 
 #import "MessageController.h"
-#import "PatternDetailController.h"
+#import "MessageDetailController.h"
 #import "MessageCell.h"
 #import "MessageItem.h"
 
@@ -45,14 +45,25 @@
 
 - (void)loadData
 {
-    for (int i = 0 ; i < 10; i++) {
-        MessageItem *item = [[MessageItem alloc] init];
-        item.title = @"HTC创始人cher再度出山";
-        item.desc = @"现在问题太多,需要一项一项去梳理,4ps里除了产品现在问题太多,需要一项一项去梳理,4ps里除了产品现在问题太多,需要一项一项去梳理,4ps里除了产品现在问题太多,需要一项一项去梳理,4ps里除了产品";
-        item.date = @"2015.01.04";
-        [_dataArray addObject:item];
-    }
-    [_tableView reloadData];
+    [HttpTool postWithPath:@"getMessage" params:nil success:^(id JSON, int code, NSString *msg) {
+        if (code==100) {
+            NSArray *message = JSON[@"data"][@"message"];
+            if (![message isKindOfClass:[NSNull class]]&&message) {
+                for (NSDictionary *dict in message) {
+                    MessageItem *item = [[MessageItem alloc] init];
+                    [item setValuesForKeysWithDictionary:dict];
+                    [_dataArray addObject:item];
+                }
+            }
+            
+            [_tableView reloadData];
+        }
+        
+    } failure:^(NSError *error) {
+        
+        NSLog(@"%@",error);
+    
+    }];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -69,9 +80,10 @@
         cell = [[MessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify];
     }
     MessageItem *item = [_dataArray objectAtIndex:indexPath.row];
+    [cell.headerImage setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:[UIImage imageNamed:@""]];
     cell.titleLabel.text = item.title;
-    cell.contentLabel.text = item.desc;
-    cell.dateLabel.text = item.date;
+    cell.contentLabel.text = item.content;
+    cell.dateLabel.text = item.addtime;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
@@ -84,8 +96,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MessageItem *item = [_dataArray objectAtIndex:indexPath.row];
-    PatternDetailController *pattern = [[PatternDetailController alloc] init];
-    [self.navigationController pushViewController:pattern animated:YES];
+    MessageDetailController *detail = [[MessageDetailController alloc] init];
+    detail.uid = item.uid;
+    [self.navigationController pushViewController:detail animated:YES];
 }
 
 

@@ -35,7 +35,6 @@
     
 }
 - (NSUInteger)supportedInterfaceOrientations {
-    NSLog(@"让我旋转哪些方向");
     return UIInterfaceOrientationMaskPortrait;
 }
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil

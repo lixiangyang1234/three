@@ -247,6 +247,12 @@
         BOOL ret = [SaveTempDataTool archiveClass:array FileName:@"search"];
         if (ret) {
             [_dataArray addObject:array];
+            
+            DefaultHeaderView *headerView = [[DefaultHeaderView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 40)];
+            [headerView setImgView:[UIImage imageNamed:@"history_search"] title:@"搜索历史"];
+            
+            [_defaultHeadViewArray addObject:headerView];
+
         }
     }else{
         NSMutableArray *arr = [_dataArray objectAtIndex:1];
