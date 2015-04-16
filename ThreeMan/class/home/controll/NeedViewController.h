@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface NeedViewController : LeftTitleController
-
+@property(nonatomic,strong)NSString *categoryId;
 @end

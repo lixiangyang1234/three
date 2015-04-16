@@ -45,7 +45,7 @@
         success(dic,code,msg);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         failure(error);
-        NSLog(@"dddddddafffa");
+       
     }];
     
 }

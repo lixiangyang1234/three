@@ -20,7 +20,7 @@
 #define EIGHTH    95          //八大课程体系
 #define NEEDH     135         //按需求
 #define BUSINESS  183       //按行业
-#define NEEDTAG  100
+#define NEEDTAG  200
 
 #define kcourseFilePath [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"course.data"]
 #define kcategoryFilePath [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"category.data"]
@@ -30,9 +30,8 @@
 
 @interface HomeViewController ()<KDCycleBannerViewDataource,KDCycleBannerViewDelegate>
 {
-    KDCycleBannerView *_bannerView;
 }
-@property(nonatomic,strong)KDCycleBannerView *_bannerView;
+@property(nonatomic,strong)KDCycleBannerView *bannerView;
 
 @end
 
@@ -41,6 +40,7 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     // Do any additional setup after loading the view.
     self.view.backgroundColor =[UIColor whiteColor];
     _courseArray =[[NSMutableArray alloc]initWithCapacity:0];
@@ -53,14 +53,21 @@ static NSString * const reuseIdentifier = @"Cell";
     self.categoryArrayOffLine =[NSMutableArray array];
     self.tradeArrayOffLine =[NSMutableArray array];
     self.adsImageOffLine =[NSMutableArray array];
+    [self addMBprogressView];
         [self addLoadStatus];
     
 }
+#pragma  mark ------显示指示器
+-(void)addMBprogressView{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"加载中...";
+}
+
 //添加数据
 -(void)addLoadStatus{
 
     [homeViewControllTool statusesWithSuccess:^(NSMutableArray *statues) {
-        NSLog(@"哈11111哈哈哈哈");
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
 
         homeViewArrayModel * homeArrayModel =[statues objectAtIndex:0];
         for (NSDictionary *dict in homeArrayModel.ads) {
@@ -93,24 +100,20 @@ static NSString * const reuseIdentifier = @"Cell";
         [self addADSimageBtn:_adsImage];
         [self addUIBanner];//1区
         [self addUICourse:_courseArray];//2区添加八大课程体系
+       
         [self addUICategory:_categoryArray];
         [self addUITrade:_tradeArray];
 //        NSLog(@"--------%d",_tradeArray.count);
 
     } failure:^(NSError *error) {
-        NSLog(@"哈1122222哈哈哈哈");
-
-//        NSLog(@"%d---%d",_adsImageOffLine.count,_courseArrayOffLine.count);
-
-//        //反归档数据
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+ //        //反归档数据
         self.adsImageOffLine = [NSKeyedUnarchiver unarchiveObjectWithFile:kadsImageFilePath];
         self.courseArrayOffLine =[NSKeyedUnarchiver unarchiveObjectWithFile:kcourseFilePath];
         self.tradeArrayOffLine =[NSKeyedUnarchiver unarchiveObjectWithFile:ktradeFilePath];
         self.categoryArrayOffLine =[NSKeyedUnarchiver unarchiveObjectWithFile:kcategoryFilePath];
         [self addUIBanner];//1区
-        NSLog(@"%d",_tradeArrayOffLine.count);
         [self addADSimageBtn:_adsImageOffLine];
-
         [self addUICourse:_courseArrayOffLine];//2区添加八大课程体系
         [self addUICategory:_categoryArrayOffLine];
         [self addUITrade:_tradeArrayOffLine];
@@ -184,21 +187,10 @@ static NSString * const reuseIdentifier = @"Cell";
         [courseBtn setTitle:self.noticeArray[c] forState:UIControlStateNormal  ];
         [courseBtn setTitleColor:[UIColor clearColor] forState:UIControlStateNormal];
         [_backScrollView addSubview:courseBtn];
-//                courseBtn.backgroundColor =[UIColor yellowColor];
-//                courseBtn.alpha =.4;
-        //        CategoryButt.tag=[hotCategoryModel.cateid intValue]+100;
-        
-        courseImage.tag = courseBtn.tag+10000;
-        courseButtTitle.tag =courseImage.tag ;
-        
+        courseBtn.tag =100+c;
         courseImage.userInteractionEnabled = NO;
         [courseImage setImageWithURL:[NSURL URLWithString:homeModel.courseImgurl]placeholderImage:placeHoderImage];
-        //        [findImage setImageWithURL:[NSURL URLWithString:hotCategoryModel.image]  placeholderImage:[UIImage imageNamed:@"find_fail.png"]];
-        
         [courseBtn addTarget:self action:@selector(eightCourseBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-        
-        
-        
         
     }
     
@@ -206,8 +198,16 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 //2、八大课程体系按钮
 -(void)eightCourseBtnClick:(UIButton *)cate{
+    if (_courseArray.count ==0) {
+        [RemindView showViewWithTitle:offline location:MIDDLE];
+    }else{
+   
+    homeViewControllModel *homeModel =[_courseArray objectAtIndex:cate.tag-100];
+    
     CourseEightController *courseEightVc=[[CourseEightController alloc]init];
+    courseEightVc.courseID =[NSString stringWithFormat:@"%d",homeModel.courseId];
     [self.nav pushViewController:courseEightVc animated:YES];
+    }
 }
 //
 //3、添加需求
@@ -310,7 +310,7 @@ static NSString * const reuseIdentifier = @"Cell";
     //    needBackView.backgroundColor =[UIColor redColor];
     for (int i=0; i<trade.count; i++) {
         homeViewControllModel *homeModel =[trade objectAtIndex:i];
-        NSLog(@"%@---%2----%@---%@",homeModel.tradeImgurl,homeModel.tradeName,homeModel.tradeSubTitle);
+//        NSLog(@"%@---%2----%@---%@",homeModel.tradeImgurl,homeModel.tradeName,homeModel.tradeSubTitle);
         UIButton* businessBtn =[UIButton buttonWithType:UIButtonTypeCustom];
         businessBtn.frame =CGRectMake(i%2*(kWidth/2+1),NEEDH+ BANNER+EIGHTH+125+i/2*61, (kWidth)/2, 60 );
         [self.backScrollView addSubview:businessBtn];
@@ -339,30 +339,33 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 //3、需求
 -(void)needBtnClick:(UIButton *)more{
-    
-    if (more.tag==NEEDTAG) {
-        NineBlockController *nineVc =[[NineBlockController alloc]init];
-        [self.nav pushViewController:nineVc animated:YES];
-    }else if (more.tag ==NEEDTAG+1 ){
-        ThreeBlockController *ThreeVc =[[ThreeBlockController alloc]init];
-        [self.nav pushViewController:ThreeVc animated:YES];
+    if (_categoryArray.count==0) {
+        [RemindView showViewWithTitle:offline location:MIDDLE];
     }else{
-        NeedViewController *needVc =[[NeedViewController alloc]init];
-        [self.nav pushViewController:needVc animated:YES];
+        homeViewControllModel *homeModel =[_categoryArray objectAtIndex:more.tag-NEEDTAG];
+        if (more.tag==NEEDTAG) {
+            NineBlockController *nineVc =[[NineBlockController alloc]init];
+            nineVc.nineBlockID =[NSString stringWithFormat:@"%d",homeModel.categoryId];
+            [self.nav pushViewController:nineVc animated:YES];
+        }else if (more.tag ==NEEDTAG+1 ){
+            ThreeBlockController *ThreeVc =[[ThreeBlockController alloc]init];
+            [self.nav pushViewController:ThreeVc animated:YES];
+        }else{
+            NeedViewController *needVc =[[NeedViewController alloc]init];
+            [self.nav pushViewController:needVc animated:YES];
+        }
     }
+   
 }
 //行业
 -(void)businessBtnClick:(UIButton *)sender{
     BusinessController *businessVC=[[BusinessController alloc]init];
     [self.nav pushViewController:businessVC animated:YES];
 }
--(void)categoryneedBtn:(UIButton *)category{
-    NSLog(@"%d",category.tag);
-}
+#pragma mark KDCycleBannerView_delegate
+
 -(void)addADSimageBtn:(NSMutableArray *)tody
 {
-    
-    
     // 创建图片 imageview
     for (int i = 0;i<[tody count];i++)
     {
@@ -371,8 +374,6 @@ static NSString * const reuseIdentifier = @"Cell";
         
     }
 }
-
-#pragma mark KDCycleBannerView_delegate
 - (NSArray *)numberOfKDCycleBannerView:(KDCycleBannerView *)bannerView
 {
     return _slideImages;
@@ -397,10 +398,7 @@ static NSString * const reuseIdentifier = @"Cell";
 //        detail.urlStr = item.content;
 //        [self.navigationController pushViewController:detail animated:YES];
 }
--(void)notNetFailView{
-    NetFailView *failView =[[NetFailView alloc]initWithFrame:self.view.bounds backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"对不起，网络不给力!请检查您的网络设置! "];
-    [self.view addSubview:failView];
-}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

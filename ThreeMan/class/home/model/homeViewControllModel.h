@@ -13,16 +13,19 @@
 
 @property(nonatomic,strong)NSString *courseImgurl;//课程图片
 @property(nonatomic,strong)NSString *courseName;//课程图片
+@property(nonatomic,assign)int courseId;
 
 @property(nonatomic,strong)NSString *tradeImgurl;//行业图片
 @property(nonatomic,strong)NSString *tradeName;//行业标题
 @property(nonatomic,strong)NSString *tradeSubTitle;//行业小标题
+@property(nonatomic,assign)int tradeId;
 
 
 
 @property(nonatomic,strong)NSString *categoryImgurl;//需求图片
 @property(nonatomic,strong)NSString *categoryName;//需求图片
 @property(nonatomic,strong)NSString *categorySubTitle;//需求小标题
+@property(nonatomic,assign)int categoryId;
 
 
 //广告

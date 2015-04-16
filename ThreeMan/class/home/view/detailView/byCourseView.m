@@ -13,8 +13,8 @@
 -(id)initWithFrame:(CGRect)frame byTitle:(NSString *)title contentLabel:(NSString *)content buttonTitle:(NSArray *)butTitle{
     self =[super initWithFrame:frame];
     if (self) {
-        self.backgroundColor =[UIColor cyanColor];
-        UIView *backView =[[UIView alloc]initWithFrame:CGRectMake(0, 0, BACKVIEWw, 140)];
+        self.backgroundColor =[UIColor clearColor];
+        UIView *backView =[[UIView alloc]initWithFrame:CGRectMake((kWidth-BACKVIEWw)/2, kHeight-310, BACKVIEWw, 140)];
         [self addSubview:backView];
         backView.backgroundColor =[UIColor whiteColor];
         backView.layer.cornerRadius =4;

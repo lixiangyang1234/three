@@ -56,11 +56,8 @@
     
     UIButton *returnItem =[UIButton buttonWithType:UIButtonTypeCustom];
     returnItem.frame =CGRectMake(5,20,44,44);
-    
     returnItem.backgroundColor =[UIColor clearColor];
-    
     [bannerImage addSubview:returnItem];
-    //    [animationBtn setTitle:@"animationBtn" forState:UIControlStateNormal];
     [returnItem setImage:[UIImage imageNamed:@"nav_return"] forState:UIControlStateNormal];
     [returnItem addTarget:self action:@selector(returnNavItem) forControlEvents:UIControlEventTouchUpInside];
     

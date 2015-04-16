@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 //#import "RootNavView.h"
 @interface NineBlockController : LeftTitleController
-//@property(nonatomic,strong)RootNavView *rootNavView;
+@property(nonatomic,strong)NSString *nineBlockID;
 @end

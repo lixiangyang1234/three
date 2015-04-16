@@ -18,8 +18,10 @@
 }
 -(instancetype)initWithDictionaryForHomeCourse:(NSDictionary *)dict{
     if ([super self]) {
-        self.courseImgurl =dict[@"imgurl"];
+        self.courseImgurl =dict[@"icon"];
         self.courseName =dict[@"name"];
+        self.courseId =[dict[@"id"]intValue];
+    
 //        NSLog(@"sssss%@",self.courseImgurl);
     }
     return self;
@@ -29,7 +31,8 @@
         self.categoryImgurl =dict[@"imgurl"];
         self.categoryName =dict[@"title"];
         self.categorySubTitle =dict[@"mark"];
-                NSLog(@"sssss%@",self.categorySubTitle);
+        self.categoryId =[dict[@"id"]intValue];
+
     }
     return self;
 }
@@ -38,6 +41,8 @@
         self.tradeImgurl =dict[@"imgurl"];
         self.tradeName =dict[@"title"];
         self.tradeSubTitle =dict[@"mark"];
+        self.tradeId =[dict[@"id"]intValue];
+
 
         //        NSLog(@"sssss%@",self.courseImgurl);
     }
@@ -47,7 +52,7 @@
     
     [coder encodeObject:self.imgurl forKey:@"imgurl1"];
 
-    [coder encodeObject:self.courseImgurl forKey:@"imgurl2"];
+    [coder encodeObject:self.courseImgurl forKey:@"icon"];
     [coder encodeObject:self.courseName forKey:@"name2"];
     
     [coder encodeObject:self.categoryImgurl forKey:@"imgurl3"];
@@ -63,7 +68,7 @@
     if (self) {
         self.imgurl =[decoder decodeObjectForKey:@"imgurl1"];
         
-        self.courseImgurl =[decoder decodeObjectForKey:@"imgurl2"];
+        self.courseImgurl =[decoder decodeObjectForKey:@"icon"];
         self.courseName=[decoder decodeObjectForKey:@"name2"];
         
         self.categoryImgurl =[decoder decodeObjectForKey:@"imgurl3"];

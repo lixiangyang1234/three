@@ -11,13 +11,14 @@
 #import "CourseRecommendViewCell.h"
 #import "CourseAnswerViewCell.h"
 #import "byCourseView.h"
+#import "courseDetailModel.h"
 
 #define BANNERH         167   //banner高度
 #define YYBORDERWH        8  //外边界
 #define borderw            5 //内边界
 #define BUTTONH           40  //按钮高度
 
-@interface CourseDetailController ()<UIScrollViewDelegate,UITableViewDataSource,UITableViewDelegate,byCourseViewDelegate>
+@interface CourseDetailController ()<UIScrollViewDelegate,UITableViewDataSource,UITableViewDelegate,byCourseViewDelegate,UIWebViewDelegate>
 {
     UIView *_orangLin;
     UIScrollView *_scrollView;
@@ -25,13 +26,15 @@
     UIButton *_selectedBtn;
     UIScrollView *categoryScrollView;
     CGFloat bannerHeightLine   ;
-    
+    UIScrollView * detailScrollView;
     UIButton *topBtn;
     byCourseView *byCourse;
+    CGFloat webh;
 }
 
 @property(nonatomic,strong)UIScrollView *backScrollView;
 @property(nonatomic,strong)NSString *douNumber;
+@property(nonatomic,strong)UIWebView *courseWeb;
 
 @end
 
@@ -40,11 +43,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor =HexRGB(0xe6e3e4);
-    [self addUIBannerView];
-    [self addCategoryBackScrollView];
-    [self addUICategoryView];
-    [self addUIDownloadView];
+    [self setLeftTitle:@"课程详情"];
+    self.detailArray =[NSMutableArray array];
+    self.recommendArray =[NSMutableArray array];
+    self.answerArray =[NSMutableArray array];
     [self addTopBtn];
+
+    [self addLoadStatus];
 
     // Do any additional setup after loading the view.
 }
@@ -65,9 +70,30 @@
     topBtn.tag =997;
     
 }
+#pragma mark ---添加数据
+-(void)addLoadStatus{
+    NSDictionary *paramDic =[NSDictionary dictionaryWithObjectsAndKeys:_courseDetailID,@"id", nil];
+    [HttpTool postWithPath:@"getNeedDetail" params:paramDic success:^(id JSON, int code, NSString *msg) {
+        if (code==100) {
+            NSDictionary *dict =JSON[@"data"][@"subject_detail"];
+            if (![dict isKindOfClass:[NSNull class]]) {
+                courseDetailModel *courseModel =[[courseDetailModel alloc]initWithDictnoaryForCourseDetail:dict];
+                [_detailArray addObject:courseModel];
+            }
+                    }
+        [self addUIBannerView];
+        [self addUICategoryView];
+        [self addUIDownloadView];
+        [self addCategoryBackScrollView];
+        [self addUICategoryView];
+
+    } failure:^(NSError *error) {
+        
+    }];
+}
 //添加广告图片
 -(void)addUIBannerView{
-    
+    courseDetailModel *courseModel =[_detailArray objectAtIndex:0];
     //添加滑动背景
     self.backScrollView =[[UIScrollView alloc]initWithFrame:CGRectMake(YYBORDERWH, YYBORDERWH, kWidth-YYBORDERWH*2, kHeight-YYBORDERWH)];
     self.backScrollView.backgroundColor =[UIColor whiteColor];
@@ -82,6 +108,7 @@
     [self.backScrollView addSubview:bannerImage];
     bannerImage.backgroundColor =[UIColor purpleColor];
     bannerImage.userInteractionEnabled=YES;
+    [bannerImage setImageWithURL:[NSURL URLWithString:courseModel.courseImgurl] placeholderImage:placeHoderImage];
     //添加8像素高度灰条
     
     UIView *eightView =[[UIView alloc]initWithFrame:CGRectMake(0, borderw*2+BANNERH, kWidth-YYBORDERWH*2, 8)];
@@ -93,6 +120,8 @@
     UIView *line =[[UIView alloc]initWithFrame:CGRectMake(0, 0, kWidth-YYBORDERWH*2, 1)];
     [eightView addSubview:line];
     line.backgroundColor =HexRGB(0xcacaca);
+    
+    
     
     self.backScrollView.contentSize =CGSizeMake(kWidth-YYBORDERWH*2, kHeight+bannerHeightLine);
     
@@ -137,11 +166,6 @@
         }
         [companyBtn addTarget:self action:@selector(categoryBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         
-        //        UIView *yyLine =[[UIView alloc]initWithFrame:CGRectMake(kWidth/3+p%2*(kWidth/3), 10, 1, 24)];
-        //        [categoryView addSubview:yyLine];
-        //        yyLine.backgroundColor =[UIColor lightGrayColor];
-        //        yyLine.alpha =0.5;
-        
     }
     
     _orangLin =[[UIView alloc]init];
@@ -152,7 +176,7 @@
 #pragma mark分类背景CategoryScrollview
 -(void)addCategoryBackScrollView
 {
-    categoryScrollView =[[UIScrollView alloc]initWithFrame:CGRectMake(0, bannerHeightLine+BUTTONH, kWidth, kHeight-BUTTONH-50-64-bannerHeightLine)];
+    categoryScrollView =[[UIScrollView alloc]initWithFrame:CGRectMake(0, bannerHeightLine+BUTTONH, kWidth, kHeight-BUTTONH-50-64+YYBORDERWH)];
     categoryScrollView.contentSize = CGSizeMake(kWidth*3, categoryScrollView.frame.size.height);
     categoryScrollView.showsHorizontalScrollIndicator = NO;
     categoryScrollView.showsVerticalScrollIndicator = NO;
@@ -166,12 +190,12 @@
     categoryScrollView.delegate = self;
     [self.backScrollView addSubview:categoryScrollView];
     [self addDetailView];
-    //    [self addAnswerTableview];
-    //    [self addRecommendTableview];
+   
 }
 #pragma mark----详情
 -(void)addDetailView{
-    UIScrollView * detailScrollView =[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, kWidth-YYBORDERWH*2, categoryScrollView.frame.size.height)];
+    courseDetailModel *courseModel =[_detailArray objectAtIndex:0];
+    detailScrollView =[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, kWidth-YYBORDERWH*2, categoryScrollView.frame.size.height)];
     detailScrollView.contentSize = CGSizeMake(kWidth-YYBORDERWH*2, 500);
     detailScrollView.showsHorizontalScrollIndicator = NO;
     detailScrollView.showsVerticalScrollIndicator = NO;
@@ -187,21 +211,24 @@
     //添加标题
     UILabel *detailTitle =[[UILabel alloc]initWithFrame:CGRectMake(detailWH, detailWH, kWidth-detailWH*2-YYBORDERWH*2, 30)];
     [detailScrollView addSubview:detailTitle];
-    detailTitle.text =@"哈哈哈哈哈哈哈哈，视频视频愈看愈傻蛋";
+    detailTitle.text =courseModel.courseTitle;
     detailTitle.font =[UIFont systemFontOfSize:PxFont(22)];
     detailTitle.textColor=HexRGB(0x323232);
     
     CGFloat titleDetailH =detailTitle.frame.size.height+detailTitle.frame.origin.y;
     //添加蜕变豆
+    
     UIButton *detailDou =[UIButton buttonWithType:UIButtonTypeCustom];
-    detailDou.frame =CGRectMake(detailWH, titleDetailH, 80, 30);
-    [detailDou setImage:[UIImage imageNamed:@"tab_download"] forState:UIControlStateNormal];
-    [detailDou setTitle:@"123" forState:UIControlStateNormal];
+    detailDou.frame =CGRectMake(detailWH, titleDetailH, 50, 30);
+    [detailDou setImage:[UIImage imageNamed:@"browser_number_icon"] forState:UIControlStateNormal];
+    [detailDou setTitle:[NSString stringWithFormat:@"%d", courseModel.courseNum] forState:UIControlStateNormal];
     [detailScrollView addSubview:detailDou];
+    detailDou.titleEdgeInsets =UIEdgeInsetsMake(0, 7, 0, 0);
     detailDou.backgroundColor =[UIColor clearColor];
     [detailDou setTitleColor:HexRGB(0x1c8cc6) forState:UIControlStateNormal];
     [detailDou.titleLabel setFont:[UIFont systemFontOfSize:PxFont(28)]];
     detailDou.backgroundColor =[UIColor clearColor];
+    detailDou.contentHorizontalAlignment =UIControlContentHorizontalAlignmentLeft;
     
     CGFloat douDetailW =detailDou.frame.size.width+detailDou.frame.origin.x;
     UILabel *detailDouLabel =[[UILabel alloc]initWithFrame:CGRectMake(douDetailW, titleDetailH, 45, 30)];
@@ -217,7 +244,7 @@
     companyHomeDetail.frame =CGRectMake(companyHomeW, titleDetailH, kWidth-companyHomeW-detailWH*2, 25);
     [companyHomeDetail setBackgroundImage:[UIImage imageNamed:@"company_name"] forState:UIControlStateNormal];
     [detailScrollView addSubview:companyHomeDetail];
-    [companyHomeDetail setTitle:@"新东方东方东方恒仁续页的" forState:UIControlStateNormal];
+    [companyHomeDetail setTitle:courseModel.courseCompanyname forState:UIControlStateNormal];
     companyHomeDetail.titleEdgeInsets =UIEdgeInsetsMake(0, 28, 0, 10);
     companyHomeDetail.backgroundColor =[UIColor clearColor];
     [companyHomeDetail setTitleColor:HexRGB(0x1c8cc6) forState:UIControlStateNormal];
@@ -234,23 +261,37 @@
     UIView *line =[[UIView alloc]initWithFrame:CGRectMake(0, 0, kWidth-YYBORDERWH*2, 1)];
     [eightView addSubview:line];
     line.backgroundColor =HexRGB(0xcacaca);
+    webh =eightH+borderw+8;
     
-    //添加详情banner
-    UIImageView *bannerImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderw, eightH+borderw+8, kWidth-YYBORDERWH*2-borderw*2, 100)];
-    [detailScrollView addSubview:bannerImage];
-    bannerImage.backgroundColor =[UIColor purpleColor];
-    bannerImage.userInteractionEnabled=YES;
+    //添加WebView
+    _courseWeb = [[UIWebView alloc]initWithFrame:CGRectMake(0, webh, kWidth-YYBORDERWH*2, kHeight-webh-64)];
     
-    CGFloat contentH = bannerImage.frame.size.height+bannerImage.frame.origin.y+5;
-    //添加标题
-    UILabel *contentLabel =[[UILabel alloc]initWithFrame:CGRectMake(detailWH, contentH, kWidth-detailWH*2-YYBORDERWH*2, 210)];
-    [detailScrollView addSubview:contentLabel];
-    contentLabel.text =@"哈哈哈哈哈哈哈哈，视频视频愈看愈傻蛋....哈哈哈哈哈哈哈哈，视频视频愈看愈傻蛋....哈哈哈哈哈哈哈哈，视频视频愈看愈傻蛋...哈哈哈哈哈哈哈哈，视频视频愈看愈傻蛋....哈哈哈哈哈哈哈哈，视频视频愈看愈傻蛋....哈哈哈哈哈哈哈哈，视频视频愈看愈傻蛋...哈哈哈哈哈哈哈哈，视频视频愈看愈傻蛋....哈哈哈哈哈哈哈哈，视频视频愈看愈傻蛋...哈哈哈哈哈哈哈哈，视频视频愈看愈傻蛋...哈哈哈哈哈哈哈哈，视频视频愈看愈傻蛋...哈哈哈哈哈哈哈哈，视频视频愈看愈傻蛋";
-    contentLabel.numberOfLines =100;
-    contentLabel.font =[UIFont systemFontOfSize:PxFont(22)];
-    contentLabel.textColor=HexRGB(0x656565);
+    //    [_courseWeb loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:xqModel.description]]];
+    _courseWeb.userInteractionEnabled = NO;
+    _courseWeb.delegate =self;
+    _courseWeb.backgroundColor =[UIColor redColor];
+    
+    [detailScrollView addSubview:_courseWeb];
+
+    
+}-(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    
+    return YES;
+}
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    
+    CGFloat webheight = [[webView stringByEvaluatingJavaScriptFromString:@"document.body.offsetHeight;"] floatValue];
+    
+    _courseWeb.frame = CGRectMake(0, webh, kWidth-YYBORDERWH*2, webheight+webh);
+    
+    detailScrollView.contentSize = CGSizeMake(kWidth-YYBORDERWH*2,webheight+categoryScrollView.frame.size.height);
+    
+    
     
 }
+
 #pragma mark 推荐
 -(void)addRecommendTableview
 {
@@ -279,7 +320,7 @@
     answerTableView.showsHorizontalScrollIndicator =NO;
     answerTableView.showsVerticalScrollIndicator= NO;
 }
-
+#pragma mark ----分类的点击事件
 //添加分类
 -(void)categoryBtnClick:(UIButton *)sender{
 //    NSLog(@"dddd;;");
@@ -310,24 +351,32 @@
 
 //添加底部下载  download  buyCourse collect
 -(void)addUIDownloadView{
+    courseDetailModel *couseModel =[_detailArray objectAtIndex:0];
     UIView *downloadView =[[UIView alloc]initWithFrame:CGRectMake(0, kHeight-64-50, kWidth, 50)];
     [self.view addSubview:downloadView];
     downloadView.backgroundColor =[UIColor whiteColor];
     UIView *line =[[UIView alloc]initWithFrame:CGRectMake(0, 0, kWidth, 1)];
     [downloadView addSubview:line];
     line.backgroundColor =HexRGB(0xd1d1d1);
+    
+    //添加标题
+    UILabel *titleLabel =[[UILabel alloc]initWithFrame:CGRectMake(23, 27, 40, 20)];
+    [downloadView addSubview:titleLabel];
+    titleLabel.font =[UIFont systemFontOfSize:PxFont(16)];
+    titleLabel.textColor =HexRGB(0x1c8cc6);
+    titleLabel.backgroundColor =[UIColor clearColor];
+    titleLabel.textAlignment =NSTextAlignmentCenter;
+    titleLabel.text =[NSString stringWithFormat:@"( %d )",couseModel.courseDownloadnum];
+    
+    
     for (int i=0; i<3; i++) {
         UIButton *categoryBtn =[UIButton buttonWithType:UIButtonTypeCustom];
         [downloadView addSubview:categoryBtn];
         categoryBtn.backgroundColor =[UIColor clearColor];
         if (i==0) {
-            categoryBtn.frame =CGRectMake(23, 5, 40, 60) ;
+            categoryBtn.frame =CGRectMake(23, 5, 40, 40) ;
             [categoryBtn setImage:[UIImage imageNamed:@"tab_download"] forState:UIControlStateNormal];
-            [categoryBtn setTitle:@"(123)" forState:UIControlStateNormal];
-            [categoryBtn setTitleColor:HexRGB(0x1c8cc6) forState:UIControlStateNormal];
-            categoryBtn.titleEdgeInsets =UIEdgeInsetsMake(5, -25, 0, 0);
-            categoryBtn.imageEdgeInsets =UIEdgeInsetsMake(-38, 7, 0, 0);
-            [categoryBtn.titleLabel setFont:[UIFont systemFontOfSize:14]];
+            categoryBtn.imageEdgeInsets =UIEdgeInsetsMake(0, 0, 10, 0);
         }if (i==1) {
             categoryBtn.frame =CGRectMake(83, 9, 160, 32) ;
             [categoryBtn setBackgroundImage:[UIImage imageNamed:@"buy_img"] forState:UIControlStateNormal];
@@ -533,10 +582,9 @@
 }
 //购买支付
 -(void)addTopViewBy{
-    CGFloat BACKVIEWw=230;
     NSArray *titleArr =@[@"取消",@"支付"];
     NSString *str =[NSString stringWithFormat:@"您本次需要支付100%@蜕变豆，确认支付吗？",self.douNumber];
-    byCourse =[[byCourseView alloc]initWithFrame:CGRectMake((kWidth-BACKVIEWw)/2, kHeight-310, BACKVIEWw, 140) byTitle:@"购买提示" contentLabel:str buttonTitle:titleArr];
+    byCourse =[[byCourseView alloc]initWithFrame:self.view.bounds byTitle:@"购买提示" contentLabel:str buttonTitle:titleArr];
     byCourse.delegate =self;
     [self.view addSubview:byCourse];
     byCourse.hidden =NO;
@@ -544,9 +592,7 @@
 }
 -(void)categoryBtnItem:(UIButton *)item{
         [self addTopViewBy];
-   
-    
-    
+  
 }
 -(void)chooseBtn:(UIButton *)choose chooseTag:(NSInteger)tag{
     [UIView animateWithDuration:.3 animations:^{

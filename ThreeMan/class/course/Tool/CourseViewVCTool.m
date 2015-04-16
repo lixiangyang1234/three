@@ -9,6 +9,7 @@
 #import "CourseViewVCTool.h"
 #import "CourseViewVCModel.h"
 @implementation CourseViewVCTool
+//
 + (void)statusesWithCourseID:(NSString *)course_id CourseSuccess:(StatusSuccessBlock)success failure:(StatusFailureBlock)failure{
     NSDictionary *parmDict =[NSDictionary dictionaryWithObjectsAndKeys:course_id,@"id", nil];
     [HttpTool postWithPath:@"getSsxDetail" params:parmDict success:^(id JSON, int code, NSString *msg) {

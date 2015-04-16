@@ -9,12 +9,15 @@
 #import "NeedViewController.h"
 #import "NeedViewCell.h"
 #import "YYSearchButton.h"
-#import "RootNavView.h"
+#import "needListModel.h"
+#import "needListTool.h"
+#import "CourseDetailController.h"
 @interface NeedViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
     UITableView *_tableView;
     YYSearchButton *_selectedItem;
 }
+@property(nonatomic,strong)NSMutableArray *needListArray;
 @end
 
 @implementation NeedViewController
@@ -22,16 +25,34 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self.view setBackgroundColor:HexRGB(0xffffff)];
+    _needListArray =[[NSMutableArray alloc]init];
 //    [self addUINavView];
     [self addTableView];
     [self addUIChooseBtn];//添加筛选按钮
+    [self addLoadStatus:@"0"];
 }
-//-(void)addUINavView{
-//    RootNavView *rootView =[[RootNavView alloc ]init];
-//    self.navigationItem.titleView =rootView;
-//    rootView.backgroundColor =[UIColor redColor];
-//
-//}
+-(void)addLoadStatus:(NSString *)typestr{
+    NSDictionary *parmDic =[NSDictionary dictionaryWithObjectsAndKeys:_categoryId,@"id",typestr,@"type" ,nil];
+
+    [HttpTool postWithPath:@"getNeed1List" params:parmDic success:^(id JSON, int code, NSString *msg) {
+        if (code == 100) {
+            [_needListArray removeAllObjects];
+            NSDictionary *dic = [JSON objectForKey:@"data"];
+            NSArray *array = [dic objectForKey:@"subject_list"];
+            if (![array isKindOfClass:[NSNull class]]) {
+                for (NSDictionary *dict in array) {
+                    needListModel *item = [[needListModel alloc] init];
+                    [item setValuesForKeysWithDictionary:dict];
+                    [_needListArray addObject:item];
+                }
+            }
+            [_tableView reloadData];
+        }
+    } failure:^(NSError *error) {
+        
+    }];
+
+}
 -(void)addUIChooseBtn{
     NSArray *chooseTitleArray =@[@"全部",@"视频",@"文件"];
 
@@ -68,8 +89,17 @@
 }
 //筛选按钮
 -(void)chooseBtnClick:(YYSearchButton *)sender{
-//    _selectedItem.isSelected =NO;
-        if (sender!=_selectedItem) {
+
+    if (sender.tag==10000) {
+        [self addLoadStatus:@"0"];
+
+    }else if(sender.tag ==10001){
+        [self addLoadStatus:@"1"];
+    }
+    else if(sender.tag ==10002){
+        [self addLoadStatus:@"2"];
+    }
+    if (sender!=_selectedItem) {
            
         _selectedItem.isSelected =NO;
         sender.isSelected =YES;
@@ -78,12 +108,9 @@
 }
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 5;
+    return _needListArray.count;
 }
 
 
@@ -94,8 +121,43 @@
     if (!cell) {
         cell =[[NeedViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndexfider];
         [cell setBackgroundColor:HexRGB(0xe0e0e0)];
-
         cell.selectionStyle =UITableViewCellSelectionStyleNone;
+        
+        needListModel *needModle =[_needListArray objectAtIndex:indexPath.row];
+        [cell.needImage setImageWithURL:[NSURL URLWithString:needModle.imgurl]placeholderImage:placeHoderImage];
+        CGFloat titleH =[needModle.title sizeWithFont:[UIFont systemFontOfSize:PxFont(20)] constrainedToSize:CGSizeMake(kWidth-156, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping].height;
+        cell.needTitle.frame =CGRectMake(135, 9, kWidth-156, titleH);
+        cell.needTitle.text =needModle.title;
+        cell.needTitle .font =[UIFont systemFontOfSize:PxFont(20)];
+
+        cell . needTitle . adjustsFontSizeToFitWidth  =  YES ;
+        cell . needTitle . adjustsLetterSpacingToFitWidth  =  YES ;
+        cell.needTitle.backgroundColor =[UIColor clearColor];
+        [cell.zanBtn setTitle:needModle.categoryHits forState:UIControlStateNormal];
+        cell.companyName.text =needModle.companyname;
+//        NSLog(@"----%@",needModle.title);
+        
+        
+        NSMutableAttributedString *attributedString = [[ NSMutableAttributedString alloc ] initWithString : cell . needTitle . text ];
+//
+        NSMutableParagraphStyle *paragraphStyle = [[ NSMutableParagraphStyle alloc ] init ];
+//
+        paragraphStyle. alignment = NSTextAlignmentLeft ;
+//
+//        
+//        //    paragraphStyle. maximumLineHeight = 40 ;  //最大的行高
+//        
+        paragraphStyle. lineSpacing = 3 ;  //行自定义行高度
+//
+        [paragraphStyle setFirstLineHeadIndent :30 + 5 ]; //首行缩进 根据用户昵称宽度在加5个像素
+//
+        [attributedString addAttribute : NSParagraphStyleAttributeName value :paragraphStyle range : NSMakeRange ( 0 , [ cell . needTitle . text length ])];
+
+        cell . needTitle . attributedText = attributedString;
+//
+        [ cell . needTitle sizeToFit ];
+
+        
     }
     
     
@@ -103,14 +165,15 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//    CourseDetailControll *courseDetailVC=[[CourseDetailControll alloc]init];
-//    [self.navigationController pushViewController:courseDetailVC animated:YES];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    needListModel *needModel =[_needListArray objectAtIndex:indexPath.row];
+    CourseDetailController *courseDetailVC=[[CourseDetailController alloc]init];
+    courseDetailVC.courseDetailID =needModel.categoryId;
+    [self.navigationController pushViewController:courseDetailVC animated:YES];
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 88;
 }
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
