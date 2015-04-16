@@ -111,16 +111,13 @@
 #pragma mark ----chooseBtn categoryBtn 筛选按钮
 //筛选按钮
 -(void)chooseBtnClick:(YYSearchButton *)sender{
-    //    _selectedItem.isSelected =NO;
-    NSLog(@"%d----%d",_selectedItem.tag,sender.tag);
-    
-    
-    if (sender!=_selectedItem) {
+        if (sender!=_selectedItem) {
         
         _selectedItem.isSelected =NO;
         sender.isSelected =YES;
         _selectedItem=sender;
     }
+    
 }
 -(void)categoryBtnClick:(UIButton *)sender{
     [UIView animateWithDuration:0.001 animations:^{

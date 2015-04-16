@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface CourseEightController : LeftTitleController
-
+@property(nonatomic,strong)NSString * courseID;
 @end

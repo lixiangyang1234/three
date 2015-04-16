@@ -15,7 +15,7 @@
 #define imageH       70    //图片高
 @implementation NeedViewCell
 
-@synthesize needImage,needSmailImage,needTitle,zanBtn;
+@synthesize needImage,needSmailImage,needTitle,zanBtn,companyName;
 - (void)awakeFromNib {
     // Initialization code
 }
@@ -44,64 +44,32 @@
         
         needTitle =[[UILabel alloc]initWithFrame:CGRectMake(borderW*2+imageW, YYBorderY, kWidth-YYBorderX*2-imageW-borderW*2, 50)];
         needTitle.backgroundColor =[UIColor clearColor];
-        needTitle.text =@"首行缩进根据用户昵称自动调整 ";
         [backCell addSubview:needTitle];
-//        [needTitle sizeToFit];
         needTitle.textColor =HexRGB(0x323232);
-        self . needTitle . adjustsFontSizeToFitWidth  =  YES ;
-        
-//        self . needTitle . adjustsLetterSpacingToFitWidth  =  YES ;
-        
-        
         needTitle.numberOfLines =2;
-        needTitle.font =[UIFont systemFontOfSize:20];
         
-        UILabel*  needRed =[[UILabel alloc]initWithFrame:CGRectMake(borderW*2+imageW, borderW+needTitle.frame.size.height, 60, 20)];
-        needRed.backgroundColor =[UIColor redColor];
-        needRed.text =@"新东方恒仁大学";
-        [backCell addSubview:needRed];
-        needRed.font =[UIFont systemFontOfSize:12];
-        needRed.textColor=HexRGB(0x959595);
+        companyName =[[UILabel alloc]initWithFrame:CGRectMake(borderW*2+imageW, borderW+needTitle.frame.size.height, 115, 20)];
+        companyName.backgroundColor =[UIColor clearColor];
+        companyName.text =@"新东方恒仁大学";
+        [backCell addSubview:companyName];
+        companyName.font =[UIFont systemFontOfSize:12];
+        companyName.textColor=HexRGB(0x959595);
     
         zanBtn =[UIButton buttonWithType:UIButtonTypeCustom];
         [backCell addSubview:zanBtn];
-        zanBtn.frame =CGRectMake(backCell.frame.size.width-80, borderW+needTitle.frame.size.height, 70, 20);
-        [zanBtn setTitle:@"23" forState:UIControlStateNormal];
-
-        [zanBtn setImage:[UIImage imageNamed:@"nav_return_pre"] forState:UIControlStateNormal];
+        zanBtn.frame =CGRectMake(backCell.frame.size.width-60, borderW+needTitle.frame.size.height, 60, 20);
+        zanBtn .titleEdgeInsets =UIEdgeInsetsMake(0, 7, 0, 0);
+        [zanBtn setImage:[UIImage imageNamed:@"browser_number_icon"] forState:UIControlStateNormal];
         [zanBtn setTitleColor:HexRGB(0x1c8cc6) forState:UIControlStateNormal];
-        [zanBtn setBackgroundColor:[UIColor redColor]];
+        [zanBtn setBackgroundColor:[UIColor clearColor]];
         
                 
-        [self resetContent];
+//        [self resetContent];
         
     }
     return self;
 }
-- ( void )resetContent{
-    
-    NSMutableAttributedString *attributedString = [[ NSMutableAttributedString alloc ] initWithString : self . needTitle . text ];
-    
-    NSMutableParagraphStyle *paragraphStyle = [[ NSMutableParagraphStyle alloc ] init ];
-    
-    paragraphStyle. alignment = NSTextAlignmentLeft ;
-    
-    
-//    paragraphStyle. maximumLineHeight = 40 ;  //最大的行高
-    
-    paragraphStyle. lineSpacing = 3 ;  //行自定义行高度
-    
-    [paragraphStyle setFirstLineHeadIndent :30 + 5 ]; //首行缩进 根据用户昵称宽度在加5个像素
-    
-    [attributedString addAttribute : NSParagraphStyleAttributeName value :paragraphStyle range : NSMakeRange ( 0 , [ self . needTitle . text length ])];
-    
-    self . needTitle . attributedText = attributedString;
-    
-    [ self . needTitle sizeToFit ];
-    needTitle.font =[UIFont systemFontOfSize:PxFont(23)];
 
-    
-}
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 

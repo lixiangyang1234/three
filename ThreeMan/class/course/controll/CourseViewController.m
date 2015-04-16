@@ -40,8 +40,7 @@
             [_tableView reloadData];
         }
     } failure:^(NSError *error) {
-        NSLog(@"%@",error);
-        NSLog(@"ddddddfffffddddssss");
+       
     }];
 
 }

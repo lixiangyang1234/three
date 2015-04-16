@@ -8,7 +8,10 @@
 
 #import "homeViewControllTool.h"
 #import "homeViewArrayModel.h"
+#import "courseEightModel.h"
+#import "nineBlockModel.h"
 @implementation homeViewControllTool
+//首页
 + (void)statusesWithSuccess:(StatusSuccessBlock)success failure:(StatusFailureBlock)failure{
     
     //    NSDictionary *dict =[NSDictionary dictionaryWithObjectsAndKeys:uid,@"uid", nil];
@@ -22,15 +25,46 @@
         
         [statuses addObject:homeModel];
         
-        
-        
-//        NSLog(@"--------%@",dict);
-        success (statuses);
+            success (statuses);
 
     } failure:^(NSError *error) {
         failure(error);
-       
     }];
 }
-
+//八大课程
++ (void)statusesWithCourseEightID:(NSString *)coursrId Success:(StatusSuccessBlock)success failure:(StatusFailureBlock)failure{
+    NSDictionary *paramDic =[NSDictionary dictionaryWithObjectsAndKeys:coursrId,@"id", nil];
+    [HttpTool postWithPath:@"getCourseDetail" params:paramDic success:^(id JSON, int code, NSString *msg) {
+        NSDictionary *dict =JSON[@"data"][@"course_detail"];
+        NSMutableArray *status =[[NSMutableArray alloc]init];
+        if (![dict isKindOfClass:[NSNull class]]) {
+            courseEightModel *courseModel =[[courseEightModel alloc]initWithDictonaryForCourseEight:dict];
+            [status addObject:courseModel];
+            success(status);
+        }else{
+            success(nil);
+        }
+            } failure:^(NSError *error) {
+                failure(error);
+    }];
+}
++ (void)statusesWithNineBlockID:(NSString *)nineID Success:(StatusSuccessBlock)success failure:(StatusFailureBlock)failure
+    {
+    NSDictionary *paramDic =[NSDictionary dictionaryWithObjectsAndKeys:nineID,@"id", nil];
+    [HttpTool postWithPath:@"getNeed1" params:paramDic success:^(id JSON, int code, NSString *msg) {
+        NSMutableArray *status =[NSMutableArray array];
+        NSDictionary *dict =JSON[@"data"][@"category"];
+        if (![dict isKindOfClass:[NSNull class]]) {
+//            nineBlockModel *nineModel =[[nineBlockModel alloc]initWithDictonaryForNineBlock:dict];
+            [status addObject:dict];
+            success(status);
+        }else {
+            success (nil);
+        }
+        
+    
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
 @end

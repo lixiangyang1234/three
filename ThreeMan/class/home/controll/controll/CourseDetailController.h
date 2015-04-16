@@ -9,4 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface CourseDetailController : LeftTitleController
+@property(nonatomic,strong)NSString *courseDetailID;
+@property(nonatomic,strong)NSMutableArray *detailArray;
+@property(nonatomic,strong)NSMutableArray *recommendArray;
+@property(nonatomic,strong)NSMutableArray *answerArray;
+
 @end

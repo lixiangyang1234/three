@@ -13,4 +13,6 @@
 @property (nonatomic,strong)UILabel *needTitle;
 @property (nonatomic,strong)UIImageView *needSmailImage;
 @property(nonatomic,strong)UIButton *zanBtn;
+@property(nonatomic,strong)UILabel *companyName;
+@property(nonatomic,copy)NSString *titleStr;
 @end
