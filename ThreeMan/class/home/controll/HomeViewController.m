@@ -260,9 +260,9 @@ static NSString * const reuseIdentifier = @"Cell";
 
         UIButton* needBtn =[UIButton buttonWithType:UIButtonTypeCustom];
         [self.backScrollView addSubview:needBtn];
-        [needBtn setImage:placeHoderImage3 forState:UIControlStateNormal];
+        [needBtn setImage:placeHoderImage2 forState:UIControlStateNormal];
         [needBtn .titleLabel setFont:[UIFont systemFontOfSize:PxFont(18)]];
-        [needBtn setImageWithURL:[NSURL URLWithString:homeModel.categoryImgurl] forState:UIControlStateNormal placeholderImage:placeHoderImage3];
+        [needBtn setImageWithURL:[NSURL URLWithString:homeModel.categoryImgurl] forState:UIControlStateNormal placeholderImage:placeHoderImage2];
         [needBtn setTitle:homeModel.categoryName forState:UIControlStateNormal];
         [needBtn setTitleColor:HexRGB(0x404040) forState:UIControlStateNormal];
         needBtn.backgroundColor =[UIColor whiteColor];
@@ -282,6 +282,7 @@ static NSString * const reuseIdentifier = @"Cell";
             [needBtn .titleLabel setFont:[UIFont systemFontOfSize:PxFont(25)]];
             needBtn.titleEdgeInsets =UIEdgeInsetsMake(0, 0, 30, 0);
             needLabel.frame =CGRectMake(0, needHeight+80, kWidth-160, 20);
+            [needBtn setImage:placeHoderImage4 forState:UIControlStateNormal];
 
             
         }else if (i==1){
@@ -324,8 +325,8 @@ static NSString * const reuseIdentifier = @"Cell";
         [self.backScrollView addSubview:businessBtn];
         businessBtn.titleEdgeInsets =UIEdgeInsetsMake(-10, -(kWidth)/3, 0, 0);
         businessBtn.imageEdgeInsets =UIEdgeInsetsMake(0, (kWidth)/4, 0, 0);
-        [businessBtn setImage:placeHoderImage3 forState:UIControlStateNormal];
-        [businessBtn setImageWithURL:[NSURL URLWithString:homeModel.tradeImgurl] forState:UIControlStateNormal placeholderImage:placeHoderImage3];
+        [businessBtn setImage:placeHoderImage2 forState:UIControlStateNormal];
+        [businessBtn setImageWithURL:[NSURL URLWithString:homeModel.tradeImgurl] forState:UIControlStateNormal placeholderImage:placeHoderImage2];
         [businessBtn setTitle:homeModel.tradeName forState:UIControlStateNormal];
         [businessBtn setTitleColor:HexRGB(0x404040) forState:UIControlStateNormal];
         [businessBtn .titleLabel setFont:[UIFont systemFontOfSize:PxFont(20)]];
@@ -401,7 +402,7 @@ static NSString * const reuseIdentifier = @"Cell";
 //选中广告的第几张图片
 - (void)cycleBannerView:(KDCycleBannerView *)bannerView didSelectedAtIndex:(NSUInteger)index
 {
-        homeViewControllModel *item = [_adsImage objectAtIndex:index];
+//        homeViewControllModel *item = [_adsImage objectAtIndex:index];
 //        BannerDetailController *detail = [[BannerDetailController alloc] init];
 //        detail.urlStr = item.content;
 //        [self.navigationController pushViewController:detail animated:YES];

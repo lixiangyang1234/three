@@ -35,7 +35,7 @@
         [backCell addSubview:needImage];
         needImage.backgroundColor =[UIColor whiteColor];
         needImage.userInteractionEnabled =YES;
-        
+        needImage.image =placeHoderImage3;
        
 
         

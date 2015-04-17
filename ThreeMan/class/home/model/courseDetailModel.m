@@ -24,4 +24,31 @@
     }
     return self;
 }
+-(instancetype)initWithDictnoaryForCourseRecommend:(NSDictionary *)dict{
+    if ([super self]) {
+        self.recommednAddtime =dict[@"addtime"];
+        self.recommendContent =dict[@"content"];
+        self.recommendImg =dict[@"img"];
+        self.recommendUseame =dict[@"username"];
+        self.recommendId =[dict[@"id"]intValue];
+
+        
+    }
+    return self;
+}
+
+-(instancetype)initWithDictnoaryForCourseAnswer:(NSDictionary *)dict{
+    if ([super self]) {
+        self.answerAddtime =dict[@"addtime"];
+        self.answerContent =dict[@"content"];
+        self.answerImg =dict[@"logo"];
+        self.answerName =dict[@"companyname"];
+        self.answerTitle =dict[@"title"];
+        self.answerId =[dict[@"id"]intValue];
+        
+        
+    }
+    return self;
+}
+
 @end

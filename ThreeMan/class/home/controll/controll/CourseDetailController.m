@@ -17,9 +17,10 @@
 #define YYBORDERWH        8  //外边界
 #define borderw            5 //内边界
 #define BUTTONH           40  //按钮高度
-
+#define  NETFAILIMGWH  165   //没有数据的图片宽高
 @interface CourseDetailController ()<UIScrollViewDelegate,UITableViewDataSource,UITableViewDelegate,byCourseViewDelegate,UIWebViewDelegate>
 {
+    NetFailView *failView;
     UIView *_orangLin;
     UIScrollView *_scrollView;
     UIView *categoryView;
@@ -53,7 +54,7 @@
     self.answerArray =[NSMutableArray array];
 
     [self addLoadStatus];
-
+//    [self addRecommendLoadStatus];
     // Do any additional setup after loading the view.
 }
 -(void)addTopBtn
@@ -93,9 +94,66 @@
         [self addUICategoryView];
         [self addTopBtn];
     } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+        [self notNetFailView];
+    }];
+}
+-(void)addRecommendLoadStatus{
+    NSDictionary *paramDic =[NSDictionary dictionaryWithObjectsAndKeys:_courseDetailID,@"id", nil];
+
+    [HttpTool postWithPath:@"getRecommendList" params:paramDic success:^(id JSON, int code, NSString *msg) {
+        if (code == 100) {
+            NSDictionary *dic = [JSON objectForKey:@"data"];
+            NSArray *array = [dic objectForKey:@"recommend_list"];
+            if (![array isKindOfClass:[NSNull class]]) {
+                for (NSDictionary *dict in array) {
+                    [_recommendArray removeAllObjects];
+                    [_answerArray removeAllObjects];
+
+                    courseDetailModel *item = [[courseDetailModel alloc] initWithDictnoaryForCourseRecommend:dict];
+                    [_recommendArray addObject:item];
+                }
+            }
+            [recommendTableView reloadData];
+        }
+        if (_recommendArray.count<=0) {
+            [failView removeFromSuperview];
+            [self notByRecommend];
+            [recommendTableView setHidden:YES];
+        }
+    } failure:^(NSError *error) {
         
     }];
 }
+-(void)addAnswerLoadStatus{
+    NSDictionary *paramDic =[NSDictionary dictionaryWithObjectsAndKeys:_courseDetailID,@"id", nil];
+    
+    [HttpTool postWithPath:@"getQuestionList" params:paramDic success:^(id JSON, int code, NSString *msg) {
+        if (code == 100) {
+            NSDictionary *dic = [JSON objectForKey:@"data"];
+            NSLog(@"%@",JSON);
+            NSArray *array = [dic objectForKey:@"question_list"];
+            if (![array isKindOfClass:[NSNull class]]) {
+                for (NSDictionary *dict in array) {
+                    [_recommendArray removeAllObjects];
+                    [_answerArray removeAllObjects];
+                    courseDetailModel *item = [[courseDetailModel alloc] initWithDictnoaryForCourseAnswer:dict];
+                    [_answerArray addObject:item];
+                }
+            }
+            
+            [answerTableView reloadData];
+        }
+        if (_answerArray.count<=0) {
+            [failView removeFromSuperview];
+            [self notByAnswer];
+            [answerTableView setHidden:YES];
+        }
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
 //添加广告图片
 -(void)addUIBannerView{
     courseDetailModel *courseModel =[_detailArray objectAtIndex:0];
@@ -310,6 +368,7 @@
     recommendTableView.showsVerticalScrollIndicator= NO;
     recommendTableView.delegate =self;
     recommendTableView.dataSource = self;
+    recommendTableView.hidden =NO;
 }
 
 
@@ -326,6 +385,7 @@
     answerTableView.dataSource = self;
     answerTableView.showsHorizontalScrollIndicator =NO;
     answerTableView.showsVerticalScrollIndicator= NO;
+    answerTableView.hidden =NO;
 }
 #pragma mark ----分类的点击事件
 //添加分类
@@ -335,19 +395,21 @@
     if (sender.tag == 20)
     {
         [self addDetailView];
+        [self addLoadStatus];
         //        _footer.scrollView = _allTableView;
         [categoryScrollView setContentOffset:CGPointMake(0, 0) animated:YES];
     }
     else if(sender.tag ==21)
     {
         [self addRecommendTableview];
+        [self addRecommendLoadStatus];
         //        _footer.scrollView = recommendTableView;
         [categoryScrollView setContentOffset:CGPointMake(kWidth, 0) animated:YES];
     }
     else if(sender.tag ==22)
     {
         [self addAnswerTableview];
-        
+        [self addAnswerLoadStatus];
         //        _footer.scrollView = answerTableView;
         [categoryScrollView setContentOffset:CGPointMake(kWidth*2, 0) animated:YES];
     }
@@ -410,6 +472,11 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (_selectedBtn.tag==21) {
+        return _recommendArray.count;
+    }if (_selectedBtn.tag==22) {
+        return _answerArray.count;
+    }
     return 5;
 }
 
@@ -423,7 +490,15 @@
             RecommandCell =[[CourseRecommendViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndexfider];
             [RecommandCell setBackgroundColor:HexRGB(0xe0e0e0)];
             RecommandCell.selectionStyle =UITableViewCellSelectionStyleNone;
+
         }
+        courseDetailModel *recommendModel =[_recommendArray objectAtIndex:indexPath.row];
+        [RecommandCell.headerRecommendImage setImageWithURL:[NSURL URLWithString:recommendModel.recommendImg] placeholderImage:placeHoderImage1];
+        RecommandCell.nameRecomendLabel.text =recommendModel.recommendUseame;
+        RecommandCell.contentRecomendLabel.text =recommendModel.recommendContent;
+        RecommandCell.timeRecomendLabel.text =recommendModel.recommednAddtime;
+        NSLog(@"----%@",recommendModel.recommednAddtime);
+        
         
         if (indexPath.row>=8) {
             topBtn.hidden =NO;
@@ -441,6 +516,12 @@
             [answerCell setBackgroundColor:HexRGB(0xe0e0e0)];
             answerCell.selectionStyle =UITableViewCellSelectionStyleNone;
         }
+        courseDetailModel *answerModel =[_answerArray objectAtIndex:indexPath.row];
+        answerCell.answerTitle.text =answerModel.answerTitle;
+        [answerCell.companyAnswerImage setImageWithURL:[NSURL URLWithString:answerModel.answerImg] placeholderImage:placeHoderImage1];
+        answerCell.timeAnswerLabel.text =answerModel.answerAddtime;
+        answerCell.nameAnswerLabel.text =answerModel.answerName;
+        answerCell.contentAnswerLabel.text =answerModel.answerContent;
         
         if (indexPath.row>=8) {
             topBtn.hidden =NO;
@@ -640,12 +721,14 @@
 }
 // 推荐 没有推荐
 -(void)notByRecommend{
-    NetFailView *failView =[[NetFailView alloc]initWithFrameForDetail:self.view.bounds backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"抱歉！该需求暂时还没有推荐！"];
+    
+
+    failView =[[NetFailView alloc]initWithFrameForDetail:CGRectMake((kWidth-NETFAILIMGWH)/2, kHeight-64-165-50, NETFAILIMGWH, NETFAILIMGWH) backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"抱歉！该需求暂时还没有推荐！"];
     [self.view addSubview:failView];
 }
 // 答疑 没有购买课程
 -(void)notByAnswer{
-    NetFailView *failView =[[NetFailView alloc]initWithFrameForDetail:self.view.bounds backImage:[UIImage imageNamed:@"netFailImg_2"] promptTitle:@"抱歉！您还未购买该课程！点击下方“购买”按钮购买！"];
+    failView =[[NetFailView alloc]initWithFrameForDetail:CGRectMake((kWidth-NETFAILIMGWH)/2, kHeight-64-165-50, NETFAILIMGWH, NETFAILIMGWH) backImage:[UIImage imageNamed:@"netFailImg_2"] promptTitle:@"抱歉！您还未购买该课程！点击下方“购买”按钮购买！"];
     [self.view addSubview:failView];
 }
 //没有网络

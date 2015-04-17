@@ -50,24 +50,8 @@
     
  
     
-    _scrollView = [[UIScrollView alloc]init];
-    if (_categoryArray.count%3==1) {
-        _scrollView.frame =CGRectMake(YYBORDERH, 0, kWidth-16,( _categoryArray.count+2)/3*44+YYBORDERH);
-        //底部线条
-        UIView *topView =[[UIView alloc]initWithFrame:CGRectMake(YYBORDERH+(kWidth-YYBORDERH)/3-2,_scrollView.frame.size.height-44 ,(kWidth-YYBORDERH)/3*2,43)];
-        [_scrollView addSubview:topView];
-        topView.backgroundColor =HexRGB(0xffffff);
-        
-    }else if(_categoryArray.count%3==2){
-        _scrollView.frame =CGRectMake(YYBORDERH, 0, kWidth-16,( _categoryArray.count+1)/3*44+YYBORDERH);
-        //底部线条
-        UIView *topView =[[UIView alloc]initWithFrame:CGRectMake(YYBORDERH+(kWidth-YYBORDERH)/3*2-3,_scrollView.frame.size.height-44 ,(kWidth-YYBORDERH)/3,43)];
-        [_scrollView addSubview:topView];
-        topView.backgroundColor =HexRGB(0xffffff);
-    }else{
-        _scrollView.frame =CGRectMake(YYBORDERH, 0, kWidth-16, _categoryArray.count/3*44+YYBORDERH);
-    }
-    _scrollView.contentSize = CGSizeMake(_scrollView.frame.size.width, _categoryArray.count/3*44+10);
+    _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, kWidth, kHeight-64)];
+    _scrollView.contentSize = CGSizeMake(_scrollView.frame.size.width, (_categoryArray.count+2)/3*44);
     _scrollView.showsHorizontalScrollIndicator=NO;
     _scrollView.showsVerticalScrollIndicator=NO;
     _scrollView.backgroundColor =HexRGB(0xeaebec);
@@ -77,6 +61,25 @@
     UIView *topLie =[[UIView alloc]initWithFrame:CGRectMake(0, 0, kWidth, YYBORDERH)];
     [_scrollView addSubview:topLie];
     topLie.backgroundColor =HexRGB(0xffffff);
+//    if (_categoryArray.count%3==1) {
+//        topLie.frame =CGRectMake(YYBORDERH, YYBORDERH, kWidth-YYBORDERH*2, (_categoryArray.count+2)/3*44);
+//        
+//    }else if(_categoryArray.count%3==2){
+//        topLie.frame =CGRectMake(YYBORDERH, YYBORDERH, kWidth-YYBORDERH*2, (_categoryArray.count+1)/3*44);
+//
+//    }else {
+//        topLie.frame =CGRectMake(YYBORDERH, YYBORDERH, kWidth-YYBORDERH*2, _categoryArray.count/3*44);
+//
+//    }
+    
+    
+    
+    //banner图片
+    UIImageView *backImg =[[UIImageView alloc]initWithFrame:CGRectMake((kWidth-115)/2, kHeight-70-64, 115, 35)];
+    [_scrollView addSubview:backImg];
+    backImg.backgroundColor =[UIColor clearColor];
+    backImg.userInteractionEnabled=YES;
+    backImg.image =[UIImage imageNamed:@"title@2x.png"];
     
 }
 -(void)addCateGoryButton
@@ -94,7 +97,7 @@
         [titleBtn setTitle:nineModel.nineTitle forState:UIControlStateNormal];
         [_scrollView addSubview:titleBtn];
         titleBtn .titleLabel.font = [UIFont systemFontOfSize:PxFont(20)];
-        titleBtn.frame =CGRectMake(nineBorderWH+i%3*((kWidth-nineBorderWH*2)/3), YYBORDERH+i/3*(nineH), (kWidth-nineBorderWH*2)/3-1, nineH-1);
+        titleBtn.frame =CGRectMake(nineBorderWH+i%3*((kWidth-nineBorderWH*2)/3), YYBORDERH+i/3*(nineH), (kWidth-nineBorderWH*2)/3-1, nineH);
         [titleBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         titleBtn.backgroundColor =[UIColor whiteColor];        
         [titleBtn addTarget:self action:@selector(itemsClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -102,6 +105,14 @@
         
         
     }
+    
+        for (int h=0; h<_categoryArray.count/3; h++) {
+            //底部线条
+            UIView *topLie =[[UIView alloc]initWithFrame:CGRectMake(YYBORDERH, YYBORDERH+nineH+h%_categoryArray.count/3*nineH, kWidth-YYBORDERH*2, 1)];
+            [_scrollView addSubview:topLie];
+            topLie.backgroundColor =HexRGB(0xeaebec);
+    }
+   
     
     
     

@@ -60,7 +60,7 @@
         companyAnswerImage.layer.borderColor =HexRGB(0xdde5eb) .CGColor;
         
 
-        nameAnswerLabel =[[UILabel alloc]initWithFrame:CGRectMake(imageW+borderwh, contentH, 100 , 30)];
+        nameAnswerLabel =[[UILabel alloc]initWithFrame:CGRectMake(imageW+borderwh, contentH, 150 , 30)];
         nameAnswerLabel.backgroundColor =[UIColor clearColor];
         nameAnswerLabel.text =@"大头儿子";
         [backCell addSubview:nameAnswerLabel];
@@ -68,7 +68,7 @@
         nameAnswerLabel.font =[UIFont systemFontOfSize:PxFont(18)];
         nameAnswerLabel.textColor =HexRGB(0xa3a3a3);
         
-        timeAnswerLabel =[[UILabel alloc]initWithFrame:CGRectMake(self.frame.size.width-120, contentH, 80, 30)];
+        timeAnswerLabel =[[UILabel alloc]initWithFrame:CGRectMake(self.frame.size.width-100, contentH, 80, 30)];
         timeAnswerLabel.backgroundColor =[UIColor clearColor];
         timeAnswerLabel.text =@"2015-03-04";
         [backCell addSubview:timeAnswerLabel];
