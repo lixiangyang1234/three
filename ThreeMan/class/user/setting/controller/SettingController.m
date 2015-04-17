@@ -48,7 +48,7 @@
 
 - (void)loadData
 {
-    NSArray *array = [NSArray arrayWithObjects:@"修改密码",@"意见反馈",@"关于三身行",@"操作指南", nil];
+    NSArray *array = [NSArray arrayWithObjects:@"修改密码",@"意见反馈",@"关于我们",@"操作指南", nil];
     NSArray *array1 = [NSArray arrayWithObjects:@"应许非WIFI网络下载",@"检查更新", nil];
     [_dataArray addObject:array];
     [_dataArray addObject:array1];

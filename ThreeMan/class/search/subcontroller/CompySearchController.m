@@ -40,15 +40,22 @@
 
 - (void)loadData
 {
-    for (int i = 0 ; i< 10 ; i++) {
-        EnterpriseItem *item = [[EnterpriseItem alloc] init];
-//        item.image = @"";
-//        item.title = @"途牛旅游网";
-//        item.desc = @"课程21";
-//        item.content = @"途牛旅游网-中国知名的在线旅游预订平台，提供北京、上海、广州、深圳等64个城市出发的旅游度假产品预订服务，包括跟团游、自助游、自驾游、邮轮、公司旅游、酒店以及景区门票预订等，产品全面，价格透明，全年365天4007-999-999电话预订，提供丰富的后续服务和保障。";
-        [_dataArray addObject:item];
-    }
-    [_tableView reloadData];
+    NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:self.keywords,@"keywords",@"2",@"type", nil];
+    [HttpTool postWithPath:@"getSelectList" params:param success:^(id JSON, int code, NSString *msg) {
+        if (code == 100) {
+            NSArray *select = JSON[@"data"][@"select"];
+            if (![select isKindOfClass:[NSNull class]]&&select) {
+                for (NSDictionary *dict in select) {
+                    EnterpriseItem *item = [[EnterpriseItem alloc] init];
+                    [item setValuesForKeysWithDictionary:dict];
+                    [_dataArray addObject:item];
+                }
+            }
+        }
+        [_tableView reloadData];
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+    }];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -64,11 +71,10 @@
         cell = [[EnterpriseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify];
     }
     EnterpriseItem *item = [_dataArray objectAtIndex:indexPath.row];
-    
-//    cell.imgView.backgroundColor = [UIColor redColor];
-//    cell.titleLabel.text = item.title;
-//    cell.littleLabel.text = item.desc;
-//    cell.contentLabel.text = item.content;
+    [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:[UIImage imageNamed:@""]];
+    cell.titleLabel.text = item.companyname;
+    cell.littleLabel.text = [NSString stringWithFormat:@"课程%@",item.scorenums];
+    cell.contentLabel.text = item.introduce;
 
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;

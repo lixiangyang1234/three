@@ -7,6 +7,7 @@
 //
 
 #import "AboutUsController.h"
+#import "AdaptationSize.h"
 
 @interface AboutUsController ()
 
@@ -19,10 +20,29 @@
     // Do any additional setup after loading the view.
     self.title = @"关于我们";
     
-    [self buildUI];
+    [self loadData];
+    
 }
 
-- (void)buildUI
+
+- (void)loadData
+{
+    [HttpTool postWithPath:@"getAboutUs" params:nil success:^(id JSON, int code, NSString *msg) {
+        if (code == 100) {
+            NSLog(@"%@",JSON);
+            NSDictionary *dict = JSON[@"data"][@"aboutus"];
+            if (dict) {
+                
+            }
+            [self buildUI:dict];
+        }
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+        [self buildUI:nil];
+    }];
+}
+
+- (void)buildUI:(NSDictionary *)dict
 {
     CGFloat y = 54;
     //图标
@@ -41,17 +61,12 @@
     nameLabel.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:nameLabel];
     
-    y+=nameLabel.frame.size.height+5;
-    //版本信息
-    UILabel *versionLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, y, kWidth,15)];
-    versionLabel.backgroundColor = [UIColor clearColor];
-    versionLabel.textAlignment = NSTextAlignmentCenter;
-    versionLabel.textColor = HexRGB(0x323232);
-    versionLabel.text = @"1.1.0.2";
-    versionLabel.font = [UIFont systemFontOfSize:13];
-    [self.view addSubview:versionLabel];
+    y+=nameLabel.frame.size.height+20;
     
-    y+=versionLabel.frame.size.height+20;
+    if (!dict) {
+        return;
+    }
+    
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, y, 150,20)];
     titleLabel.backgroundColor = [UIColor clearColor];
@@ -62,23 +77,38 @@
     
     y += titleLabel.frame.size.height+10;
     
-    NSArray *array = [NSArray arrayWithObjects:@"邮箱:acai@vip.qq.com",@"传真:021-50124541",@"电话联系请周一至周五工作日内联系", nil];
+    NSString *email = [NSString stringWithFormat:@"邮箱: %@",[dict objectForKey:@"email"]];
     
-    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(8, y,kWidth-8*2,[array count]*39)];
+    NSString *fax=  [NSString stringWithFormat:@"传真: %@",[dict objectForKey:@"fax"]];
+    NSString *content = [dict objectForKey:@"content"];
+    
+    NSArray *array = [NSArray arrayWithObjects:email,fax,content, nil];
+    
+    CGSize size = [AdaptationSize getSizeFromString:content Font:[UIFont systemFontOfSize:14] withHight:CGFLOAT_MAX withWidth:kWidth-8*2-10-5];
+    
+    
+    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(8, y,kWidth-8*2,([array count]-1)*39+size.height+20)];
     bgView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:bgView];
     
     for (int i =0 ; i<array.count; i++) {
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10,39*i,bgView.frame.size.width-10,39)];
+        UILabel *label = [[UILabel alloc] init];
+        if (i<array.count-1) {
+            label.frame = CGRectMake(10, 39*i, bgView.frame.size.width-10, 39);
+            UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0,38+39*i,bgView.frame.size.width,1)];
+            line.backgroundColor = HexRGB(0xe0e0e0);
+            [bgView addSubview:line];
+        }else{
+            label.frame = CGRectMake(10, 39*i+10, bgView.frame.size.width-10-5,size.height);
+            label.numberOfLines = 0;
+        }
+        
         label.backgroundColor = [UIColor clearColor];
         label.font = [UIFont systemFontOfSize:14];
         label.textColor = HexRGB(0x323232);
         label.text = [array objectAtIndex:i];
         [bgView addSubview:label];
         
-        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0,38+39*i,bgView.frame.size.width,1)];
-        line.backgroundColor = HexRGB(0xe0e0e0);
-        [bgView addSubview:line];
     }
 }
 

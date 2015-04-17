@@ -10,6 +10,10 @@
 
 @interface HotItem : NSObject
 
-@property (nonatomic,copy) NSString *title;
+@property (nonatomic,copy) NSString *uid;
+@property (nonatomic,copy) NSString *keywords;
+@property (nonatomic,copy) NSString *sort;
+
+- (void)setValue:(id)value forUndefinedKey:(NSString *)key;
 
 @end

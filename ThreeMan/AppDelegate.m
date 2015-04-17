@@ -30,14 +30,14 @@
     
     
     //获取用户uuid
-    NSString *retrieveuuid = [SSKeychain passwordForService:@"com.promo.Manicure" account:@"uuid"];
+    NSString *retrieveuuid = [SSKeychain passwordForService:@"com.promo.threeMan" account:@"uuid"];
     //第一次下载程序的时候存储
     if (retrieveuuid == nil || [retrieveuuid isEqualToString:@""]) {
         CFUUIDRef uuid = CFUUIDCreate(NULL);
         assert(uuid!=NULL);
         CFStringRef uuidStr = CFUUIDCreateString(NULL, uuid);
         retrieveuuid = [NSString stringWithFormat:@"%@",uuidStr];
-        [SSKeychain setPassword:retrieveuuid forService:@"com.promo.Manicure" account:@"uuid"];
+        [SSKeychain setPassword:retrieveuuid forService:@"com.promo.threeMan" account:@"uuid"];
     }
     [SystemConfig sharedInstance].uuidStr = retrieveuuid;
     

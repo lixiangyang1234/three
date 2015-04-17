@@ -1,14 +1,14 @@
 //
-//  HotItem.m
+//  DetailItem.m
 //  ThreeMan
 //
-//  Created by tianj on 15/3/30.
+//  Created by tianj on 15/4/16.
 //  Copyright (c) 2015年 ___普马克___. All rights reserved.
 //
 
-#import "HotItem.h"
+#import "MessageDetailItem.h"
 
-@implementation HotItem
+@implementation MessageDetailItem
 
 - (void)setValue:(id)value forUndefinedKey:(NSString *)key
 {

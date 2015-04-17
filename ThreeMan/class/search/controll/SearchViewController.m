@@ -20,6 +20,8 @@
 #import "SaveTempDataTool.h"
 #import "CompySearchController.h"
 #import "UIImageView+WebCache.h"
+#import "CourseDetailController.h"
+#import "CompanyHomeControll.h"
 
 @interface SearchViewController ()
 
@@ -42,6 +44,10 @@
     _subjectArray = [[NSMutableArray alloc] initWithCapacity:0];
     
     _results = [[NSMutableArray alloc] initWithCapacity:0];
+    
+    _defaultHeadViewArray = [[NSMutableArray alloc] initWithCapacity:0];
+    
+    _resultHeadViewArray = [[NSMutableArray alloc] initWithCapacity:0];
     
     frame = CGRectMake(0, 0, kWidth, kHeight-64);
     
@@ -159,17 +165,50 @@
 #pragma mark 加载默认数据(热门搜索、搜索历史)
 - (void)loadDefaultData
 {
-    NSMutableArray *arr = [[NSMutableArray alloc] init];
-    for (int i = 0; i<11; i++) {
-        HotItem *item = [[HotItem alloc] init];
-        item.title = @"职场技能";
-        [arr addObject:item];
-    }
-    [_dataArray addObject:arr];
+    
+    [HttpTool postWithPath:@"getSelect" params:nil success:^(id JSON, int code, NSString *msg) {
+        if (code == 100) {
+            NSArray *result = JSON[@"data"][@"select"];
+            NSMutableArray *arr = [[NSMutableArray alloc] init];
+            if (![result isKindOfClass:[NSNull class]]&&result) {
+                for (NSDictionary *dict in result) {
+                    HotItem *item = [[HotItem alloc] init];
+                    [item setValuesForKeysWithDictionary:dict];
+                    [arr addObject:item];
+                }
+                existHots = YES;
+            }
+            if (arr.count!=0) {
+                
+                [_dataArray addObject:arr];
+
+                DefaultHeaderView *headerView = [[DefaultHeaderView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 40)];
+                [headerView setImgView:[UIImage imageNamed:@"hot_search"] title:@"热门搜索"];
+                [_defaultHeadViewArray addObject:headerView];
+            }
+        }
+        
+        [self addSearchRecord];
+        
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+        [self addSearchRecord];
+    }];
+}
+//添加搜索记录
+- (void)addSearchRecord
+{
     NSMutableArray *mutableArr = [SaveTempDataTool unarchiveClassWithFileName:@"search"];
     if (mutableArr) {
+        
         [_dataArray addObject:mutableArr];
+
+        DefaultHeaderView *headerView = [[DefaultHeaderView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 40)];
+        [headerView setImgView:[UIImage imageNamed:@"history_search"] title:@"搜索历史"];
+
+        [_defaultHeadViewArray addObject:headerView];
     }
+    [_tableView reloadData];
 }
 
 #pragma mark 搜索按钮点击
@@ -179,19 +218,25 @@
         [RemindView showViewWithTitle:@"搜索内容不能为空" location:TOP];
     }else{
         [_textField resignFirstResponder];
-        NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:_textField.text,@"keywords", nil];
-        [HttpTool postWithPath:@"getSelect" params:param success:^(id JSON, int code, NSString *msg) {
-            if (code == 100) {
-                NSLog(@"%@",JSON);
-                [self loadResultData:JSON];
-                [self addToRecord];
-            }
-        } failure:^(NSError *error) {
-            NSLog(@"%@",error);
-        }];
+        [self requestSearchData:_textField.text];
     }
 }
 
+#pragma mark 搜索关键词
+- (void)requestSearchData:(NSString *)keywords
+{
+    NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:keywords,@"keywords", nil];
+    [HttpTool postWithPath:@"getSelect" params:param success:^(id JSON, int code, NSString *msg) {
+        if (code == 100) {
+            NSLog(@"%@",JSON);
+            [self loadResultData:JSON];
+            [self addToRecord];
+            _keywords = keywords;
+        }
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+    }];
+}
 
 //添加搜索关键词到历史纪录
 - (void)addToRecord
@@ -202,6 +247,12 @@
         BOOL ret = [SaveTempDataTool archiveClass:array FileName:@"search"];
         if (ret) {
             [_dataArray addObject:array];
+            
+            DefaultHeaderView *headerView = [[DefaultHeaderView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 40)];
+            [headerView setImgView:[UIImage imageNamed:@"history_search"] title:@"搜索历史"];
+            
+            [_defaultHeadViewArray addObject:headerView];
+
         }
     }else{
         NSMutableArray *arr = [_dataArray objectAtIndex:1];
@@ -224,13 +275,15 @@
     }
 }
 
-#pragma mark 请求搜索结果
+#pragma mark 解析搜索数据
 - (void)loadResultData:(NSDictionary *)response
 {
     [_results removeAllObjects];
     [_videoArray removeAllObjects];
     [_companyArray removeAllObjects];
     [_subjectArray removeAllObjects];
+    [_resultHeadViewArray removeAllObjects];
+    
     
     NSDictionary *data = [response objectForKey:@"data"];
     NSArray *select_video = [data objectForKey:@"select_video"];
@@ -241,10 +294,21 @@
             [_videoArray addObject:item];
         }
     }
-    if (_videoArray.count!=0) {
-        [_results addObject:_videoArray];
-    }
     
+    
+    //视频搜索结果不为空
+    if (_videoArray.count!=0) {
+        
+        [_results addObject:_videoArray];
+        ResultHeaderView *headView = [[ResultHeaderView alloc] initWithFrame:CGRectMake(0, 0,kWidth,36)];
+        headView.tag = 1000;
+        headView.delegate = self;
+        [headView setImgView:[UIImage imageNamed:@"video_search"] title:@"视频" count:data[@"select_video_count"]];
+        
+        [_resultHeadViewArray addObject:headView];
+        
+    }
+    //企业搜索结果不为空
     NSArray *select_company = [data objectForKey:@"select_company"];
     if (![select_company isKindOfClass:[NSNull class]]) {
         for (NSDictionary *dic in select_company) {
@@ -254,9 +318,18 @@
         }
     }
     if (_companyArray.count!=0) {
+        
         [_results addObject:_companyArray];
-    }
 
+        
+        ResultHeaderView *headView = [[ResultHeaderView alloc] initWithFrame:CGRectMake(0, 0,kWidth,36)];
+        headView.tag = 1001;
+        headView.delegate = self;
+        [headView setImgView:[UIImage imageNamed:@"company_search"] title:@"企业" count:data[@"select_company_count"]];
+
+        [_resultHeadViewArray addObject:headView];
+    }
+    //课件搜索结果不为空
     NSArray *select_subject = [data objectForKey:@"select_subject"];
     if (![select_subject isKindOfClass:[NSNull class]]) {
         for (NSDictionary *dic in select_subject) {
@@ -266,10 +339,18 @@
         }
     }
     if (_subjectArray.count!=0) {
+        
         [_results addObject:_subjectArray];
+    
+        ResultHeaderView *headView = [[ResultHeaderView alloc] initWithFrame:CGRectMake(0, 0,kWidth,36)];
+        headView.tag = 1002;
+        headView.delegate = self;
+        [headView setImgView:[UIImage imageNamed:@"document_search"] title:@"课件" count:data[@"select_subject_count"]];
+        
+        [_resultHeadViewArray addObject:headView];
     }
     
-
+    //隐藏默认tableview
     if (_resultTableView.hidden) {
         _tableView.hidden = YES;
         _resultTableView.hidden = NO;
@@ -319,41 +400,55 @@
 {
     //默认列表
     if (tableView.tag == 1000) {
+        static NSString *identify1 = @"identify1";
+        static NSString *identify2 = @"identify2";
+        
         if (indexPath.section == 0) {
-            static NSString *identify1 = @"identify1";
-            HotCell *cell = [tableView dequeueReusableCellWithIdentifier:identify1];
-            if (cell == nil) {
-                cell = [[HotCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify1];
-            }
-            NSMutableArray *array = [_dataArray objectAtIndex:indexPath.section];
-            HotItem *item1 = [array objectAtIndex:indexPath.row*3];
-            [cell.firstBtn setTitle:item1.title forState:UIControlStateNormal];
-            cell.firstBtn.tag = 1000+indexPath.row*3;
-            [cell.firstBtn addTarget:self action:@selector(hotBtnDown:) forControlEvents:UIControlEventTouchUpInside];
-            
-            if (array.count<indexPath.row*3+2) {
-                cell.secondBtn.hidden = YES;
-            }else{
-                cell.secondBtn.hidden = NO;
-                HotItem *item2 = [array objectAtIndex:indexPath.row*3+1];
-                [cell.secondBtn setTitle:item2.title forState:UIControlStateNormal];
-                cell.secondBtn.tag = 1000+indexPath.row*3+1;
-                [cell.secondBtn addTarget:self action:@selector(hotBtnDown:) forControlEvents:UIControlEventTouchUpInside];
-
-                if (array.count<indexPath.row*3+3) {
-                    cell.thirdBtn.hidden = YES;
-                }else{
-                    cell.thirdBtn.hidden = NO;
-                    HotItem *item3 = [array objectAtIndex:indexPath.row*3+2];
-                    [cell.thirdBtn setTitle:item3.title forState:UIControlStateNormal];
-                    cell.thirdBtn.tag = 1000+indexPath.row*3+2;
-                    [cell.thirdBtn addTarget:self action:@selector(hotBtnDown:) forControlEvents:UIControlEventTouchUpInside];
+            //存在热门搜索
+            if (existHots) {
+                HotCell *cell = [tableView dequeueReusableCellWithIdentifier:identify1];
+                if (cell == nil) {
+                    cell = [[HotCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify1];
                 }
+                NSMutableArray *array = [_dataArray objectAtIndex:indexPath.section];
+                HotItem *item1 = [array objectAtIndex:indexPath.row*3];
+                [cell.firstBtn setTitle:item1.keywords forState:UIControlStateNormal];
+                cell.firstBtn.tag = 1000+indexPath.row*3;
+                [cell.firstBtn addTarget:self action:@selector(hotBtnDown:) forControlEvents:UIControlEventTouchUpInside];
+                
+                if (array.count<indexPath.row*3+2) {
+                    cell.secondBtn.hidden = YES;
+                }else{
+                    cell.secondBtn.hidden = NO;
+                    HotItem *item2 = [array objectAtIndex:indexPath.row*3+1];
+                    [cell.secondBtn setTitle:item2.keywords forState:UIControlStateNormal];
+                    cell.secondBtn.tag = 1000+indexPath.row*3+1;
+                    [cell.secondBtn addTarget:self action:@selector(hotBtnDown:) forControlEvents:UIControlEventTouchUpInside];
+                    
+                    if (array.count<indexPath.row*3+3) {
+                        cell.thirdBtn.hidden = YES;
+                    }else{
+                        cell.thirdBtn.hidden = NO;
+                        HotItem *item3 = [array objectAtIndex:indexPath.row*3+2];
+                        [cell.thirdBtn setTitle:item3.keywords forState:UIControlStateNormal];
+                        cell.thirdBtn.tag = 1000+indexPath.row*3+2;
+                        [cell.thirdBtn addTarget:self action:@selector(hotBtnDown:) forControlEvents:UIControlEventTouchUpInside];
+                    }
+                }
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                return cell;
+            //无热门搜索
+            }else{
+                HistoryCell *cell = [tableView dequeueReusableCellWithIdentifier:identify2];
+                if (cell == nil) {
+                    cell = [[HistoryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify2];
+                }
+                NSString *str =[[_dataArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+                cell.titleLabel.text = str;
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                return cell;
             }
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            return cell;
         }else{
-            static NSString *identify2 = @"identify2";
             HistoryCell *cell = [tableView dequeueReusableCellWithIdentifier:identify2];
             if (cell == nil) {
                 cell = [[HistoryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify2];
@@ -370,7 +465,7 @@
         static NSString *identify5 = @"identify5";
 
         if (indexPath.section == 0) {
-            //视频、企业、文件三者都有
+            //视频、企业、文件三者都有 第一组为视频搜索结果
             if (_results.count==3) {
                 FileCell *cell = [tableView dequeueReusableCellWithIdentifier:identify3];
                 if (cell == nil) {
@@ -410,7 +505,99 @@
                     }
                     NSMutableArray *array2 = [_results objectAtIndex:indexPath.section];
                     EnterpriseItem *item = [array2 objectAtIndex:indexPath.row];
-                    cell.imgView.backgroundColor = [UIColor redColor];
+                    [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:[UIImage imageNamed:@""]];
+                    cell.titleLabel.text = item.companyname;
+                    cell.littleLabel.text = [NSString stringWithFormat:@"课程%@",item.scorenums];
+                    cell.contentLabel.text = item.introduce;
+                    
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    return cell;
+                }
+            //只有一组搜索结果
+            }else{
+                if (_videoArray.count!=0) {
+                    FileCell *cell = [tableView dequeueReusableCellWithIdentifier:identify3];
+                    if (cell == nil) {
+                        cell = [[FileCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify3];
+                    }
+                    NSMutableArray *array1 = [_results objectAtIndex:indexPath.section];
+                    FileItem *item = [array1 objectAtIndex:indexPath.row];
+                    [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:[UIImage imageNamed:@""]];
+                    cell.titleLabel.text = item.title;
+                    cell.desLabel.text = item.content;
+                    
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    return cell;
+                }
+                if (_companyArray.count!=0) {
+                    EnterpriseCell *cell = [tableView dequeueReusableCellWithIdentifier:identify4];
+                    if (cell == nil) {
+                        cell = [[EnterpriseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify4];
+                    }
+                    NSMutableArray *array2 = [_results objectAtIndex:indexPath.section];
+                    EnterpriseItem *item = [array2 objectAtIndex:indexPath.row];
+                    [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:[UIImage imageNamed:@""]];
+                    cell.titleLabel.text = item.companyname;
+                    cell.littleLabel.text = [NSString stringWithFormat:@"课程%@",item.scorenums];
+                    cell.contentLabel.text = item.introduce;
+                    
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    return cell;
+                }
+                if (_subjectArray.count!=0) {
+                    FileCell *cell = [tableView dequeueReusableCellWithIdentifier:identify3];
+                    if (cell == nil) {
+                        cell = [[FileCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify3];
+                    }
+                    NSMutableArray *array1 = [_results objectAtIndex:indexPath.section];
+                    FileItem *item = [array1 objectAtIndex:indexPath.row];
+                    [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:[UIImage imageNamed:@""]];
+                    cell.titleLabel.text = item.title;
+                    cell.desLabel.text = item.content;
+                    
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    return cell;
+                }
+            }
+         //企业
+        }else if(indexPath.section == 1){
+            if (_results.count==3) {
+                EnterpriseCell *cell = [tableView dequeueReusableCellWithIdentifier:identify4];
+                if (cell == nil) {
+                    cell = [[EnterpriseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify4];
+                }
+                NSMutableArray *array2 = [_results objectAtIndex:indexPath.section];
+                EnterpriseItem *item = [array2 objectAtIndex:indexPath.row];
+                [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:[UIImage imageNamed:@""]];
+                cell.titleLabel.text = item.companyname;
+                cell.littleLabel.text = [NSString stringWithFormat:@"课程%@",item.scorenums];
+                cell.contentLabel.text = item.introduce;
+                
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                return cell;
+            }else{
+                //无视频或企业搜索结果  第二组为课件搜索列表
+                if (_videoArray.count==0||_companyArray.count==0) {
+                    FileCell *cell = [tableView dequeueReusableCellWithIdentifier:identify3];
+                    if (cell == nil) {
+                        cell = [[FileCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify3];
+                    }
+                    NSMutableArray *array1 = [_results objectAtIndex:indexPath.section];
+                    FileItem *item = [array1 objectAtIndex:indexPath.row];
+                    [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:[UIImage imageNamed:@""]];
+                    cell.titleLabel.text = item.title;
+                    cell.desLabel.text = item.content;
+                    
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    return cell;
+                }else{
+                    EnterpriseCell *cell = [tableView dequeueReusableCellWithIdentifier:identify4];
+                    if (cell == nil) {
+                        cell = [[EnterpriseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify4];
+                    }
+                    NSMutableArray *array2 = [_results objectAtIndex:indexPath.section];
+                    EnterpriseItem *item = [array2 objectAtIndex:indexPath.row];
+                    [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:[UIImage imageNamed:@""]];
                     cell.titleLabel.text = item.companyname;
                     cell.littleLabel.text = [NSString stringWithFormat:@"课程%@",item.scorenums];
                     cell.contentLabel.text = item.introduce;
@@ -419,21 +606,6 @@
                     return cell;
                 }
             }
-         //企业
-        }else if(indexPath.section == 1){
-            EnterpriseCell *cell = [tableView dequeueReusableCellWithIdentifier:identify4];
-            if (cell == nil) {
-                cell = [[EnterpriseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify4];
-            }
-            NSMutableArray *array2 = [_results objectAtIndex:indexPath.section];
-            EnterpriseItem *item = [array2 objectAtIndex:indexPath.row];
-            cell.imgView.backgroundColor = [UIColor redColor];
-            cell.titleLabel.text = item.companyname;
-            cell.littleLabel.text = [NSString stringWithFormat:@"课程%@",item.scorenums];
-            cell.contentLabel.text = item.introduce;
-            
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            return cell;
         //课件
         }else{
             FileCell *cell = [tableView dequeueReusableCellWithIdentifier:identify5];
@@ -442,7 +614,7 @@
             }
             NSMutableArray *array3 = [_results objectAtIndex:indexPath.section];
             FileItem *item = [array3 objectAtIndex:indexPath.row];
-            cell.imgView.backgroundColor = [UIColor redColor];
+            [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:[UIImage imageNamed:@""]];
             cell.titleLabel.text = item.title;
             cell.desLabel.text = item.content;
             
@@ -458,51 +630,9 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     if (tableView.tag == 1000) {
-        if (section == 0) {
-            DefaultHeaderView *headerView = [[DefaultHeaderView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 40)];
-            [headerView setImgView:[UIImage imageNamed:@"hot_search"] title:@"热门搜索"];
-            return headerView;
-        }else if (section == 1){
-            DefaultHeaderView *headerView = [[DefaultHeaderView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 40)];
-            [headerView setImgView:[UIImage imageNamed:@"history_search"] title:@"搜索历史"];
-            return headerView;
-        }
+        return [_defaultHeadViewArray objectAtIndex:section];
     }else{
-        switch (section) {
-            case 0:
-            {
-                ResultHeaderView *headView = [[ResultHeaderView alloc] initWithFrame:CGRectMake(0, 0,kWidth,36)];
-                headView.tag = 1000;
-                headView.delegate = self;
-                [headView setImgView:[UIImage imageNamed:@"video_search"] title:@"视频" count:@"234"];
-                return headView;
-            }
-                break;
-            case 1:
-            {
-                ResultHeaderView *headView = [[ResultHeaderView alloc] initWithFrame:CGRectMake(0, 0,kWidth,36)];
-                headView.tag = 1001;
-                headView.delegate = self;
-                [headView setImgView:[UIImage imageNamed:@"company_search"] title:@"企业" count:@"234"];
-                return headView;
-
-            }
-                break;
-            case 2:
-            {
-                ResultHeaderView *headView = [[ResultHeaderView alloc] initWithFrame:CGRectMake(0, 0,kWidth,36)];
-                headView.tag = 1002;
-                headView.delegate = self;
-                [headView setImgView:[UIImage imageNamed:@"document_search"] title:@"课件" count:@"234"];
-                return headView;
-
-            }
-                break;
-  
-            default:
-                return nil;
-                break;
-        }
+        return [_resultHeadViewArray objectAtIndex:section];
     }
     return nil;
 }
@@ -569,15 +699,50 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"点击了%ld",(long)indexPath.row);
+    if (tableView.tag ==1000) {
+        if (existHots) {
+            if (indexPath.section==0) {
+                return;
+            }else{
+                NSMutableArray *array = [_dataArray objectAtIndex:indexPath.section];
+                NSString *keywords = [array objectAtIndex:indexPath.row];
+                _textField.text = keywords;
+                [self requestSearchData:keywords];
+            }
+        }else{
+            NSMutableArray *array = [_dataArray objectAtIndex:indexPath.section];
+            NSString *keywords = [array objectAtIndex:indexPath.row];
+            _textField.text = keywords;
+            [self requestSearchData:keywords];
+        }
+    }else{
+        NSMutableArray *array = [_results objectAtIndex:indexPath.section];
+        id item = [array objectAtIndex:indexPath.row];
+        //视频或文件
+        if ([item isKindOfClass:[FileItem class]]) {
+            FileItem *obj = (FileItem *)item;
+            CourseDetailController *detail = [[CourseDetailController alloc] init];
+            [self.navigationController pushViewController:detail animated:YES];
+        //企业
+        }else{
+            EnterpriseItem *obj = (EnterpriseItem *)item;
+            CompanyHomeControll *company = [[CompanyHomeControll alloc] init];
+            [self.navigationController pushViewController:company animated:YES];
+        }
+    }
 }
+
 
 
 
 #pragma mark 热门搜索按钮点击
 - (void)hotBtnDown:(UIButton *)btn
 {
-    NSLog(@"%d",btn.tag);
+    [self.view endEditing:YES];
+    NSMutableArray *array = [_dataArray objectAtIndex:0];
+    HotItem *item = [array objectAtIndex:btn.tag-1000];
+    _textField.text = item.keywords;
+    [self requestSearchData:item.keywords];
 }
 
 #pragma mark 清除历史纪录按钮点击
@@ -611,6 +776,7 @@
         case 1:
         {
             CompySearchController *csc = [[CompySearchController alloc] init];
+            csc.keywords = _keywords;
             [self.navigationController pushViewController:csc animated:YES];
         }
             break;
