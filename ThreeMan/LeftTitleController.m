@@ -17,6 +17,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    networkError = [[ErrorView alloc] initWithImage:@"netFailImg_1" title:@"对不起,网络不给力! 请检查您的网络设置!"];
+    networkError.center = CGPointMake(kWidth/2, (kHeight-64)/2);
+    networkError.hidden = YES;
+    [self.view addSubview:networkError];
+
 }
 
 - (void)setLeftTitle:(NSString *)leftTitle

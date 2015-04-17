@@ -40,6 +40,7 @@
     windowView.backgroundColor = [UIColor blackColor];
     windowView.alpha = 0.4;
     
+    
 }
 
 
@@ -130,20 +131,29 @@
             break;
         case 0:
         {
-            VideoCenterController *center = [[VideoCenterController alloc] init];
-            [self.navigationController pushViewController:center animated:YES];
+            if ([SystemConfig sharedInstance].isUserLogin) {
+                VideoCenterController *center = [[VideoCenterController alloc] init];
+                [self.navigationController pushViewController:center animated:YES];
+            }else{
+                [RemindView showViewWithTitle:@"请先登录!" location:TOP];
+
+            }
         }
             break;
         case 1:
         {
-            for (UIViewController *subVC in array) {
-                if ([subVC isKindOfClass:[AccountController class]]) {
-                    [self.navigationController popToViewController:subVC animated:NO];
-                    return;
+            if ([SystemConfig sharedInstance].isUserLogin) {
+                for (UIViewController *subVC in array) {
+                    if ([subVC isKindOfClass:[AccountController class]]) {
+                        [self.navigationController popToViewController:subVC animated:NO];
+                        return;
+                    }
                 }
+                AccountController *account = [[AccountController alloc] init];
+                [self.navigationController pushViewController:account animated:YES];
+            }else{
+                [RemindView showViewWithTitle:@"请先登录!" location:TOP];
             }
-            AccountController *account = [[AccountController alloc] init];
-            [self.navigationController pushViewController:account animated:YES];
         }
             break;
         case 2:
@@ -219,15 +229,27 @@
             NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:view.telView.textField.text,@"phone",view.passwordView.textField.text,@"userpwd", nil];
             //登陆请求
             [HttpTool postWithPath:@"getLogin" params:param success:^(id JSON, int code, NSString *msg) {
-                NSLog(@"%@",JSON);
+                
                 if (code == 100) {
                     NSDictionary *result = JSON[@"data"][@"login"];
-                    UserItem *item = [[UserItem alloc] init];
+                    UserInfo *item = [[UserInfo alloc] init];
                     [item setValuesForKeysWithDictionary:result];
                     
                     [SystemConfig sharedInstance].isUserLogin = YES;
                     [SystemConfig sharedInstance].uid = item.uid;
-                    [SystemConfig sharedInstance].item = item;
+                    [SystemConfig sharedInstance].userInfo = item;
+                    
+                    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+                    [dict setValue:item.username forKey:@"username"];
+                    [dict setValue:item.uid forKey:@"uid"];
+                    [dict setValue:item.phone forKey:@"phone"];
+                    if (item.img&&item.img.length!=0) {
+                        [dict setValue:item.img forKey:@"img"];
+                    }
+                    [userDefaults setValue:dict forKey:@"userInfo"];
+                    [userDefaults synchronize];
+                    
                     //移除登陆视图
                     [windowView removeFromSuperview];
                     [UIView animateWithDuration:0.3 animations:^{

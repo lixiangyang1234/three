@@ -57,8 +57,8 @@
 - (void)buildUI
 {
     self.iconView = [[UIImageView alloc] initWithFrame:CGRectMake(23, 12, 40, 40)];
-    self.iconView.backgroundColor = [UIColor redColor];
     self.iconView.layer.masksToBounds = YES;
+    self.iconView.image = [UIImage imageNamed:@"index_icon_fail"];
     self.iconView.layer.cornerRadius = self.iconView.frame.size.width/2;
     self.iconView.userInteractionEnabled = YES;
     [self addSubview:self.iconView];
@@ -70,9 +70,9 @@
     CGFloat width = (self.frame.size.width-x)/2;
     //如果登陆  显示头像和用户名 否则显示登录 注册按钮
     if ([SystemConfig sharedInstance].isUserLogin) {
-        UserItem *item = [SystemConfig sharedInstance].item;
+        UserInfo *item = [SystemConfig sharedInstance].userInfo;
         if (item.img&&![item.img isKindOfClass:[NSNull class]]&&item.img.length!=0) {
-            [self.iconView setImageWithURL:[NSURL URLWithString:[SystemConfig sharedInstance].item.img] placeholderImage:[UIImage imageNamed:@""]];
+            [self.iconView setImageWithURL:[NSURL URLWithString:[SystemConfig sharedInstance].userInfo.img] placeholderImage:[UIImage imageNamed:@"index_icon_fail"]];
         }
         UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(x+11,12, width*2-16, 40)];
         nameLabel.backgroundColor = [UIColor clearColor];

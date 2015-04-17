@@ -15,6 +15,7 @@
 @interface SettingController ()<ResetSecretViewDelegate,KeyboardDelegate>
 {
     UIView *windownView;
+    UIView *footView;
 }
 @end
 
@@ -38,6 +39,24 @@
     _tableView.sectionHeaderHeight = 0;
     [self.view addSubview:_tableView];
     
+    footView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,kWidth, 80)];
+    footView.backgroundColor = [UIColor clearColor];
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn.frame = CGRectMake(8, 16, kWidth-8*2, 35);
+    [btn setBackgroundImage:[UIImage imageNamed:@"sure"] forState:UIControlStateNormal];
+    [btn setTitle:@"注销登录" forState:UIControlStateNormal];
+    [btn setTitleColor:HexRGB(0xffffff) forState:UIControlStateNormal];
+    [btn addTarget:self action:@selector(btnDown) forControlEvents:UIControlEventTouchUpInside];
+    [footView addSubview:btn];
+
+    
+    if ([SystemConfig sharedInstance].isUserLogin) {
+        _tableView.tableFooterView = footView;
+    }
+    
+    [[SystemConfig sharedInstance].uid addObserver:self forKeyPath:@"uid" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+
+    
     [self loadData];
     [_tableView reloadData];
     
@@ -46,10 +65,43 @@
     windownView.alpha = 0.4;
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([keyPath isEqualToString:@"uid"]) {
+       BOOL ret = [SystemConfig sharedInstance].isUserLogin;
+        if (ret) {
+            _tableView.tableFooterView = footView;
+        }
+    }
+}
+
+//注销登录
+- (void)btnDown
+{
+    [SystemConfig sharedInstance].isUserLogin = NO;
+    [SystemConfig sharedInstance].uid = nil;
+    [SystemConfig sharedInstance].userInfo = nil;
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    UserInfo *userInfo = [userDefaults objectForKey:@"userInfo"];
+    if (userInfo) {
+        [userDefaults removeObjectForKey:@"userInfo"];
+    }
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [self performSelector:@selector(hideFootView) withObject:self afterDelay:0.5];
+}
+
+- (void)hideFootView
+{
+    [RemindView showViewWithTitle:@"注销成功" location:MIDDLE];
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    _tableView.tableFooterView = nil;
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
 - (void)loadData
 {
     NSArray *array = [NSArray arrayWithObjects:@"修改密码",@"意见反馈",@"关于我们",@"操作指南", nil];
-    NSArray *array1 = [NSArray arrayWithObjects:@"应许非WIFI网络下载",@"检查更新", nil];
+    NSArray *array1 = [NSArray arrayWithObjects:@"允许非WIFI网络下载",@"检查更新", nil];
     [_dataArray addObject:array];
     [_dataArray addObject:array1];
 }
@@ -81,12 +133,32 @@
     if (indexPath.section==1&&indexPath.row==0) {
         cell.nextImage.hidden = YES;
         UISegmentedControl *control = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"off",@"on", nil]];
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        NSString *wifi = [userDefaults objectForKey:@"wifi"];
+        if (wifi) {
+            if ([wifi isEqualToString:@"0"]) {
+                control.selectedSegmentIndex = 0;
+            }else{
+                control.selectedSegmentIndex = 1;
+            }
+        }else{
+            control.selectedSegmentIndex = 0;
+        }
         [control addTarget:self action:@selector(valueChange:) forControlEvents:UIControlEventValueChanged];
-        control.selectedSegmentIndex = 1;
         control.center = CGPointMake(kWidth-8*2-15-control.frame.size.width/2,42/2);
         [cell.bgView addSubview:control];
     }else{
         cell.nextImage.hidden = NO;
+    }
+    if (indexPath.section==1&&indexPath.row==1) {
+        UILabel *versionLabel = [[UILabel alloc] initWithFrame:CGRectMake(cell.bgView.frame.size.width-100-30,0,100, 42)];
+        versionLabel.backgroundColor = [UIColor clearColor];
+        versionLabel.textAlignment = NSTextAlignmentRight;
+        versionLabel.textColor = HexRGB(0x323232);
+        NSDictionary *dict =[[NSBundle mainBundle] infoDictionary];
+        NSString *version = [dict objectForKey:@"CFBundleShortVersionString"];
+        versionLabel.text = [NSString stringWithFormat:@"v%@",version];
+        [cell.bgView addSubview:versionLabel];
     }
     [cell.bgView addSubview:line];
     cell.titleLabel.text = [[_dataArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
@@ -170,7 +242,15 @@
 
 - (void)valueChange:(UISegmentedControl *)control
 {
-    NSLog(@"%d",control.selectedSegmentIndex);
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *wifi;
+    if (control.selectedSegmentIndex == 0) {
+        wifi = @"0";
+    }else{
+        wifi = @"1";
+    }
+    [userDefaults setObject:wifi forKey:@"wifi"];
+    [userDefaults synchronize];
 }
 
 #pragma mark keyboard_delegate
@@ -204,7 +284,38 @@
             break;
         case 2:
         {
+            if (view.telView.textField.text.length==0) {
+                [RemindView showViewWithTitle:@"请输入手机号" location:TOP];
+                return;
+            }
+            if (view.originView.textField.text.length==0) {
+                [RemindView showViewWithTitle:@"请输入原密码" location:TOP];
+                return;
+            }
+            if (view.freshView.textField.text.length==0) {
+                [RemindView showViewWithTitle:@"请输入新密码" location:TOP];
+                return;
+            }
             
+            [view.telView.textField resignFirstResponder];
+            [view.originView.textField resignFirstResponder];
+            [view.freshView.textField resignFirstResponder];
+
+            
+            NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:view.telView.textField.text,@"phone",view.originView.textField.text,@"olduserpwd",view.freshView.textField.text,@"newuserpwd",nil];
+            [HttpTool postWithPath:@"getChangePwd" params:param success:^(id JSON, int code, NSString *msg) {
+                if (code == 100) {
+                    [windownView removeFromSuperview];
+                    [UIView animateWithDuration:0.3 animations:^{
+                        view.center = CGPointMake(kWidth/2, kHeight+view.frame.size.height/2);
+                    } completion:^(BOOL finished) {
+                        [view removeFromSuperview];
+                    }];
+                }
+                [RemindView showViewWithTitle:msg location:TOP];
+            } failure:^(NSError *error) {
+                NSLog(@"%@",error);
+            }];
         }
             break;
         default:

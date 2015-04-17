@@ -22,9 +22,13 @@
 #import "UIImageView+WebCache.h"
 #import "CourseDetailController.h"
 #import "CompanyHomeControll.h"
+#import "ErrorView.h"
 
 @interface SearchViewController ()
-
+{
+    ErrorView *noResultView;
+    ErrorView *networkError;
+}
 @end
 
 @implementation SearchViewController
@@ -57,6 +61,18 @@
     [self loadTableView];
     
     [self loadDefaultData];
+    
+    networkError = [[ErrorView alloc] initWithImage:@"netFailImg_1" title:@"对不起,网络不给力! 请检查您的网络设置!"];
+    networkError.center = CGPointMake(kWidth/2, (kHeight-64)/2);
+    networkError.hidden = YES;
+    [self.view addSubview:networkError];
+
+    
+    noResultView = [[ErrorView alloc] initWithImage:@"netFailImg_1" title:@"抱歉,没有找到相关结果"];
+    noResultView.center = CGPointMake(kWidth/2, (kHeight-64)/2);
+    noResultView.hidden = YES;
+    [self.view addSubview:noResultView];
+
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHidden) name:UIKeyboardWillHideNotification object:nil];
@@ -100,7 +116,8 @@
     _tableView.dataSource = self;
     _tableView.delegate = self;
     _tableView.tag = 1000;
-    _tableView.backgroundColor = HexRGB(0xe8e8e8);
+    _tableView.backgroundColor = [UIColor clearColor];
+    _tableView.backgroundView = nil;
     _tableView.separatorColor = [UIColor clearColor];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.sectionFooterHeight = 0;
@@ -112,7 +129,8 @@
     _resultTableView.dataSource = self;
     _resultTableView.delegate = self;
     _resultTableView.tag = 1001;
-    _resultTableView.backgroundColor = HexRGB(0xe8e8e8);
+    _resultTableView.backgroundColor =[UIColor clearColor];
+    _resultTableView.backgroundView = nil;
     _resultTableView.separatorColor = [UIColor clearColor];
     _resultTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.sectionFooterHeight = 0;
@@ -158,6 +176,12 @@
             _resultTableView.hidden = YES;
             _tableView.frame = frame;
             [_tableView reloadData];
+            if (noResultView.hidden == NO) {
+                noResultView.hidden = YES;
+            }
+            if (networkError.hidden == NO) {
+                networkError.hidden = YES;
+            }
         }
     }
 }
@@ -165,8 +189,9 @@
 #pragma mark 加载默认数据(热门搜索、搜索历史)
 - (void)loadDefaultData
 {
-    
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [HttpTool postWithPath:@"getSelect" params:nil success:^(id JSON, int code, NSString *msg) {
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
         if (code == 100) {
             NSArray *result = JSON[@"data"][@"select"];
             NSMutableArray *arr = [[NSMutableArray alloc] init];
@@ -187,18 +212,16 @@
                 [_defaultHeadViewArray addObject:headerView];
             }
         }
-        
         [self addSearchRecord];
-        
     } failure:^(NSError *error) {
-        NSLog(@"%@",error);
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
         [self addSearchRecord];
     }];
 }
 //添加搜索记录
 - (void)addSearchRecord
 {
-    NSMutableArray *mutableArr = [SaveTempDataTool unarchiveClassWithFileName:@"search"];
+    NSMutableArray *mutableArr = [SaveTempDataTool unarchiveClassWithFileName:@"history"];
     if (mutableArr) {
         
         [_dataArray addObject:mutableArr];
@@ -217,6 +240,7 @@
     if (_textField.text.length==0) {
         [RemindView showViewWithTitle:@"搜索内容不能为空" location:TOP];
     }else{
+        
         [_textField resignFirstResponder];
         [self requestSearchData:_textField.text];
     }
@@ -225,8 +249,18 @@
 #pragma mark 搜索关键词
 - (void)requestSearchData:(NSString *)keywords
 {
+    
+    //隐藏默认tableview
+    if (_resultTableView.hidden) {
+        _tableView.hidden = YES;
+        _resultTableView.hidden = NO;
+        _resultTableView.frame = frame;
+    }
+
     NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:keywords,@"keywords", nil];
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [HttpTool postWithPath:@"getSelect" params:param success:^(id JSON, int code, NSString *msg) {
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
         if (code == 100) {
             NSLog(@"%@",JSON);
             [self loadResultData:JSON];
@@ -234,17 +268,18 @@
             _keywords = keywords;
         }
     } failure:^(NSError *error) {
-        NSLog(@"%@",error);
+        networkError.hidden = NO;
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     }];
 }
 
-//添加搜索关键词到历史纪录
+#pragma mark 添加搜索关键词到历史纪录
 - (void)addToRecord
 {
     //没搜索历史
     if (_dataArray.count<2) {
         NSMutableArray *array = [[NSMutableArray alloc] initWithObjects:_textField.text, nil];
-        BOOL ret = [SaveTempDataTool archiveClass:array FileName:@"search"];
+        BOOL ret = [SaveTempDataTool archiveClass:array FileName:@"history"];
         if (ret) {
             [_dataArray addObject:array];
             
@@ -252,7 +287,7 @@
             [headerView setImgView:[UIImage imageNamed:@"history_search"] title:@"搜索历史"];
             
             [_defaultHeadViewArray addObject:headerView];
-
+            
         }
     }else{
         NSMutableArray *arr = [_dataArray objectAtIndex:1];
@@ -268,7 +303,7 @@
             return;
         }
         [arr insertObject:_textField.text atIndex:0];
-        BOOL ret =  [SaveTempDataTool archiveClass:arr FileName:@"search"];
+        BOOL ret =  [SaveTempDataTool archiveClass:arr FileName:@"history"];
         if (ret) {
             [_dataArray replaceObjectAtIndex:1 withObject:arr];
         }
@@ -294,7 +329,6 @@
             [_videoArray addObject:item];
         }
     }
-    
     
     //视频搜索结果不为空
     if (_videoArray.count!=0) {
@@ -350,12 +384,10 @@
         [_resultHeadViewArray addObject:headView];
     }
     
-    //隐藏默认tableview
-    if (_resultTableView.hidden) {
-        _tableView.hidden = YES;
-        _resultTableView.hidden = NO;
-        _resultTableView.frame = frame;
+    if (_results.count==0) {
+        noResultView.hidden = NO;
     }
+    
     [_resultTableView reloadData];
 }
 
@@ -473,7 +505,7 @@
                 }
                 NSMutableArray *array1 = [_results objectAtIndex:indexPath.section];
                 FileItem *item = [array1 objectAtIndex:indexPath.row];
-                [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:[UIImage imageNamed:@""]];
+                [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:[UIImage imageNamed:@"list_fail"]];
                 cell.titleLabel.text = item.title;
                 cell.desLabel.text = item.content;
                 
@@ -489,7 +521,7 @@
                     }
                     NSMutableArray *array1 = [_results objectAtIndex:indexPath.section];
                     FileItem *item = [array1 objectAtIndex:indexPath.row];
-                    [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:[UIImage imageNamed:@""]];
+                    [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:[UIImage imageNamed:@"list_fail"]];
                     cell.titleLabel.text = item.title;
                     cell.desLabel.text = item.content;
                     
@@ -505,7 +537,7 @@
                     }
                     NSMutableArray *array2 = [_results objectAtIndex:indexPath.section];
                     EnterpriseItem *item = [array2 objectAtIndex:indexPath.row];
-                    [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:[UIImage imageNamed:@""]];
+                    [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:[UIImage imageNamed:@"index_icon_fail"]];
                     cell.titleLabel.text = item.companyname;
                     cell.littleLabel.text = [NSString stringWithFormat:@"课程%@",item.scorenums];
                     cell.contentLabel.text = item.introduce;
@@ -522,7 +554,7 @@
                     }
                     NSMutableArray *array1 = [_results objectAtIndex:indexPath.section];
                     FileItem *item = [array1 objectAtIndex:indexPath.row];
-                    [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:[UIImage imageNamed:@""]];
+                    [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:[UIImage imageNamed:@"list_fail"]];
                     cell.titleLabel.text = item.title;
                     cell.desLabel.text = item.content;
                     
@@ -536,7 +568,7 @@
                     }
                     NSMutableArray *array2 = [_results objectAtIndex:indexPath.section];
                     EnterpriseItem *item = [array2 objectAtIndex:indexPath.row];
-                    [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:[UIImage imageNamed:@""]];
+                    [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:[UIImage imageNamed:@"index_icon_fail"]];
                     cell.titleLabel.text = item.companyname;
                     cell.littleLabel.text = [NSString stringWithFormat:@"课程%@",item.scorenums];
                     cell.contentLabel.text = item.introduce;
@@ -551,7 +583,7 @@
                     }
                     NSMutableArray *array1 = [_results objectAtIndex:indexPath.section];
                     FileItem *item = [array1 objectAtIndex:indexPath.row];
-                    [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:[UIImage imageNamed:@""]];
+                    [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:[UIImage imageNamed:@"list_fail"]];
                     cell.titleLabel.text = item.title;
                     cell.desLabel.text = item.content;
                     
@@ -568,7 +600,7 @@
                 }
                 NSMutableArray *array2 = [_results objectAtIndex:indexPath.section];
                 EnterpriseItem *item = [array2 objectAtIndex:indexPath.row];
-                [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:[UIImage imageNamed:@""]];
+                [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:[UIImage imageNamed:@"index_icon_fail"]];
                 cell.titleLabel.text = item.companyname;
                 cell.littleLabel.text = [NSString stringWithFormat:@"课程%@",item.scorenums];
                 cell.contentLabel.text = item.introduce;
@@ -584,7 +616,7 @@
                     }
                     NSMutableArray *array1 = [_results objectAtIndex:indexPath.section];
                     FileItem *item = [array1 objectAtIndex:indexPath.row];
-                    [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:[UIImage imageNamed:@""]];
+                    [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:[UIImage imageNamed:@"list_fail"]];
                     cell.titleLabel.text = item.title;
                     cell.desLabel.text = item.content;
                     
@@ -614,7 +646,7 @@
             }
             NSMutableArray *array3 = [_results objectAtIndex:indexPath.section];
             FileItem *item = [array3 objectAtIndex:indexPath.row];
-            [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:[UIImage imageNamed:@""]];
+            [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:[UIImage imageNamed:@"list_fail"]];
             cell.titleLabel.text = item.title;
             cell.desLabel.text = item.content;
             
@@ -665,8 +697,18 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if (tableView.tag == 1000) {
-        if (section == 1) {
-            return 50;
+        if (_dataArray.count==2) {
+            if (section==1) {
+                return 50;
+            }
+        }else if(_dataArray.count == 1){
+            if (section == 0) {
+                NSMutableArray *array = [_dataArray lastObject];
+                id value = [array objectAtIndex:0];
+                if ([value isKindOfClass:[NSString class]]) {
+                    return 50;
+                }
+            }
         }
     }
     return 0.00000000000000001;
@@ -675,14 +717,23 @@
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     if (tableView.tag == 1000) {
-        if (section == 1) {
-            UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-            btn.frame = CGRectMake(0, 0, kWidth,50);
-            [btn setTitle:@"清除历史纪录" forState:UIControlStateNormal];
-            btn.titleLabel.font = [UIFont systemFontOfSize:16];
-            [btn setTitleColor:HexRGB(0x1c8cc6) forState:UIControlStateNormal];
-            [btn addTarget:self action:@selector(clearHistory) forControlEvents:UIControlEventTouchUpInside];
-            return btn;
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        btn.frame = CGRectMake(0, 0, kWidth,50);
+        [btn setTitle:@"清除历史纪录" forState:UIControlStateNormal];
+        btn.titleLabel.font = [UIFont systemFontOfSize:16];
+        [btn setTitleColor:HexRGB(0x1c8cc6) forState:UIControlStateNormal];
+        [btn addTarget:self action:@selector(clearHistory) forControlEvents:UIControlEventTouchUpInside];
+        if (_dataArray.count==2) {
+            if (section == 1) {
+                return btn;
+            }
+        }else if(_dataArray.count==1){
+            NSMutableArray *array = [_dataArray lastObject];
+            id value = [array objectAtIndex:0];
+            if ([value isKindOfClass:[NSString class]]) {
+                return btn;
+            }else
+                return nil;
         }
     }
     return nil;
@@ -750,7 +801,7 @@
 {
    BOOL ret = [SaveTempDataTool removeFile:@"history"];
     if (ret) {
-        [_dataArray removeObjectAtIndex:1];
+        [_dataArray removeLastObject];
         [_tableView reloadData];
     }
 }

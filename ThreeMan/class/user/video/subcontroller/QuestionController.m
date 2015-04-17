@@ -27,6 +27,13 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHiden) name:UIKeyboardWillHideNotification object:nil];
     
+    UIImage *image = [UIImage imageNamed:@"title"];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+    imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
+    imageView.center = CGPointMake(kWidth/2,kHeight-64-image.size.height/2-20);
+    [_scrollView addSubview:imageView];
+
+    
     [self buildUI];
 }
 
@@ -52,7 +59,7 @@
 
 - (void)buildUI
 {
-    UIImage *image = [UIImage imageNamed:@"advice"];
+    UIImage *image = [UIImage imageNamed:@"questionTitle"];
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0,image.size.width, image.size.height)];
     imageView.image = image;
     imageView.center = CGPointMake(kWidth/2, 12+imageView.frame.size.height/2);

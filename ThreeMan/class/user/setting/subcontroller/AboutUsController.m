@@ -18,7 +18,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.title = @"关于我们";
+    [self setLeftTitle:@"关于我们"];
     
     [self loadData];
     
@@ -32,9 +32,8 @@
             NSLog(@"%@",JSON);
             NSDictionary *dict = JSON[@"data"][@"aboutus"];
             if (dict) {
-                
+                [self buildUI:dict];
             }
-            [self buildUI:dict];
         }
     } failure:^(NSError *error) {
         NSLog(@"%@",error);
@@ -61,6 +60,14 @@
     nameLabel.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:nameLabel];
     
+    
+    UIImage *image = [UIImage imageNamed:@"title"];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+    imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
+    imageView.center = CGPointMake(kWidth/2,kHeight-64-image.size.height/2-20);
+    [self.view addSubview:imageView];
+
+    
     y+=nameLabel.frame.size.height+20;
     
     if (!dict) {
@@ -82,34 +89,48 @@
     NSString *fax=  [NSString stringWithFormat:@"传真: %@",[dict objectForKey:@"fax"]];
     NSString *content = [dict objectForKey:@"content"];
     
-    NSArray *array = [NSArray arrayWithObjects:email,fax,content, nil];
-    
-    CGSize size = [AdaptationSize getSizeFromString:content Font:[UIFont systemFontOfSize:14] withHight:CGFLOAT_MAX withWidth:kWidth-8*2-10-5];
     
     
-    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(8, y,kWidth-8*2,([array count]-1)*39+size.height+20)];
+    CGFloat height = 39*2;
+    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(8, y,kWidth-8*2,0)];
     bgView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:bgView];
     
-    for (int i =0 ; i<array.count; i++) {
-        UILabel *label = [[UILabel alloc] init];
-        if (i<array.count-1) {
-            label.frame = CGRectMake(10, 39*i, bgView.frame.size.width-10, 39);
-            UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0,38+39*i,bgView.frame.size.width,1)];
-            line.backgroundColor = HexRGB(0xe0e0e0);
-            [bgView addSubview:line];
-        }else{
-            label.frame = CGRectMake(10, 39*i+10, bgView.frame.size.width-10-5,size.height);
-            label.numberOfLines = 0;
-        }
-        
-        label.backgroundColor = [UIColor clearColor];
-        label.font = [UIFont systemFontOfSize:14];
-        label.textColor = HexRGB(0x323232);
-        label.text = [array objectAtIndex:i];
-        [bgView addSubview:label];
-        
+    UILabel *emailLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,0, bgView.frame.size.width-10,39)];
+    emailLabel.backgroundColor = [UIColor clearColor];
+    emailLabel.text = email;
+    emailLabel.textColor = HexRGB(0x323232);
+    emailLabel.font = [UIFont systemFontOfSize:14];
+    [bgView addSubview:emailLabel];
+    UIView *line1 = [[UIView alloc] initWithFrame:CGRectMake(0, 39, bgView.frame.size.width,1)];
+    line1.backgroundColor = HexRGB(0xe0e0e0);
+    [bgView addSubview:line1];
+    
+    UILabel *faxLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,0, bgView.frame.size.width-10,39)];
+    faxLabel.backgroundColor = [UIColor clearColor];
+    faxLabel.text = fax;
+    faxLabel.textColor = HexRGB(0x323232);
+    faxLabel.font = [UIFont systemFontOfSize:14];
+    [bgView addSubview:faxLabel];
+    UIView *line2 = [[UIView alloc] initWithFrame:CGRectMake(0, 39*2, bgView.frame.size.width,1)];
+    line2.backgroundColor = HexRGB(0xe0e0e0);
+    [bgView addSubview:line2];
+
+    if (content&&content.length!=0) {
+        CGSize size = [AdaptationSize getSizeFromString:content Font:[UIFont systemFontOfSize:14] withHight:CGFLOAT_MAX withWidth:bgView.frame.size.width-10-5];
+        UILabel *contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,39*2+10, bgView.frame.size.width-10-5,size.height)];
+        contentLabel.backgroundColor = [UIColor clearColor];
+        contentLabel.text = content;
+        contentLabel.textColor = HexRGB(0x323232);
+        contentLabel.font = [UIFont systemFontOfSize:14];
+        [bgView addSubview:contentLabel];
+        UIView *line1 = [[UIView alloc] initWithFrame:CGRectMake(0, 39*2+size.height+20, bgView.frame.size.width,1)];
+        line1.backgroundColor = HexRGB(0xe0e0e0);
+        [bgView addSubview:line1];
+        height+=size.height+20;
     }
+    bgView.frame = CGRectMake(bgView.frame.origin.x, bgView.frame.origin.y, bgView.frame.size.width, height);
+    
 }
 
 - (void)didReceiveMemoryWarning {

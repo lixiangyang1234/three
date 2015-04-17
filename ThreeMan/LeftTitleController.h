@@ -7,9 +7,13 @@
 //
 
 #import "BaseViewController.h"
+#import "ErrorView.h"
+
 
 @interface LeftTitleController : BaseViewController
-
+{
+    ErrorView *networkError;
+}
 - (void)setLeftTitle:(NSString *)leftTitle;
 
 
