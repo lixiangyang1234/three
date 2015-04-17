@@ -77,7 +77,6 @@
 		04DECE2D1AD67DAF00EC53D2 /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DECE241AD67DAF00EC53D2 /* AFURLSessionManager.m */; };
 		552C99071ADE470000C02599 /* nineBlockModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 552C99061ADE470000C02599 /* nineBlockModel.m */; };
 		552C990D1ADE6B4D00C02599 /* needListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 552C990C1ADE6B4D00C02599 /* needListModel.m */; };
-		552C99101ADE6C8300C02599 /* needListTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 552C990F1ADE6C8300C02599 /* needListTool.m */; };
 		55B714FA1ACCC0DD00959DF8 /* CourseViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B714F91ACCC0DD00959DF8 /* CourseViewCell.m */; };
 		55B714FD1ACCC2DA00959DF8 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B714FC1ACCC2DA00959DF8 /* BaseViewController.m */; };
 		55B7B9FB1ADE00D100787E39 /* courseEightModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B7B9FA1ADE00D100787E39 /* courseEightModel.m */; };
@@ -357,8 +356,6 @@
 		552C99061ADE470000C02599 /* nineBlockModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = nineBlockModel.m; sourceTree = "<group>"; };
 		552C990B1ADE6B4D00C02599 /* needListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = needListModel.h; sourceTree = "<group>"; };
 		552C990C1ADE6B4D00C02599 /* needListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = needListModel.m; sourceTree = "<group>"; };
-		552C990E1ADE6C8300C02599 /* needListTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = needListTool.h; sourceTree = "<group>"; };
-		552C990F1ADE6C8300C02599 /* needListTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = needListTool.m; sourceTree = "<group>"; };
 		55B714F81ACCC0DD00959DF8 /* CourseViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseViewCell.h; sourceTree = "<group>"; };
 		55B714F91ACCC0DD00959DF8 /* CourseViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseViewCell.m; sourceTree = "<group>"; };
 		55B714FB1ACCC2DA00959DF8 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
@@ -1139,8 +1136,6 @@
 			children = (
 				55D730471AD7A4EA002222F7 /* homeViewControllTool.h */,
 				55D730481AD7A4EA002222F7 /* homeViewControllTool.m */,
-				552C990E1ADE6C8300C02599 /* needListTool.h */,
-				552C990F1ADE6C8300C02599 /* needListTool.m */,
 			);
 			path = tool;
 			sourceTree = "<group>";
@@ -1875,7 +1870,6 @@
 				04B9A28C1AD3E2BF009446D1 /* CustomBtn.m in Sources */,
 				04B9A2921AD3E4D6009446D1 /* FinishedCell.m in Sources */,
 				55E373A71AC2B54200C794DD /* MJRefreshHeaderView.m in Sources */,
-				552C99101ADE6C8300C02599 /* needListTool.m in Sources */,
 				04CC33521ACA8118008A85B5 /* HotItem.m in Sources */,
 				55E373A51AC2B54200C794DD /* MJRefreshBaseView.m in Sources */,
 				04DECE2C1AD67DAF00EC53D2 /* AFURLResponseSerialization.m in Sources */,

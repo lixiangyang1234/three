@@ -12,6 +12,7 @@
 @interface BusinessController ()<UITableViewDataSource,UITableViewDelegate>
 {
     UITableView *_tableView;
+    UIButton *topBtn;
 }
 @end
 
@@ -21,9 +22,27 @@
     [super viewDidLoad];
     [self.view setBackgroundColor:HexRGB(0xe0e0e0)];
     [self addTableView];
-    
+    [self addTopBtn];
     
 }
+-(void)addTopBtn
+{
+    //回顶部按钮
+    topBtn =[UIButton buttonWithType:UIButtonTypeCustom];
+    [self.view addSubview:topBtn];
+    topBtn.frame =CGRectMake(kWidth-50, kHeight-80-64, 30, 30);
+    [topBtn setTitle:@"23" forState:UIControlStateNormal];
+    topBtn.contentHorizontalAlignment =UIControlContentHorizontalAlignmentLeft;
+    topBtn.hidden =YES;
+    [topBtn setImage:[UIImage imageNamed:@"nav_return_pre"] forState:UIControlStateNormal];
+    [topBtn addTarget:self action:@selector(topBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [topBtn setTitle:@"定都" forState:UIControlStateNormal];
+    [topBtn setTitleColor:HexRGB(0x1c8cc6) forState:UIControlStateNormal];
+    [topBtn.titleLabel setFont:[UIFont systemFontOfSize:PxFont(12)]];
+    topBtn.tag =900;
+    
+}
+
 #pragma mark---创建TableView
 
 -(UITableView *)addTableView{
@@ -49,7 +68,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 5;
+    return 25;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -60,11 +79,15 @@
         cell =[[BusinessViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndexfider];
         [cell setBackgroundColor:HexRGB(0xe0e0e0)];
         cell.selectionStyle =UITableViewCellSelectionStyleNone;
-        if (indexPath.row==0) {
-            cell.backCell.frame =CGRectMake(8, 8, kWidth-16, 99.5);
-        }
+        
     }
     
+    if (indexPath.row>=14) {
+        topBtn.hidden =NO;
+    }else if (indexPath.row<=10){
+        topBtn.hidden =YES;
+    }
+
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -74,13 +97,7 @@
         [self.navigationController pushViewController:companyHomeVC animated:YES];
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.row==0) {
-        return 108;
-    }else{
-        return 100;
-  
-    }
-    return 100;
+       return 100;
 }
 
 #pragma mark 控件将要显示
@@ -89,7 +106,10 @@
     //隐藏导航栏
     self.navigationController.navigationBarHidden = NO;
 }
-
+-(void)topBtnClick{
+    NSIndexPath *indePath =[NSIndexPath indexPathForRow:0 inSection:0];
+    [_tableView scrollToRowAtIndexPath:indePath atScrollPosition:UITableViewScrollPositionNone animated:YES];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

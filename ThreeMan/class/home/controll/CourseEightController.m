@@ -57,7 +57,7 @@
     //banner图片
     UIImageView *bannerImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderw, borderw, self.backScrollView.frame.size.width-borderw*2, BANNERH)];
     [self.backScrollView addSubview:bannerImage];
-    bannerImage.backgroundColor =[UIColor purpleColor];
+    bannerImage.backgroundColor =HexRGB(0xe8e8e8);
     [bannerImage setImageWithURL:[NSURL URLWithString:courseModel.courseImgurl] placeholderImage:placeHoderImage];
     bannerImage.userInteractionEnabled=YES;
     
@@ -107,11 +107,11 @@
     //添加WebView
     _courseWeb = [[UIWebView alloc]initWithFrame:CGRectMake(0, webh, kWidth-YYBORDERWH*2, kHeight-webh-64)];
     
-//    [_courseWeb loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:xqModel.description]]];
+    [_courseWeb loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://www.baidu.com/"]]];
     _courseWeb.userInteractionEnabled = NO;
     _courseWeb.delegate =self;
-    _courseWeb.backgroundColor =[UIColor redColor];
-    
+    _courseWeb.backgroundColor =[UIColor clearColor];
+    _courseWeb.scrollView.bounces =NO;
     [_backScrollView addSubview:_courseWeb];
 
     
@@ -136,9 +136,9 @@
     
     CGFloat webheight = [[webView stringByEvaluatingJavaScriptFromString:@"document.body.offsetHeight;"] floatValue];
     
-    _courseWeb.frame = CGRectMake(0, webh, kWidth-YYBORDERWH*2, webheight+webh);
+    _courseWeb.frame = CGRectMake(0, webh, kWidth-YYBORDERWH*2, webheight);
     
-    _backScrollView.contentSize = CGSizeMake(kWidth-YYBORDERWH*2,webheight+webh+64+50);
+    _backScrollView.contentSize = CGSizeMake(kWidth-YYBORDERWH*2,webheight+webh+64);
     
     
     

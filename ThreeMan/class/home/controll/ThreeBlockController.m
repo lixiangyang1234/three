@@ -160,10 +160,10 @@
         [cell setBackgroundColor:HexRGB(0xe0e0e0)];
         cell.selectionStyle =UITableViewCellSelectionStyleNone;
     }
-    NSLog(@"%f---%d",cell.frame.size.height,indexPath.row);
-    if (indexPath.row>=8) {
+//    NSLog(@"%f---%d",cell.frame.size.height,indexPath.row);
+    if (indexPath.row>=15) {
         topBtn.hidden =NO;
-    }else if (indexPath.row<=4){
+    }else if (indexPath.row<=10){
         topBtn.hidden =YES;
     }
     
@@ -182,8 +182,6 @@
     return 88;
 }
 -(void)topBtnClick:(UIButton *)top{
-    //    NSIndexPath *indePath = [NSIndexPath indexPathForRow:0 inSection:0];
-    //    [_infoTableView scrollToRowAtIndexPath:indePath atScrollPosition:UITableViewScrollPositionNone animated:YES];
     NSIndexPath *indePath =[NSIndexPath indexPathForRow:0 inSection:0];
     [_tableView scrollToRowAtIndexPath:indePath atScrollPosition:UITableViewScrollPositionNone animated:YES];
 }

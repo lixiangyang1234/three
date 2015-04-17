@@ -33,21 +33,22 @@
         
         needImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderW, borderW,imageW, imageH)];
         [backCell addSubview:needImage];
-        needImage.backgroundColor =[UIColor redColor];
+        needImage.backgroundColor =[UIColor whiteColor];
         needImage.userInteractionEnabled =YES;
         
-        needSmailImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderW*2+imageW, YYBorderY+borderW, 30, 20)];
-        [backCell addSubview:needSmailImage];
-        needSmailImage.backgroundColor =[UIColor redColor];
-        needSmailImage.userInteractionEnabled =YES;
+       
 
         
-        needTitle =[[UILabel alloc]initWithFrame:CGRectMake(borderW*2+imageW, YYBorderY, kWidth-YYBorderX*2-imageW-borderW*2, 50)];
+        needTitle =[[UILabel alloc]initWithFrame:CGRectMake(borderW*2+imageW, YYBorderY, kWidth-YYBorderX*2-imageW-borderW*2, 40)];
         needTitle.backgroundColor =[UIColor clearColor];
         [backCell addSubview:needTitle];
         needTitle.textColor =HexRGB(0x323232);
         needTitle.numberOfLines =2;
         
+        needSmailImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderW*2+imageW, YYBorderY+borderW, 30, 20)];
+        [backCell addSubview:needSmailImage];
+        needSmailImage.backgroundColor =[UIColor redColor];
+        needSmailImage.userInteractionEnabled =YES;
         companyName =[[UILabel alloc]initWithFrame:CGRectMake(borderW*2+imageW, borderW+needTitle.frame.size.height, 115, 20)];
         companyName.backgroundColor =[UIColor clearColor];
         companyName.text =@"新东方恒仁大学";

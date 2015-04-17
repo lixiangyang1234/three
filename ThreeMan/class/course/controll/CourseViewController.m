@@ -45,7 +45,7 @@
 
 }
 -(void)addTableView{
-    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 6, kWidth, kHeight-64-6-39) style:UITableViewStylePlain];
+    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, kWidth, kHeight-64-39) style:UITableViewStylePlain];
     _tableView.delegate =self;
     _tableView.dataSource =self;
     _tableView.backgroundColor =  HexRGB(0xe0e0e0);
@@ -76,7 +76,7 @@
         CourseViewVCModel *courseModel =[_courseArray objectAtIndex:indexPath.row];
         cell.titleLabel.text =courseModel.title;
         cell.contentLabel.text =courseModel.description;
-        [cell.headerImage setImageWithURL:[NSURL URLWithString:courseModel.imgurl]placeholderImage:placeHoderImage];
+        [cell.headerImage setImageWithURL:[NSURL URLWithString:courseModel.imgurl]placeholderImage:placeHoderImage1];
        
         
     }

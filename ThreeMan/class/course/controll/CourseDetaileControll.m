@@ -60,7 +60,7 @@
     
    UIImageView * bannerImage =[[UIImageView alloc]initWithFrame:CGRectMake(YYBORDER+ 5,YYBORDER+ 5, backView.frame.size.width-10, BANNERH)];
     [self.backScrollView addSubview:bannerImage];
-    bannerImage.backgroundColor =[UIColor redColor];
+    bannerImage.backgroundColor =HexRGB(0xe8e8e8);
     bannerImage.userInteractionEnabled =YES;
     [bannerImage setImageWithURL:[NSURL URLWithString:courseModel.detaileImgurl]placeholderImage:placeHoderImage];
     
