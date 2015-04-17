@@ -42,7 +42,7 @@
     [SystemConfig sharedInstance].uuidStr = retrieveuuid;
     
     
-    NSString *key = (NSString *)kCFBundleVersionKey;
+    NSString *key = @"CFBundleShortVersionString";
     
     // 1.从Info.plist中取出版本号
     NSString *version = [NSBundle mainBundle].infoDictionary[key];
@@ -71,8 +71,36 @@
         self.window.rootViewController = [[NewfeatureController alloc] init];
     }
     
+    [self autoLogin];
+    
     [self.window makeKeyAndVisible];
     return YES;
+}
+
+- (void)autoLogin
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSMutableDictionary *userInfo = [userDefaults objectForKey:@"userInfo"];
+    if (userInfo) {
+        NSString *uid = [userInfo objectForKey:@"uid"];
+        NSString *username = [userInfo objectForKey:@"username"];
+        NSString *phone = [userInfo objectForKey:@"phone"];
+        NSString *img = [userInfo objectForKey:@"img"];
+        if (uid&&username&&phone) {
+            [SystemConfig sharedInstance].isUserLogin = YES;
+            [SystemConfig sharedInstance].uid = uid;
+            UserInfo *userItem = [[UserInfo alloc] init];
+            userItem.uid = uid;
+            userItem.username = username;
+            userItem.phone = phone;
+            
+            if (img&&img.length!=0) {
+                userItem.img = img;
+            }
+            
+            [SystemConfig sharedInstance].userInfo = userItem;
+        }
+    }
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

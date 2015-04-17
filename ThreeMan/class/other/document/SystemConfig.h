@@ -13,7 +13,6 @@
 
 @property (nonatomic,copy) NSString *uuidStr;        //设备uuid
 @property (nonatomic,assign) BOOL isUserLogin;       //是否登录
-@property (nonatomic,copy) NSString *viptype;       //会员类型
 @property (nonatomic,copy) NSString *uid;    //登录后的公司ID
 @property (nonatomic,strong) UserInfo *userInfo;  //用户信息
 

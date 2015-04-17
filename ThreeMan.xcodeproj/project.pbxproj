@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		043FD06B1AE0E58700F18FEA /* ErrorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 043FD06A1AE0E58700F18FEA /* ErrorView.m */; };
 		0463870C1ADFAEE700A35D16 /* MessageDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0463870B1ADFAEE700A35D16 /* MessageDetailController.m */; };
 		0463870F1ADFB60C00A35D16 /* MessageDetailItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0463870E1ADFB60C00A35D16 /* MessageDetailItem.m */; };
 		04B9A2761AD35F0C009446D1 /* ImageFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B9A2751AD35F0C009446D1 /* ImageFieldView.m */; };
@@ -218,6 +219,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		043FD0691AE0E58700F18FEA /* ErrorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ErrorView.h; sourceTree = "<group>"; };
+		043FD06A1AE0E58700F18FEA /* ErrorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ErrorView.m; sourceTree = "<group>"; };
 		0463870A1ADFAEE700A35D16 /* MessageDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageDetailController.h; sourceTree = "<group>"; };
 		0463870B1ADFAEE700A35D16 /* MessageDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageDetailController.m; sourceTree = "<group>"; };
 		0463870D1ADFB60C00A35D16 /* MessageDetailItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageDetailItem.h; sourceTree = "<group>"; };
@@ -1674,6 +1677,8 @@
 				04C73A311ACE7CB5007B1283 /* DefaultHeaderView.m */,
 				04C73A321ACE7CB5007B1283 /* ResultHeaderView.h */,
 				04C73A331ACE7CB5007B1283 /* ResultHeaderView.m */,
+				043FD0691AE0E58700F18FEA /* ErrorView.h */,
+				043FD06A1AE0E58700F18FEA /* ErrorView.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -1914,6 +1919,7 @@
 				55B714FA1ACCC0DD00959DF8 /* CourseViewCell.m in Sources */,
 				55E373B21AC2B54200C794DD /* UIImage+GIF.m in Sources */,
 				55E3739D1AC2B54200C794DD /* NSString+MD5.m in Sources */,
+				043FD06B1AE0E58700F18FEA /* ErrorView.m in Sources */,
 				04C73A351ACE7CB5007B1283 /* ResultHeaderView.m in Sources */,
 				55E373B51AC2B54200C794DD /* UIImageView+WebCache.m in Sources */,
 				55E3738E1AC2B54200C794DD /* TYPopoverView.m in Sources */,

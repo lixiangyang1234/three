@@ -10,9 +10,12 @@
 #import "MessageDetailController.h"
 #import "MessageCell.h"
 #import "MessageItem.h"
+#import "ErrorView.h"
 
 @interface MessageController ()
-
+{
+    ErrorView *noMesView;
+}
 @end
 
 @implementation MessageController
@@ -24,6 +27,12 @@
     
     _dataArray = [[NSMutableArray alloc] initWithCapacity:0];
     
+    noMesView = [[ErrorView alloc] initWithImage:@"netFailImg_1" title:@"抱歉,暂无消息!"];
+    noMesView.center = CGPointMake(kWidth/2, (kHeight-64)/2);
+    noMesView.hidden = YES;
+    [self.view addSubview:noMesView];
+
+    
     [self buildUI];
 }
 
@@ -32,7 +41,8 @@
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kHeight-64) style:UITableViewStylePlain];
     _tableView.dataSource = self;
     _tableView.delegate = self;
-    _tableView.backgroundColor = HexRGB(0xe8e8e8);
+    _tableView.backgroundColor = [UIColor clearColor];
+    _tableView.backgroundView = nil;
     _tableView.separatorColor = [UIColor clearColor];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.backgroundView = nil;
@@ -55,14 +65,14 @@
                     [_dataArray addObject:item];
                 }
             }
-            
+            if (_dataArray.count==0) {
+                noMesView.hidden = NO;
+            }
             [_tableView reloadData];
         }
         
     } failure:^(NSError *error) {
-        
-        NSLog(@"%@",error);
-    
+        networkError.hidden = NO;
     }];
 }
 

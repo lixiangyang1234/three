@@ -12,9 +12,12 @@
 #import "PatternDetailController.h"
 #import "HttpTool.h"
 #import "UIImageView+WebCache.h"
+#import "ErrorView.h"
 
 @interface CompanyViewController ()
-
+{
+    ErrorView *networkError;
+}
 @end
 
 @implementation CompanyViewController
@@ -28,12 +31,17 @@
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kWidth,kHeight-64-39) style:UITableViewStylePlain];
     _tableView.dataSource = self;
-    _tableView.backgroundColor = HexRGB(0xe8e8e8);
+    _tableView.backgroundColor = [UIColor clearColor];
+    _tableView.backgroundView = nil;
     _tableView.delegate = self;
     _tableView.separatorColor = [UIColor clearColor];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:_tableView];
     
+    networkError = [[ErrorView alloc] initWithImage:@"netFailImg_1" title:@"对不起,网络不给力! 请检查您的网络设置!"];
+    networkError.center = CGPointMake(kWidth/2, (kHeight-64-40)/2);
+    networkError.hidden = YES;
+    [self.view addSubview:networkError];
     [self loadData];
 }
 
@@ -55,6 +63,7 @@
         }
     } failure:^(NSError *error) {
         NSLog(@"%@",error);
+        networkError.hidden = NO;
     }];
 }
 

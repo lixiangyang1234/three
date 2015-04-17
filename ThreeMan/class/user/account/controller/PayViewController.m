@@ -108,6 +108,13 @@
     [btn addTarget:self action:@selector(btnDown) forControlEvents:UIControlEventTouchUpInside];
     [btn setBackgroundImage:[UIImage imageNamed:@"sure"] forState:UIControlStateNormal];
     [self.view addSubview:btn];
+    
+    UIImage *image = [UIImage imageNamed:@"title"];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+    imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
+    imageView.center = CGPointMake(kWidth/2,kHeight-64-image.size.height/2-20);
+    [self.view addSubview:imageView];
+
 }
 
 - (void)btnDown

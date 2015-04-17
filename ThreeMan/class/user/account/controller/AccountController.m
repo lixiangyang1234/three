@@ -35,7 +35,8 @@
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kHeight-64) style:UITableViewStylePlain];
     _tableView.dataSource = self;
     _tableView.delegate = self;
-    _tableView.backgroundColor = HexRGB(0xe8e8e8);
+    _tableView.backgroundColor = [UIColor clearColor];
+    _tableView.backgroundView = nil;
     _tableView.separatorColor = [UIColor clearColor];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.backgroundView = nil;
@@ -50,7 +51,7 @@
 
 - (void)btnDown
 {
-    if (1) {
+    if (0) {
         //支付
         PayViewController *pay = [[PayViewController alloc] init];
         [self.navigationController pushViewController:pay animated:YES];
