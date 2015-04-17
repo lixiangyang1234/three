@@ -19,11 +19,15 @@
     if (self) {
         
         
-        UIView *backCell =[[UIView alloc]initWithFrame:CGRectMake(borderwh, 3, kWidth-borderwh*2, 55)];
+        UIView *backCell =[[UIView alloc]initWithFrame:CGRectMake(borderwh, borderwh, kWidth-borderwh*2, 57)];
         
         //        UIView *backCell =[[UIView alloc]initWithFrame:CGRectMake(borderwh, 4, kWidth-borderwh*2, 80)];
         [self addSubview:backCell];
         backCell.backgroundColor =[UIColor whiteColor];
+        //底部线条
+        UIView *topLie =[[UIView alloc]initWithFrame:CGRectMake(0, backCell.frame.size.height-1, backCell.frame.size.width, 1)];
+        [backCell addSubview:topLie];
+        topLie.backgroundColor =HexRGB(0xcacaca);
         
         headerImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderwh, borderwh, 38, 38)];
         [backCell addSubview:headerImage];

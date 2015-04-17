@@ -10,10 +10,10 @@
 #import "NeedViewCell.h"
 #import "YYSearchButton.h"
 #import "needListModel.h"
-#import "needListTool.h"
 #import "CourseDetailController.h"
 @interface NeedViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
+    UIButton *topBtn;
     UITableView *_tableView;
     YYSearchButton *_selectedItem;
 }
@@ -31,6 +31,24 @@
     [self addUIChooseBtn];//添加筛选按钮
     [self addLoadStatus:@"0"];
 }
+-(void)addTopBtn
+{
+    //回顶部按钮
+    topBtn =[UIButton buttonWithType:UIButtonTypeCustom];
+    [self.view addSubview:topBtn];
+    topBtn.frame =CGRectMake(kWidth-50, kHeight-80-64, 30, 30);
+    [topBtn setTitle:@"23" forState:UIControlStateNormal];
+    topBtn.contentHorizontalAlignment =UIControlContentHorizontalAlignmentLeft;
+    topBtn.hidden =YES;
+    [topBtn setImage:[UIImage imageNamed:@"nav_return_pre"] forState:UIControlStateNormal];
+    [topBtn addTarget:self action:@selector(topBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [topBtn setTitle:@"定都" forState:UIControlStateNormal];
+    [topBtn setTitleColor:HexRGB(0x1c8cc6) forState:UIControlStateNormal];
+    [topBtn.titleLabel setFont:[UIFont systemFontOfSize:PxFont(12)]];
+    topBtn.tag =900;
+    
+}
+
 -(void)addLoadStatus:(NSString *)typestr{
     NSDictionary *parmDic =[NSDictionary dictionaryWithObjectsAndKeys:_categoryId,@"id",typestr,@"type" ,nil];
 
@@ -125,9 +143,10 @@
         
         needListModel *needModle =[_needListArray objectAtIndex:indexPath.row];
         [cell.needImage setImageWithURL:[NSURL URLWithString:needModle.imgurl]placeholderImage:placeHoderImage];
+        
         CGFloat titleH =[needModle.title sizeWithFont:[UIFont systemFontOfSize:PxFont(20)] constrainedToSize:CGSizeMake(kWidth-156, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping].height;
         cell.needTitle.frame =CGRectMake(135, 9, kWidth-156, titleH);
-        cell.needTitle.text =needModle.title;
+        cell.needTitle.text =[NSString stringWithFormat:@"         %@",needModle.title];
         cell.needTitle .font =[UIFont systemFontOfSize:PxFont(20)];
 
         cell . needTitle . adjustsFontSizeToFitWidth  =  YES ;
@@ -135,29 +154,12 @@
         cell.needTitle.backgroundColor =[UIColor clearColor];
         [cell.zanBtn setTitle:needModle.categoryHits forState:UIControlStateNormal];
         cell.companyName.text =needModle.companyname;
-//        NSLog(@"----%@",needModle.title);
-        
-        
-        NSMutableAttributedString *attributedString = [[ NSMutableAttributedString alloc ] initWithString : cell . needTitle . text ];
-//
-        NSMutableParagraphStyle *paragraphStyle = [[ NSMutableParagraphStyle alloc ] init ];
-//
-        paragraphStyle. alignment = NSTextAlignmentLeft ;
-//
-//        
-//        //    paragraphStyle. maximumLineHeight = 40 ;  //最大的行高
-//        
-        paragraphStyle. lineSpacing = 3 ;  //行自定义行高度
-//
-        [paragraphStyle setFirstLineHeadIndent :30 + 5 ]; //首行缩进 根据用户昵称宽度在加5个像素
-//
-        [attributedString addAttribute : NSParagraphStyleAttributeName value :paragraphStyle range : NSMakeRange ( 0 , [ cell . needTitle . text length ])];
 
-        cell . needTitle . attributedText = attributedString;
-//
-        [ cell . needTitle sizeToFit ];
-
-        
+        if (indexPath.row>=14) {
+            topBtn.hidden =NO;
+        }else if (indexPath.row<=10){
+            topBtn.hidden =YES;
+        }
     }
     
     
@@ -173,6 +175,10 @@
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 88;
+}
+-(void)topBtnClick{
+    NSIndexPath *indePath =[NSIndexPath indexPathForRow:0 inSection:0];
+    [_tableView scrollToRowAtIndexPath:indePath atScrollPosition:UITableViewScrollPositionNone animated:YES];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

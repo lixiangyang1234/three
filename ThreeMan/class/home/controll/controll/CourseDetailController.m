@@ -26,7 +26,11 @@
     UIButton *_selectedBtn;
     UIScrollView *categoryScrollView;
     CGFloat bannerHeightLine   ;
+    
     UIScrollView * detailScrollView;
+    UITableView *recommendTableView;
+    UITableView * answerTableView;
+    
     UIButton *topBtn;
     byCourseView *byCourse;
     CGFloat webh;
@@ -47,7 +51,6 @@
     self.detailArray =[NSMutableArray array];
     self.recommendArray =[NSMutableArray array];
     self.answerArray =[NSMutableArray array];
-    [self addTopBtn];
 
     [self addLoadStatus];
 
@@ -81,12 +84,14 @@
                 [_detailArray addObject:courseModel];
             }
                     }
+       
+
         [self addUIBannerView];
         [self addUICategoryView];
         [self addUIDownloadView];
         [self addCategoryBackScrollView];
         [self addUICategoryView];
-
+        [self addTopBtn];
     } failure:^(NSError *error) {
         
     }];
@@ -106,7 +111,7 @@
     
     UIImageView *bannerImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderw, borderw, self.backScrollView.frame.size.width-borderw*2, BANNERH)];
     [self.backScrollView addSubview:bannerImage];
-    bannerImage.backgroundColor =[UIColor purpleColor];
+    bannerImage.backgroundColor =[UIColor clearColor];
     bannerImage.userInteractionEnabled=YES;
     [bannerImage setImageWithURL:[NSURL URLWithString:courseModel.courseImgurl] placeholderImage:placeHoderImage];
     //添加8像素高度灰条
@@ -181,7 +186,7 @@
     categoryScrollView.showsHorizontalScrollIndicator = NO;
     categoryScrollView.showsVerticalScrollIndicator = NO;
     categoryScrollView.pagingEnabled = YES;
-    categoryScrollView.bounces = NO;
+    categoryScrollView.bounces = YES;
     categoryScrollView.tag = 9999;
     categoryScrollView.userInteractionEnabled = YES;
     categoryScrollView.backgroundColor =HexRGB(0xffffff);
@@ -204,9 +209,9 @@
     detailScrollView.userInteractionEnabled = YES;
     detailScrollView.backgroundColor =HexRGB(0xffffff);
     //    detailScrollView.backgroundColor =[UIColor cyanColor];
-    categoryScrollView.delegate = self;
+    detailScrollView.delegate = self;
     [categoryScrollView addSubview:detailScrollView];
-    
+    detailScrollView.tag =990;
     CGFloat detailWH =11;
     //添加标题
     UILabel *detailTitle =[[UILabel alloc]initWithFrame:CGRectMake(detailWH, detailWH, kWidth-detailWH*2-YYBORDERWH*2, 30)];
@@ -266,36 +271,38 @@
     //添加WebView
     _courseWeb = [[UIWebView alloc]initWithFrame:CGRectMake(0, webh, kWidth-YYBORDERWH*2, kHeight-webh-64)];
     
-    //    [_courseWeb loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:xqModel.description]]];
+        [_courseWeb loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://www.baidu.com/"]]];
     _courseWeb.userInteractionEnabled = NO;
     _courseWeb.delegate =self;
-    _courseWeb.backgroundColor =[UIColor redColor];
-    
     [detailScrollView addSubview:_courseWeb];
+    NSLog(@"1111-----%f----%f",_courseWeb.frame.size.height,detailScrollView.contentSize.height);
 
     
-}-(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+}
+-(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-    
+    NSLog(@"ddddddkkkkddd");
+
     return YES;
 }
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
+    NSLog(@"ddddddddd");
     
     CGFloat webheight = [[webView stringByEvaluatingJavaScriptFromString:@"document.body.offsetHeight;"] floatValue];
     
-    _courseWeb.frame = CGRectMake(0, webh, kWidth-YYBORDERWH*2, webheight+webh);
+    _courseWeb.frame = CGRectMake(0, webh, kWidth-YYBORDERWH*2, webheight);
     
-    detailScrollView.contentSize = CGSizeMake(kWidth-YYBORDERWH*2,webheight+categoryScrollView.frame.size.height);
+    detailScrollView.contentSize = CGSizeMake(kWidth-YYBORDERWH*2,webheight+webh);
     
-    
+    NSLog(@"-----%f-%f---%f",_courseWeb.frame.size.height,detailScrollView.frame.size.height,webheight);
     
 }
 
 #pragma mark 推荐
 -(void)addRecommendTableview
 {
-    UITableView *recommendTableView =[[UITableView alloc]initWithFrame:CGRectMake(kWidth-YYBORDERWH*2, 0, kWidth,categoryScrollView.frame.size.height-8 ) style:UITableViewStylePlain];
+    recommendTableView =[[UITableView alloc]initWithFrame:CGRectMake(kWidth-YYBORDERWH*2, 0, kWidth,categoryScrollView.frame.size.height-8 ) style:UITableViewStylePlain];
     recommendTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [categoryScrollView addSubview:recommendTableView];
     recommendTableView.backgroundColor =[UIColor whiteColor];
@@ -311,7 +318,7 @@
 -(void)addAnswerTableview
 {
 //    [self notByAnswer];
-    UITableView * answerTableView =[[UITableView alloc]initWithFrame:CGRectMake(kWidth*2, 0, kWidth, categoryScrollView.frame.size.height-8) style:UITableViewStylePlain];
+    answerTableView =[[UITableView alloc]initWithFrame:CGRectMake(kWidth*2, 0, kWidth, categoryScrollView.frame.size.height-8) style:UITableViewStylePlain];
     answerTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [categoryScrollView addSubview:answerTableView];
     answerTableView.backgroundColor =[UIColor whiteColor];
@@ -418,7 +425,11 @@
             RecommandCell.selectionStyle =UITableViewCellSelectionStyleNone;
         }
         
-        
+        if (indexPath.row>=8) {
+            topBtn.hidden =NO;
+        }else if (indexPath.row<=4){
+            topBtn.hidden =YES;
+        }
         return RecommandCell;
         
     }else if (_selectedBtn.tag ==22){
@@ -431,7 +442,11 @@
             answerCell.selectionStyle =UITableViewCellSelectionStyleNone;
         }
         
-        
+        if (indexPath.row>=8) {
+            topBtn.hidden =NO;
+        }else if (indexPath.row<=4){
+            topBtn.hidden =YES;
+        }
         return answerCell;
         
     }
@@ -456,7 +471,7 @@
 #pragma mark  ------scrollview_delegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (scrollView.tag ==998) {
+    if (scrollView.tag ==998||scrollView.tag ==990) {
 //        NSLog(@"%f----%f",scrollView.contentOffset.y,bannerHeightLine);
         if (scrollView.contentOffset.y>=bannerHeightLine) {
             //            scrollView.contentOffset =CGPointMake(0, 0);
@@ -612,6 +627,11 @@
 }
 -(void)topBtnClick:(UIButton *)top{
     [self.backScrollView setContentOffset:CGPointMake(0, 0) animated:YES];
+    [detailScrollView setContentOffset:CGPointMake(0, 0) animated:YES];
+    NSIndexPath *indePath =[NSIndexPath indexPathForRow:0 inSection:0];
+    [recommendTableView scrollToRowAtIndexPath:indePath atScrollPosition:UITableViewScrollPositionNone animated:YES];
+    [answerTableView scrollToRowAtIndexPath:indePath atScrollPosition:UITableViewScrollPositionNone animated:YES];
+
 }
 
 -(void)companyhomeDetailBtnClick:(UIButton *)sender{
