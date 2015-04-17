@@ -222,12 +222,12 @@
                 NSLog(@"%@",JSON);
                 if (code == 100) {
                     NSDictionary *result = JSON[@"data"][@"login"];
-                    UserItem *item = [[UserItem alloc] init];
+                    UserInfo *item = [[UserInfo alloc] init];
                     [item setValuesForKeysWithDictionary:result];
                     
                     [SystemConfig sharedInstance].isUserLogin = YES;
                     [SystemConfig sharedInstance].uid = item.uid;
-                    [SystemConfig sharedInstance].item = item;
+                    [SystemConfig sharedInstance].userInfo = item;
                     //移除登陆视图
                     [windowView removeFromSuperview];
                     [UIView animateWithDuration:0.3 animations:^{

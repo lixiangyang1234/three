@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "UserItem.h"
+#import "UserInfo.h"
 
 @interface SystemConfig : NSObject
 
@@ -15,7 +15,7 @@
 @property (nonatomic,assign) BOOL isUserLogin;       //是否登录
 @property (nonatomic,copy) NSString *viptype;       //会员类型
 @property (nonatomic,copy) NSString *uid;    //登录后的公司ID
-@property (nonatomic,strong) UserItem *item;  //用户数据
+@property (nonatomic,strong) UserInfo *userInfo;  //用户信息
 
 + (SystemConfig *)sharedInstance;
 

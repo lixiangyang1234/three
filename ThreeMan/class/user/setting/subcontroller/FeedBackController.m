@@ -84,10 +84,21 @@
     if (!fisrtEdit||_textView.text.length==0) {
         [RemindView showViewWithTitle:@"请输入您的宝贵意见" location:TOP];
     }else{
-        //上传数据
-        
+        if ([SystemConfig sharedInstance].isUserLogin) {
+            //上传数据
+            NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:@"", nil];
+            [HttpTool postWithPath:@"getFeedback" params:param success:^(id JSON, int code, NSString *msg) {
+                
+                [RemindView showViewWithTitle:msg location:TOP];
+                
+            } failure:^(NSError *error) {
+                
+                NSLog(@"%@",error);
+            }];
+        }else{
+            [RemindView showViewWithTitle:@"请先登录!" location:TOP];
+        }
     }
-
 }
 
 #pragma mark textView_delegate

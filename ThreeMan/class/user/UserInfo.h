@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface UserItem : NSObject
+@interface UserInfo : NSObject
 
 @property (nonatomic,strong) NSString *uid;
 @property (nonatomic,strong) NSString *img;

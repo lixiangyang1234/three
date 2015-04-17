@@ -6,9 +6,9 @@
 //  Copyright (c) 2015年 ___普马克___. All rights reserved.
 //
 
-#import "UserItem.h"
+#import "UserInfo.h"
 
-@implementation UserItem
+@implementation UserInfo
 
 - (void)setValue:(id)value forUndefinedKey:(NSString *)key
 {
