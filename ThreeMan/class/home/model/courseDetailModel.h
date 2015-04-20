@@ -17,6 +17,8 @@
 @property(nonatomic,copy)NSString *courseImgurl;
 @property(nonatomic,assign)int courseNum;
 @property(nonatomic,copy)NSString *courseTitle;
+@property(nonatomic,assign)int iscollect;
+
 //推荐
 @property(nonatomic,copy)NSString *recommednAddtime;
 @property(nonatomic,copy)NSString *recommendContent;

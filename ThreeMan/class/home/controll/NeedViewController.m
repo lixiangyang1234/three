@@ -51,8 +51,8 @@
 
 -(void)addLoadStatus:(NSString *)typestr{
     NSDictionary *parmDic =[NSDictionary dictionaryWithObjectsAndKeys:_categoryId,@"id",typestr,@"type" ,nil];
-
-    [HttpTool postWithPath:@"getNeed1List" params:parmDic success:^(id JSON, int code, NSString *msg) {
+    [HttpTool postWithPath:@"getNeedList" params:parmDic success:^(id JSON, int code, NSString *msg) {
+       
         if (code == 100) {
             [_needListArray removeAllObjects];
             NSDictionary *dic = [JSON objectForKey:@"data"];
@@ -147,13 +147,13 @@
         CGFloat titleH =[needModle.title sizeWithFont:[UIFont systemFontOfSize:PxFont(20)] constrainedToSize:CGSizeMake(kWidth-156, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping].height;
         cell.needTitle.frame =CGRectMake(135, 9, kWidth-156, titleH);
         cell.needTitle.text =[NSString stringWithFormat:@"         %@",needModle.title];
-        cell.needTitle .font =[UIFont systemFontOfSize:PxFont(20)];
 
         cell . needTitle . adjustsFontSizeToFitWidth  =  YES ;
         cell . needTitle . adjustsLetterSpacingToFitWidth  =  YES ;
         cell.needTitle.backgroundColor =[UIColor clearColor];
         [cell.zanBtn setTitle:needModle.categoryHits forState:UIControlStateNormal];
         cell.companyName.text =needModle.companyname;
+        [cell.needSmailImage typeID:[needModle.categoryType intValue]];
 
         if (indexPath.row>=14) {
             topBtn.hidden =NO;

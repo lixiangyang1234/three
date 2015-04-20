@@ -27,7 +27,7 @@
         
         businessImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderW, borderH, 38, 38)];
         [backCell addSubview:businessImage];
-        businessImage.backgroundColor =[UIColor redColor];
+        businessImage.backgroundColor =[UIColor clearColor];
         businessImage.userInteractionEnabled =YES;
         businessImage.layer.cornerRadius =19;
         businessImage.layer.masksToBounds=YES;

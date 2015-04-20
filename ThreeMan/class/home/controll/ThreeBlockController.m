@@ -12,7 +12,7 @@
 #import "YYSearchButton.h"
 #import "RootNavView.h"
 #import "categoryView.h"
-
+#import "threeBlockModel.h"
 #define DEGREES_TO_RADIANS(angle) ((angle)/180.0 *M_PI)
 
 
@@ -29,36 +29,57 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self.view setBackgroundColor:HexRGB(0xffffff)];
-    //    [self addUINavView];
+    _threeArray =[NSMutableArray array];
+    _categoryArray =[NSMutableArray array];
+    _threeListArray =[NSMutableArray array];
+
     [self addTableView];
     [self addUIChooseBtn];//添加筛选按钮
     [self addCategoryBtn];
-    [self addTopBtn];
-}
--(void)addTopBtn
-{
-    //回顶部按钮
-    topBtn =[UIButton buttonWithType:UIButtonTypeCustom];
-    [self.view addSubview:topBtn];
-    topBtn.frame =CGRectMake(kWidth-50, kHeight-80-64, 30, 30);
-    [topBtn setTitle:@"23" forState:UIControlStateNormal];
-    topBtn.contentHorizontalAlignment =UIControlContentHorizontalAlignmentLeft;
-    topBtn.hidden =YES;
-    [topBtn setImage:[UIImage imageNamed:@"nav_return_pre"] forState:UIControlStateNormal];
-    [topBtn addTarget:self action:@selector(topBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    [topBtn setTitle:@"定都" forState:UIControlStateNormal];
-    [topBtn setTitleColor:HexRGB(0x1c8cc6) forState:UIControlStateNormal];
-    [topBtn.titleLabel setFont:[UIFont systemFontOfSize:PxFont(12)]];
-    topBtn.tag =900;
-    
+    [self addLoadStatus:@"0"];
 }
 
-//-(void)addUINavView{
-//    RootNavView *rootView =[[RootNavView alloc ]init];
-//    self.navigationItem.titleView =rootView;
-//    rootView.backgroundColor =[UIColor redColor];
-//
-//}
+-(void)addLoadStatus:(NSString *)typestr{
+    NSDictionary *parmDic =[NSDictionary dictionaryWithObjectsAndKeys:_threeId,@"id",typestr,@"type" ,nil];
+    [HttpTool postWithPath:@"getNeedList" params:parmDic success:^(id JSON, int code, NSString *msg) {
+//        NSLog(@"%@",JSON);
+
+        if (code == 100) {
+            [_categoryArray removeAllObjects];
+            NSDictionary *dic = [JSON objectForKey:@"data"][@"subcategory_list"];
+            
+            NSDictionary *dic1 = [JSON objectForKey:@"data"];
+            NSArray *array =dic1[@"subcategory_list"];
+            NSDictionary *arr =[array objectAtIndex:0];
+            NSDictionary *arrdic =arr[@"subcategory"];
+            
+            NSDictionary *dic2 = [JSON objectForKey:@"data"][@"subject_list"];
+            NSLog(@"%@",dic2);
+
+            if (![dic isKindOfClass:[NSNull class]]) {
+                for (NSDictionary *dict in dic) {
+                    threeBlockModel *item = [[threeBlockModel alloc] initWithForArray:dict];
+                    [_threeArray addObject:item];
+                }
+                
+            }
+                for (NSDictionary *dict1 in arrdic) {
+                    threeBlockModel *cateModel = [[threeBlockModel alloc] initWithForCategory:dict1];
+                    [_categoryArray addObject:cateModel];
+                }
+            for (NSDictionary *dict1 in dic2) {
+                threeBlockModel *cateModel = [[threeBlockModel alloc] initWithForThreeList:dict1];
+                [_threeListArray addObject:cateModel];
+            }
+            
+            
+            [_tableView reloadData];
+        }
+    } failure:^(NSError *error) {
+        
+    }];
+    
+}
 //添加筛选按钮
 -(void)addUIChooseBtn{
     NSArray *chooseTitleArray =@[@"全部",@"视频",@"文件"];
@@ -89,7 +110,7 @@
     categoryBtn.frame =CGRectMake(kWidth-120, 7, 120, 30) ;
     [categoryBtn setTitle:@"委员会类型" forState:UIControlStateNormal];
     [categoryBtn setImage:[UIImage imageNamed:@"downlower"] forState:UIControlStateNormal];
-    [categoryBtn addTarget:self action:@selector(categoryBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [categoryBtn addTarget:self action:@selector(threeCategoryBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [categoryBtn.titleLabel setFont:[UIFont systemFontOfSize:14]];
     [categoryBtn setTitleColor:HexRGB(0x959595) forState:UIControlStateNormal];
     categoryBtn.imageEdgeInsets =UIEdgeInsetsMake(0, 90, 0, 0);
@@ -119,22 +140,41 @@
     }
     
 }
--(void)categoryBtnClick:(UIButton *)sender{
+-(void)threeCategoryBtnClick:(UIButton *)sender{
     [UIView animateWithDuration:0.001 animations:^{
         sender.imageView.transform = CGAffineTransformRotate(sender.imageView.transform, DEGREES_TO_RADIANS(180));
     }];
     
-    
     CGPoint point = CGPointMake(kWidth-60, sender.frame.origin.y + sender.frame.size.height+60);
     
-    NSArray * titles = @[@"   全部类型", @" 落地实操委员会", @"   落地实操辅助委",@"   落地实操反馈委"];
-    NSArray *  category = @[@"主席", @"总理", @"部长",@"快乐局",@"宣传局", @"关爱局", @"造场局"];
+    NSMutableArray *titles = [NSMutableArray array];
+    
+    [titles addObject:@"全部类型"];
+    for (int i=0; i<3; i++) {
+        threeBlockModel *threeModel =[_threeArray objectAtIndex:i];
+        NSString *str =threeModel.categoryTitle;
+        [titles addObject:str];
+    }
+    NSMutableArray *category = [NSMutableArray array];
+
+    for (int c=0; c<7; c++) {
+        threeBlockModel *categoryModel =[_categoryArray objectAtIndex:c];
+
+        NSString *cateStr =categoryModel.cateTitle;
+        NSLog(@"%@",cateStr);
+        [category addObject:cateStr];
+    }
+    
+    
     
     categoryView *popView = [[categoryView alloc] initWithPoint:point titles:titles categoryTitles:category];
     popView.selectRowAtIndex = ^(NSInteger index)
     {
         
+//        threeBlockModel *threeModel =[_threeArray objectAtIndex:index];
+        
         NSLog(@"select index:%ld", (long)index);
+//        [self addLoadStatus:[NSString stringWithFormat:@"%d",threeModel.threeType]];
     };
     
     [popView show];
@@ -142,12 +182,9 @@
 }
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 25;
+    return _threeListArray.count;
 }
 
 
@@ -160,7 +197,15 @@
         [cell setBackgroundColor:HexRGB(0xe0e0e0)];
         cell.selectionStyle =UITableViewCellSelectionStyleNone;
     }
-//    NSLog(@"%f---%d",cell.frame.size.height,indexPath.row);
+    threeBlockModel *threeModel =[_threeListArray objectAtIndex:indexPath.row];
+    [cell.needImage setImageWithURL:[NSURL URLWithString:threeModel.threeImgurl] placeholderImage:placeHoderImage];
+    CGFloat titleH =[threeModel.threeTitle sizeWithFont:[UIFont systemFontOfSize:PxFont(20)] constrainedToSize:CGSizeMake(kWidth-156, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping].height;
+    cell.needTitle.frame =CGRectMake(135, 9, kWidth-156, titleH);
+    cell.needTitle.text =[NSString stringWithFormat:@"         %@",threeModel.threeTitle];
+    cell.companyName.text =threeModel.threeCompanyname;
+    [cell.zanBtn setTitle:[NSString stringWithFormat:@"%d",threeModel.threeHits ] forState:UIControlStateNormal];
+    [cell.needSmailImage typeID:threeModel.threeType];
+    //    NSLog(@"%f---%d",cell.frame.size.height,indexPath.row);
     if (indexPath.row>=15) {
         topBtn.hidden =NO;
     }else if (indexPath.row<=10){
@@ -181,10 +226,7 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 88;
 }
--(void)topBtnClick:(UIButton *)top{
-    NSIndexPath *indePath =[NSIndexPath indexPathForRow:0 inSection:0];
-    [_tableView scrollToRowAtIndexPath:indePath atScrollPosition:UITableViewScrollPositionNone animated:YES];
-}
+
 -(void)viewDidDisappear:(BOOL)animated{
     
     [super viewDidDisappear:animated];
