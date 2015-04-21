@@ -7,7 +7,6 @@
 //
 
 #import "ErrorView.h"
-#import "AdaptationSize.h"
 
 @implementation ErrorView
 

@@ -11,11 +11,13 @@
 #import "FavoriteItem.h"
 #import "EditView.h"
 #import "CourseDetailController.h"
+#import "ErrorView.h"
 
-@interface FavoriteViewController ()<EditViewDelegate>
+@interface FavoriteViewController ()<EditViewDelegate,NoDataViewDelegate>
 {
     BOOL isEditting;
     EditView *editView;
+    
 }
 @end
 
@@ -31,10 +33,10 @@
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kHeight-64-40) style:UITableViewStylePlain];
     _tableView.dataSource = self;
     _tableView.delegate = self;
-    _tableView.backgroundColor = HexRGB(0xe8e8e8);
+    _tableView.backgroundColor = [UIColor clearColor];
+    _tableView.backgroundView = nil;
     _tableView.separatorColor = [UIColor clearColor];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _tableView.backgroundView = nil;
     _tableView.sectionFooterHeight = 0;
     _tableView.sectionHeaderHeight = 0;
     [self.view addSubview:_tableView];
@@ -44,19 +46,44 @@
     editView.frame = CGRectMake(0,self.view.frame.size.height,editView.frame.size.width, editView.frame.size.height);
     [self.view addSubview:editView];
     
+    networkError = [[ErrorView alloc] initWithImage:@"netFailImg_1" title:@"对不起,网络不给力! 请检查您的网络设置!"];
+    networkError.center = CGPointMake(kWidth/2, (kHeight-64-40)/2);
+    networkError.hidden = YES;
+    [self.view addSubview:networkError];
+    
+    
+    noDataView = [[NoDataView alloc] initWithImage:@"netFailImg_2" title:@"您目前暂无收藏!" btnTitle:@"去收藏"];
+    noDataView.center = CGPointMake(kWidth/2, (kHeight-64-40)/2);
+    noDataView.hidden = YES;
+    noDataView.delegate = self;
+    [self.view addSubview:noDataView];
+    
     [self loadData];
 }
 
 - (void)loadData
 {
-    for (int i = 0; i < 10; i++) {
-        FavoriteItem *item = [[FavoriteItem alloc] init];
-        item.image = @"";
-        item.title = @"与大师有约门票－成功第一网";
-        item.desc = @"王大妈老师";
-        [_dataArray addObject:item];
-    }
-    [_tableView reloadData];
+    [HttpTool postWithPath:@"getCollect" params:nil success:^(id JSON, int code, NSString *msg) {
+        if (code == 100) {
+            
+            NSArray *array = JSON[@"data"][@"collect"];
+            if (array&&![array isKindOfClass:[NSNull class]]) {
+                for (NSDictionary *dict in array) {
+                    FavoriteItem *item = [[FavoriteItem alloc] init];
+                    [item setValuesForKeysWithDictionary:dict];
+                    [_dataArray addObject:item];
+                }
+            }
+        }
+        if (_dataArray.count==0) {
+            noDataView.hidden = NO;
+        }else{
+            noDataView.hidden = YES;
+        }
+        [_tableView reloadData];
+    } failure:^(NSError *error) {
+        
+    }];
 }
 
 - (void)edit:(BOOL)editting
@@ -103,8 +130,8 @@
     
     FavoriteItem *item = [_dataArray objectAtIndex:indexPath.row];
     cell.titleLabel.text = item.title;
-    cell.imgView.image = [UIImage imageNamed:@"img"];
-    cell.desLabel.text = item.desc;
+    [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:placeHoderImage2];
+    cell.desLabel.text = item.companyname;
     return cell;
 }
 

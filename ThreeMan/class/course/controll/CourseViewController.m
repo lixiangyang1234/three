@@ -19,7 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self.view setBackgroundColor:HexRGB(0xe0e0e0)];
+    [self.view setBackgroundColor:HexRGB(0xe8e8e8)];
     _courseArray =[[NSMutableArray alloc]initWithCapacity:0];
     [self addTableView];
 

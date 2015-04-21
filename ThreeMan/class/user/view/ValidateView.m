@@ -10,7 +10,7 @@
 #import "AdaptationSize.h"
 
 #define textFont [UIFont systemFontOfSize:14]
-#define MAX_SECOND 10
+#define MAX_SECOND 30
 
 
 @interface ValidateView ()
@@ -114,12 +114,12 @@
     sendBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     sendBtn.frame = CGRectMake(self.frame.size.width-30-80,self.yzmView.frame.origin.y,80, 30);
     [sendBtn setTitleColor:HexRGB(0x323232) forState:UIControlStateNormal];
-    sendBtn.tag = 2;
+    sendBtn.tag = 3;
     [sendBtn setTitle:[NSString stringWithFormat:@"重新发送(%d)",second] forState:UIControlStateNormal];
+    [sendBtn addTarget:self action:@selector(btnDown:) forControlEvents:UIControlEventTouchUpInside];
 
     sendBtn.userInteractionEnabled = NO;
     sendBtn.titleLabel.font = [UIFont systemFontOfSize:13];
-    [sendBtn addTarget:self action:@selector(send) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:sendBtn];
 
     [self changeUI];
@@ -140,16 +140,13 @@
     }
 }
 
-//发送验证码
-- (void)send
-{
-    sendBtn.userInteractionEnabled = NO;
-    [self changeUI];
-}
-
 
 - (void)btnDown:(UIButton *)btn
 {
+    if (btn.tag == 3) {
+        sendBtn.userInteractionEnabled = NO;
+        [self changeUI];
+    }
     if ([self.delegate respondsToSelector:@selector(validateViewBtnClick:view:)]) {
         [self.delegate validateViewBtnClick:btn view:self];
     }

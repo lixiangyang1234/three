@@ -20,6 +20,8 @@
 		04B9A28C1AD3E2BF009446D1 /* CustomBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B9A28B1AD3E2BF009446D1 /* CustomBtn.m */; };
 		04B9A28F1AD3E4BE009446D1 /* UnfinishedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B9A28E1AD3E4BE009446D1 /* UnfinishedCell.m */; };
 		04B9A2921AD3E4D6009446D1 /* FinishedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B9A2911AD3E4D6009446D1 /* FinishedCell.m */; };
+		04C58CD01AE4900C001E1BB3 /* OperationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C58CCF1AE4900C001E1BB3 /* OperationController.m */; };
+		04C58CD31AE4CB95001E1BB3 /* NoDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C58CD21AE4CB95001E1BB3 /* NoDataView.m */; };
 		04C64B6E1ACCEB3A00825EF0 /* VideoCenterController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C64B661ACCEB3A00825EF0 /* VideoCenterController.m */; };
 		04C64B6F1ACCEB3A00825EF0 /* DownloadListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C64B691ACCEB3A00825EF0 /* DownloadListController.m */; };
 		04C64B701ACCEB3A00825EF0 /* FavoriteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C64B6B1ACCEB3A00825EF0 /* FavoriteViewController.m */; };
@@ -246,6 +248,10 @@
 		04B9A28E1AD3E4BE009446D1 /* UnfinishedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnfinishedCell.m; sourceTree = "<group>"; };
 		04B9A2901AD3E4D6009446D1 /* FinishedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FinishedCell.h; sourceTree = "<group>"; };
 		04B9A2911AD3E4D6009446D1 /* FinishedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FinishedCell.m; sourceTree = "<group>"; };
+		04C58CCE1AE4900C001E1BB3 /* OperationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OperationController.h; sourceTree = "<group>"; };
+		04C58CCF1AE4900C001E1BB3 /* OperationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OperationController.m; sourceTree = "<group>"; };
+		04C58CD11AE4CB94001E1BB3 /* NoDataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoDataView.h; sourceTree = "<group>"; };
+		04C58CD21AE4CB95001E1BB3 /* NoDataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoDataView.m; sourceTree = "<group>"; };
 		04C64B651ACCEB3A00825EF0 /* VideoCenterController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoCenterController.h; sourceTree = "<group>"; };
 		04C64B661ACCEB3A00825EF0 /* VideoCenterController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoCenterController.m; sourceTree = "<group>"; };
 		04C64B681ACCEB3A00825EF0 /* DownloadListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadListController.h; sourceTree = "<group>"; };
@@ -783,6 +789,8 @@
 				04C64B881ACD1D5700825EF0 /* AboutUsController.m */,
 				04C64B8A1ACD1DAA00825EF0 /* FeedBackController.h */,
 				04C64B8B1ACD1DAB00825EF0 /* FeedBackController.m */,
+				04C58CCE1AE4900C001E1BB3 /* OperationController.h */,
+				04C58CCF1AE4900C001E1BB3 /* OperationController.m */,
 			);
 			path = subcontroller;
 			sourceTree = "<group>";
@@ -1679,6 +1687,8 @@
 				04C73A331ACE7CB5007B1283 /* ResultHeaderView.m */,
 				043FD0691AE0E58700F18FEA /* ErrorView.h */,
 				043FD06A1AE0E58700F18FEA /* ErrorView.m */,
+				04C58CD11AE4CB94001E1BB3 /* NoDataView.h */,
+				04C58CD21AE4CB95001E1BB3 /* NoDataView.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -1805,6 +1815,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				04C64B8C1ACD1DAB00825EF0 /* FeedBackController.m in Sources */,
+				04C58CD31AE4CB95001E1BB3 /* NoDataView.m in Sources */,
 				55E373B11AC2B54200C794DD /* UIButton+WebCache.m in Sources */,
 				55C122E71ACE19BA00D53630 /* CourseRecommendViewCell.m in Sources */,
 				04D0872D1AD4C0AD0070184A /* RecommendController.m in Sources */,
@@ -1904,6 +1915,7 @@
 				55B8BDF11ADB5A3A0008C21F /* TitleButtonModel.m in Sources */,
 				04CC33301ACA805A008A85B5 /* PatternCell.m in Sources */,
 				04DECE291AD67DAF00EC53D2 /* AFSecurityPolicy.m in Sources */,
+				04C58CD01AE4900C001E1BB3 /* OperationController.m in Sources */,
 				55E3739C1AC2B54200C794DD /* DateManeger.m in Sources */,
 				55C24F8B1ACB8EE500BFEBED /* BusinessViewCell.m in Sources */,
 				04DECE2D1AD67DAF00EC53D2 /* AFURLSessionManager.m in Sources */,

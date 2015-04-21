@@ -25,6 +25,9 @@
 @interface BaseViewController ()<TYPopoverViewDelegate,LoginViewDelegate,FindPsWordViewDelegate,KeyboardDelegate,ValidateViewDelegate,RegistViewDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 {
     UIView *windowView;
+    NSString *uid;
+    NSString *pwd;
+    NSString *tel;
 }
 @end
 
@@ -330,8 +333,9 @@
 }
 
 #pragma mark validateView_delegate
-- (void)validateViewBtnClick:(UIButton *)btn view:(UIView *)view
+- (void)validateViewBtnClick:(UIButton *)btn view:(ValidateView *)view
 {
+    UIWindow *window = [UIApplication sharedApplication].keyWindow;
     switch (btn.tag) {
         case 1:
         {
@@ -345,10 +349,51 @@
             break;
         case 2:
         {
-            
+            if (view.yzmView.textField.text.length == 0) {
+                [RemindView showViewWithTitle:@"请输入验证码" location:TOP];
+                return;
+            }
+            NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:uid,@"uid",view.yzmView.textField.text,@"code", nil];
+            [MBProgressHUD showHUDAddedTo:window animated:YES];
+            [HttpTool postWithPath:@"getSaveUser" params:param success:^(id JSON, int code, NSString *msg) {
+                [MBProgressHUD hideAllHUDsForView:window animated:YES];
+                //注册成功
+                if (code == 100) {
+                    //注册成功后调用登录接口登录
+                    
+                    [windowView removeFromSuperview];
+                    [UIView animateWithDuration:0.3 animations:^{
+                        view.center = CGPointMake(kWidth/2, kHeight+view.frame.size.height/2);
+                    } completion:^(BOOL finished) {
+                        [view removeFromSuperview];
+                    }];
+                    
+                    [self login:tel pwd:pwd];
+                    [RemindView showViewWithTitle:@"注册成功" location:TOP];
+                }else{
+                    [RemindView showViewWithTitle:msg location:TOP];
+                }
+            } failure:^(NSError *error) {
+                [MBProgressHUD hideAllHUDsForView:window animated:YES];
+                [RemindView showViewWithTitle:offline location:TOP];
+            }];
         }
             break;
-            
+           case 3:
+        {
+            NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:uid,@"uid", nil];
+            [MBProgressHUD showHUDAddedTo:window animated:YES];
+            [HttpTool postWithPath:@"getRestCode" params:param success:^(id JSON, int code, NSString *msg) {
+                
+                [MBProgressHUD hideAllHUDsForView:window animated:YES];
+                if (code != 100) {
+                    [RemindView showViewWithTitle:msg location:TOP];
+                }
+            } failure:^(NSError *error) {
+                [MBProgressHUD hideAllHUDsForView:window animated:YES];
+            }];
+        }
+            break;
         default:
             break;
     }
@@ -357,6 +402,7 @@
 #pragma mark registView_delegate
 - (void)registViewBtnClick:(UIButton *)btn view:(RegistView *)view
 {
+    UIWindow *window = [UIApplication sharedApplication].keyWindow;
     switch (btn.tag) {
         case 1:
         {
@@ -368,23 +414,60 @@
             }];
         }
             break;
+        //获取验证码
         case 2:
         {
-            ValidateView *validateView = [[ValidateView alloc] initWithTitle:@"1545454554"];
-            validateView.delegate = self;
-            validateView.keyboardDelegate = self;
-            UIWindow *window = [UIApplication sharedApplication].keyWindow;
-            validateView.center = CGPointMake(kWidth/2, kHeight+validateView.frame.size.height/2);
-            [window addSubview:validateView];
-            [UIView animateWithDuration:0.3 animations:^{
-                view.center = CGPointMake(kWidth/2,-view.frame.size.height/2);
-                validateView.center = CGPointMake(kWidth/2, kHeight/2);
-            } completion:^(BOOL finished) {
-                [view removeFromSuperview];
+            if (view.telView.textField.text.length==0) {
+                [RemindView showViewWithTitle:@"请输入手机号" location:TOP];
+                return;
+            }
+            if (![AuthencateTool isValidPhone:view.telView.textField.text]) {
+                [RemindView showViewWithTitle:@"手机号不合法" location:TOP];
+                return;
+            }
+
+            if (view.nameView.textField.text.length==0) {
+                [RemindView showViewWithTitle:@"请输入用户名" location:TOP];
+                return;
+            }
+            if (view.passwordView.textField.text.length==0) {
+                [RemindView showViewWithTitle:@"请输入密码" location:TOP];
+                return;
+            }
+            
+            tel = view.telView.textField.text;
+            pwd = view.passwordView.textField.text;
+            
+            NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:view.telView.textField.text,@"phone",view.nameView.textField.text,@"username",view.passwordView.textField.text,@"userpwd", nil];
+            [MBProgressHUD showHUDAddedTo:window animated:YES];
+            [HttpTool postWithPath:@"getRegister" params:param success:^(id JSON, int code, NSString *msg) {
+                [MBProgressHUD hideAllHUDsForView:window animated:YES];
+                if (code == 100) {
+                    uid = JSON[@"data"];
+                    ValidateView *validateView = [[ValidateView alloc] initWithTitle:view.telView.textField.text];
+                    validateView.delegate = self;
+                    validateView.keyboardDelegate = self;
+                    UIWindow *window = [UIApplication sharedApplication].keyWindow;
+                    validateView.center = CGPointMake(kWidth/2, kHeight+validateView.frame.size.height/2);
+                    [window addSubview:validateView];
+                    [UIView animateWithDuration:0.3 animations:^{
+                        view.center = CGPointMake(kWidth/2,-view.frame.size.height/2);
+                        validateView.center = CGPointMake(kWidth/2, kHeight/2);
+                    } completion:^(BOOL finished) {
+                        [view removeFromSuperview];
+                    }];
+
+                }else{
+                    [RemindView showViewWithTitle:msg location:TOP];
+                }
+            } failure:^(NSError *error) {
+                [MBProgressHUD hideAllHUDsForView:window animated:YES];
+                [RemindView showViewWithTitle:offline location:TOP];
             }];
+            
         }
             break;
-            //
+            //用户协议
         case 3:
         {
             
@@ -393,6 +476,45 @@
         default:
             break;
     }
+}
+
+//注册成功才调用该方法
+- (void)login:(NSString *)phone pwd:(NSString *)password
+{
+    UIWindow *window = [UIApplication sharedApplication].keyWindow;
+    NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:phone,@"phone",password,@"userpwd", nil];
+    //登陆请求
+    [MBProgressHUD showHUDAddedTo:window animated:YES];
+    [HttpTool postWithPath:@"getLogin" params:param success:^(id JSON, int code, NSString *msg) {
+        [MBProgressHUD hideAllHUDsForView:window animated:YES];
+        if (code == 100) {
+            NSDictionary *result = JSON[@"data"][@"login"];
+            UserInfo *item = [[UserInfo alloc] init];
+            [item setValuesForKeysWithDictionary:result];
+            
+            [SystemConfig sharedInstance].isUserLogin = YES;
+            [SystemConfig sharedInstance].uid = item.uid;
+            [SystemConfig sharedInstance].userInfo = item;
+            
+            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+            [dict setValue:item.username forKey:@"username"];
+            [dict setValue:item.uid forKey:@"uid"];
+            [dict setValue:item.phone forKey:@"phone"];
+            if (item.img&&item.img.length!=0) {
+                [dict setValue:item.img forKey:@"img"];
+            }
+            [userDefaults setValue:dict forKey:@"userInfo"];
+            [userDefaults synchronize];
+            
+        }else{
+            [RemindView showViewWithTitle:msg location:TOP];
+        }
+    } failure:^(NSError *error) {
+        [MBProgressHUD hideAllHUDsForView:window animated:YES];
+        NSLog(@"%@",error);
+    }];
+
 }
 
 #pragma mark keyboard_delegate

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AdaptationSize.h"
 
 @interface ErrorView : UIView
 

@@ -10,11 +10,13 @@
 #import "ImageFieldView.h"
 #import "KeyboardDelegate.h"
 
+@class ValidateView;
+
 @protocol ValidateViewDelegate <NSObject>
 
 @optional
 
-- (void)validateViewBtnClick:(UIButton *)btn view:(UIView *)view;
+- (void)validateViewBtnClick:(UIButton *)btn view:(ValidateView *)view;
 
 @end
 

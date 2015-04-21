@@ -137,7 +137,7 @@
     if (textField.tag==1001||textField.tag==1002) {
         return YES;
     }
-    NSCharacterSet *cs = [[NSCharacterSet characterSetWithCharactersInString:@"123456789\n"] invertedSet];
+    NSCharacterSet *cs = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789\n"] invertedSet];
     NSString *filtered = [[string componentsSeparatedByCharactersInSet:cs] componentsJoinedByString:@""];
     BOOL basic = [string isEqualToString:filtered];
     if (!basic) {

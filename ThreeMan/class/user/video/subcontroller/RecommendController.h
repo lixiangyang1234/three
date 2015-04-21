@@ -15,5 +15,6 @@
     BOOL fisrtEdit;  //第一次编辑
 }
 
+@property (nonatomic,copy) NSString *sid;
 
 @end
