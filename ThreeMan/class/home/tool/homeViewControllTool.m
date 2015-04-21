@@ -54,6 +54,7 @@
     [HttpTool postWithPath:@"getNeed1" params:paramDic success:^(id JSON, int code, NSString *msg) {
         NSMutableArray *status =[NSMutableArray array];
         NSDictionary *dict =JSON[@"data"][@"category"];
+       
         if (![dict isKindOfClass:[NSNull class]]) {
 //            nineBlockModel *nineModel =[[nineBlockModel alloc]initWithDictonaryForNineBlock:dict];
             [status addObject:dict];

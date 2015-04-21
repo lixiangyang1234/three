@@ -358,6 +358,7 @@ static NSString * const reuseIdentifier = @"Cell";
             [self.nav pushViewController:nineVc animated:YES];
         }else if (more.tag ==NEEDTAG+1 ){
             ThreeBlockController *ThreeVc =[[ThreeBlockController alloc]init];
+            ThreeVc.threeId =[NSString stringWithFormat:@"%d",homeModel.categoryId];
             [self.nav pushViewController:ThreeVc animated:YES];
         }else{
             NeedViewController *needVc =[[NeedViewController alloc]init];
@@ -368,7 +369,10 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 //行业
 -(void)businessBtnClick:(UIButton *)sender{
+    homeViewControllModel *homeModel =[_tradeArray objectAtIndex:sender.tag-10];
+    
     BusinessController *businessVC=[[BusinessController alloc]init];
+    businessVC.tradeId =[NSString stringWithFormat:@"%d",homeModel.tradeId];
     [self.nav pushViewController:businessVC animated:YES];
 }
 #pragma mark KDCycleBannerView_delegate

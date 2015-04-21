@@ -9,4 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface CompanyHomeControll : LeftTitleController
+@property(nonatomic,strong)NSString *companyId;
+@property(nonatomic,strong)NSMutableArray *companyArray;
 @end

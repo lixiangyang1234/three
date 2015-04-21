@@ -78,6 +78,7 @@
 -(void)addLoadStatus{
     NSDictionary *paramDic =[NSDictionary dictionaryWithObjectsAndKeys:_courseDetailID,@"id", nil];
     [HttpTool postWithPath:@"getNeedDetail" params:paramDic success:^(id JSON, int code, NSString *msg) {
+        NSLog(@"%@",JSON);
         if (code==100) {
             NSDictionary *dict =JSON[@"data"][@"subject_detail"];
             if (![dict isKindOfClass:[NSNull class]]) {
@@ -457,9 +458,16 @@
             categoryBtn.frame =CGRectMake(kWidth-63, 5, 40, 40) ;
             [categoryBtn setImage:[UIImage imageNamed:@"tab_collect"] forState:UIControlStateNormal];
             [categoryBtn setImage:[UIImage imageNamed:@"tab_collect_pre"] forState:UIControlStateSelected];
-            
+            courseDetailModel *coureseModel =[_detailArray objectAtIndex:0];
+            if (coureseModel.iscollect ==1) {
+                categoryBtn.selected =YES;
+            }else if (coureseModel.iscollect ==0){
+                categoryBtn.selected =NO;
+
+            }
         }
         [categoryBtn addTarget:self action:@selector(categoryBtnItem:) forControlEvents:UIControlEventTouchUpInside];
+        categoryBtn.tag =i+30;
         
     }
     
@@ -687,8 +695,44 @@
     
 }
 -(void)categoryBtnItem:(UIButton *)item{
+    if (item.tag ==30) {
+        
+    }else if (item.tag ==31){
         [self addTopViewBy];
-  
+ 
+    }else if(item.tag ==32){
+    if (item.selected ==YES)  // uncollectSubject   collectSubject
+      {
+            NSString *str =@"23456";
+            NSDictionary *paramDic =[NSDictionary dictionaryWithObjectsAndKeys:str,@"uid",_courseDetailID,@"id" ,nil];
+        NSLog(@"%@",[SystemConfig sharedInstance].uid);
+            [HttpTool postWithPath:@"uncollectSubject" params:paramDic success:^(id JSON, int code, NSString *msg) {
+                NSLog(@"%@",JSON);
+                if (code ==100) {
+                    [RemindView showViewWithTitle:@"取消收藏成功!" location:BELLOW];
+                    item.selected =NO;
+                }
+            } failure:^(NSError *error) {
+                
+            }];
+      }  else{
+          NSString *str =@"23456";
+          NSDictionary *paramDic =[NSDictionary dictionaryWithObjectsAndKeys:str,@"uid",_courseDetailID,@"id" ,nil];
+          NSLog(@"%@",[SystemConfig sharedInstance].uid);
+          [HttpTool postWithPath:@"collectSubject" params:paramDic success:^(id JSON, int code, NSString *msg) {
+              NSLog(@"-----%@",JSON);
+              if (code ==100) {
+                  [RemindView showViewWithTitle:@"收藏成功!" location:BELLOW];
+                  item.selected =YES;
+              }
+          } failure:^(NSError *error) {
+              
+          }];
+      }
+
+        
+    }
+    
 }
 -(void)chooseBtn:(UIButton *)choose chooseTag:(NSInteger)tag{
     [UIView animateWithDuration:.3 animations:^{

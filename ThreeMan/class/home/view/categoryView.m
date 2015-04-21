@@ -160,7 +160,7 @@
         
         [_titleBtn setTitleColor:HexRGB(0x808080) forState:UIControlStateNormal];
         [_titleBtn setTitleColor:HexRGB(0x178ac5) forState:UIControlStateSelected];
-        
+        _titleBtn.titleEdgeInsets=UIEdgeInsetsMake(0, 50, 0, 0);
         
         [_titleBtn setTitle:[self.titleArray objectAtIndex:i] forState:UIControlStateNormal];
         [_titleBtn setBackgroundColor:[UIColor whiteColor]];
@@ -185,7 +185,9 @@
             _titleBtn.frame=CGRectMake(0, 54+i%5*(44)-43, kWidth, 44);
             [_titleBtn setImage:[UIImage imageNamed:@"lower"] forState:UIControlStateNormal];
             [_titleBtn setImage:[UIImage imageNamed:@"lower_rep"] forState:UIControlStateSelected];
-            _titleBtn.imageEdgeInsets =UIEdgeInsetsMake(0, 150, 0, 10);
+            _titleBtn.imageEdgeInsets =UIEdgeInsetsMake(0, 130, 0, 0);
+            _titleBtn.titleEdgeInsets=UIEdgeInsetsMake(0, 40, 0, 0);
+
         }
         
         
@@ -203,7 +205,6 @@
     
     NSArray *array = [[DBTool shareDBToolClass] getNewTitleButtonArray];
     
-    NSLog(@"----> %@",array);
     
     for (int j=0; j < self.titleArray.count; j++)
     {
@@ -278,7 +279,7 @@
             [self.categoryTitleBtn setTitle:[self.categoryArray objectAtIndex:i] forState:UIControlStateNormal];
             [self.categoryTitleBtn setBackgroundColor:[UIColor whiteColor]];
             
-            self.categoryTitleBtn.tag =10+i;
+            self.categoryTitleBtn.tag =104+i;
             self.categoryTitleBtn.contentHorizontalAlignment =UIControlContentHorizontalAlignmentLeft;
             
             

@@ -23,7 +23,6 @@
     if (self) {
         self.backgroundColor =[UIColor clearColor];
         self.itemType =type;
-//        NSLog(@"%d-3333--->%d",self.itemType,type);
         if (self.itemType==1) {
             //    添加左边
             UIButton * titleItem =[UIButton buttonWithType:UIButtonTypeCustom];

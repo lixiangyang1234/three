@@ -9,6 +9,7 @@
 #import "CompanyHomeControll.h"
 #import "CompanyHomeViewCell.h"
 #import "CourseDetailController.h"
+#import "companyListModel.h"
 #define KStartY 20
 #define BannerH  195
 #define DEGREES_TO_RADIANS(angle) ((angle)/180.0 *M_PI)
@@ -41,10 +42,32 @@
     }
     
     [self.view setBackgroundColor:HexRGB(0xe0e0e0)];
+    _companyArray =[NSMutableArray array];
     [self addUIBannerView];
     [self addTableView];
-    
+    [self addLoadStatus];
     // Do any additional setup after loading the view.
+}
+
+
+#pragma mark=====添加数据
+-(void)addLoadStatus{
+    NSDictionary *paraDic =[NSDictionary dictionaryWithObjectsAndKeys:_companyId,@"id", nil];
+    [HttpTool postWithPath:@"getCompanyCourseList" params:paraDic success:^(id JSON, int code, NSString *msg) {
+        NSDictionary *dict =JSON[@"data"];
+        NSArray *arr =dict[@"subject_list"];
+        if (code==100) {
+            for (NSDictionary *dicArr in arr) {
+                companyListModel *businessModel =[[companyListModel alloc]initWithDictonaryForCompanyList:dicArr];
+                [_companyArray addObject:businessModel];
+            }
+            
+        }
+               NSLog(@"%@",JSON);
+        [_tableView reloadData];
+    } failure:^(NSError *error) {
+        
+    }];
 }
 -(void)addUIBannerView{
     UIImageView *bannerImage =[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, kWidth, BannerH)];
@@ -137,12 +160,9 @@
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 5;
+    return _companyArray.count;
 }
 
 
@@ -155,6 +175,14 @@
         [cell setBackgroundColor:HexRGB(0xe0e0e0)];
         cell.selectionStyle =UITableViewCellSelectionStyleNone;
     }
+    companyListModel *companyModel =[_companyArray objectAtIndex:indexPath.row];
+    [cell.companyHomeImage setImageWithURL:[NSURL URLWithString:companyModel.companyImgurl] placeholderImage:placeHoderImage2];
+    CGFloat titleH =[companyModel.companyTitle sizeWithFont:[UIFont systemFontOfSize:PxFont(20)] constrainedToSize:CGSizeMake(kWidth-156, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping].height;
+    cell.companyHomeTitle.frame =CGRectMake(135, 9, kWidth-156, titleH);
+    cell.companyHomeTitle.text =[NSString stringWithFormat:@"   %@",companyModel.companyTitle];
+    [cell.downLoadBtn setTitle:[NSString stringWithFormat:@"%d",companyModel.companyDownloadnum] forState:UIControlStateNormal];
+     [cell.zanBtn setTitle:[NSString stringWithFormat:@"%d",companyModel.companyPrice] forState:UIControlStateNormal];
+    
     
     
     return cell;
@@ -209,13 +237,11 @@
         
         
         headerImage.frame =CGRectMake((kWidth-70)/2, -100, 70, 70);
-        NSLog(@"222221/////------>%f",animationView.frame.origin.y);
 
         [UIView commitAnimations];
         
         
         
-         NSLog(@"25555551/////------>%f",animationView.frame.origin.y);
     }else{
         [UIView beginAnimations:@"label" context:nil];
         [UIView setAnimationDuration:2];
