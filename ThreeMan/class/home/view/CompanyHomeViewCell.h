@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "typeView.h"
 @interface CompanyHomeViewCell : UITableViewCell
 @property (nonatomic,strong)UIImageView *companyHomeImage;
 @property (nonatomic,strong)UILabel *companyHomeTitle;
-@property (nonatomic,strong)UIImageView *companyHomeSmailImage;
+@property (nonatomic,strong)typeView *companyHomeSmailImage;
 @property(nonatomic,strong)UIButton *zanBtn;
 @property(nonatomic,strong)UIButton *downLoadBtn;
 

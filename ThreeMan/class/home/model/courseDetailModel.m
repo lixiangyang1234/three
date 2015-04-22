@@ -17,6 +17,8 @@
         self.courseDownloadnum =[dict[@"Downloadnum"]intValue];
         self.courseNum =[dict[@"num"]intValue];
         self.courseContent =dict[@"content"];
+        self.iscollect =[dict[@"iscollect"]intValue];
+
         self.courseTitle =dict[@"title"];
         self.courseCompanyname =dict[@"companyname"];
       

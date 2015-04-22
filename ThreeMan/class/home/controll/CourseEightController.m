@@ -14,6 +14,7 @@
 #define BANNERH 167
 @interface CourseEightController ()<UIWebViewDelegate>
 {
+    ErrorView *networkError;
     CGFloat bannerHeightLine;
     CGFloat webh;
 }
@@ -29,20 +30,29 @@
     self.view.backgroundColor = HexRGB(0xe8e8e8);
     [self setLeftTitle:@"课程详情"];
     _courseEightArray =[NSMutableArray array];
-    
+    [self addErrorView];
+    [self addMBprogressView];
     [self addLoadStatus];
+    
+}
+-(void)addMBprogressView{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"加载中...";
     
 }
 #pragma mark ---添加数据
 -(void)addLoadStatus{
    [homeViewControllTool statusesWithCourseEightID:_courseID Success:^(NSMutableArray *statues) {
+       [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+
        for (NSDictionary *dict in statues) {
            [_courseEightArray addObject:dict];
        }
        [self addUICourseDetail];
    } failure:^(NSError *error) {
-       [RemindView showViewWithTitle:offline location:MIDDLE];
+       [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
 
+       networkError.hidden =NO;
    }];
 }
 -(void)addUICourseDetail{
@@ -143,12 +153,15 @@
     
     
 }
-
--(void)addNotNetFail{
-    NetFailView *failView =[[NetFailView alloc]initWithFrame:self.view.bounds backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"对不起，网络不给力!请检查您的网络设置! "];
-    [self.view addSubview:failView];
-  
+//没有网络
+-(void)addErrorView{
+    networkError = [[ErrorView alloc] initWithImage:@"netFailImg_1" title:@"对不起,网络不给力! 请检查您的网络设置!"];
+    networkError.center = CGPointMake(kWidth/2, (kHeight-64-40)/2);
+    networkError.hidden = YES;
+    [self.view addSubview:networkError];
+    
 }
+
 
 
 

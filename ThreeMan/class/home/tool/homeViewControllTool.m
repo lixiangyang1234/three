@@ -36,6 +36,7 @@
     NSDictionary *paramDic =[NSDictionary dictionaryWithObjectsAndKeys:coursrId,@"id", nil];
     [HttpTool postWithPath:@"getCourseDetail" params:paramDic success:^(id JSON, int code, NSString *msg) {
         NSDictionary *dict =JSON[@"data"][@"course_detail"];
+//        NSLog(@"%@",JSON);
         NSMutableArray *status =[[NSMutableArray alloc]init];
         if (![dict isKindOfClass:[NSNull class]]) {
             courseEightModel *courseModel =[[courseEightModel alloc]initWithDictonaryForCourseEight:dict];
@@ -54,6 +55,7 @@
     [HttpTool postWithPath:@"getNeed1" params:paramDic success:^(id JSON, int code, NSString *msg) {
         NSMutableArray *status =[NSMutableArray array];
         NSDictionary *dict =JSON[@"data"][@"category"];
+       
         if (![dict isKindOfClass:[NSNull class]]) {
 //            nineBlockModel *nineModel =[[nineBlockModel alloc]initWithDictonaryForNineBlock:dict];
             [status addObject:dict];

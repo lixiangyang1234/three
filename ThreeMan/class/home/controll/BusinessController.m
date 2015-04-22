@@ -9,8 +9,10 @@
 #import "BusinessController.h"
 #import "BusinessViewCell.h"
 #import "CompanyHomeControll.h"
+#import "businessListModel.h"
 @interface BusinessController ()<UITableViewDataSource,UITableViewDelegate>
 {
+    ErrorView *networkError;
     UITableView *_tableView;
     UIButton *topBtn;
 }
@@ -21,9 +23,41 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.view setBackgroundColor:HexRGB(0xe0e0e0)];
+    [self setLeftTitle:self.navTitle];
+    _businessArray =[NSMutableArray array];
     [self addTableView];
+    [self addMBprogressView];
+    [self addErrorView];
     [self addTopBtn];
+    [self addLoadStatus];
+}
+-(void)addMBprogressView{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"加载中...";
     
+}
+#pragma mark=====添加数据
+-(void)addLoadStatus{
+    NSDictionary *paraDic =[NSDictionary dictionaryWithObjectsAndKeys:_tradeId,@"id", nil];
+   [HttpTool postWithPath:@"getCompanyList" params:paraDic success:^(id JSON, int code, NSString *msg) {
+       [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+
+       NSDictionary *dict =JSON[@"data"];
+       NSArray *arr =dict[@"company_list"];
+       if (code==100) {
+           for (NSDictionary *dicArr in arr) {
+               businessListModel *businessModel =[[businessListModel alloc]initWithDictonaryForBusinessList:dicArr];
+               [_businessArray addObject:businessModel];
+           }
+           
+       }
+//       NSLog(@"%@",dict);
+       [_tableView reloadData];
+   } failure:^(NSError *error) {
+       [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+
+       networkError.hidden =NO;
+   }];
 }
 -(void)addTopBtn
 {
@@ -63,12 +97,9 @@
 }
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 25;
+    return _businessArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -81,7 +112,11 @@
         cell.selectionStyle =UITableViewCellSelectionStyleNone;
         
     }
-    
+    businessListModel *businessModel =[_businessArray objectAtIndex:indexPath.row];
+    [cell.businessImage setImageWithURL:[NSURL URLWithString:businessModel.businessLogo] placeholderImage:placeHoderImage1];
+    cell.businessNeed.text =[NSString stringWithFormat:@"需求 %d",businessModel.businessScorenums];
+    cell.businessTtile.text =businessModel.businessCompanyname;
+    cell.bussinessLabel.text =businessModel.businessIntroduce;
     if (indexPath.row>=14) {
         topBtn.hidden =NO;
     }else if (indexPath.row<=10){
@@ -91,15 +126,26 @@
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        businessListModel *businessModel =[_businessArray objectAtIndex:indexPath.row];
         CompanyHomeControll *companyHomeVC=[[CompanyHomeControll alloc]init];
+    companyHomeVC.companyId =[NSString stringWithFormat:@"%d", businessModel.businessId];
+    companyHomeVC.companyContent =businessModel.businessIntroduce;
+    companyHomeVC.companyImag =businessModel.businessLogo;
+    companyHomeVC.companyTitel =businessModel.businessCompanyname;
         [self.navigationController pushViewController:companyHomeVC animated:YES];
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
        return 100;
 }
-
+//没有网络
+-(void)addErrorView{
+    networkError = [[ErrorView alloc] initWithImage:@"netFailImg_1" title:@"对不起,网络不给力! 请检查您的网络设置!"];
+    networkError.center = CGPointMake(kWidth/2, (kHeight-64-40)/2);
+    networkError.hidden = YES;
+    [self.view addSubview:networkError];
+    
+}
 #pragma mark 控件将要显示
 - (void)viewWillAppear:(BOOL)animated
 {

@@ -53,13 +53,13 @@ static NSString * const reuseIdentifier = @"Cell";
     self.categoryArrayOffLine =[NSMutableArray array];
     self.tradeArrayOffLine =[NSMutableArray array];
     self.adsImageOffLine =[NSMutableArray array];
-    [self addMBprogressView];
-    [self addADSimageBtn:_adsImage];
+    [self addADSimageBtn:_adsImageOffLine];
     [self addUIBanner];//1区
-    [self addUICourse:_courseArray];//2区添加八大课程体系
+    [self addUICourse:_courseArrayOffLine];//2区添加八大课程体系
     
-    [self addUICategory:_categoryArray];
-    [self addUITrade:_tradeArray];
+    [self addUICategory:_categoryArrayOffLine];
+    [self addUITrade:_tradeArrayOffLine];
+    [self addMBprogressView];
         [self addLoadStatus];
     
 }
@@ -67,6 +67,7 @@ static NSString * const reuseIdentifier = @"Cell";
 -(void)addMBprogressView{
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"加载中...";
+
 }
 
 //添加数据
@@ -184,7 +185,7 @@ static NSString * const reuseIdentifier = @"Cell";
         [self.backScrollView addSubview:courseButtTitle];
         [courseButtTitle setTitle:homeModel.courseName forState:UIControlStateNormal];
         [courseButtTitle setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        courseButtTitle.titleLabel.font =[UIFont systemFontOfSize:PxFont(12)];
+        courseButtTitle.titleLabel.font =[UIFont systemFontOfSize:PxFont(14)];
         [courseButtTitle setTitleColor:HexRGB(0x404040) forState:UIControlStateNormal];
         [courseButtTitle setBackgroundColor:[UIColor clearColor]];
         
@@ -236,16 +237,16 @@ static NSString * const reuseIdentifier = @"Cell";
         
     }
     for (int t=0; t<2; t++) {
-        NSArray *titleArray =@[@"按需求 ",@"按行业"];
+        NSArray *titleArray =@[@" 按需求 ",@" 按行业"];
         NSArray *imgArray =@[[UIImage imageNamed:@"needImg"],[UIImage imageNamed:@"businessImg"]];
         UIButton* titleBtn =[UIButton buttonWithType:UIButtonTypeCustom];
-        titleBtn.frame =CGRectMake(20, needHeight+12+t%2*(NEEDH+14+27), kWidth-20, 27 );
+        titleBtn.frame =CGRectMake(15, needHeight+12+t%2*(NEEDH+14+27), kWidth-20, 27 );
         [self.backScrollView addSubview:titleBtn];
         [titleBtn setImage:imgArray[t] forState:UIControlStateNormal];
         [titleBtn setTitle:titleArray[t] forState:UIControlStateNormal];
         [titleBtn setTitleColor:HexRGB(0x404040) forState:UIControlStateNormal];
         titleBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;
-        [titleBtn.titleLabel setFont:[UIFont systemFontOfSize:PxFont(22)]];
+        [titleBtn.titleLabel setFont:[UIFont systemFontOfSize:PxFont(18)]];
         [titleBtn setBackgroundColor:[UIColor clearColor]];
         
     }
@@ -303,8 +304,6 @@ static NSString * const reuseIdentifier = @"Cell";
         
         needBtn.tag =i+NEEDTAG;
         
-        
-        
     }
     
     
@@ -329,7 +328,7 @@ static NSString * const reuseIdentifier = @"Cell";
         [businessBtn setImageWithURL:[NSURL URLWithString:homeModel.tradeImgurl] forState:UIControlStateNormal placeholderImage:placeHoderImage2];
         [businessBtn setTitle:homeModel.tradeName forState:UIControlStateNormal];
         [businessBtn setTitleColor:HexRGB(0x404040) forState:UIControlStateNormal];
-        [businessBtn .titleLabel setFont:[UIFont systemFontOfSize:PxFont(20)]];
+        [businessBtn .titleLabel setFont:[UIFont systemFontOfSize:PxFont(19)]];
         businessBtn.backgroundColor =[UIColor whiteColor];
         
         [businessBtn addTarget:self action:@selector(businessBtnClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -342,6 +341,7 @@ static NSString * const reuseIdentifier = @"Cell";
         [subTitleLabel setTextColor:HexRGB(0x9a9a9a)];
         subTitleLabel.font =[UIFont systemFontOfSize:PxFont(16)];
         subTitleLabel.backgroundColor =[UIColor clearColor];
+        
 
     }
     
@@ -355,12 +355,17 @@ static NSString * const reuseIdentifier = @"Cell";
         if (more.tag==NEEDTAG) {
             NineBlockController *nineVc =[[NineBlockController alloc]init];
             nineVc.nineBlockID =[NSString stringWithFormat:@"%d",homeModel.categoryId];
+            nineVc.navTitle =homeModel.categoryName;
             [self.nav pushViewController:nineVc animated:YES];
         }else if (more.tag ==NEEDTAG+1 ){
             ThreeBlockController *ThreeVc =[[ThreeBlockController alloc]init];
+            ThreeVc.threeId =[NSString stringWithFormat:@"%d",homeModel.categoryId];
+            ThreeVc.navTitle =homeModel.categoryName;
             [self.nav pushViewController:ThreeVc animated:YES];
         }else{
             NeedViewController *needVc =[[NeedViewController alloc]init];
+            needVc.categoryId =[NSString stringWithFormat:@"%d",homeModel.categoryId];
+            needVc.navTitle =homeModel.categoryName;
             [self.nav pushViewController:needVc animated:YES];
         }
     }
@@ -368,8 +373,16 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 //行业
 -(void)businessBtnClick:(UIButton *)sender{
+    if (_tradeArray.count==0) {
+        [RemindView showViewWithTitle:offline location:MIDDLE];
+    }else{
+    homeViewControllModel *homeModel =[_tradeArray objectAtIndex:sender.tag-10];
+    
     BusinessController *businessVC=[[BusinessController alloc]init];
+    businessVC.tradeId =[NSString stringWithFormat:@"%d",homeModel.tradeId];
+        businessVC.navTitle =homeModel.tradeName;
     [self.nav pushViewController:businessVC animated:YES];
+    }
 }
 #pragma mark KDCycleBannerView_delegate
 
@@ -396,7 +409,7 @@ static NSString * const reuseIdentifier = @"Cell";
 //广告占位图
 - (UIImage *)placeHolderImageOfBannerView:(KDCycleBannerView *)bannerView atIndex:(NSUInteger)index
 {
-    return [UIImage imageNamed:@"img"];
+    return placeHoderImage;
 }
 
 //选中广告的第几张图片

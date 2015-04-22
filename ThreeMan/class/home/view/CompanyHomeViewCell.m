@@ -31,24 +31,18 @@
         
         companyHomeImage =[[UIImageView alloc]initWithFrame:CGRectMake(YYBorderX, YYBorderY, 90, 60)];
         [backCell addSubview:companyHomeImage];
-        companyHomeImage.backgroundColor =[UIColor redColor];
+        companyHomeImage.backgroundColor =[UIColor clearColor];
         companyHomeImage.userInteractionEnabled =YES;
         
-        companyHomeSmailImage =[[UIImageView alloc]initWithFrame:CGRectMake(YYBorderX*2+90, YYBorderY, 30, 20)];
+        companyHomeSmailImage =[[typeView alloc]initWithFrame:CGRectMake(YYBorderX*2+90, YYBorderY, 30, 20)];
         [backCell addSubview:companyHomeSmailImage];
-        companyHomeSmailImage.backgroundColor =[UIColor redColor];
+        companyHomeSmailImage.backgroundColor =[UIColor clearColor];
         companyHomeSmailImage.userInteractionEnabled =YES;
         
         
         companyHomeTitle =[[UILabel alloc]initWithFrame:CGRectMake(YYBorderX*2+90, YYBorderY, kWidth-YYBorderX*2-115, 50)];
         companyHomeTitle.backgroundColor =[UIColor clearColor];
-        companyHomeTitle.text =@"首行缩进根据用户昵称自动调整 ";
         [backCell addSubview:companyHomeTitle];
-        //        [companyHomeTitle sizeToFit];
-        self . companyHomeTitle . adjustsFontSizeToFitWidth  =  YES ;
-        
-        //        self . companyHomeTitle . adjustsLetterSpacingToFitWidth  =  YES ;
-        
         
         companyHomeTitle.numberOfLines =2;
         companyHomeTitle.font =[UIFont systemFontOfSize:PxFont(22)];
@@ -67,38 +61,17 @@
         zanBtn.frame =CGRectMake(200, YYBorderY*2+35, 100, 20);
         [zanBtn setTitle:@"23" forState:UIControlStateNormal];
         zanBtn.contentHorizontalAlignment =UIControlContentHorizontalAlignmentLeft;
-
-        [zanBtn setImage:[UIImage imageNamed:@"nav_return_pre"] forState:UIControlStateNormal];
+        zanBtn.titleEdgeInsets =UIEdgeInsetsMake(0, 7, 0, 0);
+        [zanBtn setImage:[UIImage imageNamed:@"browser_number_icon"] forState:UIControlStateNormal];
         [zanBtn setTitleColor:HexRGB(0x1c8cc6) forState:UIControlStateNormal];
         
         
         
-        [self resetContent];
         
     }
     return self;
 }
-- ( void )resetContent{
-    
-    NSMutableAttributedString *attributedString = [[ NSMutableAttributedString alloc ] initWithString : self . companyHomeTitle . text ];
-    
-    NSMutableParagraphStyle *paragraphStyle = [[ NSMutableParagraphStyle alloc ] init ];
-    
-    paragraphStyle. alignment = NSTextAlignmentLeft ;
-    
-    //    paragraphStyle. maximumLineHeight = 40 ;  //最大的行高
-    
-    paragraphStyle. lineSpacing = 3 ;  //行自定义行高度
-    
-    [paragraphStyle setFirstLineHeadIndent :30 + 5 ]; //首行缩进 根据用户昵称宽度在加5个像素
-    
-    [attributedString addAttribute : NSParagraphStyleAttributeName value :paragraphStyle range : NSMakeRange ( 0 , [ self . companyHomeTitle . text length ])];
-    
-    self . companyHomeTitle . attributedText = attributedString;
-    
-    [ self . companyHomeTitle sizeToFit ];
-    
-}
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 

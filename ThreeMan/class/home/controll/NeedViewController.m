@@ -13,6 +13,7 @@
 #import "CourseDetailController.h"
 @interface NeedViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
+    ErrorView *networkError;
     UIButton *topBtn;
     UITableView *_tableView;
     YYSearchButton *_selectedItem;
@@ -25,10 +26,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self.view setBackgroundColor:HexRGB(0xffffff)];
+    [self setLeftTitle:self.navTitle];
     _needListArray =[[NSMutableArray alloc]init];
 //    [self addUINavView];
     [self addTableView];
+    [self addErrorView];
     [self addUIChooseBtn];//添加筛选按钮
+    [self addMBprogressView];
     [self addLoadStatus:@"0"];
 }
 -(void)addTopBtn
@@ -48,15 +52,24 @@
     topBtn.tag =900;
     
 }
-
+-(void)addMBprogressView{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"加载中...";
+    
+}
 -(void)addLoadStatus:(NSString *)typestr{
     NSDictionary *parmDic =[NSDictionary dictionaryWithObjectsAndKeys:_categoryId,@"id",typestr,@"type" ,nil];
+    [HttpTool postWithPath:@"getNeedList" params:parmDic success:^(id JSON, int code, NSString *msg) {
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        NSLog(@"%@",JSON);
+        [_needListArray removeAllObjects];
+        [_tableView reloadData];
 
-    [HttpTool postWithPath:@"getNeed1List" params:parmDic success:^(id JSON, int code, NSString *msg) {
         if (code == 100) {
-            [_needListArray removeAllObjects];
             NSDictionary *dic = [JSON objectForKey:@"data"];
             NSArray *array = [dic objectForKey:@"subject_list"];
+            [_needListArray removeAllObjects];
+
             if (![array isKindOfClass:[NSNull class]]) {
                 for (NSDictionary *dict in array) {
                     needListModel *item = [[needListModel alloc] init];
@@ -67,7 +80,9 @@
             [_tableView reloadData];
         }
     } failure:^(NSError *error) {
-        
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+
+        networkError.hidden =NO;
     }];
 
 }
@@ -78,8 +93,8 @@
 
         YYSearchButton*  chooseBtn =[YYSearchButton buttonWithType:UIButtonTypeCustom];
         [self.view addSubview:chooseBtn];
-        chooseBtn.tag =i+10000;
-        if (chooseBtn.tag==10000) {
+        chooseBtn.tag =i+1000;
+        if (chooseBtn.tag==1000) {
 
             chooseBtn.isSelected =YES;
             _selectedItem =chooseBtn;
@@ -108,14 +123,16 @@
 //筛选按钮
 -(void)chooseBtnClick:(YYSearchButton *)sender{
 
-    if (sender.tag==10000) {
+    if (sender.tag==1000) {
         [self addLoadStatus:@"0"];
 
-    }else if(sender.tag ==10001){
+    }else if(sender.tag ==1001){
         [self addLoadStatus:@"1"];
+
     }
-    else if(sender.tag ==10002){
+    else if(sender.tag ==1002){
         [self addLoadStatus:@"2"];
+
     }
     if (sender!=_selectedItem) {
            
@@ -146,14 +163,14 @@
         
         CGFloat titleH =[needModle.title sizeWithFont:[UIFont systemFontOfSize:PxFont(20)] constrainedToSize:CGSizeMake(kWidth-156, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping].height;
         cell.needTitle.frame =CGRectMake(135, 9, kWidth-156, titleH);
-        cell.needTitle.text =[NSString stringWithFormat:@"         %@",needModle.title];
-        cell.needTitle .font =[UIFont systemFontOfSize:PxFont(20)];
+        cell.needTitle.text =[NSString stringWithFormat:@"        %@",needModle.title];
 
         cell . needTitle . adjustsFontSizeToFitWidth  =  YES ;
         cell . needTitle . adjustsLetterSpacingToFitWidth  =  YES ;
         cell.needTitle.backgroundColor =[UIColor clearColor];
         [cell.zanBtn setTitle:needModle.categoryHits forState:UIControlStateNormal];
         cell.companyName.text =needModle.companyname;
+        [cell.needSmailImage typeID:[needModle.categoryType intValue]];
 
         if (indexPath.row>=14) {
             topBtn.hidden =NO;
@@ -180,6 +197,15 @@
     NSIndexPath *indePath =[NSIndexPath indexPathForRow:0 inSection:0];
     [_tableView scrollToRowAtIndexPath:indePath atScrollPosition:UITableViewScrollPositionNone animated:YES];
 }
+//没有网络
+-(void)addErrorView{
+    networkError = [[ErrorView alloc] initWithImage:@"netFailImg_1" title:@"对不起,网络不给力! 请检查您的网络设置!"];
+    networkError.center = CGPointMake(kWidth/2, (kHeight-64-40)/2);
+    networkError.hidden = YES;
+    [self.view addSubview:networkError];
+    
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

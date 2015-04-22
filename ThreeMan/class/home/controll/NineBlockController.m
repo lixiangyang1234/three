@@ -13,6 +13,7 @@
 #define YYBORDERH  8
 @interface NineBlockController ()
 {
+    ErrorView *networkError;
     UIScrollView *_scrollView;
     NSMutableArray *_categoryArray;
 }
@@ -24,13 +25,23 @@
     [super viewDidLoad];
     _categoryArray =[[NSMutableArray alloc]init];
     [self.view setBackgroundColor:HexRGB(0xffffff)];
+    [self setLeftTitle:self.navTitle];
     // Do any additional setup after loading the view.
+    [self addErrorView];
+    [self addMBprogressView];
     [self addLoadStatus];
    
     
 }
+-(void)addMBprogressView{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"加载中...";
+    
+}
 -(void)addLoadStatus{
    [homeViewControllTool statusesWithNineBlockID:self.nineBlockID Success:^(NSMutableArray *statues) {
+       [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+
        for (NSArray *dict in statues) {
            [_categoryArray addObjectsFromArray:dict];
            
@@ -41,7 +52,10 @@
 
        [self addCateGoryButton];
    } failure:^(NSError *error) {
+       [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+
        NSLog(@"网络错误");
+       networkError.hidden =NO;
    }];
 }
 -(void)addScrollView
@@ -86,12 +100,12 @@
 {
     CGFloat nineH =44; //按钮高
     CGFloat nineBorderWH =0;//边界高宽
+    
 
     for (int i=0; i<_categoryArray.count; i++) {
         NSDictionary *dict =[_categoryArray objectAtIndex:i];
         nineBlockModel *nineModel =[[nineBlockModel alloc]init];
         nineModel.nineTitle =dict[@"title"];
-//        NSLog(@"fffffff%@",nineModel.nineTitle);
         
         UIButton *titleBtn =[UIButton buttonWithType:UIButtonTypeCustom];
         [titleBtn setTitle:nineModel.nineTitle forState:UIControlStateNormal];
@@ -108,7 +122,7 @@
     
         for (int h=0; h<_categoryArray.count/3; h++) {
             //底部线条
-            UIView *topLie =[[UIView alloc]initWithFrame:CGRectMake(YYBORDERH, YYBORDERH+nineH+h%_categoryArray.count/3*nineH, kWidth-YYBORDERH*2, 1)];
+            UIView *topLie =[[UIView alloc]initWithFrame:CGRectMake(YYBORDERH, YYBORDERH+nineH+h%(_categoryArray.count/3)*nineH, kWidth-YYBORDERH*2, 1)];
             [_scrollView addSubview:topLie];
             topLie.backgroundColor =HexRGB(0xeaebec);
     }
@@ -122,10 +136,20 @@
     NSDictionary *dict =[_categoryArray objectAtIndex:sender.tag-300];
     nineBlockModel *nineModel =[[nineBlockModel alloc]init];
     nineModel.nineID =dict[@"id"];
+    nineModel.nineTitle =dict[@"title"];
+
     needVC.categoryId =nineModel.nineID;
-    
+    needVC.navTitle =nineModel.nineTitle;
     
     [self.navigationController pushViewController:needVC animated:YES];
+}
+//没有网络
+-(void)addErrorView{
+    networkError = [[ErrorView alloc] initWithImage:@"netFailImg_1" title:@"对不起,网络不给力! 请检查您的网络设置!"];
+    networkError.center = CGPointMake(kWidth/2, (kHeight-64-40)/2);
+    networkError.hidden = YES;
+    [self.view addSubview:networkError];
+    
 }
 
 @end

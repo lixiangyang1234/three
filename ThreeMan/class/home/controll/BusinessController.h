@@ -9,4 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface BusinessController : LeftTitleController
+@property(nonatomic,strong)NSString *tradeId;
+@property(nonatomic,strong)NSString *navTitle;
+
+@property(nonatomic,strong)NSMutableArray *businessArray;
 @end

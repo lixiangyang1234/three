@@ -43,16 +43,16 @@
         
         contentAnswerLabel =[[UILabel alloc]initWithFrame:CGRectMake(borderwh, titleH,self.frame.size.width-borderwh*3 , 50)];
         contentAnswerLabel.backgroundColor =[UIColor clearColor];
-        contentAnswerLabel.text =@"首行缩进根据用户昵称自动调整首行缩进根据用户昵称自动调整首行缩进根据用户昵称自动调整首行缩进根据用户昵称自动调整首行缩进根据用户昵称自动调整 ";
+       
         [backCell addSubview:contentAnswerLabel];
-        contentAnswerLabel.numberOfLines =3;
+        contentAnswerLabel.numberOfLines =0;
         contentAnswerLabel.font =[UIFont systemFontOfSize:PxFont(18)];
         contentAnswerLabel.textColor =HexRGB(0x655555);
         CGFloat contentH =contentAnswerLabel.frame.size.height+contentAnswerLabel.frame.origin.y;
         
         companyAnswerImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderwh, contentH, 26, 26)];
         [backCell addSubview:companyAnswerImage];
-        companyAnswerImage.backgroundColor =[UIColor redColor];
+        companyAnswerImage.backgroundColor =[UIColor clearColor];
         companyAnswerImage.userInteractionEnabled =YES;
         companyAnswerImage.layer.cornerRadius =13;
         companyAnswerImage.layer.masksToBounds=YES;

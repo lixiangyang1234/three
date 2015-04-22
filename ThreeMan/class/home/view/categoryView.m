@@ -135,6 +135,7 @@
         self.alpha = 0.f;
     } completion:^(BOOL finished) {
         [_handerView removeFromSuperview];
+
     }];
     
 }
@@ -160,7 +161,7 @@
         
         [_titleBtn setTitleColor:HexRGB(0x808080) forState:UIControlStateNormal];
         [_titleBtn setTitleColor:HexRGB(0x178ac5) forState:UIControlStateSelected];
-        
+        _titleBtn. titleEdgeInsets =UIEdgeInsetsMake(0, 30, 0, 0);
         
         [_titleBtn setTitle:[self.titleArray objectAtIndex:i] forState:UIControlStateNormal];
         [_titleBtn setBackgroundColor:[UIColor whiteColor]];
@@ -169,7 +170,7 @@
         _titleBtn.contentHorizontalAlignment =UIControlContentHorizontalAlignmentLeft;
         
         [_titleBtn addTarget:self action:@selector(titleBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-        
+        _titleBtn.titleLabel.font =[UIFont systemFontOfSize:PxFont(20)];
         
         if (i==0)
         {
@@ -185,7 +186,9 @@
             _titleBtn.frame=CGRectMake(0, 54+i%5*(44)-43, kWidth, 44);
             [_titleBtn setImage:[UIImage imageNamed:@"lower"] forState:UIControlStateNormal];
             [_titleBtn setImage:[UIImage imageNamed:@"lower_rep"] forState:UIControlStateSelected];
-            _titleBtn.imageEdgeInsets =UIEdgeInsetsMake(0, 150, 0, 10);
+            _titleBtn.imageEdgeInsets =UIEdgeInsetsMake(0, 90, 0, 0);
+            _titleBtn.titleEdgeInsets =UIEdgeInsetsMake(0, 20, 0, 0);
+
         }
         
         
@@ -264,13 +267,16 @@
             
             [self.categoryTitleBtn setTitleColor:HexRGB(0x178ac5) forState:UIControlStateSelected];
             [_categoryTitleBtn setTitleColor:HexRGB(0x808080) forState:UIControlStateNormal];
-            
+            _categoryTitleBtn.titleLabel.font =[UIFont systemFontOfSize:PxFont(20)];
+
+            self.categoryTitleBtn.hidden =NO;
             [self.categoryTitleBtn addTarget:self action:@selector(categoryTitleBtnClick:) forControlEvents:UIControlEventTouchUpInside];
             self.categoryTitleBtn.frame=CGRectMake(210, 55+i%7*(44)-43, 150, 44);
+            self.categoryTitleBtn.titleEdgeInsets=UIEdgeInsetsMake(0, kWidth-300, 0, 0);
             if (i==4||i==5||i==6||i==7)
             {
                 self.categoryTitleBtn.frame=CGRectMake(0, 54+i%8*(44)-43, kWidth, 44);
-                self.categoryTitleBtn.titleEdgeInsets =UIEdgeInsetsMake(0, kWidth-110, 0, 20);
+                self.categoryTitleBtn.titleEdgeInsets =UIEdgeInsetsMake(0, kWidth-90, 0, 20);
                 
             }
             
@@ -342,6 +348,7 @@
         case 101:
         {
             [self categoryBtnClick:_selectedButton withCTag:@"10"];
+            self.categoryTitleBtn.hidden =NO;
         }
             break;
             

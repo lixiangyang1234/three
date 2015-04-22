@@ -10,7 +10,7 @@
 
 static const CGFloat kHeightOfTopScrollView = 40.0f;
 static const CGFloat kWidthOfButtonMargin = 16.0f-8-5;
-static const CGFloat kFontSizeOfTabButton = 15;
+static const CGFloat kFontSizeOfTabButton = 14;
 static const NSUInteger kTagOfRightSideButton = 999;
 
 static const  CGFloat kShowdowOriginalY = kHeightOfTopScrollView-2;

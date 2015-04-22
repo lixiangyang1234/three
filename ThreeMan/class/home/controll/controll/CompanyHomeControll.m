@@ -9,12 +9,14 @@
 #import "CompanyHomeControll.h"
 #import "CompanyHomeViewCell.h"
 #import "CourseDetailController.h"
+#import "companyListModel.h"
 #define KStartY 20
 #define BannerH  195
 #define DEGREES_TO_RADIANS(angle) ((angle)/180.0 *M_PI)
 
 @interface CompanyHomeControll ()<UITableViewDataSource,UITableViewDelegate>
 {
+    ErrorView *networkError;
     UIImageView *headerImage;
     
     UITableView *_tableView;
@@ -41,10 +43,43 @@
     }
     
     [self.view setBackgroundColor:HexRGB(0xe0e0e0)];
+    _companyArray =[NSMutableArray array];
     [self addUIBannerView];
     [self addTableView];
-    
+    [self addErrorView];
+    [self addMBprogressView];
+
+    [self addLoadStatus];
     // Do any additional setup after loading the view.
+}
+#pragma  mark ------显示指示器
+-(void)addMBprogressView{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"加载中...";
+}
+
+#pragma mark=====添加数据
+-(void)addLoadStatus{
+    NSDictionary *paraDic =[NSDictionary dictionaryWithObjectsAndKeys:_companyId,@"id", nil];
+    [HttpTool postWithPath:@"getCompanyCourseList" params:paraDic success:^(id JSON, int code, NSString *msg) {
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+
+        NSDictionary *dict =JSON[@"data"];
+        NSArray *arr =dict[@"subject_list"];
+        if (code==100) {
+            for (NSDictionary *dicArr in arr) {
+                companyListModel *businessModel =[[companyListModel alloc]initWithDictonaryForCompanyList:dicArr];
+                [_companyArray addObject:businessModel];
+            }
+            
+        }
+               NSLog(@"%@",JSON);
+        [_tableView reloadData];
+    } failure:^(NSError *error) {
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+
+        networkError.hidden =NO;
+    }];
 }
 -(void)addUIBannerView{
     UIImageView *bannerImage =[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, kWidth, BannerH)];
@@ -74,7 +109,7 @@
     UIImageView *headerImg  =[[UIImageView alloc]initWithFrame:CGRectMake(5, 5, 60, 60)];
     headerImg.layer.cornerRadius =30;
     [headerImage addSubview:headerImg];
-    headerImg.image =[UIImage imageNamed:@"img"];
+    [headerImg setImageWithURL:[NSURL URLWithString:self.companyImag] placeholderImage:placeHoderImage];
     headerImg.layer.masksToBounds =YES;
     
     animationView =[[UIView alloc]initWithFrame:CGRectMake(0, 107, kWidth, 88)];
@@ -83,10 +118,10 @@
     
     
     
-    UILabel * titleLabel =[[UILabel alloc]initWithFrame:CGRectMake((kWidth-210)/2, 5, 210, 20)];
+    UILabel * titleLabel =[[UILabel alloc]initWithFrame:CGRectMake((kWidth-180)/2, 5, 180, 20)];
     titleLabel.numberOfLines =1;
     [animationView addSubview:titleLabel];
-    titleLabel.text =@"卡卡姐看了卡拉卡积";
+    titleLabel.text =self.companyTitel;
     titleLabel.textColor =[UIColor cyanColor];
     titleLabel.textAlignment =NSTextAlignmentCenter;
     titleLabel.font =[UIFont systemFontOfSize:PxFont(22)];
@@ -102,7 +137,7 @@
     NSLog(@"%f---%f",headerImage.frame.size.height,headerImage.frame.origin.y);
     
     
-    contentLabel.text =@"卡卡姐看了卡拉卡积分离开的房间卡了附近垃圾地方卡上辣椒粉考虑到看来；桑德菲杰卢卡斯看大家说；卡了附近磕掉了交罚款了舒服肯定放假阿喀琉斯； 抵抗力交罚款了舒抵抗力交罚款了舒抵抗力交罚款了舒服；";
+    contentLabel.text =self.companyContent;
     
     alpha =[[UIImageView alloc]initWithFrame:CGRectMake(0, 32, kWidth, 80)];
     [animationView addSubview:alpha];
@@ -111,7 +146,7 @@
     alpha.backgroundColor =[UIColor clearColor];
     
     UIButton *animationBtn =[UIButton buttonWithType:UIButtonTypeCustom];
-    animationBtn.frame =CGRectMake((kWidth-110)/2, bannerImage.frame.size.height-45, 100, 30);
+    animationBtn.frame =CGRectMake((kWidth-110)/2, bannerImage.frame.size.height-36, 100, 30);
     animationBtn.backgroundColor =[UIColor clearColor];
     [bannerImage addSubview:animationBtn];
     [animationBtn setImage:[UIImage imageNamed:@"animationBtn"] forState:UIControlStateNormal];
@@ -137,12 +172,9 @@
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 5;
+    return _companyArray.count;
 }
 
 
@@ -155,6 +187,16 @@
         [cell setBackgroundColor:HexRGB(0xe0e0e0)];
         cell.selectionStyle =UITableViewCellSelectionStyleNone;
     }
+    companyListModel *companyModel =[_companyArray objectAtIndex:indexPath.row];
+    [cell.companyHomeImage setImageWithURL:[NSURL URLWithString:companyModel.companyImgurl] placeholderImage:placeHoderImage2];
+    CGFloat titleH =[companyModel.companyTitle sizeWithFont:[UIFont systemFontOfSize:PxFont(20)] constrainedToSize:CGSizeMake(kWidth-156, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping].height;
+    cell.companyHomeTitle.frame =CGRectMake(135, 9, kWidth-156, titleH);
+    cell.companyHomeTitle.text =[NSString stringWithFormat:@"   %@",companyModel.companyTitle];
+    [cell.downLoadBtn setTitle:[NSString stringWithFormat:@"%d",companyModel.companyDownloadnum] forState:UIControlStateNormal];
+     [cell.zanBtn setTitle:[NSString stringWithFormat:@"%d",companyModel.companyPrice] forState:UIControlStateNormal];
+    [cell.companyHomeSmailImage typeID:companyModel.companyType];
+
+    
     
     
     return cell;
@@ -176,11 +218,9 @@
        
     }
     if (count == array.count) {
+        companyListModel *companyModel =[_companyArray objectAtIndex:indexPath.row];
         CourseDetailController *xqVC = [[CourseDetailController alloc]init];
-        
-//        XQgetInfoDetailModel *comID =[[XQArray objectAtIndex:0]objectAtIndex:0];
-//        xqVC.companyName = comID.company_name;
-//        xqVC.companyID =comID.company_id;
+        xqVC.courseDetailID =[NSString stringWithFormat:@"%d", companyModel.companyId ];
         
         [self.navigationController pushViewController:xqVC animated:YES];
       
@@ -209,13 +249,11 @@
         
         
         headerImage.frame =CGRectMake((kWidth-70)/2, -100, 70, 70);
-        NSLog(@"222221/////------>%f",animationView.frame.origin.y);
 
         [UIView commitAnimations];
         
         
         
-         NSLog(@"25555551/////------>%f",animationView.frame.origin.y);
     }else{
         [UIView beginAnimations:@"label" context:nil];
         [UIView setAnimationDuration:2];
@@ -238,9 +276,12 @@
 }
 
 //没有网络
--(void)notNetFailView{
-    NetFailView *failView =[[NetFailView alloc]initWithFrame:self.view.bounds backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"对不起，网络不给力!请检查您的网络设置! "];
-    [self.view addSubview:failView];
+-(void)addErrorView{
+    networkError = [[ErrorView alloc] initWithImage:@"netFailImg_1" title:@"对不起,网络不给力! 请检查您的网络设置!"];
+    networkError.center = CGPointMake(kWidth/2, (kHeight-64-40)/2);
+    networkError.hidden = YES;
+    [self.view addSubview:networkError];
+    
 }
 //没有需求
 -(void)notCompanyStatuse{

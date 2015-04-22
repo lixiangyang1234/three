@@ -7,7 +7,6 @@
 //
 
 #import "NeedViewCell.h"
-
 #define YYBorderX    8         //外边界宽
 #define YYBorderY    4        //外边界高
 #define borderW      5       //内边界
@@ -44,12 +43,15 @@
         [backCell addSubview:needTitle];
         needTitle.textColor =HexRGB(0x323232);
         needTitle.numberOfLines =2;
-        
-        needSmailImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderW*2+imageW, YYBorderY+borderW, 30, 20)];
+        needTitle .font =[UIFont systemFontOfSize:PxFont(20)];
+
+        needSmailImage =[[typeView alloc]initWithFrame:CGRectMake(borderW*2+imageW, YYBorderY+borderW, 30, 20)];
         [backCell addSubview:needSmailImage];
-        needSmailImage.backgroundColor =[UIColor redColor];
+        needSmailImage.backgroundColor =[UIColor clearColor];
+    
+
         needSmailImage.userInteractionEnabled =YES;
-        companyName =[[UILabel alloc]initWithFrame:CGRectMake(borderW*2+imageW, borderW+needTitle.frame.size.height, 115, 20)];
+        companyName =[[UILabel alloc]initWithFrame:CGRectMake(borderW*2+imageW, backCell.frame.size.height-25, 115, 20)];
         companyName.backgroundColor =[UIColor clearColor];
         companyName.text =@"新东方恒仁大学";
         [backCell addSubview:companyName];
@@ -58,10 +60,11 @@
     
         zanBtn =[UIButton buttonWithType:UIButtonTypeCustom];
         [backCell addSubview:zanBtn];
-        zanBtn.frame =CGRectMake(backCell.frame.size.width-60, borderW+needTitle.frame.size.height, 60, 20);
+        zanBtn.frame =CGRectMake(backCell.frame.size.width-60, backCell.frame.size.height-25, 55, 20);
         zanBtn .titleEdgeInsets =UIEdgeInsetsMake(0, 7, 0, 0);
         [zanBtn setImage:[UIImage imageNamed:@"browser_number_icon"] forState:UIControlStateNormal];
         [zanBtn setTitleColor:HexRGB(0x1c8cc6) forState:UIControlStateNormal];
+        zanBtn .titleLabel.font =[UIFont systemFontOfSize:PxFont(20)];
         [zanBtn setBackgroundColor:[UIColor clearColor]];
         
                 
