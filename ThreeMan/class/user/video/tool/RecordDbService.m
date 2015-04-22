@@ -102,7 +102,7 @@
         FMResultSet *rs = [db executeQuery:sql];
         NSMutableArray *array;
         while ([rs next]) {
-            RecordItem *item;
+            RecordItem *item = [[RecordItem alloc] init];
             item.uid = [rs intForColumn:@"id"];
             item.image = [rs stringForColumn:@"avatar"];
             item.title = [rs stringForColumn:@"title"];

@@ -12,6 +12,7 @@
 #import "MainControllerViewController.h"
 #import "SystemConfig.h"
 #import "SSKeychain.h"
+#import "AFNetworkReachabilityManager.h"
 
 @interface AppDelegate ()
 
@@ -72,6 +73,14 @@
     }
     
     [self autoLogin];
+    
+    
+    //检查网络
+    AFNetworkReachabilityManager *reachability = [AFNetworkReachabilityManager sharedManager];
+    BOOL reachable = reachability.reachable;
+    if (!reachable) {
+        [RemindView showViewWithTitle:@"网络未连接" location:MIDDLE];
+    }
     
     [self.window makeKeyAndVisible];
     return YES;

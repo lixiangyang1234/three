@@ -9,7 +9,7 @@
 
 + (void)postWithPath:(NSString *)path params:(NSDictionary *)params success:(HttpSuccessBlock)success failure:(HttpFailureBlock)failure
 {
-    NSString *pathStr = [NSString stringWithFormat:@"http://192.168.1.133/sanshenxing/index.php?s=/Home/Api/%@",path];
+    NSString *pathStr = [NSString stringWithFormat:@"http://192.168.1.123/sanshenxing/index.php?s=/Home/Api/%@",path];
     
     NSMutableDictionary *allParams = [NSMutableDictionary dictionary];
     //拼接传进来的参数
