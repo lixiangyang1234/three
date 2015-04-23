@@ -127,7 +127,6 @@
 		55C3D1571ACA89FE00778940 /* AdaptationSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C3D1521ACA89FE00778940 /* AdaptationSize.m */; };
 		55C3D1581ACA89FE00778940 /* RemindView.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C3D1541ACA89FE00778940 /* RemindView.m */; };
 		55C3D1591ACA89FE00778940 /* SaveTempDataTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C3D1561ACA89FE00778940 /* SaveTempDataTool.m */; };
-		55C5F2451AE501350046DC28 /* typeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F2441AE501350046DC28 /* typeView.m */; };
 		55C7FA521ADF40DD003EDFE8 /* browser_number_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 55C7FA511ADF40DD003EDFE8 /* browser_number_icon@2x.png */; };
 		55C7FA551ADF57A1003EDFE8 /* courseDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C7FA541ADF57A1003EDFE8 /* courseDetailModel.m */; };
 		55D730491AD7A4EA002222F7 /* homeViewControllTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D730481AD7A4EA002222F7 /* homeViewControllTool.m */; };
@@ -450,8 +449,6 @@
 		55C3D1541ACA89FE00778940 /* RemindView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemindView.m; sourceTree = "<group>"; };
 		55C3D1551ACA89FE00778940 /* SaveTempDataTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaveTempDataTool.h; sourceTree = "<group>"; };
 		55C3D1561ACA89FE00778940 /* SaveTempDataTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaveTempDataTool.m; sourceTree = "<group>"; };
-		55C5F2431AE501350046DC28 /* typeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = typeView.h; sourceTree = "<group>"; };
-		55C5F2441AE501350046DC28 /* typeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = typeView.m; sourceTree = "<group>"; };
 		55C7FA511ADF40DD003EDFE8 /* browser_number_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "browser_number_icon@2x.png"; sourceTree = "<group>"; };
 		55C7FA531ADF57A1003EDFE8 /* courseDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = courseDetailModel.h; sourceTree = "<group>"; };
 		55C7FA541ADF57A1003EDFE8 /* courseDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = courseDetailModel.m; sourceTree = "<group>"; };
@@ -1162,8 +1159,6 @@
 				55C24F821ACB8EE500BFEBED /* YYSearchButton.m */,
 				55C24F911ACB940E00BFEBED /* categoryView.h */,
 				55C24F921ACB940E00BFEBED /* categoryView.m */,
-				55C5F2431AE501350046DC28 /* typeView.h */,
-				55C5F2441AE501350046DC28 /* typeView.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -1903,7 +1898,6 @@
 				04CC332D1ACA8042008A85B5 /* HotCell.m in Sources */,
 				04CC332B1ACA8042008A85B5 /* FileCell.m in Sources */,
 				04CC666A1ADCAF2D00BFE4CD /* UserInfo.m in Sources */,
-				55C5F2451AE501350046DC28 /* typeView.m in Sources */,
 				04B9A2761AD35F0C009446D1 /* ImageFieldView.m in Sources */,
 				04DECDA51AD616F100EC53D2 /* FMDatabaseAdditions.m in Sources */,
 				04B9A2831AD3B55C009446D1 /* RegistView.m in Sources */,
