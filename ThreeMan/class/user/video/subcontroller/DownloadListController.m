@@ -68,17 +68,17 @@
     NSMutableArray *arr1 = [[NSMutableArray alloc] initWithCapacity:0];
     for (int i = 0; i < 4; i++) {
         FavoriteItem *item = [[FavoriteItem alloc] init];
-        item.image = @"";
+        item.img = @"";
         item.title = @"与大师有约门票－成功第一网";
-        item.desc = @"王大妈老师";
+        item.companyname = @"王大妈老师";
         [arr1 addObject:item];
     }
     NSMutableArray *arr2 = [[NSMutableArray alloc] initWithCapacity:0];
     for (int i = 0; i < 6; i++) {
         FavoriteItem *item = [[FavoriteItem alloc] init];
-        item.image = @"";
+        item.img = @"";
         item.title = @"与大师有约门票－成功第一网";
-        item.desc = @"王大妈老师";
+        item.companyname = @"王大妈老师";
         [arr2 addObject:item];
     }
     [_dataArray addObject:arr1];
@@ -260,6 +260,7 @@
 - (void)recommend:(UIButton *)btn
 {
     RecommendController *recommend = [[RecommendController alloc] init];
+    recommend.sid = @"1";
     [self.nav pushViewController:recommend animated:YES];
 }
 
@@ -267,6 +268,7 @@
 - (void)question:(UIButton *)btn
 {
     QuestionController *question = [[QuestionController alloc] init];
+    question.sid = @"1";
     [self.nav pushViewController:question animated:YES];
 }
 

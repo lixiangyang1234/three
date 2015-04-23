@@ -85,7 +85,7 @@
     [_scrollView addSubview:btn];
 }
 
-
+//按钮点击
 - (void)btnDown
 {
     [self.view endEditing:YES];
@@ -93,9 +93,16 @@
         [RemindView showViewWithTitle:@"请输入您的问题" location:TOP];
     }else{
         //上传数据
-        
+        NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:self.sid,@"sid",_textView.text,@"title", nil];
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        [HttpTool postWithPath:@"getQuestion" params:param success:^(id JSON, int code, NSString *msg) {
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+            [RemindView showViewWithTitle:msg location:TOP];
+        } failure:^(NSError *error) {
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+            [RemindView showViewWithTitle:offline location:TOP];
+        }];
     }
-    
 }
 
 #pragma mark textView_delegate

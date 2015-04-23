@@ -106,7 +106,7 @@
     line1.backgroundColor = HexRGB(0xe0e0e0);
     [bgView addSubview:line1];
     
-    UILabel *faxLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,0, bgView.frame.size.width-10,39)];
+    UILabel *faxLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,39, bgView.frame.size.width-10,39)];
     faxLabel.backgroundColor = [UIColor clearColor];
     faxLabel.text = fax;
     faxLabel.textColor = HexRGB(0x323232);
@@ -121,6 +121,7 @@
         UILabel *contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,39*2+10, bgView.frame.size.width-10-5,size.height)];
         contentLabel.backgroundColor = [UIColor clearColor];
         contentLabel.text = content;
+        contentLabel.numberOfLines = 0;
         contentLabel.textColor = HexRGB(0x323232);
         contentLabel.font = [UIFont systemFontOfSize:14];
         [bgView addSubview:contentLabel];

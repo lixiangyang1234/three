@@ -8,7 +8,7 @@
 
 #import "LeftTitleController.h"
 
-@interface SettingController : LeftTitleController<UITableViewDataSource,UITableViewDelegate>
+@interface SettingController : LeftTitleController<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>
 {
     UITableView *_tableView;
     NSMutableArray *_dataArray;

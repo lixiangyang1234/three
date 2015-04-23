@@ -30,7 +30,7 @@
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kHeight-64-40) style:UITableViewStyleGrouped];
     _tableView.dataSource = self;
     _tableView.delegate = self;
-    _tableView.backgroundColor = HexRGB(0xe8e8e8);
+    _tableView.backgroundColor = [UIColor clearColor];
     _tableView.separatorColor = [UIColor clearColor];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.backgroundView = nil;
@@ -48,20 +48,28 @@
 
 - (void)loadData
 {
+    [HttpTool postWithPath:@"getHistory" params:nil success:^(id JSON, int code, NSString *msg) {
+        NSLog(@"%@",JSON);
+        if (code == 100) {
+            
+        }
+    } failure:^(NSError *error) {
+        
+    }];
     NSMutableArray *arr1 = [[NSMutableArray alloc] initWithCapacity:0];
     for (int i = 0; i < 4; i++) {
         FavoriteItem *item = [[FavoriteItem alloc] init];
-        item.image = @"";
+        item.img = @"";
         item.title = @"与大师有约门票－成功第一网";
-        item.desc = @"王大妈老师";
+        item.companyname = @"王大妈老师";
         [arr1 addObject:item];
     }
     NSMutableArray *arr2 = [[NSMutableArray alloc] initWithCapacity:0];
     for (int i = 0; i < 6; i++) {
         FavoriteItem *item = [[FavoriteItem alloc] init];
-        item.image = @"";
+        item.img = @"";
         item.title = @"与大师有约门票－成功第一网";
-        item.desc = @"王大妈老师";
+        item.companyname = @"王大妈老师";
         [arr2 addObject:item];
     }
     [_dataArray addObject:arr1];
@@ -119,9 +127,10 @@
     FavoriteItem *item = [arr objectAtIndex:indexPath.row];
     cell.titleLabel.text = item.title;
     cell.imgView.image = [UIImage imageNamed:@"img"];
-    cell.desLabel.text = item.desc;
+    cell.desLabel.text = item.companyname;
     return cell;
 }
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

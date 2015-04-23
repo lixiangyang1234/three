@@ -9,7 +9,7 @@
 
 + (void)postWithPath:(NSString *)path params:(NSDictionary *)params success:(HttpSuccessBlock)success failure:(HttpFailureBlock)failure
 {
-    NSString *pathStr = [NSString stringWithFormat:@"http://192.168.1.122/sanshenxing/index.php?s=/Home/Api/%@",path];
+    NSString *pathStr = [NSString stringWithFormat:@"http://192.168.1.123/sanshenxing/index.php?s=/Home/Api/%@",path];
     
     NSMutableDictionary *allParams = [NSMutableDictionary dictionary];
     //拼接传进来的参数
@@ -29,10 +29,13 @@
     [allParams setObject:uuid forKey:@"uuid"];
     [allParams setObject:md5 forKey:@"secret"];
     [allParams setObject:version forKey:@"version"];
-    if ([SystemConfig sharedInstance].isUserLogin) {
-        [allParams setObject:[SystemConfig sharedInstance].uid forKey:@"uid"];
-    }else{
-        [allParams setObject:@"0" forKey:@"uid"];
+    //如果传入了uid 不再设置
+    if (![allParams objectForKey:@"uid"]) {
+        if ([SystemConfig sharedInstance].isUserLogin) {
+            [allParams setObject:[SystemConfig sharedInstance].uid forKey:@"uid"];
+        }else{
+            [allParams setObject:@"0" forKey:@"uid"];
+        }
     }
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];

@@ -206,7 +206,6 @@
     
     NSArray *array = [[DBTool shareDBToolClass] getNewTitleButtonArray];
     
-    NSLog(@"----> %@",array);
     
     for (int j=0; j < self.titleArray.count; j++)
     {
@@ -284,7 +283,7 @@
             [self.categoryTitleBtn setTitle:[self.categoryArray objectAtIndex:i] forState:UIControlStateNormal];
             [self.categoryTitleBtn setBackgroundColor:[UIColor whiteColor]];
             
-            self.categoryTitleBtn.tag =10+i;
+            self.categoryTitleBtn.tag =104+i;
             self.categoryTitleBtn.contentHorizontalAlignment =UIControlContentHorizontalAlignmentLeft;
             
             

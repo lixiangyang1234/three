@@ -74,6 +74,7 @@
     self.passwordView = [[ImageFieldView alloc] initWithFrame:CGRectMake(30,self.nameView.frame.origin.y+self.nameView.frame.size.height+15,self.telView.frame.size.width,30)];
     self.passwordView.imgView.image = [UIImage imageNamed:@"lock2"];
     self.passwordView.textField.placeholder = @"密码";
+    self.passwordView.textField.secureTextEntry = YES;
     self.passwordView.textField.tag = 1002;
     [self addSubview:self.passwordView];
     
@@ -157,7 +158,7 @@
     if (textField.tag==1001||textField.tag==1002) {
         return YES;
     }
-    NSCharacterSet *cs = [[NSCharacterSet characterSetWithCharactersInString:@"123456789\n"] invertedSet];
+    NSCharacterSet *cs = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789\n"] invertedSet];
     NSString *filtered = [[string componentsSeparatedByCharactersInSet:cs] componentsJoinedByString:@""];
     BOOL basic = [string isEqualToString:filtered];
     if (!basic) {

@@ -93,7 +93,15 @@
         [RemindView showViewWithTitle:@"请输入推荐信息" location:TOP];
     }else{
         //上传数据
-        
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:self.sid,@"sid",_textView.text,@"content", nil];
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        [HttpTool postWithPath:@"getRecommend" params:param success:^(id JSON, int code, NSString *msg) {
+            [RemindView showViewWithTitle:msg location:TOP];
+        } failure:^(NSError *error) {
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+            [RemindView showViewWithTitle:offline location:TOP];
+        }];
     }
     
 }

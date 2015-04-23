@@ -11,6 +11,7 @@
 #import "AboutUsController.h"
 #import "FeedBackController.h"
 #import "ResetSecretView.h"
+#import "OperationController.h"
 
 @interface SettingController ()<ResetSecretViewDelegate,KeyboardDelegate>
 {
@@ -78,16 +79,25 @@
 //注销登录
 - (void)btnDown
 {
-    [SystemConfig sharedInstance].isUserLogin = NO;
-    [SystemConfig sharedInstance].uid = nil;
-    [SystemConfig sharedInstance].userInfo = nil;
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    UserInfo *userInfo = [userDefaults objectForKey:@"userInfo"];
-    if (userInfo) {
-        [userDefaults removeObjectForKey:@"userInfo"];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"是否退出登录?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    alertView.delegate  = self;
+    [alertView show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex==1) {
+        [SystemConfig sharedInstance].isUserLogin = NO;
+        [SystemConfig sharedInstance].uid = nil;
+        [SystemConfig sharedInstance].userInfo = nil;
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        UserInfo *userInfo = [userDefaults objectForKey:@"userInfo"];
+        if (userInfo) {
+            [userDefaults removeObjectForKey:@"userInfo"];
+        }
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        [self performSelector:@selector(hideFootView) withObject:self afterDelay:0.2];
     }
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    [self performSelector:@selector(hideFootView) withObject:self afterDelay:0.5];
 }
 
 - (void)hideFootView
@@ -215,7 +225,8 @@
             //操作指南
             case 3:
             {
-                
+                OperationController *op = [[OperationController alloc] init];
+                [self.navigationController pushViewController:op animated:YES];
             }
                 break;
    
@@ -312,6 +323,7 @@
                         [view removeFromSuperview];
                     }];
                 }
+                
                 [RemindView showViewWithTitle:msg location:TOP];
             } failure:^(NSError *error) {
                 NSLog(@"%@",error);

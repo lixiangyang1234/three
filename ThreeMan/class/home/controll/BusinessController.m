@@ -149,6 +149,7 @@
 #pragma mark 控件将要显示
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
     //隐藏导航栏
     self.navigationController.navigationBarHidden = NO;
 }
