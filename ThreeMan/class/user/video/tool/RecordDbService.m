@@ -12,7 +12,7 @@
 
 @implementation RecordDbService
 
-
+/*
 + (RecordDbService *)shareInstance
 {
     static RecordDbService *instance = nil;
@@ -142,5 +142,5 @@
     path = [path stringByAppendingPathComponent:DBNAME];
     return path;
 }
-
+*/
 @end

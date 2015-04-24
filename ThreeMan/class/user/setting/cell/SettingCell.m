@@ -25,6 +25,7 @@
         self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,0,200,42)];
         self.titleLabel.backgroundColor = [UIColor clearColor];
         self.titleLabel.textColor = HexRGB(0x323232);
+        self.titleLabel.font = [UIFont systemFontOfSize:18];
         [_bgView addSubview:self.titleLabel];
         
         self.nextImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 9, 15)];

@@ -50,9 +50,8 @@
         [bgView addSubview:self.dateLabel];
 
         
-        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0,bgView.frame.size.height-1,bgView.frame.size.width, 1)];
-        line.backgroundColor = HexRGB(0xe0e0e0);
-        [bgView addSubview:line];
+        self.line = [[UIView alloc] initWithFrame:CGRectMake(0,bgView.frame.size.height-0.5,bgView.frame.size.width, 0.5)];
+        [bgView addSubview:self.line];
     }
     return self;
 }

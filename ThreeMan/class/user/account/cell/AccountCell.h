@@ -14,5 +14,6 @@
 @property (nonatomic,strong) UILabel *desLabel;
 @property (nonatomic,strong) UILabel *amountLabel;
 @property (nonatomic,strong) UILabel *dateLabel;
+@property (nonatomic,strong) UIView *line;
 
 @end

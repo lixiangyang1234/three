@@ -97,6 +97,11 @@
     cell.amountLabel.text = item.amount;
     cell.dateLabel.text = item.date;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    if (indexPath.row<_dataArray.count-1) {
+        cell.line.backgroundColor = HexRGB(0xe0e0e0);
+    }else{
+        cell.line.backgroundColor = HexRGB(0xcacaca);
+    }
     return cell;
 }
 

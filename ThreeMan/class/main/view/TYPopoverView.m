@@ -56,7 +56,7 @@
 
 - (void)buildUI
 {
-    self.iconView = [[UIImageView alloc] initWithFrame:CGRectMake(23, 12, 40, 40)];
+    self.iconView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 12, 40, 40)];
     self.iconView.layer.masksToBounds = YES;
     self.iconView.image = [UIImage imageNamed:@"index_icon_fail"];
     self.iconView.layer.cornerRadius = self.iconView.frame.size.width/2;
@@ -66,7 +66,7 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapDown)];
     [self.iconView addGestureRecognizer:tap];
     
-    CGFloat x = 23+40;
+    CGFloat x = self.iconView.frame.origin.x+40;
     CGFloat width = (self.frame.size.width-x)/2;
     //如果登陆  显示头像和用户名 否则显示登录 注册按钮
     if ([SystemConfig sharedInstance].isUserLogin) {
@@ -111,17 +111,18 @@
     for (int i = 0 ; i<self.titleArray.count; i++) {
         UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 23, 23)];
         imgView.image = [UIImage imageNamed:[self.imageArray objectAtIndex:i]];
-        imgView.center = CGPointMake(24+23/2, HEAD_HEITHT+ROW_HEIGHT/2+40*i);
+        imgView.center = CGPointMake(20+23/2, HEAD_HEITHT+ROW_HEIGHT/2+40*i);
         [self addSubview:imgView];
         
         
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(60,HEAD_HEITHT+ROW_HEIGHT*i,ROW_WIDTH-60,ROW_HEIGHT)];
         label.backgroundColor = [UIColor clearColor];
         label.text = [self.titleArray objectAtIndex:i];
+        label.font = [UIFont systemFontOfSize:16];
         label.textColor = HexRGB(0x323232);
         [self addSubview:label];
         
-        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, HEAD_HEITHT+ROW_HEIGHT*i, ROW_WIDTH, 1)];
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, HEAD_HEITHT+ROW_HEIGHT*i-0.5, ROW_WIDTH, 0.5)];
         line.backgroundColor = HexRGB(0xeaebec);
         [self addSubview:line];
         

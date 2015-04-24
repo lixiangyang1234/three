@@ -27,6 +27,7 @@
     [self setLeftTitle:@"详情"];
     
     _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kHeight-64)];
+    _scrollView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_scrollView];
     [self loadData];
 }
@@ -41,7 +42,7 @@
             [self buildUI:item];
         }
     } failure:^(NSError *error) {
-        NSLog(@"%@",error);
+        networkError.hidden = NO;
         [RemindView showViewWithTitle:offline location:MIDDLE];
     }];
 }
@@ -54,7 +55,7 @@
     //图片背景
     UIView *imgBgView = [[UIView alloc] initWithFrame:CGRectMake(leftDes, topDes, kWidth-leftDes*2, 187)];
     imgBgView.backgroundColor = HexRGB(0xffffff);
-    UIView *line1 = [[UIView alloc] initWithFrame:CGRectMake(0, imgBgView.frame.size.height,imgBgView.frame.size.width, 0.5)];
+    UIView *line1 = [[UIView alloc] initWithFrame:CGRectMake(0, imgBgView.frame.size.height-0.5,imgBgView.frame.size.width, 0.5)];
     line1.backgroundColor = HexRGB(0xcacaca);
     [imgBgView addSubview:line1];
     [_scrollView addSubview:imgBgView];
@@ -66,7 +67,7 @@
     //标题背景
     UIView *titleBgView = [[UIView alloc] initWithFrame:CGRectMake(leftDes,imgBgView.frame.origin.y+imgBgView.frame.size.height+8, kWidth-leftDes*2, 57)];
     titleBgView.backgroundColor = HexRGB(0xffffff);
-    UIView *line2 = [[UIView alloc] initWithFrame:CGRectMake(0, titleBgView.frame.size.height,titleBgView.frame.size.width, 0.5)];
+    UIView *line2 = [[UIView alloc] initWithFrame:CGRectMake(0, titleBgView.frame.size.height-0.5,titleBgView.frame.size.width, 0.5)];
     line2.backgroundColor = HexRGB(0xcacaca);
     [titleBgView addSubview:line2];
 
@@ -94,7 +95,7 @@
     //内容背景
     UIView *contenteBgView = [[UIView alloc] initWithFrame:CGRectMake(leftDes,titleBgView.frame.origin.y+titleBgView.frame.size.height+8, kWidth-leftDes*2,size.height+24)];
     contenteBgView.backgroundColor = HexRGB(0xffffff);
-    UIView *line3 = [[UIView alloc] initWithFrame:CGRectMake(0, contenteBgView.frame.size.height,contenteBgView.frame.size.width, 0.5)];
+    UIView *line3 = [[UIView alloc] initWithFrame:CGRectMake(0, contenteBgView.frame.size.height-0.5,contenteBgView.frame.size.width, 0.5)];
     line3.backgroundColor = HexRGB(0xcacaca);
     [contenteBgView addSubview:line3];
     [_scrollView addSubview:contenteBgView];
