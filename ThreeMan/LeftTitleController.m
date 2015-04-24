@@ -33,6 +33,7 @@
     label.backgroundColor = [UIColor clearColor];
     label.textColor = HexRGB(0xffffff);
     label.text = leftTitle;
+    label.font = [UIFont systemFontOfSize:18];
     [titleView addSubview:label];
     self.navigationItem.titleView = titleView;
 }

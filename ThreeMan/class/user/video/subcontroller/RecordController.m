@@ -150,7 +150,7 @@
     arr = [_dataArray objectAtIndex:indexPath.section];
     RecordItem *item = [arr objectAtIndex:indexPath.row];
     cell.titleLabel.text = item.title;
-    cell.imgView.image = [UIImage imageNamed:@"img"];
+    [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:placeHoderImage];
     cell.desLabel.text = item.companyname;
     return cell;
 }
@@ -252,7 +252,6 @@
 {
     return 49;
 }
-
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {

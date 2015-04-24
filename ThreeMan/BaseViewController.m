@@ -21,6 +21,7 @@
 #import "SystemConfig.h"
 #import "AuthencateTool.h"
 #import "BaseViewController.h"
+#import "CompFavoriteController.h"
 
 @interface BaseViewController ()<TYPopoverViewDelegate,LoginViewDelegate,FindPsWordViewDelegate,KeyboardDelegate,ValidateViewDelegate,RegistViewDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 {
@@ -135,8 +136,14 @@
         case 0:
         {
             if ([SystemConfig sharedInstance].isUserLogin) {
-                VideoCenterController *center = [[VideoCenterController alloc] init];
-                [self.navigationController pushViewController:center animated:YES];
+                if (0) {
+                    VideoCenterController *center = [[VideoCenterController alloc] init];
+                    [self.navigationController pushViewController:center animated:YES];
+
+                }else{
+                    CompFavoriteController *cf = [[CompFavoriteController alloc] init];
+                    [self.navigationController pushViewController:cf animated:YES];
+                }
             }else{
                 [RemindView showViewWithTitle:@"请先登录!" location:TOP];
 

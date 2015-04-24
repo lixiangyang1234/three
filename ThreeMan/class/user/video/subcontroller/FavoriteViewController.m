@@ -13,12 +13,13 @@
 #import "CourseDetailController.h"
 #import "ErrorView.h"
 #import "NineBlockController.h"
+#import "YYSearchButton.h"
 
 @interface FavoriteViewController ()<EditViewDelegate,NoDataViewDelegate>
 {
     BOOL isEditting;
     EditView *editView;
-    
+    YYSearchButton *seletedBtn;
 }
 @end
 
@@ -31,7 +32,35 @@
     
     _dataArray = [[NSMutableArray alloc] initWithCapacity:0];
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kHeight-64-40) style:UITableViewStylePlain];
+    [self buidlUI];
+    
+    [self loadData];
+}
+
+- (void)buidlUI
+{
+    UIView *topBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,kWidth,35)];
+    topBgView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:topBgView];
+    
+    NSArray *array = [NSArray arrayWithObjects:@"需求",@"企业", nil];
+    for (int i = 0 ; i < array.count; i++) {
+        YYSearchButton *btn = [YYSearchButton buttonWithType:UIButtonTypeCustom];
+        btn.frame = CGRectMake(0, 0, 50, 25);
+        btn.center = CGPointMake(13+btn.frame.size.width/2+(btn.frame.size.width+9)*i,topBgView.frame.size.height/2);
+        [btn setTitle:[array objectAtIndex:i] forState:UIControlStateNormal];
+        btn.tag = 1000+i;
+        btn.titleLabel.font = [UIFont systemFontOfSize:13];
+        [btn addTarget:self action:@selector(btnDown:) forControlEvents:UIControlEventTouchUpInside];
+        [topBgView addSubview:btn];
+        if (i == 0) {
+            btn.isSelected = YES;
+            seletedBtn = btn;
+        }
+        
+    }
+    
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,topBgView.frame.size.height, kWidth, kHeight-64-40-topBgView.frame.size.height) style:UITableViewStylePlain];
     _tableView.dataSource = self;
     _tableView.delegate = self;
     _tableView.backgroundColor = [UIColor clearColor];
@@ -40,8 +69,11 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.sectionFooterHeight = 0;
     _tableView.sectionHeaderHeight = 0;
+//    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 10)];
+//    view.backgroundColor = [UIColor clearColor];
+//    _tableView.tableHeaderView = view;
     [self.view addSubview:_tableView];
-
+    
     editView = [[EditView alloc] init];
     editView.delegate = self;
     editView.frame = CGRectMake(0,self.view.frame.size.height,editView.frame.size.width, editView.frame.size.height);
@@ -58,8 +90,7 @@
     noDataView.hidden = YES;
     noDataView.delegate = self;
     [self.view addSubview:noDataView];
-    
-    [self loadData];
+
 }
 
 - (void)loadData
@@ -149,7 +180,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (!isEditting) {
+        FavoriteItem *item = [_dataArray objectAtIndex:indexPath.row];
         CourseDetailController *detail = [[CourseDetailController alloc] init];
+        detail.courseDetailID = item.sid;
         [self.nav pushViewController:detail animated:YES];
     }
 }
@@ -212,6 +245,21 @@
 {
     NineBlockController *nine = [[NineBlockController alloc] init];
     [self.nav pushViewController:nine animated:YES];
+}
+
+//顶部按钮点击
+- (void)btnDown:(YYSearchButton *)btn
+{
+    seletedBtn.isSelected = NO;
+    seletedBtn = btn;
+    btn.isSelected = YES;
+    //需求
+    if (btn.tag == 1000) {
+        
+    //企业
+    }else{
+        
+    }
 }
 
 - (void)didReceiveMemoryWarning {
