@@ -767,7 +767,6 @@
         byCourse.hidden =YES;
     }];
 
-    NSLog(@"%d-----%d",choose.tag,tag);
     if (tag==333) {
 
     }else if (tag==334){
