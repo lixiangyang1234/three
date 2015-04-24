@@ -726,10 +726,14 @@
         [self addByTopView];
  
     }else if(item.tag ==32){
+        
+        if (![SystemConfig sharedInstance].isUserLogin ) {
+            [RemindView showViewWithTitle:@"请登录" location:BELLOW];
+        }else{
     if (item.selected ==YES)  // uncollectSubject   collectSubject
       {
-            NSString *str =@"23456";
-            NSDictionary *paramDic =[NSDictionary dictionaryWithObjectsAndKeys:str,@"uid",_courseDetailID,@"id" ,nil];
+          
+            NSDictionary *paramDic =[NSDictionary dictionaryWithObjectsAndKeys:[SystemConfig sharedInstance].uid,@"uid",_courseDetailID,@"id" ,nil];
 //        NSLog(@"%@",[SystemConfig sharedInstance].uid);
             [HttpTool postWithPath:@"uncollectSubject" params:paramDic success:^(id JSON, int code, NSString *msg) {
 //                NSLog(@"%@",JSON);
@@ -741,8 +745,7 @@
                 
             }];
       }  else{
-          NSString *str =@"23456";
-          NSDictionary *paramDic =[NSDictionary dictionaryWithObjectsAndKeys:str,@"uid",_courseDetailID,@"id" ,nil];
+          NSDictionary *paramDic =[NSDictionary dictionaryWithObjectsAndKeys:[SystemConfig sharedInstance].uid,@"uid",_courseDetailID,@"id" ,nil];
 //          NSLog(@"%@",[SystemConfig sharedInstance].uid);
           [HttpTool postWithPath:@"collectSubject" params:paramDic success:^(id JSON, int code, NSString *msg) {
 //              NSLog(@"-----%@",JSON);
@@ -757,7 +760,7 @@
 
         
     }
-    
+    }
 }
 -(void)chooseBtn:(UIButton *)choose chooseTag:(NSInteger)tag{
     [UIView animateWithDuration:.3 animations:^{
@@ -859,7 +862,11 @@
 }
 
 -(void)companyhomeDetailBtnClick:(UIButton *)sender{
+//    [self.navigationController popViewControllerAnimated:YES];
+    courseDetailModel *courseModel =[_detailArray objectAtIndex:0];
+
     CompanyHomeControll *companyHomeVC=[[CompanyHomeControll alloc]init];
+    companyHomeVC.companyId =[NSString stringWithFormat:@"%d", courseModel.companyId];
     [self.navigationController pushViewController:companyHomeVC animated:YES];
 }
 // 推荐 没有推荐

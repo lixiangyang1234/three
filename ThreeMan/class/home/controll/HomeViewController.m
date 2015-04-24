@@ -19,7 +19,7 @@
 #define BANNER    135           //banner高度
 #define EIGHTH    95          //八大课程体系
 #define NEEDH     135         //按需求
-#define BUSINESS  183       //按行业
+#define BUSINESS  182       //按行业
 #define NEEDTAG  200
 
 #define kcourseFilePath [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"course.data"]
@@ -137,7 +137,7 @@ static NSString * const reuseIdentifier = @"Cell";
     self.backScrollView =[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, kWidth, kHeight-104)];
     self.backScrollView.backgroundColor =[UIColor whiteColor];
     [self.view addSubview:self.backScrollView];
-    self.backScrollView.contentSize =CGSizeMake(kWidth, 590+EIGHTH);
+    self.backScrollView.contentSize =CGSizeMake(kWidth, 588+EIGHTH);
     self.backScrollView.bounces=NO;
     self.backScrollView.showsHorizontalScrollIndicator =NO;
     self.backScrollView.showsVerticalScrollIndicator=NO;
@@ -149,7 +149,7 @@ static NSString * const reuseIdentifier = @"Cell";
     _bannerView.autoPlayTimeInterval = 3;
     [self.backScrollView addSubview:_bannerView];
     
-    UIView *topLine =[[UIView alloc]initWithFrame:CGRectMake(0, BANNER, kWidth, 1)];
+    UIView *topLine =[[UIView alloc]initWithFrame:CGRectMake(0, BANNER, kWidth, .5)];
     [self.backScrollView addSubview:topLine];
     topLine.backgroundColor =HexRGB(0xe9eaec);
     
@@ -230,7 +230,7 @@ static NSString * const reuseIdentifier = @"Cell";
         }
         [self.backScrollView addSubview:lineView];
         lineView.backgroundColor =HexRGB(0xeeeee9);
-        UIView *line =[[UIView alloc]initWithFrame:CGRectMake(0, 0, kWidth, 1)];
+        UIView *line =[[UIView alloc]initWithFrame:CGRectMake(0, 0, kWidth, .5)];
         [lineView addSubview:line];
         line.backgroundColor =HexRGB(0xcacaca);
         
@@ -251,7 +251,7 @@ static NSString * const reuseIdentifier = @"Cell";
         
     }
     
-    UIView *needBackView =[[UIView alloc]initWithFrame:CGRectMake(0, needHeight+40-1, kWidth, NEEDH+2)];
+    UIView *needBackView =[[UIView alloc]initWithFrame:CGRectMake(0, needHeight+40-0.5, kWidth, NEEDH+1.5)];
     [self.backScrollView addSubview:needBackView];
     needBackView.backgroundColor =HexRGB(0xeaebec);
     
@@ -287,18 +287,18 @@ static NSString * const reuseIdentifier = @"Cell";
 
             
         }else if (i==1){
-            needBtn.frame =CGRectMake(kWidth-149, needHeight+40, 150, 44);
+            needBtn.frame =CGRectMake(kWidth-149.5, needHeight+40, 150, 44.5);
             needBtn.titleEdgeInsets =UIEdgeInsetsMake(0, 0, 20, 0);
             needLabel.frame =CGRectMake(kWidth-150, needHeight+60, 130, 20);
 
         }else if (i==2){
-            needBtn.frame =CGRectMake(kWidth-149, needHeight+40+45, 150, 45);
+            needBtn.frame =CGRectMake(kWidth-149.5, needHeight+40+45, 150, 45);
             needBtn.titleEdgeInsets =UIEdgeInsetsMake(0, -80, 0, 0);
             needBtn.imageEdgeInsets =UIEdgeInsetsMake(0, 80, 0, 0);
 
             
         }else{
-            needBtn.frame =CGRectMake(i%3*(kWidth/3+1), needHeight+40+91, kWidth/3, 45);
+            needBtn.frame =CGRectMake(i%3*(kWidth/3+.5), needHeight+40+90.5, kWidth/3, 45.5);
         }
         [needBtn addTarget:self action:@selector(needBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         
@@ -312,15 +312,15 @@ static NSString * const reuseIdentifier = @"Cell";
 //4、添加行业
 -(void)addUITrade:(NSMutableArray *)trade{
     
-    UIView *needBackView =[[UIView alloc]initWithFrame:CGRectMake(0, NEEDH+BANNER+EIGHTH+124, kWidth, BUSINESS)];
+    UIView *needBackView =[[UIView alloc]initWithFrame:CGRectMake(0, NEEDH+BANNER+EIGHTH+124, kWidth, BUSINESS-.5)];
     [self.backScrollView addSubview:needBackView];
     needBackView.backgroundColor =HexRGB(0xeaebec);
-    //    needBackView.backgroundColor =[UIColor redColor];
+//        needBackView.backgroundColor =[UIColor redColor];
     for (int i=0; i<trade.count; i++) {
         homeViewControllModel *homeModel =[trade objectAtIndex:i];
 //        NSLog(@"%@---%2----%@---%@",homeModel.tradeImgurl,homeModel.tradeName,homeModel.tradeSubTitle);
         UIButton* businessBtn =[UIButton buttonWithType:UIButtonTypeCustom];
-        businessBtn.frame =CGRectMake(i%2*(kWidth/2+1),NEEDH+ BANNER+EIGHTH+125+i/2*61, (kWidth)/2, 60 );
+        businessBtn.frame =CGRectMake(i%2*(kWidth/2+.5),NEEDH+ BANNER+EIGHTH+124.5+i/2*60.5, (kWidth)/2, 60 );
         [self.backScrollView addSubview:businessBtn];
         businessBtn.titleEdgeInsets =UIEdgeInsetsMake(-10, -(kWidth)/3, 0, 0);
         businessBtn.imageEdgeInsets =UIEdgeInsetsMake(0, (kWidth)/4, 0, 0);
@@ -333,7 +333,7 @@ static NSString * const reuseIdentifier = @"Cell";
         
         [businessBtn addTarget:self action:@selector(businessBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         
-        businessBtn.tag =i+10;
+        businessBtn.tag =i+50;
         
         UILabel *subTitleLabel =[[UILabel alloc]initWithFrame:CGRectMake(45+i%2*(kWidth/2), NEEDH+BANNER+EIGHTH+138+i/2*60, kWidth/2, 60)];
         [self.backScrollView addSubview:subTitleLabel];
@@ -376,7 +376,7 @@ static NSString * const reuseIdentifier = @"Cell";
     if (_tradeArray.count==0) {
         [RemindView showViewWithTitle:offline location:MIDDLE];
     }else{
-    homeViewControllModel *homeModel =[_tradeArray objectAtIndex:sender.tag-10];
+    homeViewControllModel *homeModel =[_tradeArray objectAtIndex:sender.tag-50];
     
     BusinessController *businessVC=[[BusinessController alloc]init];
     businessVC.tradeId =[NSString stringWithFormat:@"%d",homeModel.tradeId];

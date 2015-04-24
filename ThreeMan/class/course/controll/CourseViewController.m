@@ -69,7 +69,7 @@
     _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, kWidth, kHeight-64-39) style:UITableViewStylePlain];
     _tableView.delegate =self;
     _tableView.dataSource =self;
-    _tableView.backgroundColor =  HexRGB(0xe0e0e0);
+    _tableView.backgroundColor =  HexRGB(0xe8e8e8);
     _tableView.showsHorizontalScrollIndicator = NO;
     _tableView.showsVerticalScrollIndicator = NO;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -86,14 +86,12 @@
     CourseViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndexfider];
     if (!cell) {
         cell =[[CourseViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndexfider];
-        [cell setBackgroundColor:HexRGB(0xe0e0e0)];
+        [cell setBackgroundColor:HexRGB(0xe8e8e8)];
         cell.selectionStyle =UITableViewCellSelectionStyleNone;
         CourseViewVCModel *courseModel =[_courseArray objectAtIndex:indexPath.row];
         cell.titleLabel.text =courseModel.title;
         cell.contentLabel.text =courseModel.description;
         [cell.headerImage setImageWithURL:[NSURL URLWithString:courseModel.imgurl]placeholderImage:placeHoderImage1];
-       
-        
     }
     
     

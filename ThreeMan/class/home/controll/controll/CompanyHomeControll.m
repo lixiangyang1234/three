@@ -44,8 +44,8 @@
     
     [self.view setBackgroundColor:HexRGB(0xe0e0e0)];
     _companyArray =[NSMutableArray array];
-    [self addUIBannerView];
-    [self addTableView];
+    _companyLogeArray =[NSMutableArray array];
+
     [self addErrorView];
     [self addMBprogressView];
 
@@ -61,20 +61,28 @@
 #pragma mark=====添加数据
 -(void)addLoadStatus{
     NSDictionary *paraDic =[NSDictionary dictionaryWithObjectsAndKeys:_companyId,@"id", nil];
+    NSLog(@"---->ffffff%@",_companyId);
     [HttpTool postWithPath:@"getCompanyCourseList" params:paraDic success:^(id JSON, int code, NSString *msg) {
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
 
         NSDictionary *dict =JSON[@"data"];
         NSArray *arr =dict[@"subject_list"];
+        NSDictionary *dict1 =JSON[@"data"][@"company_info"];
         if (code==100) {
             for (NSDictionary *dicArr in arr) {
                 companyListModel *businessModel =[[companyListModel alloc]initWithDictonaryForCompanyList:dicArr];
                 [_companyArray addObject:businessModel];
             }
+                companyListModel *businessModel =[[companyListModel alloc]initWithDictonaryForCompany_info:dict1];
+                [_companyLogeArray addObject:businessModel];
             
+
         }
                NSLog(@"%@",JSON);
         [_tableView reloadData];
+        [self addUIBannerView];
+        [self addTableView];
+
     } failure:^(NSError *error) {
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
 
@@ -84,17 +92,31 @@
 -(void)addUIBannerView{
     UIImageView *bannerImage =[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, kWidth, BannerH)];
     [self.view addSubview:bannerImage];
-    //    bannerImage.backgroundColor =[UIColor purpleColor];
     bannerImage.userInteractionEnabled=YES;
     bannerImage.image =[UIImage imageNamed:@"companyBackImg"];
-    //    bannerImage.image =[UIImage imageNamed:@"alphabg"];companyBackImg
-    
-    UIButton *returnItem =[UIButton buttonWithType:UIButtonTypeCustom];
-    returnItem.frame =CGRectMake(5,20,44,44);
-    returnItem.backgroundColor =[UIColor clearColor];
-    [bannerImage addSubview:returnItem];
-    [returnItem setImage:[UIImage imageNamed:@"nav_return"] forState:UIControlStateNormal];
-    [returnItem addTarget:self action:@selector(returnNavItem) forControlEvents:UIControlEventTouchUpInside];
+    companyListModel *companyModel =[_companyLogeArray objectAtIndex:0];
+
+    for (int i=0; i<2; i++) {
+        UIButton *returnItem =[UIButton buttonWithType:UIButtonTypeCustom];
+        returnItem.frame =CGRectMake(5+i%2*(kWidth-54),20,44,44);
+        returnItem.backgroundColor =[UIColor clearColor];
+        [bannerImage addSubview:returnItem];
+        returnItem.tag =55+i;
+        [returnItem setImage:[UIImage imageNamed:@"nav_return"] forState:UIControlStateNormal];
+
+        if (i==1) {
+            [returnItem setImage:[UIImage imageNamed:@"tab_collect"] forState:UIControlStateNormal];
+            [returnItem setImage:[UIImage imageNamed:@"tab_collect_pre"] forState:UIControlStateSelected];
+            if (companyModel.iscollect ==1) {
+                returnItem.selected=YES;
+            } if (companyModel.iscollect ==0){
+                returnItem.selected=NO;
+
+            }
+
+        }
+        [returnItem addTarget:self action:@selector(returnNavItem:) forControlEvents:UIControlEventTouchUpInside];
+    }
     
     
     headerImage =[[UIImageView alloc]initWithFrame:CGRectMake((kWidth-70)/2, 30, 70, 70)];
@@ -109,7 +131,7 @@
     UIImageView *headerImg  =[[UIImageView alloc]initWithFrame:CGRectMake(5, 5, 60, 60)];
     headerImg.layer.cornerRadius =30;
     [headerImage addSubview:headerImg];
-    [headerImg setImageWithURL:[NSURL URLWithString:self.companyImag] placeholderImage:placeHoderImage];
+    [headerImg setImageWithURL:[NSURL URLWithString:companyModel.companyLogo] placeholderImage:placeHoderImage];
     headerImg.layer.masksToBounds =YES;
     
     animationView =[[UIView alloc]initWithFrame:CGRectMake(0, 107, kWidth, 88)];
@@ -121,7 +143,7 @@
     UILabel * titleLabel =[[UILabel alloc]initWithFrame:CGRectMake((kWidth-180)/2, 5, 180, 20)];
     titleLabel.numberOfLines =1;
     [animationView addSubview:titleLabel];
-    titleLabel.text =self.companyTitel;
+    titleLabel.text =companyModel.companyCompanyname;
     titleLabel.textColor =[UIColor cyanColor];
     titleLabel.textAlignment =NSTextAlignmentCenter;
     titleLabel.font =[UIFont systemFontOfSize:PxFont(22)];
@@ -137,25 +159,22 @@
     NSLog(@"%f---%f",headerImage.frame.size.height,headerImage.frame.origin.y);
     
     
-    contentLabel.text =self.companyContent;
+    contentLabel.text =companyModel.companyIntroduce;
     
-    alpha =[[UIImageView alloc]initWithFrame:CGRectMake(0, 32, kWidth, 80)];
+    alpha =[[UIImageView alloc]initWithFrame:CGRectMake(0, 28, kWidth, 80)];
     [animationView addSubview:alpha];
     alpha.image =[UIImage imageNamed:@"alphabg"];
     alpha.hidden =NO;
     alpha.backgroundColor =[UIColor clearColor];
     
     UIButton *animationBtn =[UIButton buttonWithType:UIButtonTypeCustom];
-    animationBtn.frame =CGRectMake((kWidth-110)/2, bannerImage.frame.size.height-36, 100, 30);
+    animationBtn.frame =CGRectMake((kWidth-80)/2, bannerImage.frame.size.height-36, 80, 30);
     animationBtn.backgroundColor =[UIColor clearColor];
     [bannerImage addSubview:animationBtn];
     [animationBtn setImage:[UIImage imageNamed:@"animationBtn"] forState:UIControlStateNormal];
     [animationBtn addTarget:self action:@selector(animationBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
-//    UIView *lineView =[[UIView alloc]initWithFrame:CGRectMake(0, BannerH-8, kWidth, 8)];
-//    [lineView setBackgroundColor:HexRGB(0xe0e0e0)];
-//    [bannerImage addSubview:lineView];
-//    NSLog(@"1111/////------>%f",animationView.frame.origin.y);
+    NSLog(@"%f",bannerImage.frame.size.height);
 }
 -(void)addTableView{
     _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, BannerH-8, kWidth, kHeight-BannerH+8) style:UITableViewStylePlain];
@@ -261,7 +280,7 @@
         headerImage.frame =CGRectMake((kWidth-70)/2, 30, 70, 70);
         
         animationView.frame =CGRectMake(0, 107, kWidth, 88);
-        alpha.frame =CGRectMake(0, 32, kWidth, 80);
+        alpha.frame =CGRectMake(0, 28, kWidth, 80);
         
         
         [UIView animateWithDuration:0.001 animations:^{
@@ -296,8 +315,42 @@
     self.navigationController.navigationBarHidden = YES;
 }
 
--(void)returnNavItem{
-    [self.navigationController popViewControllerAnimated:YES];
+-(void)returnNavItem:(UIButton *)collect{
+    if (collect.tag ==55) {
+        [self.navigationController popViewControllerAnimated:YES];
+  
+    }else{
+        if (![SystemConfig sharedInstance].isUserLogin ) {
+            [RemindView showViewWithTitle:@"请登录" location:BELLOW];
+        }else{
+            if (collect.selected ==YES)
+            {
+                
+                NSDictionary *paramDic =[NSDictionary dictionaryWithObjectsAndKeys:[SystemConfig sharedInstance].uid,@"uid",_companyId,@"id" ,nil];
+                [HttpTool postWithPath:@"uncollectCompany" params:paramDic success:^(id JSON, int code, NSString *msg) {
+                    if (code ==100) {
+                        [RemindView showViewWithTitle:@"取消收藏成功!" location:BELLOW];
+                        collect.selected =NO;
+                    }
+                } failure:^(NSError *error) {
+                    
+                }];
+            }  else{
+                NSDictionary *paramDic =[NSDictionary dictionaryWithObjectsAndKeys:[SystemConfig sharedInstance].uid,@"uid",_companyId,@"id" ,nil];
+                [HttpTool postWithPath:@"collectCompany" params:paramDic success:^(id JSON, int code, NSString *msg) {
+                    if (code ==100) {
+                        [RemindView showViewWithTitle:@"收藏成功!" location:BELLOW];
+                        collect.selected =YES;
+                    }
+                } failure:^(NSError *error) {
+                    
+                }];
+            }
+            
+            
+        }
+
+    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
