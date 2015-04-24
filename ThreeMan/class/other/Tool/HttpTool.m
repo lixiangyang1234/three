@@ -16,6 +16,7 @@
     if (params) {
         [allParams setDictionary:params];
     }
+    
     NSString *time =[DateManeger getCurrentTimeStamps];
     NSString *uuid = [SystemConfig sharedInstance].uuidStr;
     NSString *md5 = [NSString stringWithFormat:@"%@%@%@",uuid,time,@"lsjf390FfleL98034PMWEbiua"];

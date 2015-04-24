@@ -12,6 +12,7 @@
 #import "EditView.h"
 #import "CourseDetailController.h"
 #import "ErrorView.h"
+#import "NineBlockController.h"
 
 @interface FavoriteViewController ()<EditViewDelegate,NoDataViewDelegate>
 {
@@ -65,7 +66,7 @@
 {
     [HttpTool postWithPath:@"getCollect" params:nil success:^(id JSON, int code, NSString *msg) {
         if (code == 100) {
-            
+            NSLog(@"%@",JSON);
             NSArray *array = JSON[@"data"][@"collect"];
             if (array&&![array isKindOfClass:[NSNull class]]) {
                 for (NSDictionary *dict in array) {
@@ -170,15 +171,47 @@
     }else{
         NSArray *array = [_tableView indexPathsForSelectedRows];
         NSMutableArray *arr = [[NSMutableArray alloc] initWithCapacity:0];
+        if (array.count==0) {
+            [RemindView showViewWithTitle:@"请选中删除选项" location:MIDDLE];
+            return;
+        }
+        NSMutableString *str = [NSMutableString stringWithString:@""];
         for (int i = 0 ; i < array.count; i++) {
             NSIndexPath *indexPath = [array objectAtIndex:i];
             FavoriteItem *item = [_dataArray objectAtIndex:indexPath.row];
+            if (i==0) {
+                [str appendString:item.mid];
+            }else{
+                [str appendString:[NSString stringWithFormat:@",%@",item.mid]];
+            }
             [arr addObject:item];
         }
-        [_dataArray removeObjectsInArray:arr];
-
-        [_tableView deleteRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationAutomatic];
+        UIWindow *window = [UIApplication sharedApplication].keyWindow;
+        NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:str,@"id", nil];
+        NSLog(@"%@",str);
+        [MBProgressHUD showHUDAddedTo:window animated:YES];
+        [HttpTool postWithPath:@"getCollectDel" params:param success:^(id JSON, int code, NSString *msg) {
+            NSLog(@"%@",JSON);
+            [MBProgressHUD hideAllHUDsForView:window animated:YES];
+            if (code == 100) {
+                [_dataArray removeObjectsInArray:arr];
+                [_tableView deleteRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationAutomatic];
+            }else{
+                [RemindView showViewWithTitle:msg location:MIDDLE];
+            }
+        } failure:^(NSError *error) {
+            NSLog(@"%@",error);
+            [MBProgressHUD hideAllHUDsForView:window animated:YES];
+            [RemindView showViewWithTitle:offline location:MIDDLE];
+        }];
     }
+}
+
+#pragma mark NoDataView_deleagte
+- (void)viewClicked:(UIButton *)btn view:(NoDataView *)view
+{
+    NineBlockController *nine = [[NineBlockController alloc] init];
+    [self.nav pushViewController:nine animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
