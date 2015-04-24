@@ -194,7 +194,7 @@
         
         
         UIView *viewLine =[[UIView alloc]init];
-        viewLine.frame=CGRectMake(0, 43, kWidth, 1);
+        viewLine.frame=CGRectMake(0, 43, kWidth, .5);
         [_titleBtn addSubview:viewLine];
         viewLine.backgroundColor =HexRGB(0xeaebec);
         //          viewLine.backgroundColor =[UIColor redColor];
@@ -288,7 +288,7 @@
             
             
             UIView *viewLine =[[UIView alloc]init];
-            viewLine.frame=CGRectMake(0, 42, kWidth, 1);
+            viewLine.frame=CGRectMake(0, 42, kWidth, .5);
             [self.categoryTitleBtn addSubview:viewLine];
             viewLine.backgroundColor =HexRGB(0xeaebec);
             //        viewLine.backgroundColor =[UIColor redColor];

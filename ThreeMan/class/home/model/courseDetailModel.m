@@ -14,6 +14,8 @@
     if ([super self ]) {
         self.courseImgurl =dict[@"imgurl"];
         self.courseId =[dict[@"id"]intValue];
+        self.companyId =[dict[@"cid"]intValue];
+
         self.courseDownloadnum =[dict[@"downloadnum"]intValue];
         self.coursePrice =[dict[@"price"]intValue];
         self.courseContent =dict[@"content"];

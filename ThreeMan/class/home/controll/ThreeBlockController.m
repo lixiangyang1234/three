@@ -223,15 +223,17 @@
     {
         if (index ==100) {
             [self addLoadStatus:@"0"];
+//            NSLog(@"-111-------------%ld",index);
 
         }
-        if (index ==101||index==102||index==103) {
+      else  if (index ==101||index==102||index==103) {
             threeBlockModel *threeModel =[_threeArray objectAtIndex:index-100];
             NSString * indexid1=[NSString stringWithFormat:@"%d", threeModel.categoryid];
             [self addLoadStatus:indexid1];
-//            NSLog(@"-------->%@----%d---%ld",indexid1,threeModel.threeId,index);
+//            NSLog(@"2222-------->%@----%d---%ld",indexid1,threeModel.categoryid,index);
 
         }else{
+//         NSLog(@"333----------%ld",index);
             threeBlockModel *threeModel =[_categoryArray objectAtIndex:index-10];
             NSString * indexid2=[NSString stringWithFormat:@"%d", threeModel.cateid];
             [self addLoadStatus:indexid2];

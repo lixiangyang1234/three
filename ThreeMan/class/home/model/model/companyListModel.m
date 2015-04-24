@@ -9,6 +9,16 @@
 #import "companyListModel.h"
 
 @implementation companyListModel
+-(instancetype)initWithDictonaryForCompany_info:(NSDictionary *)dict{
+    if ([super self]) {
+        self.companyCompanyname =dict[@"companyname"];
+        self.companyIntroduce =dict[@"introduce"];
+        self.companyLogo=dict[@"logo"];
+        self.iscollect=[dict[@"iscollect"]intValue];
+    }
+    return self;
+}
+
 -(instancetype)initWithDictonaryForCompanyList:(NSDictionary *)dict{
     if ([super self]) {
         self.companyId =[dict[@"id"]intValue];

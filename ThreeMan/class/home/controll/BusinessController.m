@@ -136,9 +136,7 @@
         businessListModel *businessModel =[_businessArray objectAtIndex:indexPath.row];
         CompanyHomeControll *companyHomeVC=[[CompanyHomeControll alloc]init];
     companyHomeVC.companyId =[NSString stringWithFormat:@"%d", businessModel.businessId];
-    companyHomeVC.companyContent =businessModel.businessIntroduce;
-    companyHomeVC.companyImag =businessModel.businessLogo;
-    companyHomeVC.companyTitel =businessModel.businessCompanyname;
+   
         [self.navigationController pushViewController:companyHomeVC animated:YES];
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
