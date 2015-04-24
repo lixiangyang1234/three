@@ -14,4 +14,10 @@
 @property(nonatomic,strong)NSMutableArray *recommendArray;
 @property(nonatomic,strong)NSMutableArray *answerArray;
 
+//购买
+@property(nonatomic,assign)int  bySuccessCode;
+@property(nonatomic,copy)NSString *bySuccessStr;
+
+@property(nonatomic,copy)NSString *byFailStr;
+
 @end

@@ -13,6 +13,7 @@
 #import "CourseDetailController.h"
 @interface NeedViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
+    ErrorView *notStatus;
     ErrorView *networkError;
     UIButton *topBtn;
     UITableView *_tableView;
@@ -31,6 +32,7 @@
 //    [self addUINavView];
     [self addTableView];
     [self addErrorView];
+     [self addNotLoatStatus];
     [self addUIChooseBtn];//添加筛选按钮
     [self addMBprogressView];
     [self addLoadStatus:@"0"];
@@ -78,7 +80,15 @@
                 }
             }
             [_tableView reloadData];
+            }
+
+        if (_needListArray.count<=0) {
+            notStatus.hidden =NO;
+        }else{
+            notStatus.hidden =YES;
+            
         }
+
     } failure:^(NSError *error) {
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
 
@@ -203,6 +213,14 @@
     networkError.center = CGPointMake(kWidth/2, (kHeight-64-40)/2);
     networkError.hidden = YES;
     [self.view addSubview:networkError];
+    
+}
+//没有数据
+-(void)addNotLoatStatus{
+    notStatus = [[ErrorView alloc] initWithImage:@"netFailImg_2" title:@"亲，暂时没有数据哦!"];
+    notStatus.center = CGPointMake(kWidth/2, (kHeight-64-40)/2);
+    notStatus.hidden = YES;
+    [self.view addSubview:notStatus];
     
 }
 

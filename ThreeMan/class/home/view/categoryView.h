@@ -36,6 +36,8 @@
 
 @property (nonatomic,assign) BOOL           isSecondSelected;
 
+@property(nonatomic,assign)NSInteger  threeCount;
+@property(nonatomic,assign)NSInteger  threeCount1;
 
 
 @property (nonatomic, copy) void (^selectRowAtIndex)(NSInteger index);

@@ -52,10 +52,10 @@
     CGRect frame = CGRectZero;
     
     
-    frame.size.height = [self.titleArray count] * ROW_HEIGHT + SPACE + kArrowHeight;
+    frame.size.height = [self.categoryArray count] * ROW_HEIGHT + SPACE + kArrowHeight;
     
     
-    for (NSString *title in self.titleArray)
+    for (NSString *title in self.categoryArray)
     {
         CGFloat width =  kWidth-140;
         
@@ -283,7 +283,7 @@
             [self.categoryTitleBtn setTitle:[self.categoryArray objectAtIndex:i] forState:UIControlStateNormal];
             [self.categoryTitleBtn setBackgroundColor:[UIColor whiteColor]];
             
-            self.categoryTitleBtn.tag =104+i;
+            self.categoryTitleBtn.tag =10+i;
             self.categoryTitleBtn.contentHorizontalAlignment =UIControlContentHorizontalAlignmentLeft;
             
             
@@ -294,14 +294,8 @@
             //        viewLine.backgroundColor =[UIColor redColor];
             [self addSubview:self.categoryTitleBtn];
             self.frame =[self getViewFrameCategory];
-            
-            
-            
-            
         }
-        
-        
-        
+      
         NSArray *array = [[DBTool shareDBToolClass] getNewTitleButtonArray];
         
         
@@ -402,8 +396,12 @@
     _titleBtnSelected.selected = YES;
     
     [[DBTool shareDBToolClass] updateSelectedStyleByTTag:[NSString stringWithFormat:@"%ld",(long)_selectedButton.tag] withCTag:[NSString stringWithFormat:@"%ld",(long)_titleBtnSelected.tag]];
-    
-    
+    if (self.selectRowAtIndex)
+    {
+        self.selectRowAtIndex(sender.tag);
+    }
+
+    NSLog(@"------>%d",sender.tag);
     [self dismiss:YES];
 }
 

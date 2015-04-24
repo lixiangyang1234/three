@@ -68,19 +68,19 @@
             [_threeListArray removeAllObjects];
             [_tableView reloadData];
 
-//            NSLog(@"%@",dic2);
+            NSLog(@"%@",array);
 
             if (![dic isKindOfClass:[NSNull class]]) {
                 for (NSDictionary *dict in dic) {
                     threeBlockModel *item = [[threeBlockModel alloc] initWithForArray:dict];
-                    [_threeArray removeAllObjects];
+//                    [_threeArray removeAllObjects];
                     [_threeArray addObject:item];
                 }
                 
             }
             if (![dic1 isKindOfClass:[NSNull class]]) {
                 for (NSDictionary *dict1 in arrdic) {
-                    [_categoryArray removeAllObjects];
+//                    [_categoryArray removeAllObjects];
                     threeBlockModel *cateModel = [[threeBlockModel alloc] initWithForCategory:dict1];
                     [_categoryArray addObject:cateModel];
                 }
@@ -181,6 +181,8 @@
     
 }
 -(void)threeCategoryBtnClick:(UIButton *)sender{
+    
+    
     if (_threeArray.count==0) {
         [RemindView showViewWithTitle:offline location:MIDDLE];
     }else {
@@ -195,14 +197,16 @@
     NSMutableArray *titles = [NSMutableArray array];
     
     [titles addObject:@"全部类型"];
-    for (int i=0; i<3; i++) {
+    for (int i=0; i<_threeArray.count; i++) {
         threeBlockModel *threeModel =[_threeArray objectAtIndex:i];
         NSString *str =threeModel.categoryTitle;
-        [titles addObject:str];
+               [titles addObject:str];
+//        NSLog(@"%@",titles);
+
     }
     NSMutableArray *category = [NSMutableArray array];
 
-    for (int c=0; c<7; c++) {
+    for (int c=0; c<_categoryArray.count; c++) {
         threeBlockModel *categoryModel =[_categoryArray objectAtIndex:c];
 
         NSString *cateStr =categoryModel.cateTitle;
@@ -213,13 +217,26 @@
     
     
     categoryView *popView = [[categoryView alloc] initWithPoint:point titles:titles categoryTitles:category];
+        popView.threeCount =_threeArray.count;
+        popView.threeCount1 =_categoryArray.count;
     popView.selectRowAtIndex = ^(NSInteger index)
     {
+        if (index ==100) {
+            [self addLoadStatus:@"0"];
+
+        }
+        if (index ==101||index==102||index==103) {
+            threeBlockModel *threeModel =[_threeArray objectAtIndex:index-100];
+            NSString * indexid1=[NSString stringWithFormat:@"%d", threeModel.categoryid];
+            [self addLoadStatus:indexid1];
+//            NSLog(@"-------->%@----%d---%ld",indexid1,threeModel.threeId,index);
+
+        }else{
+            threeBlockModel *threeModel =[_categoryArray objectAtIndex:index-10];
+            NSString * indexid2=[NSString stringWithFormat:@"%d", threeModel.cateid];
+            [self addLoadStatus:indexid2];
+        }
         
-//        threeBlockModel *threeModel =[_threeArray objectAtIndex:index];
-        
-        NSLog(@"select index:%ld", (long)index);
-//        [self addLoadStatus:[NSString stringWithFormat:@"%d",threeModel.threeType]];
     };
     
     [popView show];
