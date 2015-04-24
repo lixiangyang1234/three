@@ -10,8 +10,11 @@
 #import "CourseViewCell.h"
 #import "CourseViewVCModel.h"
 #import "CourseDetaileControll.h"
+#import "ErrorView.h"
 @interface CourseViewController ()<UITableViewDataSource,UITableViewDelegate>
-
+{
+    ErrorView *networkError;
+}
 @property(nonatomic,strong)UITableView *tableView;
 @end
 
@@ -22,11 +25,27 @@
     [self.view setBackgroundColor:HexRGB(0xe8e8e8)];
     _courseArray =[[NSMutableArray alloc]initWithCapacity:0];
     [self addTableView];
-
+    [self addErrorView];
+    [self addMBprogressView];
     [self addLoadStatus];
 }
+-(void)addErrorView{
+    networkError = [[ErrorView alloc] initWithImage:@"netFailImg_1" title:@"对不起,网络不给力! 请检查您的网络设置!"];
+    networkError.center = CGPointMake(kWidth/2, (kHeight-64-40)/2);
+    networkError.hidden = YES;
+    [self.view addSubview:networkError];
+ 
+}
+-(void)addMBprogressView{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"加载中...";
+    
+}
+
 -(void)addLoadStatus{
     [HttpTool postWithPath:@"getSsxList" params:nil success:^(id JSON, int code, NSString *msg) {
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+
         if (code == 100) {
             NSDictionary *dic = [JSON objectForKey:@"data"];
             NSArray *array = [dic objectForKey:@"ssx"];
@@ -40,7 +59,9 @@
             [_tableView reloadData];
         }
     } failure:^(NSError *error) {
-       
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+
+        networkError.hidden =NO;
     }];
 
 }
@@ -49,18 +70,12 @@
     _tableView.delegate =self;
     _tableView.dataSource =self;
     _tableView.backgroundColor =  HexRGB(0xe0e0e0);
-;
-    
     _tableView.showsHorizontalScrollIndicator = NO;
     _tableView.showsVerticalScrollIndicator = NO;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
     [self.view addSubview:_tableView];
 }
 #pragma mark - Table view data source
-
-
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return _courseArray.count;
 }
@@ -85,7 +100,6 @@
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"ddddd");
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     CourseViewVCModel *courseModel =[_courseArray objectAtIndex:indexPath.row];
     
@@ -94,7 +108,7 @@
     [self.nav pushViewController:courseVc animated:YES];
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 65;
+    return 66;
 }
 
 - (void)didReceiveMemoryWarning {

@@ -35,6 +35,7 @@
     UIButton *topBtn;
     byCourseView *byCourse;
     CGFloat webh;
+    CGFloat cellContentH;
 }
 
 @property(nonatomic,strong)UIScrollView *backScrollView;
@@ -52,7 +53,7 @@
     self.detailArray =[NSMutableArray array];
     self.recommendArray =[NSMutableArray array];
     self.answerArray =[NSMutableArray array];
-
+    [self addMBprogressView];
     [self addLoadStatus];
 //    [self addRecommendLoadStatus];
     // Do any additional setup after loading the view.
@@ -74,11 +75,18 @@
     topBtn.tag =997;
     
 }
+-(void)addMBprogressView{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"加载中...";
+    
+}
 #pragma mark ---添加数据
 -(void)addLoadStatus{
     NSDictionary *paramDic =[NSDictionary dictionaryWithObjectsAndKeys:_courseDetailID,@"id", nil];
     [HttpTool postWithPath:@"getNeedDetail" params:paramDic success:^(id JSON, int code, NSString *msg) {
-        NSLog(@"%@",JSON);
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+
+//        NSLog(@"%@",JSON);
         if (code==100) {
             NSDictionary *dict =JSON[@"data"][@"subject_detail"];
             if (![dict isKindOfClass:[NSNull class]]) {
@@ -87,6 +95,7 @@
             }
                     }
        
+        [failView removeFromSuperview];
 
         [self addUIBannerView];
         [self addUICategoryView];
@@ -95,14 +104,20 @@
         [self addUICategoryView];
         [self addTopBtn];
     } failure:^(NSError *error) {
-        NSLog(@"%@",error);
+//        NSLog(@"%@",error);
+        [failView removeFromSuperview];
+
         [self notNetFailView];
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+
     }];
 }
 -(void)addRecommendLoadStatus{
     NSDictionary *paramDic =[NSDictionary dictionaryWithObjectsAndKeys:_courseDetailID,@"id", nil];
 
     [HttpTool postWithPath:@"getRecommendList" params:paramDic success:^(id JSON, int code, NSString *msg) {
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+
         if (code == 100) {
             NSDictionary *dic = [JSON objectForKey:@"data"];
             NSArray *array = [dic objectForKey:@"recommend_list"];
@@ -123,16 +138,19 @@
             [recommendTableView setHidden:YES];
         }
     } failure:^(NSError *error) {
-        
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+ 
     }];
 }
 -(void)addAnswerLoadStatus{
     NSDictionary *paramDic =[NSDictionary dictionaryWithObjectsAndKeys:_courseDetailID,@"id", nil];
     
     [HttpTool postWithPath:@"getQuestionList" params:paramDic success:^(id JSON, int code, NSString *msg) {
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+
         if (code == 100) {
             NSDictionary *dic = [JSON objectForKey:@"data"];
-            NSLog(@"%@",JSON);
+//            NSLog(@"%@",JSON);
             NSArray *array = [dic objectForKey:@"question_list"];
             if (![array isKindOfClass:[NSNull class]]) {
                 for (NSDictionary *dict in array) {
@@ -151,7 +169,8 @@
             [answerTableView setHidden:YES];
         }
     } failure:^(NSError *error) {
-        
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+ 
     }];
 }
 
@@ -334,19 +353,17 @@
     _courseWeb.userInteractionEnabled = NO;
     _courseWeb.delegate =self;
     [detailScrollView addSubview:_courseWeb];
-    NSLog(@"1111-----%f----%f",_courseWeb.frame.size.height,detailScrollView.contentSize.height);
+//    NSLog(@"1111-----%f----%f",_courseWeb.frame.size.height,detailScrollView.contentSize.height);
 
     
 }
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-    NSLog(@"ddddddkkkkddd");
 
     return YES;
 }
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    NSLog(@"ddddddddd");
     
     CGFloat webheight = [[webView stringByEvaluatingJavaScriptFromString:@"document.body.offsetHeight;"] floatValue];
     
@@ -354,7 +371,7 @@
     
     detailScrollView.contentSize = CGSizeMake(kWidth-YYBORDERWH*2,webheight+webh);
     
-    NSLog(@"-----%f-%f---%f",_courseWeb.frame.size.height,detailScrollView.frame.size.height,webheight);
+//    NSLog(@"-----%f-%f---%f",_courseWeb.frame.size.height,detailScrollView.frame.size.height,webheight);
     
 }
 
@@ -403,6 +420,7 @@
     else if(sender.tag ==21)
     {
         [self addRecommendTableview];
+        [self addMBprogressView];
         [self addRecommendLoadStatus];
         //        _footer.scrollView = recommendTableView;
         [categoryScrollView setContentOffset:CGPointMake(kWidth, 0) animated:YES];
@@ -410,6 +428,8 @@
     else if(sender.tag ==22)
     {
         [self addAnswerTableview];
+        [self addMBprogressView];
+
         [self addAnswerLoadStatus];
         //        _footer.scrollView = answerTableView;
         [categoryScrollView setContentOffset:CGPointMake(kWidth*2, 0) animated:YES];
@@ -502,10 +522,11 @@
         }
         courseDetailModel *recommendModel =[_recommendArray objectAtIndex:indexPath.row];
         [RecommandCell.headerRecommendImage setImageWithURL:[NSURL URLWithString:recommendModel.recommendImg] placeholderImage:placeHoderImage1];
+       
         RecommandCell.nameRecomendLabel.text =recommendModel.recommendUseame;
         RecommandCell.contentRecomendLabel.text =recommendModel.recommendContent;
         RecommandCell.timeRecomendLabel.text =recommendModel.recommednAddtime;
-        NSLog(@"----%@",recommendModel.recommednAddtime);
+//        NSLog(@"----%@",recommendModel.recommednAddtime);
         
         
         if (indexPath.row>=8) {
@@ -527,6 +548,9 @@
         courseDetailModel *answerModel =[_answerArray objectAtIndex:indexPath.row];
         answerCell.answerTitle.text =answerModel.answerTitle;
         [answerCell.companyAnswerImage setImageWithURL:[NSURL URLWithString:answerModel.answerImg] placeholderImage:placeHoderImage1];
+         cellContentH =[answerModel.answerContent sizeWithFont:[UIFont systemFontOfSize:PxFont(18)] constrainedToSize:CGSizeMake(self.view.frame.size.width-33, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping ].height;
+        answerCell.contentAnswerLabel.frame =CGRectMake(11, 40, self.view.frame.size.width-33, cellContentH);
+//        NSLog(@"---%f---->%f",cellContentH,self.view.frame.size.width-33);
         answerCell.timeAnswerLabel.text =answerModel.answerAddtime;
         answerCell.nameAnswerLabel.text =answerModel.answerName;
         answerCell.contentAnswerLabel.text =answerModel.answerContent;
@@ -552,7 +576,7 @@
     if (_selectedBtn.tag ==21) {
         return 118;
     }else if(_selectedBtn.tag ==22){
-        return 128;
+        return 80+cellContentH;
     }
     return 118;
 }
@@ -619,6 +643,7 @@
                     if (btn.tag ==20) {
                         _selectedBtn=btn;
                         _selectedBtn.selected = YES;
+                        [self addLoadStatus];
                     }else{
                         btn.selected = NO;
                     }
@@ -634,7 +659,8 @@
                         _selectedBtn=btn;
                         _selectedBtn.selected=YES;
                         [self addRecommendTableview];
-                        
+                        [self addMBprogressView];
+                        [self addRecommendLoadStatus];
                         
                         
                     }else{
@@ -654,6 +680,8 @@
                         _selectedBtn=btn;
                         _selectedBtn.selected=YES;
                         [self addAnswerTableview];
+                        [self addMBprogressView];
+                        [self addAnswerLoadStatus];
                     }else{
                         btn.selected = NO;
                     }
@@ -705,9 +733,9 @@
       {
             NSString *str =@"23456";
             NSDictionary *paramDic =[NSDictionary dictionaryWithObjectsAndKeys:str,@"uid",_courseDetailID,@"id" ,nil];
-        NSLog(@"%@",[SystemConfig sharedInstance].uid);
+//        NSLog(@"%@",[SystemConfig sharedInstance].uid);
             [HttpTool postWithPath:@"uncollectSubject" params:paramDic success:^(id JSON, int code, NSString *msg) {
-                NSLog(@"%@",JSON);
+//                NSLog(@"%@",JSON);
                 if (code ==100) {
                     [RemindView showViewWithTitle:@"取消收藏成功!" location:BELLOW];
                     item.selected =NO;
@@ -718,9 +746,9 @@
       }  else{
           NSString *str =@"23456";
           NSDictionary *paramDic =[NSDictionary dictionaryWithObjectsAndKeys:str,@"uid",_courseDetailID,@"id" ,nil];
-          NSLog(@"%@",[SystemConfig sharedInstance].uid);
+//          NSLog(@"%@",[SystemConfig sharedInstance].uid);
           [HttpTool postWithPath:@"collectSubject" params:paramDic success:^(id JSON, int code, NSString *msg) {
-              NSLog(@"-----%@",JSON);
+//              NSLog(@"-----%@",JSON);
               if (code ==100) {
                   [RemindView showViewWithTitle:@"收藏成功!" location:BELLOW];
                   item.selected =YES;

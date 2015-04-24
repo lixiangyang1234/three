@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface ThreeBlockController : LeftTitleController
+@property(nonatomic,strong)NSString *navTitle;
 @property(nonatomic,strong)NSString *threeId;
 @property(nonatomic,strong)NSMutableArray *threeArray;
 @property(nonatomic,strong)NSMutableArray *threeListArray;

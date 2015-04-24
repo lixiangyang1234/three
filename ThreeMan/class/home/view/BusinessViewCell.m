@@ -48,7 +48,7 @@
         businessNeed.backgroundColor =[UIColor clearColor];
         businessNeed.text =@"需求 21 ";
         [backCell addSubview:businessNeed];
-        businessNeed.font =[UIFont systemFontOfSize:PxFont(14)];
+        businessNeed.font =[UIFont systemFontOfSize:PxFont(16)];
         businessNeed.textColor =HexRGB(0x959595);
         CGFloat needH =businessNeed.frame.origin.y+businessNeed.frame.size.height-3;
 
@@ -57,7 +57,7 @@
         bussinessLabel.text =@"首行缩进根据用户昵称自动调整首行缩进根据用户昵称自动调整首行缩进根据用户昵称自动调整首行缩进根据用户昵称自动调整首行缩进根据用户昵称自动调整 ";
         [backCell addSubview:bussinessLabel];
         bussinessLabel.numberOfLines =3;
-        bussinessLabel.font =[UIFont systemFontOfSize:PxFont(15)];
+        bussinessLabel.font =[UIFont systemFontOfSize:PxFont(16)];
         bussinessLabel.textColor =HexRGB(0x1c8cc6);
 
         

@@ -11,4 +11,7 @@
 @interface CompanyHomeControll : LeftTitleController
 @property(nonatomic,strong)NSString *companyId;
 @property(nonatomic,strong)NSMutableArray *companyArray;
+@property(nonatomic,copy)NSString *companyImag;
+@property(nonatomic,copy)NSString *companyTitel;
+@property(nonatomic,copy)NSString *companyContent;
 @end

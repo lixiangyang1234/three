@@ -19,7 +19,7 @@
     if (self) {
         
         
-        UIView *backCell =[[UIView alloc]initWithFrame:CGRectMake(borderwh, borderwh, kWidth-borderwh*2, 57)];
+        UIView *backCell =[[UIView alloc]initWithFrame:CGRectMake(borderwh, borderwh, kWidth-borderwh*2, 58)];
         
         //        UIView *backCell =[[UIView alloc]initWithFrame:CGRectMake(borderwh, 4, kWidth-borderwh*2, 80)];
         [self addSubview:backCell];
@@ -44,10 +44,10 @@
         titleLabel.text =@"首行缩进根据用户昵称自动调整 ";
         [backCell addSubview:titleLabel];
         titleLabel.numberOfLines =2;
-        titleLabel.font =[UIFont systemFontOfSize:PxFont(22)];
+        titleLabel.font =[UIFont systemFontOfSize:PxFont(20)];
         titleLabel.textColor =HexRGB(0x323232);
         
-        CGFloat titleH =titleLabel.frame.origin.y+titleLabel.frame.size.height-3;
+        CGFloat titleH =titleLabel.frame.origin.y+titleLabel.frame.size.height;
         contentLabel =[[UILabel alloc]initWithFrame:CGRectMake(imageW+borderwh, titleH, kWidth-imageW-borderwh*3, 20)];
         contentLabel.backgroundColor =[UIColor clearColor];
         contentLabel.text =@"需求 首行缩进根据用户昵称自动调整首行缩进根据用户昵称自动调整21 ";

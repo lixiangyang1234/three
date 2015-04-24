@@ -12,6 +12,9 @@
 #define YYBORDER  8
 #define BANNERH 150
 @interface CourseDetaileControll ()
+{
+    ErrorView *networkError;
+}
 @property(nonatomic,strong)UIScrollView *backScrollView;
 
 @end
@@ -22,11 +25,19 @@
     // Do any additional setup after loading the view.
     self.view.backgroundColor =HexRGB(0xe0e0e0);
     _courseDetailArray =[[NSMutableArray alloc]initWithCapacity:0];
+    [self addMBprogressView];
     [self addLoadStatus];
+}
+-(void)addMBprogressView{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"加载中...";
+    
 }
 -(void)addLoadStatus
 {
     [CourseViewVCTool statusesWithCourseID:_courseIndex CourseSuccess:^(NSMutableArray *statues) {
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+
         for (NSDictionary *dict in statues) {
             [_courseDetailArray addObject:dict];
 
@@ -34,7 +45,9 @@
         [self addUIBackScrollView];
 
     } failure:^(NSError *error) {
-        
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+
+        networkError.hidden =NO;
     }];
 }
 
@@ -85,7 +98,13 @@
  
 
 }
-
+-(void)addErrorView{
+    networkError = [[ErrorView alloc] initWithImage:@"netFailImg_1" title:@"对不起,网络不给力! 请检查您的网络设置!"];
+    networkError.center = CGPointMake(kWidth/2, (kHeight-64-40)/2);
+    networkError.hidden = YES;
+    [self.view addSubview:networkError];
+    
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -10,4 +10,5 @@
 
 @interface NeedViewController : LeftTitleController
 @property(nonatomic,strong)NSString *categoryId;
+@property(nonatomic,strong)NSString *navTitle;
 @end

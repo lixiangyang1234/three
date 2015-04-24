@@ -31,12 +31,12 @@
         
         companyHomeImage =[[UIImageView alloc]initWithFrame:CGRectMake(YYBorderX, YYBorderY, 90, 60)];
         [backCell addSubview:companyHomeImage];
-        companyHomeImage.backgroundColor =[UIColor redColor];
+        companyHomeImage.backgroundColor =[UIColor clearColor];
         companyHomeImage.userInteractionEnabled =YES;
         
-        companyHomeSmailImage =[[UIImageView alloc]initWithFrame:CGRectMake(YYBorderX*2+90, YYBorderY, 30, 20)];
+        companyHomeSmailImage =[[typeView alloc]initWithFrame:CGRectMake(YYBorderX*2+90, YYBorderY, 30, 20)];
         [backCell addSubview:companyHomeSmailImage];
-        companyHomeSmailImage.backgroundColor =[UIColor redColor];
+        companyHomeSmailImage.backgroundColor =[UIColor clearColor];
         companyHomeSmailImage.userInteractionEnabled =YES;
         
         

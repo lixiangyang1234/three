@@ -35,7 +35,7 @@
         headerRecommendImage.layer.borderColor =HexRGB(0x959595) .CGColor;
         CGFloat imageW =headerRecommendImage.frame.origin.x+headerRecommendImage.frame.size.width;
         
-        nameRecomendLabel =[[UILabel alloc]initWithFrame:CGRectMake(imageW+borderwh, borderwh, 100 , 40)];
+        nameRecomendLabel =[[UILabel alloc]initWithFrame:CGRectMake(imageW+borderwh, borderwh, 140 , 40)];
         nameRecomendLabel.backgroundColor =[UIColor clearColor];
         nameRecomendLabel.text =@"大头儿子";
         [backCell addSubview:nameRecomendLabel];
@@ -43,13 +43,13 @@
         nameRecomendLabel.font =[UIFont systemFontOfSize:PxFont(22)];
         nameRecomendLabel.textColor =HexRGB(0x323232);
         
-        timeRecomendLabel =[[UILabel alloc]initWithFrame:CGRectMake(self.frame.size.width-120, borderwh, 80, 40)];
+        timeRecomendLabel =[[UILabel alloc]initWithFrame:CGRectMake(self.frame.size.width-100, borderwh, 80, 40)];
         timeRecomendLabel.backgroundColor =[UIColor clearColor];
         timeRecomendLabel.text =@"2015-03-04";
         [backCell addSubview:timeRecomendLabel];
         timeRecomendLabel.font =[UIFont systemFontOfSize:PxFont(18)];
         timeRecomendLabel.textColor =HexRGB(0xa8a8a8);
-        CGFloat needH =timeRecomendLabel.frame.origin.y+timeRecomendLabel.frame.size.height-3;
+        CGFloat needH =timeRecomendLabel.frame.origin.y+timeRecomendLabel.frame.size.height;
         
         contentRecomendLabel =[[UILabel alloc]initWithFrame:CGRectMake(borderwh, needH,self.frame.size.width-borderwh*3 , 50)];
         contentRecomendLabel.backgroundColor =[UIColor clearColor];

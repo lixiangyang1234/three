@@ -47,7 +47,9 @@
 
         needSmailImage =[[typeView alloc]initWithFrame:CGRectMake(borderW*2+imageW, YYBorderY+borderW, 30, 20)];
         [backCell addSubview:needSmailImage];
-        needSmailImage.backgroundColor =[UIColor redColor];
+        needSmailImage.backgroundColor =[UIColor clearColor];
+    
+
         needSmailImage.userInteractionEnabled =YES;
         companyName =[[UILabel alloc]initWithFrame:CGRectMake(borderW*2+imageW, backCell.frame.size.height-25, 115, 20)];
         companyName.backgroundColor =[UIColor clearColor];
