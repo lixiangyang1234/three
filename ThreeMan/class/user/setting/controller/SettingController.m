@@ -134,7 +134,7 @@
     if (cell == nil ) {
         cell = [[SettingCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify];
     }
-    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0,41, kWidth-8*2,1)];
+    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0,42-0.5, kWidth-8*2,0.5)];
     if (indexPath.row<[[_dataArray objectAtIndex:indexPath.section] count]-1) {
         line.backgroundColor = HexRGB(0xeaebec);
     }else{

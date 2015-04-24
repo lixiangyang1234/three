@@ -29,7 +29,6 @@
         
         _headerImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderwh, borderwh, 50, 50)];
         [bgView addSubview:_headerImage];
-        _headerImage.backgroundColor =[UIColor redColor];
         _headerImage.userInteractionEnabled =YES;
         _headerImage.layer.cornerRadius =_headerImage.frame.size.width/2;
         _headerImage.layer.masksToBounds=YES;

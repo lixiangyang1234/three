@@ -90,7 +90,7 @@
         cell = [[MessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify];
     }
     MessageItem *item = [_dataArray objectAtIndex:indexPath.row];
-    [cell.headerImage setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:[UIImage imageNamed:@""]];
+    [cell.headerImage setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:placeHoderImage1];
     cell.titleLabel.text = item.title;
     cell.contentLabel.text = item.content;
     cell.dateLabel.text = item.addtime;

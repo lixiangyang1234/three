@@ -9,7 +9,7 @@
 
 + (void)postWithPath:(NSString *)path params:(NSDictionary *)params success:(HttpSuccessBlock)success failure:(HttpFailureBlock)failure
 {
-    NSString *pathStr = [NSString stringWithFormat:@"http://192.168.1.114/sanshenxing/index.php?s=/Home/Api/%@",path];
+    NSString *pathStr = [NSString stringWithFormat:@"http://192.168.1.100/sanshenxing/index.php?s=/Home/Api/%@",path];
     
     NSMutableDictionary *allParams = [NSMutableDictionary dictionary];
     //拼接传进来的参数
@@ -51,13 +51,14 @@
         failure(error);
        
     }];
-    
 }
+
 
 + (void)getWithPath:(NSString *)path params:(NSDictionary *)params success:(HttpSuccessBlock)success failure:(HttpFailureBlock)failure
 {
     
 }
+
 + (void)downloadImage:(NSString *)url place:(UIImage *)place imageView:(UIImageView *)imageView
 {
     [imageView setImageWithURL:[NSURL URLWithString:url] placeholderImage:place options:SDWebImageLowPriority | SDWebImageRetryFailed];

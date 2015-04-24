@@ -11,6 +11,7 @@
 @interface RecordController : RootViewController<UITableViewDataSource,UITableViewDelegate>
 {
     NSMutableArray *_dataArray;
+    NSMutableArray *headViewArray;
     UITableView *_tableView;
 }
 - (void)edit:(BOOL)editting;

@@ -11,12 +11,28 @@
 @implementation DateManeger
 
 
-// 返回当前时间戳 
 + (NSString *)getCurrentTimeStamps{
     NSDate *now = [NSDate date];
     NSString *currentTime = [NSString stringWithFormat:@"%ld",(long)[now timeIntervalSince1970]];
     return currentTime;
 }
 
+
++ (NSDate *)getDateFromTimeStamps:(NSString *)timeStamps
+{
+    return [NSDate dateWithTimeIntervalSince1970:[timeStamps doubleValue]];
+}
+
++ (BOOL)isTodayTime:(NSDate *)date
+{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy.MM.dd"];
+    NSString *dateSMS = [formatter stringFromDate:date];
+    NSString *dateNow = [formatter stringFromDate:[NSDate date]];
+    if ([dateSMS isEqualToString:dateNow]) {
+        return YES;
+    }
+    return NO;
+}
 
 @end

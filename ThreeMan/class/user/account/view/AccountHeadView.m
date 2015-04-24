@@ -47,7 +47,7 @@
         self.btn.center = CGPointMake(bgView.frame.size.width-12-self.btn.frame.size.width/2, bgView.frame.size.height/2);
         [bgView addSubview:self.btn];
         
-        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, bgView.frame.size.height-1,bgView.frame.size.width, 1)];
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, bgView.frame.size.height-0.5,bgView.frame.size.width, 0.5)];
         line.backgroundColor = HexRGB(0xcacaca);
         [bgView addSubview:line];
     }

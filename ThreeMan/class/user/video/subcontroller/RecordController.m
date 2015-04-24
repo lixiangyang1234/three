@@ -8,10 +8,11 @@
 
 #import "RecordController.h"
 #import "EditView.h"
-#import "FavoriteItem.h"
+#import "RecordItem.h"
 #import "FavoriteCell.h"
 #import "SectionHeadView.h"
 #import "CourseDetailController.h"
+#import "DateManeger.h"
 
 @interface RecordController ()<EditViewDelegate>
 {
@@ -26,6 +27,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     _dataArray = [[NSMutableArray alloc] initWithCapacity:0];
+    headViewArray = [[NSMutableArray alloc] initWithCapacity:0];
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kHeight-64-40) style:UITableViewStyleGrouped];
     _tableView.dataSource = self;
@@ -51,29 +53,51 @@
     [HttpTool postWithPath:@"getHistory" params:nil success:^(id JSON, int code, NSString *msg) {
         NSLog(@"%@",JSON);
         if (code == 100) {
-            
+            NSArray *array = JSON[@"data"][@"history"];
+            if (![array isKindOfClass:[NSNull class]]) {
+                NSMutableArray *mutableArr = [[NSMutableArray alloc] initWithCapacity:0];
+                for (NSDictionary *dict  in array) {
+                    RecordItem *item = [[RecordItem alloc] init];
+                    [item setValuesForKeysWithDictionary:dict];
+                    [mutableArr addObject:item];
+                }
+                [self seperateData:mutableArr];
+            }
         }
     } failure:^(NSError *error) {
-        
+        NSLog(@"%@",error);
     }];
+}
+
+//分离出今天和之前的
+- (void)seperateData:(NSMutableArray *)mutableArr
+{
+    //今天的
     NSMutableArray *arr1 = [[NSMutableArray alloc] initWithCapacity:0];
-    for (int i = 0; i < 4; i++) {
-        FavoriteItem *item = [[FavoriteItem alloc] init];
-        item.img = @"";
-        item.title = @"与大师有约门票－成功第一网";
-        item.companyname = @"王大妈老师";
-        [arr1 addObject:item];
-    }
+    //更早的
     NSMutableArray *arr2 = [[NSMutableArray alloc] initWithCapacity:0];
-    for (int i = 0; i < 6; i++) {
-        FavoriteItem *item = [[FavoriteItem alloc] init];
-        item.img = @"";
-        item.title = @"与大师有约门票－成功第一网";
-        item.companyname = @"王大妈老师";
-        [arr2 addObject:item];
+    for (RecordItem *item in mutableArr) {
+        NSDate *date = [DateManeger getDateFromTimeStamps:item.addtime];
+        BOOL ret = [DateManeger isTodayTime:date];
+        if (ret) {
+            [arr1 addObject:item];
+        }else{
+            [arr2 addObject:item];
+        }
     }
-    [_dataArray addObject:arr1];
-    [_dataArray addObject:arr2];
+    if (arr1.count!=0) {
+        [_dataArray addObject:arr1];
+        
+        SectionHeadView *headView = [[SectionHeadView alloc] initWithFrame:CGRectMake(0, 0,kWidth,36)];
+        [headView setImgView:[UIImage imageNamed:@"today"] title:@"今天"];
+        [headViewArray addObject:headView];
+    }
+    if (arr2.count!=0) {
+        [_dataArray addObject:arr2];
+        SectionHeadView *headView = [[SectionHeadView alloc] initWithFrame:CGRectMake(0, 0,kWidth,36)];
+        [headView setImgView:[UIImage imageNamed:@"earlier"] title:@"更早"];
+        [headViewArray addObject:headView];
+    }
     [_tableView reloadData];
 }
 
@@ -124,7 +148,7 @@
     cell.multipleSelectionBackgroundView = [[UIView alloc] init];
     NSMutableArray *arr;
     arr = [_dataArray objectAtIndex:indexPath.section];
-    FavoriteItem *item = [arr objectAtIndex:indexPath.row];
+    RecordItem *item = [arr objectAtIndex:indexPath.row];
     cell.titleLabel.text = item.title;
     cell.imgView.image = [UIImage imageNamed:@"img"];
     cell.desLabel.text = item.companyname;
@@ -144,22 +168,15 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (section == 0) {
-        SectionHeadView *headView = [[SectionHeadView alloc] initWithFrame:CGRectMake(0, 0,kWidth,36)];
-        [headView setImgView:[UIImage imageNamed:@"yesterday"] title:@"今天"];
-        return headView;
-    }else{
-        SectionHeadView *headView = [[SectionHeadView alloc] initWithFrame:CGRectMake(0, 0,kWidth,36)];
-        [headView setImgView:[UIImage imageNamed:@"earlier"] title:@"更早"];
-        return headView;
-    }
-    return nil;
+    return [headViewArray objectAtIndex:section];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (!isEditting) {
+        RecordItem *item = [[_dataArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
         CourseDetailController *detail = [[CourseDetailController alloc] init];
+        detail.courseDetailID = item.sid;
         [self.nav pushViewController:detail animated:YES];
     }
 }
@@ -189,12 +206,10 @@
         }
         NSMutableArray *arr1 = [[NSMutableArray alloc] initWithCapacity:0];
         NSMutableArray *arr2 = [[NSMutableArray alloc] initWithCapacity:0];
-        NSMutableArray *a1 = [[NSMutableArray alloc] initWithCapacity:0];
-        NSMutableArray *a2 = [[NSMutableArray alloc] initWithCapacity:0];
 
         for (int i = 0 ; i < array.count; i++) {
             NSIndexPath *indexPath = [array objectAtIndex:i];
-            FavoriteItem *item = [[_dataArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+            RecordItem *item = [[_dataArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
             if (indexPath.section == 0) {
                 [arr1 addObject:item];
             }else if(indexPath.section == 1){
