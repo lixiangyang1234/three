@@ -10,7 +10,7 @@
 #import "YYSearchButton.h"
 #define BACKVIEWw 235
 @implementation byCourseView
--(id)initWithFrame:(CGRect)frame byTitle:(NSString *)title contentLabel:(NSString *)content buttonTitle:(NSArray *)butTitle{
+-(id)initWithFrame:(CGRect)frame byTitle:(NSString *)title contentLabel:(NSString *)content buttonTitle:(NSArray *)butTitle TagType:(int)type{
     self =[super initWithFrame:frame];
     if (self) {
         self.backgroundColor =[UIColor clearColor];
@@ -65,8 +65,16 @@
             
             [chooseBtn.titleLabel setFont:[UIFont systemFontOfSize:PxFont(20)]];
             [chooseBtn addTarget:self action:@selector(chooseBtnClickDele:) forControlEvents:UIControlEventTouchUpInside];
-            
-            chooseBtn.tag =333+i;
+            if (type ==333) {
+                chooseBtn.tag =333+i;
+
+            }if (type==444) {
+                chooseBtn.tag =444+i;
+            }if (type==555) {
+                chooseBtn.tag =555+i;
+            }if (type==666) {
+                chooseBtn.tag =666+i;
+            }
         }
         
  
@@ -74,9 +82,10 @@
     return self;
 }
 
+
 -(void)chooseBtnClickDele:(UIButton *)choose{
     
-    NSLog(@"   ddddddd%d",choose.tag);
+//    NSLog(@"   ddddddd%d",choose.tag);
     if ([self.delegate respondsToSelector:@selector(chooseBtn:chooseTag:)]) {
         [self.delegate chooseBtn:choose chooseTag:choose.tag];
     }

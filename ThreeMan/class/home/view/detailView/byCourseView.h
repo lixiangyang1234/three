@@ -16,5 +16,5 @@
 @interface byCourseView : UIView
 @property(nonatomic,unsafe_unretained)id<byCourseViewDelegate>delegate;
 
--(id)initWithFrame:(CGRect)frame byTitle:(NSString *)title contentLabel:(NSString *)content buttonTitle:(NSArray *)butTitle;
+-(id)initWithFrame:(CGRect)frame byTitle:(NSString *)title contentLabel:(NSString *)content buttonTitle:(NSArray *)butTitle TagType:(int)type;
 @end

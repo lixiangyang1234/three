@@ -12,6 +12,7 @@
 #import "businessListModel.h"
 @interface BusinessController ()<UITableViewDataSource,UITableViewDelegate>
 {
+    ErrorView *notStatus;
     ErrorView *networkError;
     UITableView *_tableView;
     UIButton *topBtn;
@@ -28,6 +29,7 @@
     [self addTableView];
     [self addMBprogressView];
     [self addErrorView];
+    [self addNotLoatStatus];
     [self addTopBtn];
     [self addLoadStatus];
 }
@@ -51,8 +53,12 @@
            }
            
        }
-//       NSLog(@"%@",dict);
        [_tableView reloadData];
+       if (_businessArray.count<=0) {
+           notStatus.hidden =NO;
+       }else{
+           notStatus.hidden =YES;
+       }
    } failure:^(NSError *error) {
        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
 
@@ -144,6 +150,14 @@
     networkError.center = CGPointMake(kWidth/2, (kHeight-64-40)/2);
     networkError.hidden = YES;
     [self.view addSubview:networkError];
+    
+}
+//没有数据
+-(void)addNotLoatStatus{
+    notStatus = [[ErrorView alloc] initWithImage:@"netFailImg_2" title:@"亲，暂时没有数据哦!"];
+    notStatus.center = CGPointMake(kWidth/2, (kHeight-64-40)/2);
+    notStatus.hidden = YES;
+    [self.view addSubview:notStatus];
     
 }
 #pragma mark 控件将要显示

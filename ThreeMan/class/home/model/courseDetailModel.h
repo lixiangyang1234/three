@@ -15,7 +15,7 @@
 @property(nonatomic,assign)int courseDownloadnum;
 @property(nonatomic,assign)int courseId;
 @property(nonatomic,copy)NSString *courseImgurl;
-@property(nonatomic,assign)int courseNum;
+@property(nonatomic,assign)int coursePrice;
 @property(nonatomic,copy)NSString *courseTitle;
 @property(nonatomic,assign)int iscollect;
 
@@ -34,6 +34,7 @@
 @property(nonatomic,copy)NSString *answerImg;
 @property(nonatomic,copy)NSString *answerTitle;
 @property(nonatomic,assign)int answerId;
+
 
 
 //详情

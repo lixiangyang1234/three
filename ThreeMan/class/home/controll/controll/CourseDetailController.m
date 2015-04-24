@@ -34,6 +34,10 @@
     
     UIButton *topBtn;
     byCourseView *byCourse;
+    byCourseView *bySuccessCourse;
+    byCourseView *byFailCourse;
+    byCourseView *byCompanyCourse;
+
     CGFloat webh;
     CGFloat cellContentH;
 }
@@ -53,8 +57,12 @@
     self.detailArray =[NSMutableArray array];
     self.recommendArray =[NSMutableArray array];
     self.answerArray =[NSMutableArray array];
+    _bySuccessCode =0;
+    _byFailStr=@"";
+    _bySuccessStr=@"";
     [self addMBprogressView];
     [self addLoadStatus];
+    
 //    [self addRecommendLoadStatus];
     // Do any additional setup after loading the view.
 }
@@ -86,7 +94,7 @@
     [HttpTool postWithPath:@"getNeedDetail" params:paramDic success:^(id JSON, int code, NSString *msg) {
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
 
-//        NSLog(@"%@",JSON);
+        NSLog(@"%@",JSON);
         if (code==100) {
             NSDictionary *dict =JSON[@"data"][@"subject_detail"];
             if (![dict isKindOfClass:[NSNull class]]) {
@@ -150,7 +158,7 @@
 
         if (code == 100) {
             NSDictionary *dic = [JSON objectForKey:@"data"];
-//            NSLog(@"%@",JSON);
+            NSLog(@"%@",JSON);
             NSArray *array = [dic objectForKey:@"question_list"];
             if (![array isKindOfClass:[NSNull class]]) {
                 for (NSDictionary *dict in array) {
@@ -172,6 +180,9 @@
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
  
     }];
+}
+-(void)addByLoadStatus{
+   
 }
 
 //添加广告图片
@@ -304,16 +315,16 @@
     UIButton *detailDou =[UIButton buttonWithType:UIButtonTypeCustom];
     detailDou.frame =CGRectMake(detailWH, titleDetailH, 50, 30);
     [detailDou setImage:[UIImage imageNamed:@"browser_number_icon"] forState:UIControlStateNormal];
-    [detailDou setTitle:[NSString stringWithFormat:@"%d", courseModel.courseNum] forState:UIControlStateNormal];
+    [detailDou setTitle:[NSString stringWithFormat:@"%d", courseModel.coursePrice] forState:UIControlStateNormal];
     [detailScrollView addSubview:detailDou];
-    detailDou.titleEdgeInsets =UIEdgeInsetsMake(0, 7, 0, 0);
+    detailDou.titleEdgeInsets =UIEdgeInsetsMake(0, 5, 0, 0);
     detailDou.backgroundColor =[UIColor clearColor];
     [detailDou setTitleColor:HexRGB(0x1c8cc6) forState:UIControlStateNormal];
     [detailDou.titleLabel setFont:[UIFont systemFontOfSize:PxFont(28)]];
     detailDou.backgroundColor =[UIColor clearColor];
     detailDou.contentHorizontalAlignment =UIControlContentHorizontalAlignmentLeft;
     
-    CGFloat douDetailW =detailDou.frame.size.width+detailDou.frame.origin.x;
+    CGFloat douDetailW =detailDou.frame.size.width+detailDou.frame.origin.x+3;
     UILabel *detailDouLabel =[[UILabel alloc]initWithFrame:CGRectMake(douDetailW, titleDetailH, 45, 30)];
     [detailScrollView addSubview:detailDouLabel];
     detailDouLabel.text =@"蜕变豆";
@@ -695,38 +706,24 @@
     
 }
 #pragma mark -----topView
-//底部按钮  购买失败   购买提示
--(void)addTopViewFail{
-    NSArray *titleArr =@[@"取消",@"立即充值"];
-    byCourse =[[byCourseView alloc]initWithFrame:self.view.bounds byTitle:@"购买失败" contentLabel:@"抱歉！您的蜕变豆余额不足!" buttonTitle:titleArr];
-    byCourse.delegate =self;
-    [self.view addSubview:byCourse];
-    byCourse.hidden =NO;
 
-}
-//购买提示
--(void)addTopViewPrompt{
-    NSArray *titleArr =@[@"否",@"是"];
-    byCourse =[[byCourseView alloc]initWithFrame:self.view.bounds byTitle:@"购买提示" contentLabel:@"抱歉！尊敬的企业会员，购买权限只限普通会员，是否立即成为普通会员？" buttonTitle:titleArr];
-    byCourse.delegate =self;
-    [self.view addSubview:byCourse];
-    byCourse.hidden =NO;
-}
 //购买支付
--(void)addTopViewBy{
+-(void)addByTopView{
     NSArray *titleArr =@[@"取消",@"支付"];
-    NSString *str =[NSString stringWithFormat:@"您本次需要支付100%@蜕变豆，确认支付吗？",self.douNumber];
-    byCourse =[[byCourseView alloc]initWithFrame:self.view.bounds byTitle:@"购买提示" contentLabel:str buttonTitle:titleArr];
+    courseDetailModel *courseModel =[_detailArray objectAtIndex:0];
+    NSString *str =[NSString stringWithFormat:@"您本次需要支付%d蜕变豆，确认支付吗？",courseModel.coursePrice];
+    byCourse =[[byCourseView alloc]initWithFrame:self.view.bounds byTitle:@"购买提示" contentLabel:str buttonTitle:titleArr TagType:333 ];
     byCourse.delegate =self;
     [self.view addSubview:byCourse];
     byCourse.hidden =NO;
-    
 }
+
+#pragma mark---购买课程
 -(void)categoryBtnItem:(UIButton *)item{
     if (item.tag ==30) {
         
     }else if (item.tag ==31){
-        [self addTopViewBy];
+        [self addByTopView];
  
     }else if(item.tag ==32){
     if (item.selected ==YES)  // uncollectSubject   collectSubject
@@ -770,13 +767,87 @@
         byCourse.hidden =YES;
     }];
 
-//    byCourse.hidden =YES;
-
     if (tag==333) {
-        
+
     }else if (tag==334){
+        NSDictionary *parmDic =[NSDictionary dictionaryWithObjectsAndKeys:[SystemConfig sharedInstance].uid,@"uid",_courseDetailID,@"id", nil];
+        NSLog(@"%@",[SystemConfig sharedInstance].uid);
+        [HttpTool postWithPath:@"buySubject" params:parmDic success:^(id JSON, int code, NSString *msg) {
+            self.bySuccessCode =code;
+            if (code==100) {
+                _bySuccessStr =JSON[@"msg"];
+                NSArray *titleArr =@[@"取消",@"确定"];
+                bySuccessCourse =[[byCourseView alloc]initWithFrame:self.view.bounds byTitle:@"购买提示" contentLabel:_bySuccessStr buttonTitle:titleArr TagType:444 ];
+                bySuccessCourse.delegate =self;
+                [self.view addSubview:bySuccessCourse];
+                bySuccessCourse.hidden =NO;
+
+            }else if(code==206) {
+                _byFailStr =JSON[@"msg"];
+                NSArray *titleArr =@[@"取消",@"立即充值"];
+                byFailCourse =[[byCourseView alloc]initWithFrame:self.view.bounds byTitle:@"购买失败" contentLabel:_byFailStr buttonTitle:titleArr TagType:555];
+                byFailCourse.delegate =self;
+                [self.view addSubview:byFailCourse];
+                byFailCourse.hidden =NO;
+            }else{
+                _byFailStr =JSON[@"msg"];
+                NSArray *titleArr =@[@"否",@"是"];
+                byCompanyCourse =[[byCourseView alloc]initWithFrame:self.view.bounds byTitle:@"购买提示" contentLabel:_byFailStr buttonTitle:titleArr TagType:666];
+                byCompanyCourse.delegate =self;
+                [self.view addSubview:byCompanyCourse];
+                byCompanyCourse.hidden =NO;
+            }
+//            NSLog(@"%@--000---%@------%d",_bySuccessStr,_byFailStr,_bySuccessCode);
+        } failure:^(NSError *error) {
+            
+        }];
+
         
+    }if (tag ==444) {
+        [UIView animateWithDuration:.3 animations:^{
+            bySuccessCourse.center =CGPointMake(kWidth/2, kHeight);
+            
+        } completion:^(BOOL finished) {
+            bySuccessCourse.hidden =YES;
+        }];
+    }else if (tag ==445){
+        [UIView animateWithDuration:.3 animations:^{
+            bySuccessCourse.center =CGPointMake(kWidth/2, kHeight);
+            
+        } completion:^(BOOL finished) {
+            bySuccessCourse.hidden =YES;
+        }];
     }
+    if (tag ==555) {
+        [UIView animateWithDuration:.3 animations:^{
+            byFailCourse.center =CGPointMake(kWidth/2, kHeight);
+            
+        } completion:^(BOOL finished) {
+            byFailCourse.hidden =YES;
+        }];
+    }else if (tag ==556){
+        [UIView animateWithDuration:.3 animations:^{
+            byFailCourse.center =CGPointMake(kWidth/2, kHeight);
+            
+        } completion:^(BOOL finished) {
+            byFailCourse.hidden =YES;
+        }];
+    }if (tag ==666) {
+        [UIView animateWithDuration:.3 animations:^{
+            byCompanyCourse.center =CGPointMake(kWidth/2, kHeight);
+            
+        } completion:^(BOOL finished) {
+            byCompanyCourse.hidden =YES;
+        }];
+    }else if (tag ==667){
+        [UIView animateWithDuration:.3 animations:^{
+            byCompanyCourse.center =CGPointMake(kWidth/2, kHeight);
+            
+        } completion:^(BOOL finished) {
+            byCompanyCourse.hidden =YES;
+        }];
+    }
+
 }
 -(void)topBtnClick:(UIButton *)top{
     [self.backScrollView setContentOffset:CGPointMake(0, 0) animated:YES];
