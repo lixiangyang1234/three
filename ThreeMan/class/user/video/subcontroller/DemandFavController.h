@@ -7,9 +7,18 @@
 //
 
 #import "RootViewController.h"
+#import "EditView.h"
+#import "NoDataView.h"
 
-@interface DemandFavController : RootViewController
-
+@interface DemandFavController : RootViewController<UITableViewDataSource,UITableViewDelegate,EditViewDelegate,NoDataViewDelegate>
+{
+    NSMutableArray *_dataArray;
+    UITableView *_tableView;
+    EditView *editView;
+    ErrorView *networkError;
+    NoDataView *noDataView;
+    BOOL isEditting;
+}
 
 - (void)edit:(BOOL)editting;
 

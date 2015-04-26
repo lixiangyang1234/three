@@ -7,15 +7,17 @@
 //
 
 #import "RootViewController.h"
-#import "ErrorView.h"
+#import "EditView.h"
 #import "NoDataView.h"
 
-@interface CompFavoriteVC : RootViewController<UITableViewDataSource,UITableViewDelegate>
+@interface CompFavoriteVC : RootViewController<UITableViewDataSource,UITableViewDelegate,EditViewDelegate,NoDataViewDelegate>
 {
     NSMutableArray *_dataArray;
     UITableView *_tableView;
+    EditView *editView;
     ErrorView *networkError;
     NoDataView *noDataView;
+    BOOL isEditting;
 }
 
 

@@ -17,10 +17,12 @@
     UIView *topBgView;
     UIView *line;
     UIButton *selectedBtn;
+    BOOL isEditting;
 
 }
 
 @property (nonatomic,strong) DemandFavController *demandVC;
 @property (nonatomic,strong) CompFavoriteVC *compVC;
+@property (nonatomic,assign) NSInteger selectedIndex;
 
 @end

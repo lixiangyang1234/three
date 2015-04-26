@@ -39,7 +39,7 @@
     
     self.demandVC = [[DemandFavController alloc] init];
     self.demandVC.nav = (WBNavigationController *)self.navigationController;
-    self.compVC.view.frame = CGRectMake(0, 0, kWidth, _scrollView.frame.size.height);
+    self.demandVC.view.frame = CGRectMake(0, 0, kWidth, _scrollView.frame.size.height);
     [_scrollView addSubview:self.demandVC.view];
     
     self.compVC = [[CompFavoriteVC alloc] init];
@@ -71,7 +71,41 @@
 
 -(void)delete:(UIButton *)btn
 {
+    btn.selected = !btn.selected;
+    isEditting = !isEditting;
+    if (isEditting) {
+        _scrollView.scrollEnabled = NO;
+        for (UIView *subView in topBgView.subviews) {
+            if ([subView isKindOfClass:[UIButton class]]) {
+                UIButton *btn = (UIButton *)subView;
+                btn.userInteractionEnabled = NO;
+            }
+        }
+    }else{
+        _scrollView.scrollEnabled = YES;
+        for (UIView *subView in topBgView.subviews) {
+            if ([subView isKindOfClass:[UIButton class]]) {
+                UIButton *btn = (UIButton *)subView;
+                btn.userInteractionEnabled = YES;
+            }
+        }
+    }
     
+    switch (self.selectedIndex) {
+        case 0:
+        {
+            [self.demandVC edit:isEditting];
+        }
+            break;
+        case 1:
+        {
+            [self.compVC edit:isEditting];
+        }
+            break;
+        default:
+            break;
+    }
+
 }
 
 
@@ -112,6 +146,7 @@
     selectedBtn.selected = NO;
     selectedBtn = btn;
     btn.selected = YES;
+    self.selectedIndex = btn.tag-1000;
     [_scrollView setContentOffset:CGPointMake((btn.tag-1000)*kWidth,0) animated:YES];
 }
 
@@ -121,6 +156,40 @@
     [UIView animateWithDuration:0.01 animations:^{
         line.frame = CGRectMake(scrollView.contentOffset.x/2, line.frame.origin.y, line.frame.size.width, line.frame.size.height);
     }];
+    if (scrollView.contentOffset.x==0) {
+        if (selectedBtn.tag == 1000) {
+            return;
+        }
+        for (UIView *subView in topBgView.subviews) {
+            if ([subView isKindOfClass:[UIButton class]]) {
+                UIButton *btn = (UIButton *)subView;
+                if (btn.tag == 1000) {
+                    btn.selected = YES;
+                    selectedBtn = btn;
+                }else{
+                    btn.selected = NO;
+                }
+            }
+        }
+        self.selectedIndex = 0;
+    }
+    if (scrollView.contentOffset.x==kWidth) {
+        if (selectedBtn.tag == 1001) {
+            return;
+        }
+        for (UIView *subView in topBgView.subviews) {
+            if ([subView isKindOfClass:[UIButton class]]) {
+                UIButton *btn = (UIButton *)subView;
+                if (btn.tag == 1001) {
+                    btn.selected = YES;
+                    selectedBtn = btn;
+                }else{
+                    btn.selected = NO;
+                }
+            }
+        }
+        self.selectedIndex = 1;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
