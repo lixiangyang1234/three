@@ -22,7 +22,6 @@
     ErrorView *notStatus;
     UITableView *_tableView;
     YYSearchButton *_selectedItem;
-    UIButton *topBtn;
 }
 @end
 
@@ -182,15 +181,15 @@
 }
 -(void)threeCategoryBtnClick:(UIButton *)sender{
     
-    
+    [UIView animateWithDuration:0.001 animations:^{
+        sender.imageView.transform = CGAffineTransformRotate(sender.imageView.transform, DEGREES_TO_RADIANS(180));
+    }];
     if (_threeArray.count==0) {
         [RemindView showViewWithTitle:offline location:MIDDLE];
     }else {
         
     
-    [UIView animateWithDuration:0.001 animations:^{
-        sender.imageView.transform = CGAffineTransformRotate(sender.imageView.transform, DEGREES_TO_RADIANS(180));
-    }];
+    
     
     CGPoint point = CGPointMake(kWidth-60, sender.frame.origin.y + sender.frame.size.height+60);
     
@@ -221,16 +220,19 @@
         popView.threeCount1 =_categoryArray.count;
     popView.selectRowAtIndex = ^(NSInteger index)
     {
+        [UIView animateWithDuration:0.001 animations:^{
+            sender.imageView.transform = CGAffineTransformRotate(sender.imageView.transform, DEGREES_TO_RADIANS(180));
+        }];
         if (index ==100) {
             [self addLoadStatus:@"0"];
 //            NSLog(@"-111-------------%ld",index);
 
         }
       else  if (index ==101||index==102||index==103) {
-            threeBlockModel *threeModel =[_threeArray objectAtIndex:index-100];
+            threeBlockModel *threeModel =[_threeArray objectAtIndex:index-101];
             NSString * indexid1=[NSString stringWithFormat:@"%d", threeModel.categoryid];
             [self addLoadStatus:indexid1];
-//            NSLog(@"2222-------->%@----%d---%ld",indexid1,threeModel.categoryid,index);
+            NSLog(@"2222-------->%@----%d---%ld",indexid1,threeModel.categoryid,index);
 
         }else{
 //         NSLog(@"333----------%ld",index);
@@ -240,8 +242,9 @@
         }
         
     };
-    
+        
     [popView show];
+        
     }
 }
 #pragma mark - Table view data source
@@ -270,11 +273,7 @@
     [cell.zanBtn setTitle:[NSString stringWithFormat:@"%d",threeModel.threeHits ] forState:UIControlStateNormal];
     //    NSLog(@"%f---%d",cell.frame.size.height,indexPath.row);
     [cell.needSmailImage typeID:threeModel.threeType];
-    if (indexPath.row>=15) {
-        topBtn.hidden =NO;
-    }else if (indexPath.row<=10){
-        topBtn.hidden =YES;
-    }
+   
     
     
     

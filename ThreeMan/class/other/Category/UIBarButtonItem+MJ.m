@@ -22,7 +22,12 @@
     [btn setBackgroundImage:image forState:UIControlStateNormal];
     // 设置高亮图片
     [btn setBackgroundImage:[UIImage imageNamed:highlighted] forState:UIControlStateHighlighted];
-    
+    UIButton *navTitleBtn =[UIButton buttonWithType:UIButtonTypeCustom];
+    [navTitleBtn setTitle:@"" forState:UIControlStateNormal];
+    navTitleBtn.backgroundColor =[UIColor clearColor];
+    navTitleBtn.frame =CGRectMake(20, 0, 25, 44);
+    [navTitleBtn addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    [viewItem addSubview:navTitleBtn];
     // 设置尺寸
 //    btn.bounds = (CGRect){CGPointZero, image.size};
     btn.frame =CGRectMake(0, 0, image.size.width, image.size.height);
