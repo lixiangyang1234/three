@@ -32,7 +32,6 @@
     UITableView *recommendTableView;
     UITableView * answerTableView;
     
-    UIButton *topBtn;
     byCourseView *byCourse;
     byCourseView *bySuccessCourse;
     byCourseView *byFailCourse;
@@ -66,23 +65,7 @@
 //    [self addRecommendLoadStatus];
     // Do any additional setup after loading the view.
 }
--(void)addTopBtn
-{
-    //回顶部按钮
-    topBtn =[UIButton buttonWithType:UIButtonTypeCustom];
-    [self.view addSubview:topBtn];
-    topBtn.frame =CGRectMake(kWidth-50, kHeight-80-64, 30, 30);
-    [topBtn setTitle:@"23" forState:UIControlStateNormal];
-    topBtn.contentHorizontalAlignment =UIControlContentHorizontalAlignmentLeft;
-    topBtn.hidden =YES;
-    [topBtn setImage:[UIImage imageNamed:@"nav_return_pre"] forState:UIControlStateNormal];
-    [topBtn addTarget:self action:@selector(topBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    [topBtn setTitle:@"定都" forState:UIControlStateNormal];
-    [topBtn setTitleColor:HexRGB(0x1c8cc6) forState:UIControlStateNormal];
-    [topBtn.titleLabel setFont:[UIFont systemFontOfSize:PxFont(12)]];
-    topBtn.tag =997;
-    
-}
+
 -(void)addMBprogressView{
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"加载中...";
@@ -110,7 +93,6 @@
         [self addUIDownloadView];
         [self addCategoryBackScrollView];
         [self addUICategoryView];
-        [self addTopBtn];
     } failure:^(NSError *error) {
 //        NSLog(@"%@",error);
         [failView removeFromSuperview];
@@ -294,12 +276,13 @@
     detailScrollView.showsHorizontalScrollIndicator = NO;
     detailScrollView.showsVerticalScrollIndicator = NO;
     detailScrollView.pagingEnabled = YES;
-    //    detailScrollView.bounces = NO;
+//        detailScrollView.bounces = NO;
     detailScrollView.userInteractionEnabled = YES;
     detailScrollView.backgroundColor =HexRGB(0xffffff);
     //    detailScrollView.backgroundColor =[UIColor cyanColor];
     detailScrollView.delegate = self;
     [categoryScrollView addSubview:detailScrollView];
+    detailScrollView.scrollEnabled =NO;
     detailScrollView.tag =990;
     CGFloat detailWH =11;
     //添加标题
@@ -398,6 +381,7 @@
     recommendTableView.delegate =self;
     recommendTableView.dataSource = self;
     recommendTableView.hidden =NO;
+    recommendTableView.scrollEnabled =NO;
 }
 
 
@@ -414,6 +398,7 @@
     answerTableView.dataSource = self;
     answerTableView.showsHorizontalScrollIndicator =NO;
     answerTableView.showsVerticalScrollIndicator= NO;
+    answerTableView.hidden =NO;
     answerTableView.hidden =NO;
 }
 #pragma mark ----分类的点击事件
@@ -540,11 +525,7 @@
 //        NSLog(@"----%@",recommendModel.recommednAddtime);
         
         
-        if (indexPath.row>=8) {
-            topBtn.hidden =NO;
-        }else if (indexPath.row<=4){
-            topBtn.hidden =YES;
-        }
+       
         return RecommandCell;
         
     }else if (_selectedBtn.tag ==22){
@@ -565,12 +546,7 @@
         answerCell.timeAnswerLabel.text =answerModel.answerAddtime;
         answerCell.nameAnswerLabel.text =answerModel.answerName;
         answerCell.contentAnswerLabel.text =answerModel.answerContent;
-        
-        if (indexPath.row>=8) {
-            topBtn.hidden =NO;
-        }else if (indexPath.row<=4){
-            topBtn.hidden =YES;
-        }
+       
         return answerCell;
         
     }
@@ -595,41 +571,21 @@
 #pragma mark  ------scrollview_delegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (scrollView.tag ==998||scrollView.tag ==990) {
-//        NSLog(@"%f----%f",scrollView.contentOffset.y,bannerHeightLine);
-        if (scrollView.contentOffset.y>=bannerHeightLine) {
+    if (scrollView.tag ==998) {
+        NSLog(@"%f----%f",scrollView.contentOffset.y,bannerHeightLine);
+        if (scrollView.contentOffset.y>=175) {
             //            scrollView.contentOffset =CGPointMake(0, 0);
-            topBtn.hidden =NO;
-            for (UIView *subView in self.view.subviews) {
-                if ([subView isKindOfClass:[UIButton class]]) {
-                    UIButton *top =(UIButton *)subView;
-                    if (top.tag ==997) {
-                        top.hidden =NO;
-                        topBtn.hidden =NO;
-                    }
-                    
-                }
-            }
-            
+            detailScrollView.scrollEnabled =YES;
+            recommendTableView.scrollEnabled =YES;
+            answerTableView.scrollEnabled =YES;
+        }else{
+            detailScrollView.scrollEnabled =NO;
+            recommendTableView.scrollEnabled =NO;
+            answerTableView.scrollEnabled =NO;
+
         }
         
-        if (scrollView.contentOffset.y<=bannerHeightLine-20) {
-            //            scrollView.contentOffset =CGPointMake(0, 0);
-            topBtn.hidden =NO;
-            for (UIView *subView in self.view.subviews) {
-                if ([subView isKindOfClass:[UIButton class]]) {
-                    UIButton *top =(UIButton *)subView;
-                    if (top.tag ==997) {
-                        top.hidden =YES;
-                        topBtn.hidden =YES;
-                    }
-                    
-                }
-            }
-            
-        }
-        
-        
+
     }
     
     if (scrollView.tag ==9999) {
@@ -852,14 +808,7 @@
     }
 
 }
--(void)topBtnClick:(UIButton *)top{
-    [self.backScrollView setContentOffset:CGPointMake(0, 0) animated:YES];
-    [detailScrollView setContentOffset:CGPointMake(0, 0) animated:YES];
-    NSIndexPath *indePath =[NSIndexPath indexPathForRow:0 inSection:0];
-    [recommendTableView scrollToRowAtIndexPath:indePath atScrollPosition:UITableViewScrollPositionNone animated:YES];
-    [answerTableView scrollToRowAtIndexPath:indePath atScrollPosition:UITableViewScrollPositionNone animated:YES];
 
-}
 
 -(void)companyhomeDetailBtnClick:(UIButton *)sender{
 //    [self.navigationController popViewControllerAnimated:YES];

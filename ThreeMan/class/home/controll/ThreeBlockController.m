@@ -22,7 +22,6 @@
     ErrorView *notStatus;
     UITableView *_tableView;
     YYSearchButton *_selectedItem;
-    UIButton *topBtn;
 }
 @end
 
@@ -188,9 +187,7 @@
     }else {
         
     
-    [UIView animateWithDuration:0.001 animations:^{
-        sender.imageView.transform = CGAffineTransformRotate(sender.imageView.transform, DEGREES_TO_RADIANS(180));
-    }];
+    
     
     CGPoint point = CGPointMake(kWidth-60, sender.frame.origin.y + sender.frame.size.height+60);
     
@@ -221,6 +218,9 @@
         popView.threeCount1 =_categoryArray.count;
     popView.selectRowAtIndex = ^(NSInteger index)
     {
+        [UIView animateWithDuration:0.001 animations:^{
+            sender.imageView.transform = CGAffineTransformRotate(sender.imageView.transform, DEGREES_TO_RADIANS(180));
+        }];
         if (index ==100) {
             [self addLoadStatus:@"0"];
 //            NSLog(@"-111-------------%ld",index);
@@ -240,7 +240,7 @@
         }
         
     };
-    
+        
     [popView show];
     }
 }
@@ -270,11 +270,7 @@
     [cell.zanBtn setTitle:[NSString stringWithFormat:@"%d",threeModel.threeHits ] forState:UIControlStateNormal];
     //    NSLog(@"%f---%d",cell.frame.size.height,indexPath.row);
     [cell.needSmailImage typeID:threeModel.threeType];
-    if (indexPath.row>=15) {
-        topBtn.hidden =NO;
-    }else if (indexPath.row<=10){
-        topBtn.hidden =YES;
-    }
+   
     
     
     

@@ -29,14 +29,21 @@
 {
     UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth,44)];
     titleView.backgroundColor = [UIColor clearColor];
+    
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(-30, 0, 150, 44)];
     label.backgroundColor = [UIColor clearColor];
     label.textColor = HexRGB(0xffffff);
     label.text = leftTitle;
     [titleView addSubview:label];
+    
+    
+    
+   
     self.navigationItem.titleView = titleView;
-}
+    //企业首页
+    
 
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

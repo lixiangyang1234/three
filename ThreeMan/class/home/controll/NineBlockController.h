@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-//#import "RootNavView.h"
 @interface NineBlockController : LeftTitleController
 @property(nonatomic,strong)NSString *navTitle;
 

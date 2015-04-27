@@ -15,7 +15,6 @@
 {
     ErrorView *notStatus;
     ErrorView *networkError;
-    UIButton *topBtn;
     UITableView *_tableView;
     YYSearchButton *_selectedItem;
 }
@@ -36,23 +35,6 @@
     [self addUIChooseBtn];//添加筛选按钮
     [self addMBprogressView];
     [self addLoadStatus:@"0"];
-}
--(void)addTopBtn
-{
-    //回顶部按钮
-    topBtn =[UIButton buttonWithType:UIButtonTypeCustom];
-    [self.view addSubview:topBtn];
-    topBtn.frame =CGRectMake(kWidth-50, kHeight-80-64, 30, 30);
-    [topBtn setTitle:@"23" forState:UIControlStateNormal];
-    topBtn.contentHorizontalAlignment =UIControlContentHorizontalAlignmentLeft;
-    topBtn.hidden =YES;
-    [topBtn setImage:[UIImage imageNamed:@"nav_return_pre"] forState:UIControlStateNormal];
-    [topBtn addTarget:self action:@selector(topBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    [topBtn setTitle:@"定都" forState:UIControlStateNormal];
-    [topBtn setTitleColor:HexRGB(0x1c8cc6) forState:UIControlStateNormal];
-    [topBtn.titleLabel setFont:[UIFont systemFontOfSize:PxFont(12)]];
-    topBtn.tag =900;
-    
 }
 -(void)addMBprogressView{
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -182,11 +164,6 @@
         cell.companyName.text =needModle.companyname;
         [cell.needSmailImage typeID:[needModle.categoryType intValue]];
 
-        if (indexPath.row>=14) {
-            topBtn.hidden =NO;
-        }else if (indexPath.row<=10){
-            topBtn.hidden =YES;
-        }
     }
     
     
@@ -203,10 +180,7 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 88;
 }
--(void)topBtnClick{
-    NSIndexPath *indePath =[NSIndexPath indexPathForRow:0 inSection:0];
-    [_tableView scrollToRowAtIndexPath:indePath atScrollPosition:UITableViewScrollPositionNone animated:YES];
-}
+
 //没有网络
 -(void)addErrorView{
     networkError = [[ErrorView alloc] initWithImage:@"netFailImg_1" title:@"对不起,网络不给力! 请检查您的网络设置!"];
