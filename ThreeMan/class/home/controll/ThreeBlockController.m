@@ -181,7 +181,9 @@
 }
 -(void)threeCategoryBtnClick:(UIButton *)sender{
     
-    
+    [UIView animateWithDuration:0.001 animations:^{
+        sender.imageView.transform = CGAffineTransformRotate(sender.imageView.transform, DEGREES_TO_RADIANS(180));
+    }];
     if (_threeArray.count==0) {
         [RemindView showViewWithTitle:offline location:MIDDLE];
     }else {
@@ -227,10 +229,10 @@
 
         }
       else  if (index ==101||index==102||index==103) {
-            threeBlockModel *threeModel =[_threeArray objectAtIndex:index-100];
+            threeBlockModel *threeModel =[_threeArray objectAtIndex:index-101];
             NSString * indexid1=[NSString stringWithFormat:@"%d", threeModel.categoryid];
             [self addLoadStatus:indexid1];
-//            NSLog(@"2222-------->%@----%d---%ld",indexid1,threeModel.categoryid,index);
+            NSLog(@"2222-------->%@----%d---%ld",indexid1,threeModel.categoryid,index);
 
         }else{
 //         NSLog(@"333----------%ld",index);
@@ -242,6 +244,7 @@
     };
         
     [popView show];
+        
     }
 }
 #pragma mark - Table view data source

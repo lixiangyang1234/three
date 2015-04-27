@@ -296,7 +296,7 @@
     //添加蜕变豆
     
     UIButton *detailDou =[UIButton buttonWithType:UIButtonTypeCustom];
-    detailDou.frame =CGRectMake(detailWH, titleDetailH, 50, 30);
+    detailDou.frame =CGRectMake(detailWH, titleDetailH, 60, 30);
     [detailDou setImage:[UIImage imageNamed:@"browser_number_icon"] forState:UIControlStateNormal];
     [detailDou setTitle:[NSString stringWithFormat:@"%d", courseModel.coursePrice] forState:UIControlStateNormal];
     [detailScrollView addSubview:detailDou];

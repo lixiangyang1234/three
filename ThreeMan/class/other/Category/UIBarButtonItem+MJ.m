@@ -25,7 +25,7 @@
     UIButton *navTitleBtn =[UIButton buttonWithType:UIButtonTypeCustom];
     [navTitleBtn setTitle:@"" forState:UIControlStateNormal];
     navTitleBtn.backgroundColor =[UIColor clearColor];
-    navTitleBtn.frame =CGRectMake(20, 0, 20, 44);
+    navTitleBtn.frame =CGRectMake(20, 0, 25, 44);
     [navTitleBtn addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
     [viewItem addSubview:navTitleBtn];
     // 设置尺寸
