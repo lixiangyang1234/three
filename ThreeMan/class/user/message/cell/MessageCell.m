@@ -54,7 +54,7 @@
         _contentLabel.font =[UIFont systemFontOfSize:13];
         _contentLabel.textColor =HexRGB(0x737373);
         
-        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, bgView.frame.size.height-1,bgView.frame.size.width, 1)];
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, bgView.frame.size.height-0.5,bgView.frame.size.width, 0.5)];
         line.backgroundColor = HexRGB(0xcacaca);
         [bgView addSubview:line];
         

@@ -7,10 +7,12 @@
 //
 
 #import "LeftTitleController.h"
+#import "ErrorView.h"
 
 @interface AccountController : LeftTitleController<UITableViewDataSource,UITableViewDelegate>
 {
     UITableView *_tableView;
     NSMutableArray *_dataArray;
+    ErrorView *nodataView;
 }
 @end

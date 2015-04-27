@@ -10,6 +10,9 @@
 		043FD06B1AE0E58700F18FEA /* ErrorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 043FD06A1AE0E58700F18FEA /* ErrorView.m */; };
 		0463870C1ADFAEE700A35D16 /* MessageDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0463870B1ADFAEE700A35D16 /* MessageDetailController.m */; };
 		0463870F1ADFB60C00A35D16 /* MessageDetailItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0463870E1ADFB60C00A35D16 /* MessageDetailItem.m */; };
+		0469E00E1AEA251A0083601C /* CompFavoriteController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0469E00D1AEA251A0083601C /* CompFavoriteController.m */; };
+		0469E0141AEA26E60083601C /* DemandFavController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0469E0131AEA26E60083601C /* DemandFavController.m */; };
+		0469E0171AEA27040083601C /* CompFavoriteVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0469E0161AEA27040083601C /* CompFavoriteVC.m */; };
 		04B9A2761AD35F0C009446D1 /* ImageFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B9A2751AD35F0C009446D1 /* ImageFieldView.m */; };
 		04B9A2791AD36259009446D1 /* LoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B9A2781AD36259009446D1 /* LoginView.m */; };
 		04B9A27C1AD37456009446D1 /* FindPsWordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B9A27B1AD37456009446D1 /* FindPsWordView.m */; };
@@ -231,6 +234,12 @@
 		0463870B1ADFAEE700A35D16 /* MessageDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageDetailController.m; sourceTree = "<group>"; };
 		0463870D1ADFB60C00A35D16 /* MessageDetailItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageDetailItem.h; sourceTree = "<group>"; };
 		0463870E1ADFB60C00A35D16 /* MessageDetailItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageDetailItem.m; sourceTree = "<group>"; };
+		0469E00C1AEA251A0083601C /* CompFavoriteController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompFavoriteController.h; sourceTree = "<group>"; };
+		0469E00D1AEA251A0083601C /* CompFavoriteController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompFavoriteController.m; sourceTree = "<group>"; };
+		0469E0121AEA26E60083601C /* DemandFavController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemandFavController.h; sourceTree = "<group>"; };
+		0469E0131AEA26E60083601C /* DemandFavController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemandFavController.m; sourceTree = "<group>"; };
+		0469E0151AEA27040083601C /* CompFavoriteVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompFavoriteVC.h; sourceTree = "<group>"; };
+		0469E0161AEA27040083601C /* CompFavoriteVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompFavoriteVC.m; sourceTree = "<group>"; };
 		04B9A2741AD35F0C009446D1 /* ImageFieldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageFieldView.h; sourceTree = "<group>"; };
 		04B9A2751AD35F0C009446D1 /* ImageFieldView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageFieldView.m; sourceTree = "<group>"; };
 		04B9A2771AD36259009446D1 /* LoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginView.h; sourceTree = "<group>"; };
@@ -678,6 +687,8 @@
 			children = (
 				04C64B651ACCEB3A00825EF0 /* VideoCenterController.h */,
 				04C64B661ACCEB3A00825EF0 /* VideoCenterController.m */,
+				0469E00C1AEA251A0083601C /* CompFavoriteController.h */,
+				0469E00D1AEA251A0083601C /* CompFavoriteController.m */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -695,6 +706,10 @@
 				04D0872C1AD4C0AC0070184A /* RecommendController.m */,
 				04D0872E1AD4C0C00070184A /* QuestionController.h */,
 				04D0872F1AD4C0C00070184A /* QuestionController.m */,
+				0469E0121AEA26E60083601C /* DemandFavController.h */,
+				0469E0131AEA26E60083601C /* DemandFavController.m */,
+				0469E0151AEA27040083601C /* CompFavoriteVC.h */,
+				0469E0161AEA27040083601C /* CompFavoriteVC.m */,
 			);
 			path = subcontroller;
 			sourceTree = "<group>";
@@ -1865,6 +1880,7 @@
 				55C122EA1ACE19E900D53630 /* CourseAnswerViewCell.m in Sources */,
 				55C5F23B1AE490C30046DC28 /* businessListModel.m in Sources */,
 				55B8BDF01ADB5A3A0008C21F /* Model.xcdatamodeld in Sources */,
+				0469E00E1AEA251A0083601C /* CompFavoriteController.m in Sources */,
 				55E3739E1AC2B54200C794DD /* SystemConfig.m in Sources */,
 				55C24F831ACB8EE500BFEBED /* BusinessController.m in Sources */,
 				04B9A2891AD3D716009446D1 /* LeftTitleController.m in Sources */,
@@ -1903,9 +1919,11 @@
 				55D7304C1AD7AA45002222F7 /* homeViewControllModel.m in Sources */,
 				55C24F871ACB8EE500BFEBED /* HomeViewController.m in Sources */,
 				55C3D1591ACA89FE00778940 /* SaveTempDataTool.m in Sources */,
+				0469E0141AEA26E60083601C /* DemandFavController.m in Sources */,
 				04B9A2861AD3BFA5009446D1 /* ResetSecretView.m in Sources */,
 				55E373A91AC2B54200C794DD /* NSData+GIF.m in Sources */,
 				55E373B31AC2B54200C794DD /* UIImage+MultiFormat.m in Sources */,
+				0469E0171AEA27040083601C /* CompFavoriteVC.m in Sources */,
 				5592A62E1AE781B200E8F77C /* SUNSlideSwitchView.m in Sources */,
 				04CC33511ACA8118008A85B5 /* FileItem.m in Sources */,
 				55E373D31AC2B54200C794DD /* HttpTool.m in Sources */,

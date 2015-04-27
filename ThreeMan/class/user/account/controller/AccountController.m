@@ -24,10 +24,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self setLeftTitle:@"蜕变豆"];
+    [self setLeftTitle:@"账户管理"];
     _dataArray = [[NSMutableArray alloc] initWithCapacity:0];
     
+    
     [self buildUI];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
 }
 
 - (void)buildUI
@@ -44,9 +50,19 @@
     _tableView.sectionHeaderHeight = 0;
     [self.view addSubview:_tableView];
     
+    
+    
     headView = [[AccountHeadView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 81)];
     [headView.btn addTarget:self action:@selector(btnDown) forControlEvents:UIControlEventTouchUpInside];
+    
+    nodataView = [[ErrorView alloc] initWithImage:@"netFailImg_2" title:@"目前您的账户尚无纪录!"];
+    nodataView.center = CGPointMake(kWidth/2, (kHeight-64)/2);
+    nodataView.hidden = YES;
+    [_tableView addSubview:nodataView];
+
     [self loadData];
+    
+    
 }
 
 - (void)btnDown
@@ -65,6 +81,25 @@
 
 - (void)loadData
 {
+/*
+    [HttpTool postWithPath:@"" params:nil success:^(id JSON, int code, NSString *msg) {
+        if (code == 100) {
+            
+            
+            if (_dataArray.count==0) {
+                nodataView.hidden = NO;
+            }
+            
+            _tableView.tableHeaderView = headView;
+            headView.amountLabel.text = @"238";
+            [headView.btn setTitle:@"充值" forState:UIControlStateNormal];
+
+        }
+        [_tableView reloadData];
+    } failure:^(NSError *error) {
+        networkError.hidden = NO;
+    }];
+*/
     for (int i = 0 ; i<5; i++) {
         AccountItem *item = [[AccountItem alloc] init];
         item.title = @"03.15期雅思听力测试班";
@@ -76,6 +111,7 @@
     _tableView.tableHeaderView = headView;
     headView.amountLabel.text = @"238";
     [headView.btn setTitle:@"充值" forState:UIControlStateNormal];
+
     [_tableView reloadData];
 }
 

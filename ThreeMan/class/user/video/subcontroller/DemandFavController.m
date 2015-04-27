@@ -1,35 +1,26 @@
 //
-//  FavoriteViewController.m
+//  DemandFavController.m
 //  ThreeMan
 //
-//  Created by tianj on 15/4/2.
+//  Created by tianj on 15/4/24.
 //  Copyright (c) 2015年 ___普马克___. All rights reserved.
 //
 
-#import "FavoriteViewController.h"
-#import "FavoriteCell.h"
+#import "DemandFavController.h"
 #import "FavoriteItem.h"
-#import "EditView.h"
+#import "FavoriteCell.h"
 #import "CourseDetailController.h"
-#import "ErrorView.h"
 #import "NineBlockController.h"
-#import "YYSearchButton.h"
 
-@interface FavoriteViewController ()<EditViewDelegate,NoDataViewDelegate>
-{
-    BOOL isEditting;
-    EditView *editView;
-    YYSearchButton *seletedBtn;
-}
+@interface DemandFavController ()
+
 @end
 
-@implementation FavoriteViewController
+@implementation DemandFavController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = HexRGB(0xe8e8e8);
     // Do any additional setup after loading the view.
-    
     _dataArray = [[NSMutableArray alloc] initWithCapacity:0];
     
     [self buidlUI];
@@ -39,28 +30,8 @@
 
 - (void)buidlUI
 {
-    UIView *topBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,kWidth,35)];
-    topBgView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:topBgView];
     
-    NSArray *array = [NSArray arrayWithObjects:@"需求",@"企业", nil];
-    for (int i = 0 ; i < array.count; i++) {
-        YYSearchButton *btn = [YYSearchButton buttonWithType:UIButtonTypeCustom];
-        btn.frame = CGRectMake(0, 0, 50, 25);
-        btn.center = CGPointMake(13+btn.frame.size.width/2+(btn.frame.size.width+9)*i,topBgView.frame.size.height/2);
-        [btn setTitle:[array objectAtIndex:i] forState:UIControlStateNormal];
-        btn.tag = 1000+i;
-        btn.titleLabel.font = [UIFont systemFontOfSize:13];
-        [btn addTarget:self action:@selector(btnDown:) forControlEvents:UIControlEventTouchUpInside];
-        [topBgView addSubview:btn];
-        if (i == 0) {
-            btn.isSelected = YES;
-            seletedBtn = btn;
-        }
-        
-    }
-    
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,topBgView.frame.size.height, kWidth, kHeight-64-40-topBgView.frame.size.height) style:UITableViewStylePlain];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,0, kWidth, kHeight-64-40) style:UITableViewStylePlain];
     _tableView.dataSource = self;
     _tableView.delegate = self;
     _tableView.backgroundColor = [UIColor clearColor];
@@ -69,9 +40,6 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.sectionFooterHeight = 0;
     _tableView.sectionHeaderHeight = 0;
-//    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 10)];
-//    view.backgroundColor = [UIColor clearColor];
-//    _tableView.tableHeaderView = view;
     [self.view addSubview:_tableView];
     
     editView = [[EditView alloc] init];
@@ -90,7 +58,7 @@
     noDataView.hidden = YES;
     noDataView.delegate = self;
     [self.view addSubview:noDataView];
-
+    
 }
 
 - (void)loadData
@@ -131,11 +99,11 @@
         editView.delegate = self;
         editView.frame = CGRectMake(0,self.view.frame.size.height,editView.frame.size.width, editView.frame.size.height);
         [self.view addSubview:editView];
-
+        
         [UIView animateWithDuration:0.2 animations:^{
             editView.frame = CGRectMake(0,self.view.frame.size.height-editView.frame.size.height,editView.frame.size.width, editView.frame.size.height);
         }];
-    //非编辑状态
+        //非编辑状态
     }else{
         [UIView animateWithDuration:0.2 animations:^{
             editView.frame = CGRectMake(0,self.view.frame.size.height,editView.frame.size.width, editView.frame.size.height);
@@ -247,20 +215,6 @@
     [self.nav pushViewController:nine animated:YES];
 }
 
-//顶部按钮点击
-- (void)btnDown:(YYSearchButton *)btn
-{
-    seletedBtn.isSelected = NO;
-    seletedBtn = btn;
-    btn.isSelected = YES;
-    //需求
-    if (btn.tag == 1000) {
-        
-    //企业
-    }else{
-        
-    }
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
