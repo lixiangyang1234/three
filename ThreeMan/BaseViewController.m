@@ -135,7 +135,7 @@
             break;
         case 0:
         {
-            if (![SystemConfig sharedInstance].isUserLogin) {
+            if ([SystemConfig sharedInstance].isUserLogin) {
                 if (0) {
                     VideoCenterController *center = [[VideoCenterController alloc] init];
                     [self.navigationController pushViewController:center animated:YES];

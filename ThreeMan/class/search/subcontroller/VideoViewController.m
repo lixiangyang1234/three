@@ -8,6 +8,7 @@
 
 #import "VideoViewController.h"
 #import "CompanyHomeViewCell.h"
+#import "FileModel.h"
 
 @interface VideoViewController ()
 
@@ -32,10 +33,24 @@
 
 - (void)loadData
 {
-    for (int i = 0 ; i< 10; i++) {
-        [_dataArray addObject:@"1"];
-    }
-    [_tableView reloadData];
+    NSDictionary *param = @{@"keywords":self.keywords,@"type":self.type};;
+    [HttpTool postWithPath:@"getSelectList" params:param success:^(id JSON, int code, NSString *msg) {
+        if (code == 100) {
+            NSArray *array = JSON[@"data"][@"select"];
+            if (array&&![array isKindOfClass:[NSNull class]]) {
+                for (NSDictionary *dict in array) {
+                    FileModel *fileModel = [[FileModel alloc] init];
+                    [fileModel setValuesForKeysWithDictionary:dict];
+                    [_dataArray addObject:fileModel];
+                }
+            }
+            [_tableView reloadData];
+        }else{
+            [RemindView showViewWithTitle:msg location:MIDDLE];
+        }
+    } failure:^(NSError *error) {
+        
+    }];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

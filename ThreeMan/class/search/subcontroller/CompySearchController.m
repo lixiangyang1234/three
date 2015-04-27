@@ -40,7 +40,7 @@
 
 - (void)loadData
 {
-    NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:self.keywords,@"keywords",@"2",@"type", nil];
+    NSDictionary *param = @{@"keywords":self.keywords,@"type":self.type};;
     [HttpTool postWithPath:@"getSelectList" params:param success:^(id JSON, int code, NSString *msg) {
         if (code == 100) {
             NSArray *select = JSON[@"data"][@"select"];

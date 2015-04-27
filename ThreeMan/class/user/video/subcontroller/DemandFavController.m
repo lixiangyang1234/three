@@ -61,6 +61,7 @@
     
 }
 
+//请求数据
 - (void)loadData
 {
     [HttpTool postWithPath:@"getCollect" params:nil success:^(id JSON, int code, NSString *msg) {
@@ -84,6 +85,15 @@
     } failure:^(NSError *error) {
         
     }];
+    
+    for (int i = 0; i < 10; i++) {
+        FavoriteItem *item = [[FavoriteItem alloc] init];
+        item.title = @"123";
+        item.companyname = @"1234";
+        item.img = @"123";
+        [_dataArray addObject:item];
+    }
+    [_tableView reloadData];
 }
 
 - (void)edit:(BOOL)editting

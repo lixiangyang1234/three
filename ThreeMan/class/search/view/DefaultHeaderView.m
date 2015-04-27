@@ -26,6 +26,10 @@
         _titleLabel.textColor = HexRGB(0x7a7a7a);
         [self addSubview:_titleLabel];
         
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0,frame.size.height-0.5, frame.size.width, 0.5)];
+        line.backgroundColor = HexRGB(0xcacaca);
+        [self addSubview:line];
+        
     }
     return self;
 }
