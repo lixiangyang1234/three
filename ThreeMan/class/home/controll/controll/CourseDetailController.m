@@ -65,6 +65,7 @@
     
     [self addRecommendLoadStatus];
     [self addLoadStatus];
+    
 
     // Do any additional setup after loading the view.
 }
@@ -79,9 +80,12 @@
     NSDictionary *paramDic =[NSDictionary dictionaryWithObjectsAndKeys:_courseDetailID,@"id", nil];
     [HttpTool postWithPath:@"getNeedDetail" params:paramDic success:^(id JSON, int code, NSString *msg) {
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        [failView removeFromSuperview];
 
 //        NSLog(@"%@",JSON);
         if (code==100) {
+            [failView removeFromSuperview];
+
             NSDictionary *dict =JSON[@"data"][@"subject_detail"];
             if (![dict isKindOfClass:[NSNull class]]) {
                 courseDetailModel *courseModel =[[courseDetailModel alloc]initWithDictnoaryForCourseDetail:dict];
@@ -95,6 +99,7 @@
         [self addUICategoryView];
         [self addUIDownloadView];
         [self addCategoryBackScrollView];
+        
     } failure:^(NSError *error) {
 //        NSLog(@"%@",error);
         [failView removeFromSuperview];
@@ -830,17 +835,17 @@
 -(void)notByRecommend{
     
 
-    failView =[[NetFailView alloc]initWithFrameForDetail:CGRectMake((kWidth-NETFAILIMGWH)/2, kHeight-64-165-50, NETFAILIMGWH, NETFAILIMGWH) backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"抱歉！该需求暂时还没有推荐！"];
-    [self.view addSubview:failView];
+    failView =[[NetFailView alloc]initWithFrameForDetail:CGRectMake((kWidth-NETFAILIMGWH)/2+kWidth, -28, NETFAILIMGWH, NETFAILIMGWH) backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"抱歉！该需求暂时还没有推荐！"];
+    [categoryScrollView addSubview:failView];
 }
 // 答疑 没有购买课程
 -(void)notByAnswer{
-    failView =[[NetFailView alloc]initWithFrameForDetail:CGRectMake((kWidth-NETFAILIMGWH)/2, kHeight-64-165-50, NETFAILIMGWH, NETFAILIMGWH) backImage:[UIImage imageNamed:@"netFailImg_2"] promptTitle:@"抱歉！您还未购买该课程！点击下方“购买”按钮购买！"];
-    [self.view addSubview:failView];
+    failView =[[NetFailView alloc]initWithFrameForDetail:CGRectMake((kWidth-NETFAILIMGWH)/2+kWidth*2, -28, NETFAILIMGWH, NETFAILIMGWH) backImage:[UIImage imageNamed:@"netFailImg_2"] promptTitle:@"抱歉！您还未购买该课程！点击下方“购买”按钮购买！"];
+    [categoryScrollView addSubview:failView];
 }
 //没有网络
 -(void)notNetFailView{
-    NetFailView *failView =[[NetFailView alloc]initWithFrame:self.view.bounds backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"对不起，网络不给力!请检查您的网络设置! "];
+     failView =[[NetFailView alloc]initWithFrame:self.view.bounds backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"对不起，网络不给力!请检查您的网络设置! "];
     [self.view addSubview:failView];
 }
 @end

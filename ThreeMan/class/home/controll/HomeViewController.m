@@ -272,7 +272,6 @@ static NSString * const reuseIdentifier = @"Cell";
         UILabel *  needLabel =[[UILabel alloc]init];
         needLabel.backgroundColor =[UIColor clearColor];
         needLabel.text =homeModel.categorySubTitle;
-//        NSLog(@"-----%@",homeModel.categorySubTitle);
         [self.backScrollView addSubview:needLabel];
         needLabel.font =[UIFont systemFontOfSize:PxFont(16)];
         needLabel.textColor =HexRGB(0x9a9a9a);
@@ -335,7 +334,7 @@ static NSString * const reuseIdentifier = @"Cell";
         
         businessBtn.tag =i+50;
         
-        UILabel *subTitleLabel =[[UILabel alloc]initWithFrame:CGRectMake(45+i%2*(kWidth/2), NEEDH+BANNER+EIGHTH+158+i/2*60, kWidth/2, 60)];
+        UILabel *subTitleLabel =[[UILabel alloc]initWithFrame:CGRectMake(42+i%2*(kWidth/2), NEEDH+BANNER+EIGHTH+158+i/2*60, kWidth/2, 60)];
         [self.backScrollView addSubview:subTitleLabel];
         subTitleLabel.text =homeModel.tradeSubTitle;
         [subTitleLabel setTextColor:HexRGB(0x9a9a9a)];
