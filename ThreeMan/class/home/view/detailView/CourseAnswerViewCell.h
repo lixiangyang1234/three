@@ -15,5 +15,7 @@
 @property(nonatomic,strong)UILabel *timeAnswerLabel;
 @property(nonatomic,strong)UILabel *nameAnswerLabel;
 @property(nonatomic,strong)UILabel *contentAnswerLabel;
+@property(nonatomic,strong)UIView *backCell;
+@property(nonatomic,strong)UIView *backLineCell;
 
 @end

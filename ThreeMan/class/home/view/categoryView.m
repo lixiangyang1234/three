@@ -170,7 +170,7 @@
         _titleBtn.contentHorizontalAlignment =UIControlContentHorizontalAlignmentLeft;
         
         [_titleBtn addTarget:self action:@selector(titleBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-        _titleBtn.titleLabel.font =[UIFont systemFontOfSize:PxFont(20)];
+        _titleBtn.titleLabel.font =[UIFont systemFontOfSize:PxFont(18)];
         
         if (i==0)
         {
@@ -266,7 +266,7 @@
             
             [self.categoryTitleBtn setTitleColor:HexRGB(0x178ac5) forState:UIControlStateSelected];
             [_categoryTitleBtn setTitleColor:HexRGB(0x808080) forState:UIControlStateNormal];
-            _categoryTitleBtn.titleLabel.font =[UIFont systemFontOfSize:PxFont(20)];
+            _categoryTitleBtn.titleLabel.font =[UIFont systemFontOfSize:PxFont(18)];
 
             self.categoryTitleBtn.hidden =NO;
             [self.categoryTitleBtn addTarget:self action:@selector(categoryTitleBtnClick:) forControlEvents:UIControlEventTouchUpInside];

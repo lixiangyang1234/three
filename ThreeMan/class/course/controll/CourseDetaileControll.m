@@ -77,7 +77,6 @@
     bannerImage.userInteractionEnabled =YES;
     [bannerImage setImageWithURL:[NSURL URLWithString:courseModel.detaileImgurl]placeholderImage:placeHoderImage];
     
-    NSLog(@"qqqqqqq%@",courseModel.detailContent);
     CGFloat bannerh =BANNERH+bannerImage.frame.origin.y+5;
     UIView *backLine =[[UIView alloc]initWithFrame:CGRectMake(0, bannerh, kWidth, YYBORDER)];
     [self.backScrollView addSubview:backLine];
@@ -85,9 +84,9 @@
 
   UILabel *  contentLabel =[[UILabel alloc]initWithFrame:CGRectMake(YYBORDER*2, bannerh+15, backView.frame.size.width*2, contentH )];
     contentLabel.backgroundColor =[UIColor clearColor];
-    contentLabel.text =courseModel.detailDescription;
+    contentLabel.text =[NSString stringWithFormat:@"   %@",courseModel.detailDescription];
     [self.backScrollView addSubview:contentLabel];
-    contentLabel.font =[UIFont systemFontOfSize:PxFont(20)];
+    contentLabel.font =[UIFont systemFontOfSize:15];
     contentLabel.textColor =HexRGB(0x737373);
     contentLabel.textAlignment =NSTextAlignmentLeft;
     contentLabel.numberOfLines =0;
