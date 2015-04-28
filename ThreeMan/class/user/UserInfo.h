@@ -14,6 +14,7 @@
 @property (nonatomic,strong) NSString *img;
 @property (nonatomic,strong) NSString *phone;
 @property (nonatomic,strong) NSString *username;
+@property (nonatomic,strong) NSString *type;  //1表示普通用户  2表示企业用户 
 //@property (nonatomic,assign) bool downloadType; //是否Wi-Fi下载
 
 - (void)setValue:(id)value forUndefinedKey:(NSString *)key;

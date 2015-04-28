@@ -11,6 +11,7 @@
 		0414AC7C1AEDE7B500631B8E /* Order.m in Sources */ = {isa = PBXBuildFile; fileRef = 0414AC7A1AEDE7B500631B8E /* Order.m */; };
 		0414AC801AEE194900631B8E /* FileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0414AC7F1AEE194900631B8E /* FileModel.m */; };
 		043FD06B1AE0E58700F18FEA /* ErrorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 043FD06A1AE0E58700F18FEA /* ErrorView.m */; };
+		045636AB1AEE27D500558776 /* DocumentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 045636AA1AEE27D500558776 /* DocumentCell.m */; };
 		0463870C1ADFAEE700A35D16 /* MessageDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0463870B1ADFAEE700A35D16 /* MessageDetailController.m */; };
 		0463870F1ADFB60C00A35D16 /* MessageDetailItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0463870E1ADFB60C00A35D16 /* MessageDetailItem.m */; };
 		0469E00E1AEA251A0083601C /* CompFavoriteController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0469E00D1AEA251A0083601C /* CompFavoriteController.m */; };
@@ -252,6 +253,8 @@
 		0414AC7F1AEE194900631B8E /* FileModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileModel.m; sourceTree = "<group>"; };
 		043FD0691AE0E58700F18FEA /* ErrorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ErrorView.h; sourceTree = "<group>"; };
 		043FD06A1AE0E58700F18FEA /* ErrorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ErrorView.m; sourceTree = "<group>"; };
+		045636A91AEE27D500558776 /* DocumentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentCell.h; sourceTree = "<group>"; };
+		045636AA1AEE27D500558776 /* DocumentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumentCell.m; sourceTree = "<group>"; };
 		0463870A1ADFAEE700A35D16 /* MessageDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageDetailController.h; sourceTree = "<group>"; };
 		0463870B1ADFAEE700A35D16 /* MessageDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageDetailController.m; sourceTree = "<group>"; };
 		0463870D1ADFB60C00A35D16 /* MessageDetailItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageDetailItem.h; sourceTree = "<group>"; };
@@ -1186,6 +1189,8 @@
 				04CC33271ACA8042008A85B5 /* HistoryCell.m */,
 				04CC33281ACA8042008A85B5 /* HotCell.h */,
 				04CC33291ACA8042008A85B5 /* HotCell.m */,
+				045636A91AEE27D500558776 /* DocumentCell.h */,
+				045636AA1AEE27D500558776 /* DocumentCell.m */,
 			);
 			path = cell;
 			sourceTree = "<group>";
@@ -2226,6 +2231,7 @@
 				04C58CD01AE4900C001E1BB3 /* OperationController.m in Sources */,
 				55E3739C1AC2B54200C794DD /* DateManeger.m in Sources */,
 				55C24F8B1ACB8EE500BFEBED /* BusinessViewCell.m in Sources */,
+				045636AB1AEE27D500558776 /* DocumentCell.m in Sources */,
 				04DECE2D1AD67DAF00EC53D2 /* AFURLSessionManager.m in Sources */,
 				04DECDA71AD616F100EC53D2 /* FMDatabaseQueue.m in Sources */,
 				04DECE251AD67DAF00EC53D2 /* AFHTTPRequestOperation.m in Sources */,

@@ -34,6 +34,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self loadData];
 }
 
 - (void)buildUI
@@ -60,14 +61,12 @@
     nodataView.hidden = YES;
     [_tableView addSubview:nodataView];
 
-    [self loadData];
-    
-    
 }
-
+#pragma mark 充值/提现
 - (void)btnDown
 {
-    if (0) {
+    UserInfo *userinfo = [SystemConfig sharedInstance].userInfo;
+    if ([userinfo.type isEqualToString:@"1"]) {
         //支付
         PayViewController *pay = [[PayViewController alloc] init];
         [self.navigationController pushViewController:pay animated:YES];
@@ -81,38 +80,45 @@
 
 - (void)loadData
 {
-/*
-    [HttpTool postWithPath:@"" params:nil success:^(id JSON, int code, NSString *msg) {
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [HttpTool postWithPath:@"getUserCenter" params:nil success:^(id JSON, int code, NSString *msg) {
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        NSLog(@"%@",JSON);
         if (code == 100) {
-            
+            if (_dataArray.count!=0) {
+                [_dataArray removeAllObjects];
+            }
+            NSArray *array = JSON[@"data"][@"payments"];
+            if (array&&![array isKindOfClass:[NSNull class]]) {
+                for (NSDictionary  *dict in array) {
+                    AccountItem *item = [[AccountItem alloc] init];
+                    [item setValuesForKeysWithDictionary:dict];
+                    [_dataArray addObject:item];
+                }
+            }
             
             if (_dataArray.count==0) {
                 nodataView.hidden = NO;
             }
-            
+            NSDictionary *user = JSON[@"data"][@"user"];
+            NSString *num = [user objectForKey:@"num"];
+            NSString *type = [user objectForKey:@"type"];
             _tableView.tableHeaderView = headView;
-            headView.amountLabel.text = @"238";
-            [headView.btn setTitle:@"充值" forState:UIControlStateNormal];
-
+            headView.amountLabel.text = num;
+            UserInfo *userinfo = [SystemConfig sharedInstance].userInfo;
+            if ([type isEqualToString:@"1"]&&[userinfo.type isEqualToString:@"1"]) {
+                [headView.btn setTitle:@"充值" forState:UIControlStateNormal];
+            }else{
+                [headView.btn setTitle:@"提现" forState:UIControlStateNormal];
+            }
+        }else{
+            [RemindView showViewWithTitle:msg location:TOP];
         }
         [_tableView reloadData];
     } failure:^(NSError *error) {
-        networkError.hidden = NO;
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        [RemindView showViewWithTitle:offline location:TOP];
     }];
-*/
-    for (int i = 0 ; i<5; i++) {
-        AccountItem *item = [[AccountItem alloc] init];
-        item.title = @"03.15期雅思听力测试班";
-        item.desc = @"华信博达管理顾问公司";
-        item.amount = @"-25";
-        item.date = @"2014.15.14";
-        [_dataArray addObject:item];
-    }
-    _tableView.tableHeaderView = headView;
-    headView.amountLabel.text = @"238";
-    [headView.btn setTitle:@"充值" forState:UIControlStateNormal];
-
-    [_tableView reloadData];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -129,9 +135,18 @@
     }
     AccountItem *item = [_dataArray objectAtIndex:indexPath.row];
     cell.titleLabel.text = item.title;
-    cell.desLabel.text = item.desc;
-    cell.amountLabel.text = item.amount;
-    cell.dateLabel.text = item.date;
+    cell.desLabel.text = item.companyname;
+    if ([item.type isEqualToString:@"1"]) {
+        cell.amountLabel.text = [NSString stringWithFormat:@"-%@",item.price];
+        cell.amountLabel.textColor = HexRGB(0x1c8cc6);
+    }else if([item.type isEqualToString:@"2"]){
+        cell.amountLabel.textColor = HexRGB(0xd83847);
+        cell.amountLabel.text = [NSString stringWithFormat:@"+%@",item.price];
+    }else if([item.type isEqualToString:@"3"]){
+        cell.amountLabel.textColor = HexRGB(0x1c8cc6);
+        cell.amountLabel.text = [NSString stringWithFormat:@"-%@",item.price];
+    }
+    cell.dateLabel.text = item.addtime;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if (indexPath.row<_dataArray.count-1) {
         cell.line.backgroundColor = HexRGB(0xe0e0e0);

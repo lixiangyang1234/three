@@ -13,10 +13,14 @@
 #import "HttpTool.h"
 #import "UIImageView+WebCache.h"
 #import "ErrorView.h"
+#import "MJRefresh.h"
 
-@interface CompanyViewController ()
+#define pagesize 15
+
+@interface CompanyViewController ()<MJRefreshBaseViewDelegate>
 {
     ErrorView *networkError;
+    MJRefreshFooterView *refreshFootView;
 }
 @end
 
@@ -38,37 +42,63 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:_tableView];
     
+    refreshFootView = [[MJRefreshFooterView alloc] init];
+    refreshFootView.delegate = self;
+    refreshFootView.scrollView = _tableView;
+    
     networkError = [[ErrorView alloc] initWithImage:@"netFailImg_1" title:@"对不起,网络不给力! 请检查您的网络设置!"];
     networkError.center = CGPointMake(kWidth/2, (kHeight-64-40)/2);
     networkError.hidden = YES;
     [self.view addSubview:networkError];
-    [self loadData];
+    [self loadData:NO];
+}
+
+- (void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView
+{
+    [self loadData:YES];
 }
 
 #pragma mark 请求数据
-- (void)loadData
+- (void)loadData:(BOOL)loading
 {
-    
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"加载中...";
-    [HttpTool postWithPath:@"getCaseList" params:nil success:^(id JSON, int code, NSString *msg) {
-        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    NSDictionary *param = @{@"pageid":[NSString stringWithFormat:@"%lu",(unsigned long)_dataArray.count],@"pagesize":[NSString stringWithFormat:@"%d",pagesize]};
+    if (!loading) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.labelText = @"加载中...";
+    }
+    [HttpTool postWithPath:@"getCaseList" params:param success:^(id JSON, int code, NSString *msg) {
+        if (loading) {
+            [refreshFootView endRefreshing];
+        }else{
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        }
         if (code == 100) {
-            NSDictionary *dic = [JSON objectForKey:@"data"];
-            NSArray *array = [dic objectForKey:@"case"];
+            NSArray *array = [JSON objectForKey:@"data"];
             if (![array isKindOfClass:[NSNull class]]) {
                 for (NSDictionary *dict in array) {
                     PatternItem *item = [[PatternItem alloc] init];
                     [item setValuesForKeysWithDictionary:dict];
                     [_dataArray addObject:item];
                 }
+                if (array.count<pagesize) {
+                    refreshFootView.hidden = YES;
+                }else{
+                    refreshFootView.hidden = NO;
+                }
+            }else{
+                refreshFootView.hidden = YES;
             }
             [_tableView reloadData];
         }
     } failure:^(NSError *error) {
-        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-        NSLog(@"%@",error);
-        networkError.hidden = NO;
+        if (loading) {
+            [refreshFootView endRefreshing];
+        }else{
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        }
+        if (_dataArray.count==0) {
+            networkError.hidden = NO;
+        }
     }];
 }
 
@@ -85,7 +115,7 @@
         cell = [[PatternCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify];
     }
     PatternItem *item =[_dataArray objectAtIndex:indexPath.row];
-    [cell.imgView setImageWithURL:[NSURL URLWithString:item.imgurl] placeholderImage:[UIImage imageNamed:@""]];
+    [cell.imgView setImageWithURL:[NSURL URLWithString:item.imgurl] placeholderImage:placeHoderImage2];
     cell.titleLabel.text = item.title;
     cell.readLabel.text = item.number;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;

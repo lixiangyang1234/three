@@ -94,15 +94,17 @@
         NSString *uid = [userInfo objectForKey:@"uid"];
         NSString *username = [userInfo objectForKey:@"username"];
         NSString *phone = [userInfo objectForKey:@"phone"];
+        NSString *type = [userInfo objectForKey:@"type"];
         NSString *img = [userInfo objectForKey:@"img"];
-        if (uid&&username&&phone) {
+        
+        if (uid&&username&&phone&&type) {
             [SystemConfig sharedInstance].isUserLogin = YES;
             [SystemConfig sharedInstance].uid = uid;
             UserInfo *userItem = [[UserInfo alloc] init];
             userItem.uid = uid;
             userItem.username = username;
             userItem.phone = phone;
-            
+            userItem.type = type;
             if (img&&img.length!=0) {
                 userItem.img = img;
             }

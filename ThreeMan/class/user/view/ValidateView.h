@@ -27,7 +27,6 @@
 @property (nonatomic,assign) id<ValidateViewDelegate> delegate;
 @property (nonatomic,assign) id <KeyboardDelegate> keyboardDelegate;
 
-
 - (id)initWithTitle:(NSString *)title;
 
 @end

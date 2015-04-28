@@ -10,9 +10,14 @@
 #import "EnterpriseCell.h"
 #import "EnterpriseItem.h"
 #import "CompanyHomeControll.h"
+#import "MJRefresh.h"
 
-@interface CompySearchController ()
+#define pagesize 15
 
+@interface CompySearchController ()<MJRefreshBaseViewDelegate>
+{
+    MJRefreshFooterView *refreshFootView;
+}
 @end
 
 @implementation CompySearchController
@@ -35,13 +40,31 @@
     _tableView.tableHeaderView = view;
     [self.view addSubview:_tableView];
     
-    [self loadData];
+    refreshFootView = [[MJRefreshFooterView alloc] init];
+    refreshFootView.delegate = self;
+    refreshFootView.scrollView = _tableView;
+    
+    [self loadData:NO];
 }
 
-- (void)loadData
+- (void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView
 {
-    NSDictionary *param = @{@"keywords":self.keywords,@"type":self.type};;
+    [self loadData:YES];
+}
+
+- (void)loadData:(BOOL)loading
+{
+    NSDictionary *param = @{@"pageid":[NSString stringWithFormat:@"%lu",(unsigned long)_dataArray.count],@"pagesize":[NSString stringWithFormat:@"%d",pagesize],@"keywords":self.keywords,@"type":self.type};
+    if (!loading) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.labelText = @"加载中...";
+    }
     [HttpTool postWithPath:@"getSelectList" params:param success:^(id JSON, int code, NSString *msg) {
+        if (loading) {
+            [refreshFootView endRefreshing];
+        }else{
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        }
         if (code == 100) {
             NSArray *select = JSON[@"data"][@"select"];
             if (![select isKindOfClass:[NSNull class]]&&select) {
@@ -50,11 +73,22 @@
                     [item setValuesForKeysWithDictionary:dict];
                     [_dataArray addObject:item];
                 }
+                if (select.count<pagesize) {
+                    refreshFootView.hidden = YES;
+                }else{
+                    refreshFootView.hidden = NO;
+                }
+            }else{
+                refreshFootView.hidden = YES;
             }
         }
         [_tableView reloadData];
     } failure:^(NSError *error) {
-        NSLog(@"%@",error);
+        if (loading) {
+            [refreshFootView endRefreshing];
+        }else{
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        }
     }];
 }
 
@@ -71,7 +105,7 @@
         cell = [[EnterpriseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify];
     }
     EnterpriseItem *item = [_dataArray objectAtIndex:indexPath.row];
-    [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:[UIImage imageNamed:@""]];
+    [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:placeHoderImage1];
     cell.titleLabel.text = item.companyname;
     cell.littleLabel.text = [NSString stringWithFormat:@"课程%@",item.scorenums];
     cell.contentLabel.text = item.introduce;

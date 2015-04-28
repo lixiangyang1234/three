@@ -26,7 +26,7 @@
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         self.backgroundColor = HexRGB(0xe8e8e8);
         
-        bgView = [[UIView alloc] initWithFrame:CGRectMake(8,4,kWidth-8*2,80)];
+        bgView = [[UIView alloc] initWithFrame:CGRectMake(8,0,kWidth-8*2,80)];
         bgView.backgroundColor = HexRGB(0xffffff);
         [self.contentView addSubview:bgView];
         

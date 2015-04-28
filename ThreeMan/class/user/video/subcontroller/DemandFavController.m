@@ -11,8 +11,14 @@
 #import "FavoriteCell.h"
 #import "CourseDetailController.h"
 #import "NineBlockController.h"
+#import "MJRefresh.h"
 
-@interface DemandFavController ()
+#define pagesize 15
+
+@interface DemandFavController ()<MJRefreshBaseViewDelegate>
+{
+    MJRefreshFooterView *refreshFootView;
+}
 
 @end
 
@@ -25,7 +31,7 @@
     
     [self buidlUI];
     
-    [self loadData];
+    [self loadData:NO];
 }
 
 - (void)buidlUI
@@ -41,6 +47,10 @@
     _tableView.sectionFooterHeight = 0;
     _tableView.sectionHeaderHeight = 0;
     [self.view addSubview:_tableView];
+    
+    refreshFootView = [[MJRefreshFooterView alloc] init];
+    refreshFootView.delegate = self;
+    refreshFootView.scrollView = _tableView;
     
     editView = [[EditView alloc] init];
     editView.delegate = self;
@@ -61,10 +71,26 @@
     
 }
 
-//请求数据
-- (void)loadData
+- (void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView
 {
-    [HttpTool postWithPath:@"getCollect" params:nil success:^(id JSON, int code, NSString *msg) {
+    [self loadData:YES];
+}
+
+//请求数据
+- (void)loadData:(BOOL)loading
+{
+    NSDictionary *param = @{@"pageid":[NSString stringWithFormat:@"%lu",(unsigned long)_dataArray.count],@"pagesize":[NSString stringWithFormat:@"%d",pagesize]};
+    if (!loading) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.labelText = @"加载中...";
+    }
+    
+    [HttpTool postWithPath:@"getCollect" params:param success:^(id JSON, int code, NSString *msg) {
+        if (loading) {
+            [refreshFootView endRefreshing];
+        }else{
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        }
         if (code == 100) {
             NSLog(@"%@",JSON);
             NSArray *array = JSON[@"data"][@"collect"];
@@ -76,6 +102,7 @@
                 }
             }
         }
+        
         if (_dataArray.count==0) {
             noDataView.hidden = NO;
         }else{
@@ -83,7 +110,11 @@
         }
         [_tableView reloadData];
     } failure:^(NSError *error) {
-        
+        if (loading) {
+            [refreshFootView endRefreshing];
+        }else{
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        }
     }];
     
     for (int i = 0; i < 10; i++) {

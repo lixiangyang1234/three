@@ -26,11 +26,28 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self setLeftTitle:@"充值"];
-    
-    [self buildUI];
+    [self loadData];
 }
 
-- (void)buildUI
+- (void)loadData
+{
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [HttpTool postWithPath:@"getReturn" params:nil success:^(id JSON, int code, NSString *msg) {
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        NSLog(@"%@",JSON);
+        if (code == 100) {
+            NSDictionary *dict = JSON[@"data"];
+            [self buildUI:dict];
+        }else{
+            [RemindView showViewWithTitle:msg location:TOP];
+        }
+    } failure:^(NSError *error) {
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        [RemindView showViewWithTitle:offline location:TOP];
+    }];
+}
+
+- (void)buildUI:(NSDictionary *)dict
 {
     UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(8, 8, kWidth-8*2, 50+31+50)];
     bgView.backgroundColor = [UIColor whiteColor];
@@ -54,11 +71,13 @@
         [bgView addSubview:line];
     }
     
-    
+    UserInfo *userinfo = [SystemConfig sharedInstance].userInfo;
+    NSString *scale = [dict objectForKey:@"scale"];
+    NSString *num = [[dict objectForKey:@"user"] objectForKey:@"num"];
     //账号
     UILabel *telLabel = [[UILabel alloc] initWithFrame:CGRectMake(12,0,140,50)];
     telLabel.backgroundColor = [UIColor clearColor];
-    telLabel.text = @"15012545412";
+    telLabel.text = userinfo.phone;
     telLabel.textColor = HexRGB(0x323232);
     telLabel.font = [UIFont systemFontOfSize:17];
     [bgView addSubview:telLabel];
@@ -66,7 +85,7 @@
     //昵称
     UILabel *nickLabel = [[UILabel alloc] initWithFrame:CGRectMake(bgView.frame.size.width-12-150,0,150,50)];
     nickLabel.backgroundColor = [UIColor clearColor];
-    nickLabel.text = @"张玉泉";
+    nickLabel.text = userinfo.username;
     nickLabel.textAlignment = NSTextAlignmentRight;
     nickLabel.textColor = HexRGB(0x323232);
     nickLabel.font = [UIFont systemFontOfSize:17];
@@ -75,13 +94,13 @@
     //剩余蜕变豆
     UILabel *amountLabel = [[UILabel alloc] initWithFrame:CGRectMake(12,50,140,31)];
     amountLabel.backgroundColor = [UIColor clearColor];
-    amountLabel.text = @"剩余蜕变豆:28";
+    amountLabel.text = [NSString stringWithFormat:@"剩余蜕变豆:%@",num];
     amountLabel.textColor = HexRGB(0x959595);
     amountLabel.font = [UIFont systemFontOfSize:14];
     [bgView addSubview:amountLabel];
     
     _textField = [[UITextField alloc] initWithFrame:CGRectMake(12, 50+31, bgView.frame.size.width-12,50)];
-    _textField.placeholder = @"请输入充值数量(1元=1蜕变豆)";
+    _textField.placeholder = [NSString stringWithFormat:@"请输入充值数量(1元=%@蜕变豆)",scale];
     _textField.keyboardType = UIKeyboardTypeNumberPad;
     _textField.backgroundColor = [UIColor clearColor];
     _textField.font = [UIFont systemFontOfSize:17];
@@ -129,8 +148,23 @@
         [RemindView showViewWithTitle:@"请输入购买数量" location:TOP];
         return ;
     }
+    //获取支付金额
+    NSDictionary *param = @{@"num":_textField.text};
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [HttpTool postWithPath:@"getRecharge" params:param success:^(id JSON, int code, NSString *msg) {
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        if (code == 100) {
+            NSString *money = JSON[@"data"][@"money"];
+            [self doAlipay:money];
+        }else{
+            [RemindView showViewWithTitle:msg location:TOP];
+        }
+    } failure:^(NSError *error) {
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        [RemindView showViewWithTitle:offline location:TOP];
+    }];
+    
     //支付操作
-    [self doAlipay];
 }
 
 - (void)textFieldChange
@@ -155,7 +189,7 @@
     return YES;
 }
 #pragma mark 支付宝支付
-- (void)doAlipay
+- (void)doAlipay:(NSString *)num;
 {
     /*============================================================================*/
     /*=======================需要填写商户app申请的===================================*/
@@ -191,7 +225,7 @@
     order.tradeNO = @"1"; //订单ID（由商家自行制定）
     order.productName = @"蜕变豆"; //商品标题
     order.productDescription = @"蜕变豆"; //商品描述
-    order.amount = [NSString stringWithFormat:@"%.2f",[_textField.text doubleValue]]; //商品价格
+    order.amount = [NSString stringWithFormat:@"%.2f",[num doubleValue]]; //商品价格
     order.notifyURL =  @"http://pnail.ywswl.com/Home/Alipay/notify_url.html"; //回调URL
     
     order.service = @"mobile.securitypay.pay";

@@ -11,10 +11,18 @@
 #import "FavoriteCell.h"
 #import "CourseDetailController.h"
 #import "NineBlockController.h"
+#import "MJRefresh.h"
+#import "EnterpriseCell.h"
+#import "EnterpriseItem.h"
 
-@interface CompFavoriteVC ()
+#define pagesize 15
 
+@interface CompFavoriteVC ()<MJRefreshBaseViewDelegate>
+{
+    MJRefreshFooterView *refreshFootView;
+}
 @end
+
 
 @implementation CompFavoriteVC
 
@@ -25,7 +33,8 @@
     
     [self buidlUI];
     
-    [self loadData];
+    [self loadData:NO];
+    
 }
 
 - (void)buidlUI
@@ -41,6 +50,10 @@
     _tableView.sectionFooterHeight = 0;
     _tableView.sectionHeaderHeight = 0;
     [self.view addSubview:_tableView];
+    
+    refreshFootView = [[MJRefreshFooterView alloc] init];
+    refreshFootView.delegate = self;
+    refreshFootView.scrollView = _tableView;
     
     editView = [[EditView alloc] init];
     editView.delegate = self;
@@ -61,15 +74,30 @@
     
 }
 
-- (void)loadData
+- (void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView
 {
-    [HttpTool postWithPath:@"getCollect" params:nil success:^(id JSON, int code, NSString *msg) {
+    [self loadData:YES];
+}
+
+- (void)loadData:(BOOL)loading
+{
+    NSDictionary *param = @{@"pageid":[NSString stringWithFormat:@"%lu",(unsigned long)_dataArray.count],@"pagesize":[NSString stringWithFormat:@"%d",pagesize]};
+    if (!loading) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.labelText = @"加载中...";
+    }
+
+    [HttpTool postWithPath:@"getCollectCompany" params:param success:^(id JSON, int code, NSString *msg) {
+        if (loading) {
+            [refreshFootView endRefreshing];
+        }else{
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        }
         if (code == 100) {
-            NSLog(@"%@",JSON);
             NSArray *array = JSON[@"data"][@"collect"];
             if (array&&![array isKindOfClass:[NSNull class]]) {
                 for (NSDictionary *dict in array) {
-                    FavoriteItem *item = [[FavoriteItem alloc] init];
+                    EnterpriseItem *item = [[EnterpriseItem alloc] init];
                     [item setValuesForKeysWithDictionary:dict];
                     [_dataArray addObject:item];
                 }
@@ -81,8 +109,13 @@
             noDataView.hidden = YES;
         }
         [_tableView reloadData];
-    } failure:^(NSError *error) {
         
+    } failure:^(NSError *error) {
+        if (loading) {
+            [refreshFootView endRefreshing];
+        }else{
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        }
     }];
 }
 
@@ -119,25 +152,28 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identify = @"identify";
-    FavoriteCell *cell = [tableView dequeueReusableCellWithIdentifier:identify];
+    EnterpriseCell *cell = [tableView dequeueReusableCellWithIdentifier:identify];
     if (cell == nil) {
-        cell = [[FavoriteCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify];
+        cell = [[EnterpriseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify];
     }
     UIView *view = [[UIView alloc] initWithFrame:cell.frame];
     view.backgroundColor = [UIColor clearColor];
     cell.selectedBackgroundView = [[UIView alloc] init];
     cell.multipleSelectionBackgroundView = [[UIView alloc] init];
+
+    EnterpriseItem *item = [_dataArray objectAtIndex:indexPath.row];
+    [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:placeHoderImage1];
+    cell.titleLabel.text = item.companyname;
+    cell.littleLabel.text = [NSString stringWithFormat:@"课程%@",item.scorenums];
+    cell.contentLabel.text = item.introduce;
     
-    FavoriteItem *item = [_dataArray objectAtIndex:indexPath.row];
-    cell.titleLabel.text = item.title;
-    [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:placeHoderImage2];
-    cell.desLabel.text = item.companyname;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 88;
+    return 90;
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
