@@ -43,6 +43,7 @@
 }
 -(void)addLoadStatus:(NSString *)typestr{
     NSDictionary *parmDic =[NSDictionary dictionaryWithObjectsAndKeys:_categoryId,@"id",typestr,@"type" ,nil];
+    NSLog(@"--------->sssss>>>%@",typestr);
     [HttpTool postWithPath:@"getNeedList" params:parmDic success:^(id JSON, int code, NSString *msg) {
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
         NSLog(@"%@",JSON);
@@ -91,17 +92,17 @@
             chooseBtn.isSelected =YES;
             _selectedItem =chooseBtn;
         }
-        chooseBtn.frame =CGRectMake(10+i%3*60, 7, 50, 30) ;
+        chooseBtn.frame =CGRectMake(8+i%3*55, 6, 50, 28) ;
         [chooseBtn setTitle:chooseTitleArray[i] forState:UIControlStateNormal];
         [chooseBtn addTarget:self action:@selector(chooseBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-        [chooseBtn.titleLabel setFont:[UIFont systemFontOfSize:14]];
+        [chooseBtn.titleLabel setFont:[UIFont systemFontOfSize:PxFont(18)]];
        
     }
     
                       
 }
 -(void)addTableView{
-    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 44, kWidth, kHeight-64-44) style:UITableViewStylePlain];
+    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 40, kWidth, kHeight-64-40) style:UITableViewStylePlain];
     _tableView.delegate =self;
     _tableView.dataSource =self;
     [_tableView setBackgroundColor:HexRGB(0xe0e0e0)];
@@ -123,7 +124,7 @@
 
     }
     else if(sender.tag ==1002){
-        [self addLoadStatus:@"2"];
+        [self addLoadStatus:@"2||3||4||5||6||7||8"];
 
     }
     if (sender!=_selectedItem) {
@@ -153,7 +154,7 @@
         needListModel *needModle =[_needListArray objectAtIndex:indexPath.row];
         [cell.needImage setImageWithURL:[NSURL URLWithString:needModle.imgurl]placeholderImage:placeHoderImage];
         
-        CGFloat titleH =[needModle.title sizeWithFont:[UIFont systemFontOfSize:PxFont(20)] constrainedToSize:CGSizeMake(kWidth-156, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping].height;
+        CGFloat titleH =[needModle.title sizeWithFont:[UIFont systemFontOfSize:PxFont(18)] constrainedToSize:CGSizeMake(kWidth-156, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping].height;
         cell.needTitle.frame =CGRectMake(135, 9, kWidth-156, titleH);
         cell.needTitle.text =[NSString stringWithFormat:@"        %@",needModle.title];
 

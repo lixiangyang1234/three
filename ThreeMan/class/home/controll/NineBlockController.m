@@ -65,7 +65,6 @@
     _scrollView.showsHorizontalScrollIndicator=NO;
     _scrollView.showsVerticalScrollIndicator=NO;
     _scrollView.backgroundColor =HexRGB(0xeaebec);
-    
     [self.view addSubview:_scrollView];
     //底部线条
     UIView *topLie =[[UIView alloc]initWithFrame:CGRectMake(0, 0, kWidth, YYBORDERH)];
@@ -81,7 +80,7 @@
 }
 -(void)addCateGoryButton
 {
-    CGFloat nineH =44; //按钮高
+    CGFloat nineH =43; //按钮高
     CGFloat nineBorderWH =0;//边界高宽
     
 
@@ -94,7 +93,7 @@
         [titleBtn setTitle:nineModel.nineTitle forState:UIControlStateNormal];
         [_scrollView addSubview:titleBtn];
         titleBtn .titleLabel.font = [UIFont systemFontOfSize:PxFont(20)];
-        titleBtn.frame =CGRectMake(nineBorderWH+i%3*((kWidth-nineBorderWH*2)/3), YYBORDERH+i/3*(nineH), (kWidth-nineBorderWH*2)/3-.5, nineH);
+        titleBtn.frame =CGRectMake(nineBorderWH+i%3*((kWidth-nineBorderWH*2)/3), i/3*(nineH), (kWidth-nineBorderWH*2)/3-.5, nineH);
         [titleBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         titleBtn.backgroundColor =[UIColor whiteColor];        
         [titleBtn addTarget:self action:@selector(itemsClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -105,7 +104,7 @@
     
         for (int h=0; h<_categoryArray.count/3; h++) {
             //底部线条
-            UIView *topLie =[[UIView alloc]initWithFrame:CGRectMake(YYBORDERH, YYBORDERH+nineH+h%(_categoryArray.count/3)*nineH, kWidth-YYBORDERH*2, .5)];
+            UIView *topLie =[[UIView alloc]initWithFrame:CGRectMake(YYBORDERH, nineH+h%(_categoryArray.count/3)*nineH, kWidth-YYBORDERH*2, .5)];
             [_scrollView addSubview:topLie];
             topLie.backgroundColor =HexRGB(0xeaebec);
     }

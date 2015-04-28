@@ -121,10 +121,10 @@
             chooseBtn.isSelected =YES;
             _selectedItem =chooseBtn;
         }
-        chooseBtn.frame =CGRectMake(10+i%3*60, 5, 50, 30) ;
+        chooseBtn.frame =CGRectMake(8+i%3*55, 6, 50, 28) ;
         [chooseBtn setTitle:chooseTitleArray[i] forState:UIControlStateNormal];
         [chooseBtn addTarget:self action:@selector(tchooseBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-        [chooseBtn.titleLabel setFont:[UIFont systemFontOfSize:14]];
+        [chooseBtn.titleLabel setFont:[UIFont systemFontOfSize:PxFont(18)]];
         
         
     }
@@ -138,14 +138,14 @@
     [categoryBtn setTitle:@"委员会类型" forState:UIControlStateNormal];
     [categoryBtn setImage:[UIImage imageNamed:@"downlower"] forState:UIControlStateNormal];
     [categoryBtn addTarget:self action:@selector(threeCategoryBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    [categoryBtn.titleLabel setFont:[UIFont systemFontOfSize:14]];
+    [categoryBtn.titleLabel setFont:[UIFont systemFontOfSize:PxFont(18)]];
     [categoryBtn setTitleColor:HexRGB(0x959595) forState:UIControlStateNormal];
     categoryBtn.imageEdgeInsets =UIEdgeInsetsMake(0, 90, 0, 0);
     categoryBtn.titleEdgeInsets =UIEdgeInsetsMake(0, 0, 0, 30);
     
 }
 -(void)addTableView{
-    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 44, kWidth, kHeight-64-44) style:UITableViewStylePlain];
+    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 40, kWidth, kHeight-64-40) style:UITableViewStylePlain];
     _tableView.delegate =self;
     _tableView.dataSource =self;
     [_tableView setBackgroundColor:HexRGB(0xe0e0e0)];
@@ -174,7 +174,7 @@
         [self addLoadStatus:@"1"];
     }if (sender.tag ==10002) {
         
-        [self addLoadStatus:@"2"];
+        [self addLoadStatus:@"2||3||4||5||6||7||8"];
     }
     
     
@@ -266,7 +266,7 @@
     }
     threeBlockModel *threeModel =[_threeListArray objectAtIndex:indexPath.row];
     [cell.needImage setImageWithURL:[NSURL URLWithString:threeModel.threeImgurl] placeholderImage:placeHoderImage];
-    CGFloat titleH =[threeModel.threeTitle sizeWithFont:[UIFont systemFontOfSize:PxFont(20)] constrainedToSize:CGSizeMake(kWidth-156, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping].height;
+    CGFloat titleH =[threeModel.threeTitle sizeWithFont:[UIFont systemFontOfSize:PxFont(18)] constrainedToSize:CGSizeMake(kWidth-156, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping].height;
     cell.needTitle.frame =CGRectMake(135, 9, kWidth-156, titleH);
     cell.needTitle.text =[NSString stringWithFormat:@"        %@",threeModel.threeTitle];
     cell.companyName.text =threeModel.threeCompanyname;

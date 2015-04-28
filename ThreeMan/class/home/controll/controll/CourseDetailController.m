@@ -39,6 +39,8 @@
 
     CGFloat webh;
     CGFloat cellContentH;
+    CGFloat RecommandCellH;
+    NSString *recommendCount;
 }
 
 @property(nonatomic,strong)UIScrollView *backScrollView;
@@ -60,9 +62,11 @@
     _byFailStr=@"";
     _bySuccessStr=@"";
     [self addMBprogressView];
+    
+    [self addRecommendLoadStatus];
     [self addLoadStatus];
     
-//    [self addRecommendLoadStatus];
+
     // Do any additional setup after loading the view.
 }
 
@@ -76,9 +80,12 @@
     NSDictionary *paramDic =[NSDictionary dictionaryWithObjectsAndKeys:_courseDetailID,@"id", nil];
     [HttpTool postWithPath:@"getNeedDetail" params:paramDic success:^(id JSON, int code, NSString *msg) {
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        [failView removeFromSuperview];
 
-        NSLog(@"%@",JSON);
+//        NSLog(@"%@",JSON);
         if (code==100) {
+            [failView removeFromSuperview];
+
             NSDictionary *dict =JSON[@"data"][@"subject_detail"];
             if (![dict isKindOfClass:[NSNull class]]) {
                 courseDetailModel *courseModel =[[courseDetailModel alloc]initWithDictnoaryForCourseDetail:dict];
@@ -92,7 +99,7 @@
         [self addUICategoryView];
         [self addUIDownloadView];
         [self addCategoryBackScrollView];
-        [self addUICategoryView];
+        
     } failure:^(NSError *error) {
 //        NSLog(@"%@",error);
         [failView removeFromSuperview];
@@ -107,10 +114,12 @@
 
     [HttpTool postWithPath:@"getRecommendList" params:paramDic success:^(id JSON, int code, NSString *msg) {
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-
         if (code == 100) {
             NSDictionary *dic = [JSON objectForKey:@"data"];
             NSArray *array = [dic objectForKey:@"recommend_list"];
+             recommendCount=[dic objectForKey:@"recommend_count"];
+            NSLog(@"----->%@",recommendCount);
+
             if (![array isKindOfClass:[NSNull class]]) {
                 for (NSDictionary *dict in array) {
                     [_recommendArray removeAllObjects];
@@ -127,6 +136,7 @@
             [self notByRecommend];
             [recommendTableView setHidden:YES];
         }
+//        [self addUICategoryView];
     } failure:^(NSError *error) {
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
  
@@ -219,8 +229,9 @@
     [categoryView addSubview:categoryLine];
     
     for (int p=0; p<3; p++)
-    {
-        NSArray *companyArr =@[@"详情",@"推荐(88)",@"答疑"];
+    {            NSLog(@"-22222---->%@",recommendCount);
+        NSString *recommendStr =[NSString stringWithFormat:@"推荐（%@）",recommendCount==nil ? @"0" :recommendCount];
+        NSArray *companyArr =@[@"详情",recommendStr,@"答疑"];
         UIButton *companyBtn =[UIButton buttonWithType:UIButtonTypeCustom];
         [categoryView addSubview:companyBtn];
         
@@ -229,7 +240,7 @@
         
         [companyBtn setBackgroundImage:[UIImage imageNamed:@"deleteBtn _selected.png"] forState:UIControlStateHighlighted];
         companyBtn.frame =CGRectMake(0+p%3*kWidth/3, 0, (kWidth-YYBORDERWH*2)/3, BUTTONH);
-        companyBtn.titleLabel.font =[UIFont systemFontOfSize:PxFont(20)];
+        companyBtn.titleLabel.font =[UIFont systemFontOfSize:PxFont(18)];
         [companyBtn setTitle:companyArr[p] forState:UIControlStateNormal];
         
         companyBtn.tag =20+p;
@@ -517,12 +528,16 @@
 
         }
         courseDetailModel *recommendModel =[_recommendArray objectAtIndex:indexPath.row];
+        RecommandCellH =[recommendModel.recommendContent sizeWithFont:[UIFont systemFontOfSize:PxFont(18)] constrainedToSize:CGSizeMake(self.view.frame.size.width-33, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping ].height;
+
+        RecommandCell.backCell.frame =CGRectMake(16, 0, RecommandCell.frame.size.width, RecommandCellH+58);
+        RecommandCell.backLineCell.frame =CGRectMake(0, RecommandCell.backCell.frame.size.height-1, RecommandCell.frame.size.width, 1);
         [RecommandCell.headerRecommendImage setImageWithURL:[NSURL URLWithString:recommendModel.recommendImg] placeholderImage:placeHoderImage1];
-       
-        RecommandCell.nameRecomendLabel.text =recommendModel.recommendUseame;
         RecommandCell.contentRecomendLabel.text =recommendModel.recommendContent;
+        RecommandCell.contentRecomendLabel.frame =CGRectMake(11, 50, kWidth-33, RecommandCellH);
+        RecommandCell.nameRecomendLabel.text =recommendModel.recommendUseame;
         RecommandCell.timeRecomendLabel.text =recommendModel.recommednAddtime;
-//        NSLog(@"----%@",recommendModel.recommednAddtime);
+//        NSLog(@"-qqqqqqq--%f---->%f",RecommandCellH,RecommandCell.backCell.frame.size.height);
         
         
        
@@ -538,11 +553,14 @@
             answerCell.selectionStyle =UITableViewCellSelectionStyleNone;
         }
         courseDetailModel *answerModel =[_answerArray objectAtIndex:indexPath.row];
+        cellContentH =[answerModel.answerContent sizeWithFont:[UIFont systemFontOfSize:PxFont(18)] constrainedToSize:CGSizeMake(self.view.frame.size.width-33, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping ].height;
+        answerCell.backCell.frame =CGRectMake(0, 0, answerCell.frame.size.width, cellContentH+72);
+        answerCell.backLineCell .frame=CGRectMake(0, answerCell.backCell.frame.size.height-1, answerCell.backCell.frame.size.width, 1);
+
         answerCell.answerTitle.text =answerModel.answerTitle;
         [answerCell.companyAnswerImage setImageWithURL:[NSURL URLWithString:answerModel.answerImg] placeholderImage:placeHoderImage1];
-         cellContentH =[answerModel.answerContent sizeWithFont:[UIFont systemFontOfSize:PxFont(18)] constrainedToSize:CGSizeMake(self.view.frame.size.width-33, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping ].height;
-        answerCell.contentAnswerLabel.frame =CGRectMake(11, 40, self.view.frame.size.width-33, cellContentH);
-//        NSLog(@"---%f---->%f",cellContentH,self.view.frame.size.width-33);
+        answerCell.contentAnswerLabel.frame =CGRectMake(11, 35, self.view.frame.size.width-33, cellContentH);
+        NSLog(@"---%f---->%f",cellContentH,answerCell.backCell.frame.size.height);
         answerCell.timeAnswerLabel.text =answerModel.answerAddtime;
         answerCell.nameAnswerLabel.text =answerModel.answerName;
         answerCell.contentAnswerLabel.text =answerModel.answerContent;
@@ -553,15 +571,10 @@
     return nil;
     
 }
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    CompanyHomeControll *companyHomeVC=[[CompanyHomeControll alloc]init];
-    [self.navigationController pushViewController:companyHomeVC animated:YES];
-}
+
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (_selectedBtn.tag ==21) {
-        return 118;
+        return RecommandCellH+66;
     }else if(_selectedBtn.tag ==22){
         return 80+cellContentH;
     }
@@ -572,7 +585,7 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if (scrollView.tag ==998) {
-        NSLog(@"%f----%f",scrollView.contentOffset.y,bannerHeightLine);
+//        NSLog(@"%f----%f",scrollView.contentOffset.y,bannerHeightLine);
         if (scrollView.contentOffset.y>=175) {
             //            scrollView.contentOffset =CGPointMake(0, 0);
             detailScrollView.scrollEnabled =YES;
@@ -822,17 +835,17 @@
 -(void)notByRecommend{
     
 
-    failView =[[NetFailView alloc]initWithFrameForDetail:CGRectMake((kWidth-NETFAILIMGWH)/2, kHeight-64-165-50, NETFAILIMGWH, NETFAILIMGWH) backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"抱歉！该需求暂时还没有推荐！"];
-    [self.view addSubview:failView];
+    failView =[[NetFailView alloc]initWithFrameForDetail:CGRectMake((kWidth-NETFAILIMGWH)/2+kWidth, -28, NETFAILIMGWH, NETFAILIMGWH) backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"抱歉！该需求暂时还没有推荐！"];
+    [categoryScrollView addSubview:failView];
 }
 // 答疑 没有购买课程
 -(void)notByAnswer{
-    failView =[[NetFailView alloc]initWithFrameForDetail:CGRectMake((kWidth-NETFAILIMGWH)/2, kHeight-64-165-50, NETFAILIMGWH, NETFAILIMGWH) backImage:[UIImage imageNamed:@"netFailImg_2"] promptTitle:@"抱歉！您还未购买该课程！点击下方“购买”按钮购买！"];
-    [self.view addSubview:failView];
+    failView =[[NetFailView alloc]initWithFrameForDetail:CGRectMake((kWidth-NETFAILIMGWH)/2+kWidth*2, -28, NETFAILIMGWH, NETFAILIMGWH) backImage:[UIImage imageNamed:@"netFailImg_2"] promptTitle:@"抱歉！您还未购买该课程！点击下方“购买”按钮购买！"];
+    [categoryScrollView addSubview:failView];
 }
 //没有网络
 -(void)notNetFailView{
-    NetFailView *failView =[[NetFailView alloc]initWithFrame:self.view.bounds backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"对不起，网络不给力!请检查您的网络设置! "];
+     failView =[[NetFailView alloc]initWithFrame:self.view.bounds backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"对不起，网络不给力!请检查您的网络设置! "];
     [self.view addSubview:failView];
 }
 @end

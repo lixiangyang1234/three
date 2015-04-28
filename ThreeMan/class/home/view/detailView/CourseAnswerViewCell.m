@@ -10,20 +10,19 @@
 #define YYBORDERWH   16
 #define borderwh    11
 @implementation CourseAnswerViewCell
-@synthesize answerImage,answerTitle,timeAnswerLabel,companyAnswerImage,contentAnswerLabel,nameAnswerLabel;
+@synthesize answerImage,answerTitle,timeAnswerLabel,companyAnswerImage,contentAnswerLabel,nameAnswerLabel,backLineCell,backCell;
 - (void)awakeFromNib {
     // Initialization code   what_img
 }
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self =[super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        UIView *backCell =[[UIView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width-YYBORDERWH, 120)];
+        backCell =[[UIView alloc]initWithFrame:CGRectMake(borderwh, 0, kWidth-borderwh, 100)];
         [self addSubview:backCell];
         backCell.backgroundColor =[UIColor whiteColor];
-        UIView *backLineCell =[[UIView alloc]initWithFrame:CGRectMake(0, backCell.frame.size.height-1, self.frame.size.width-YYBORDERWH, 1)];
-        [self addSubview:backLineCell];
+        backLineCell =[[UIView alloc]initWithFrame:CGRectMake(0, backCell.frame.size.height-1, kWidth-borderwh, 1)];
+        [backCell addSubview:backLineCell];
         backLineCell.backgroundColor =HexRGB(0xcacaca);
-        
         answerImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderwh, borderwh, 24, 21)];
         [backCell addSubview:answerImage];
         answerImage.backgroundColor =[UIColor clearColor];
@@ -33,11 +32,10 @@
         
         CGFloat imageW =answerImage.frame.origin.x+answerImage.frame.size.width;
         
-        answerTitle =[[UILabel alloc]initWithFrame:CGRectMake(imageW+borderwh, borderwh, self.frame.size.width-borderwh*3 , 30)];
+        answerTitle =[[UILabel alloc]initWithFrame:CGRectMake(imageW+borderwh, borderwh-4, self.frame.size.width-borderwh*3 , 30)];
         answerTitle.backgroundColor =[UIColor clearColor];
-        answerTitle.text =@"大头儿子小偷粑粑";
         [backCell addSubview:answerTitle];
-        answerTitle.font =[UIFont systemFontOfSize:PxFont(22)];
+        answerTitle.font =[UIFont systemFontOfSize:PxFont(18)];
         answerTitle.textColor =HexRGB(0x323232);
         CGFloat titleH =answerTitle.frame.size.height+answerTitle.frame.origin.y;
         
@@ -46,7 +44,7 @@
        
         [backCell addSubview:contentAnswerLabel];
         contentAnswerLabel.numberOfLines =0;
-        contentAnswerLabel.font =[UIFont systemFontOfSize:PxFont(18)];
+        contentAnswerLabel.font =[UIFont systemFontOfSize:PxFont(16)];
         contentAnswerLabel.textColor =HexRGB(0x655555);
         CGFloat contentH =contentAnswerLabel.frame.size.height+contentAnswerLabel.frame.origin.y;
         
@@ -60,19 +58,19 @@
         companyAnswerImage.layer.borderColor =HexRGB(0xdde5eb) .CGColor;
         
 
-        nameAnswerLabel =[[UILabel alloc]initWithFrame:CGRectMake(imageW+borderwh, contentH, 150 , 30)];
+        nameAnswerLabel =[[UILabel alloc]initWithFrame:CGRectMake(imageW+borderwh, contentH, 165 , 30)];
         nameAnswerLabel.backgroundColor =[UIColor clearColor];
         nameAnswerLabel.text =@"大头儿子";
         [backCell addSubview:nameAnswerLabel];
         nameAnswerLabel.numberOfLines =2;
-        nameAnswerLabel.font =[UIFont systemFontOfSize:PxFont(18)];
+        nameAnswerLabel.font =[UIFont systemFontOfSize:PxFont(16)];
         nameAnswerLabel.textColor =HexRGB(0xa3a3a3);
         
-        timeAnswerLabel =[[UILabel alloc]initWithFrame:CGRectMake(self.frame.size.width-100, contentH, 80, 30)];
+        timeAnswerLabel =[[UILabel alloc]initWithFrame:CGRectMake(self.frame.size.width-90, contentH, 70, 30)];
         timeAnswerLabel.backgroundColor =[UIColor clearColor];
         timeAnswerLabel.text =@"2015-03-04";
         [backCell addSubview:timeAnswerLabel];
-        timeAnswerLabel.font =[UIFont systemFontOfSize:PxFont(18)];
+        timeAnswerLabel.font =[UIFont systemFontOfSize:PxFont(16)];
         timeAnswerLabel.textColor =HexRGB(0xa3a3a3);
 
         

@@ -13,5 +13,7 @@
 @property(nonatomic,strong)UILabel *nameRecomendLabel;
 @property(nonatomic,strong)UILabel *timeRecomendLabel;
 @property(nonatomic,strong)UILabel *contentRecomendLabel;
+@property(nonatomic,strong)UIView *backCell;
+@property(nonatomic,strong)UIView *backLineCell;
 
 @end

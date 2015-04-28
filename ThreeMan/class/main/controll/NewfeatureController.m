@@ -12,7 +12,7 @@
 #import "WBNavigationController.h"
 #import "AppMacro.h"
 
-#define kCount 5
+#define kCount 3
 @interface NewfeatureController ()<UIScrollViewDelegate,UINavigationControllerDelegate>
 {
     UIScrollView *_scroll;
@@ -68,10 +68,10 @@
        
         
         NSLog(@"%f",kWidth);
-        NSString *name = [NSString stringWithFormat:@"new_tex%d.png", i+1 ];
+        NSString *name = [NSString stringWithFormat:@"new_text%d.png", i];
         
         if (kHeight<568) {
-            name = [NSString stringWithFormat:@"new_texs%d.png", i+1 ];
+            name = [NSString stringWithFormat:@"new_text%d.png", i ];
         }
         imageView.image = [UIImage imageNamed:name];
         // 2.设置frame
@@ -81,32 +81,15 @@
         if (i == kCount - 1) { // 最后一页，添加2个按钮
             // 3.立即体验（开始）
             UIButton *start = [UIButton buttonWithType:UIButtonTypeCustom];
-            UIImage *startNormal = [UIImage resizedImage:@"new_enter.png"];
-            [start setBackgroundImage:startNormal forState:UIControlStateNormal];
-            [start setBackgroundImage:[UIImage resizedImage:@"new_enter_pre.png"] forState:UIControlStateHighlighted];
-            start.frame =CGRectMake(45, size.height*0.8, 230, 40);
-            [start setTitle:@"立即进入" forState:UIControlStateNormal];
+            start.frame =CGRectMake((kWidth-155)/2, size.height*0.72, 155, 40);
             start.titleLabel.font =[UIFont systemFontOfSize:PxFont(30)];
-            
+            start.backgroundColor =[UIColor clearColor];
             [start addTarget:self action:@selector(start) forControlEvents:UIControlEventTouchUpInside];
             [imageView addSubview:start];
     
             imageView.userInteractionEnabled = YES;
             
-            
-            UIButton *login = [UIButton buttonWithType:UIButtonTypeCustom];
-            UIImage *loginNormal = [UIImage resizedImage:@"new_login.png"];
-            [login setBackgroundImage:loginNormal forState:UIControlStateNormal];
-            [login setBackgroundImage:[UIImage resizedImage:@"new_login_pre.png"] forState:UIControlStateHighlighted];
-            login.frame =CGRectMake(45, size.height*0.8-60, 230, 40);
-            [login setTitle:@"免费注册" forState:UIControlStateNormal];
-            login.titleLabel.font =[UIFont systemFontOfSize:PxFont(30)];
-            
-            [login addTarget:self action:@selector(login:) forControlEvents:UIControlEventTouchUpInside];
-            [imageView addSubview:login];
-            
-            imageView.userInteractionEnabled = YES;
-        }
+           }
     }
 }
 //立即进入
@@ -117,10 +100,6 @@
     
 }
 
-//免费注册
--(void)login:(UIButton *)log{
-    
-}
 
 
 

@@ -61,7 +61,7 @@
 #pragma mark=====添加数据
 -(void)addLoadStatus{
     NSDictionary *paraDic =[NSDictionary dictionaryWithObjectsAndKeys:_companyId,@"id", nil];
-    NSLog(@"---->ffffff%@",_companyId);
+//    NSLog(@"---->ffffff%@",_companyId);
     [HttpTool postWithPath:@"getCompanyCourseList" params:paraDic success:^(id JSON, int code, NSString *msg) {
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
 
@@ -140,16 +140,16 @@
     
     
     
-    UILabel * titleLabel =[[UILabel alloc]initWithFrame:CGRectMake((kWidth-180)/2, 5, 180, 20)];
+    UILabel * titleLabel =[[UILabel alloc]initWithFrame:CGRectMake((kWidth-180)/2, 0, 180, 20)];
     titleLabel.numberOfLines =1;
     [animationView addSubview:titleLabel];
     titleLabel.text =companyModel.companyCompanyname;
     titleLabel.textColor =[UIColor cyanColor];
     titleLabel.textAlignment =NSTextAlignmentCenter;
-    titleLabel.font =[UIFont systemFontOfSize:PxFont(22)];
+    titleLabel.font =[UIFont systemFontOfSize:PxFont(18)];
     
-    UILabel * contentLabel =[[UILabel alloc]initWithFrame:CGRectMake((kWidth-210)/2, 20, 210, 80)];
-    contentLabel.font =[UIFont systemFontOfSize:PxFont(18)];
+    UILabel * contentLabel =[[UILabel alloc]initWithFrame:CGRectMake((kWidth-260)/2, 20, 260, 80)];
+    contentLabel.font =[UIFont systemFontOfSize:PxFont(14)];
     titleLabel.textColor =HexRGB(0xffffff);
     contentLabel.textColor =HexRGB(0xf1f1f1);
     contentLabel.shadowColor =HexRGB(0xa2a2a2);
@@ -161,7 +161,7 @@
     
     contentLabel.text =companyModel.companyIntroduce;
     
-    alpha =[[UIImageView alloc]initWithFrame:CGRectMake(0, 28, kWidth, 80)];
+    alpha =[[UIImageView alloc]initWithFrame:CGRectMake(0, 42, kWidth, 80)];
     [animationView addSubview:alpha];
     alpha.image =[UIImage imageNamed:@"alphabg"];
     alpha.hidden =NO;
@@ -280,7 +280,7 @@
         headerImage.frame =CGRectMake((kWidth-70)/2, 30, 70, 70);
         
         animationView.frame =CGRectMake(0, 107, kWidth, 88);
-        alpha.frame =CGRectMake(0, 28, kWidth, 80);
+        alpha.frame =CGRectMake(0, 42, kWidth, 80);
         
         
         [UIView animateWithDuration:0.001 animations:^{
