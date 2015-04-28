@@ -49,8 +49,7 @@
         _contentLabel.backgroundColor = [UIColor clearColor];
         [bgView addSubview:_contentLabel];
         
-        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, heigth-1, bgView.frame.size.width,1)];
-        line.backgroundColor = HexRGB(0xe0e0e0);
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, heigth-0.5, bgView.frame.size.width,0.5)];
         [bgView addSubview:line];
     }
     return self;

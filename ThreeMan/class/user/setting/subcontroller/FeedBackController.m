@@ -29,7 +29,7 @@
     UIImage *image = [UIImage imageNamed:@"title"];
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
     imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
-    imageView.center = CGPointMake(kWidth/2,kHeight-64-image.size.height/2-20);
+    imageView.center = CGPointMake(kWidth/2,kHeight-64-image.size.height/2-30);
     [_scrollView addSubview:imageView];
 
     [self buildUI];

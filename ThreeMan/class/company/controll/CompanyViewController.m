@@ -48,7 +48,11 @@
 #pragma mark 请求数据
 - (void)loadData
 {
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"加载中...";
     [HttpTool postWithPath:@"getCaseList" params:nil success:^(id JSON, int code, NSString *msg) {
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
         if (code == 100) {
             NSDictionary *dic = [JSON objectForKey:@"data"];
             NSArray *array = [dic objectForKey:@"case"];
@@ -62,6 +66,7 @@
             [_tableView reloadData];
         }
     } failure:^(NSError *error) {
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
         NSLog(@"%@",error);
         networkError.hidden = NO;
     }];

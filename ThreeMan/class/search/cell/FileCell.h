@@ -13,5 +13,6 @@
 @property (nonatomic,strong) UIImageView *imgView;
 @property (nonatomic,strong) UILabel *titleLabel;
 @property (nonatomic,strong) UILabel *desLabel;
+@property (nonatomic,strong) UIView *line;
 
 @end

@@ -15,5 +15,5 @@
 }
 
 @property (nonatomic,copy) NSString *keywords;
-
+@property (nonatomic,copy) NSString *type;
 @end

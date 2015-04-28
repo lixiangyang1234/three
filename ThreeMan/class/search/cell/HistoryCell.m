@@ -26,7 +26,7 @@
         self.titleLabel.textColor = HexRGB(0x929292);
         [self.contentView addSubview:self.titleLabel];
         
-        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, height-1,kWidth,1)];
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, height-0.5,kWidth,0.5)];
         line.backgroundColor = HexRGB(0xe0e0e0);
         [self.contentView addSubview:line];
         

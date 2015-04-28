@@ -14,5 +14,5 @@
 @property (nonatomic,strong) UILabel *titleLabel;
 @property (nonatomic,strong) UILabel *littleLabel;
 @property (nonatomic,strong) UILabel *contentLabel;
-
+@property (nonatomic,strong) UIView *line;
 @end

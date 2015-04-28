@@ -504,6 +504,11 @@
                     cell = [[FileCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify3];
                 }
                 NSMutableArray *array1 = [_results objectAtIndex:indexPath.section];
+                if (indexPath.row+1<array1.count) {
+                    cell.line.backgroundColor = HexRGB(0xcacaca);
+                }else{
+                    cell.line.backgroundColor = HexRGB(0xe0e0e0);
+                }
                 FileItem *item = [array1 objectAtIndex:indexPath.row];
                 [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:[UIImage imageNamed:@"list_fail"]];
                 cell.titleLabel.text = item.title;
@@ -520,6 +525,11 @@
                         cell = [[FileCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify3];
                     }
                     NSMutableArray *array1 = [_results objectAtIndex:indexPath.section];
+                    if (indexPath.row+1<array1.count) {
+                        cell.line.backgroundColor = HexRGB(0xcacaca);
+                    }else{
+                        cell.line.backgroundColor = HexRGB(0xe0e0e0);
+                    }
                     FileItem *item = [array1 objectAtIndex:indexPath.row];
                     [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:[UIImage imageNamed:@"list_fail"]];
                     cell.titleLabel.text = item.title;
@@ -536,6 +546,11 @@
                         cell = [[EnterpriseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify4];
                     }
                     NSMutableArray *array2 = [_results objectAtIndex:indexPath.section];
+                    if (indexPath.row+1<array2.count) {
+                        cell.line.backgroundColor = HexRGB(0xcacaca);
+                    }else{
+                        cell.line.backgroundColor = HexRGB(0xe0e0e0);
+                    }
                     EnterpriseItem *item = [array2 objectAtIndex:indexPath.row];
                     [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:[UIImage imageNamed:@"index_icon_fail"]];
                     cell.titleLabel.text = item.companyname;
@@ -553,6 +568,11 @@
                         cell = [[FileCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify3];
                     }
                     NSMutableArray *array1 = [_results objectAtIndex:indexPath.section];
+                    if (indexPath.row+1<array1.count) {
+                        cell.line.backgroundColor = HexRGB(0xcacaca);
+                    }else{
+                        cell.line.backgroundColor = HexRGB(0xe0e0e0);
+                    }
                     FileItem *item = [array1 objectAtIndex:indexPath.row];
                     [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:[UIImage imageNamed:@"list_fail"]];
                     cell.titleLabel.text = item.title;
@@ -567,6 +587,12 @@
                         cell = [[EnterpriseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify4];
                     }
                     NSMutableArray *array2 = [_results objectAtIndex:indexPath.section];
+                    if (indexPath.row+1<array2.count) {
+                        cell.line.backgroundColor = HexRGB(0xcacaca);
+                    }else{
+                        cell.line.backgroundColor = HexRGB(0xe0e0e0);
+                    }
+
                     EnterpriseItem *item = [array2 objectAtIndex:indexPath.row];
                     [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:[UIImage imageNamed:@"index_icon_fail"]];
                     cell.titleLabel.text = item.companyname;
@@ -582,6 +608,11 @@
                         cell = [[FileCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify3];
                     }
                     NSMutableArray *array1 = [_results objectAtIndex:indexPath.section];
+                    if (indexPath.row+1<array1.count) {
+                        cell.line.backgroundColor = HexRGB(0xcacaca);
+                    }else{
+                        cell.line.backgroundColor = HexRGB(0xe0e0e0);
+                    }
                     FileItem *item = [array1 objectAtIndex:indexPath.row];
                     [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:[UIImage imageNamed:@"list_fail"]];
                     cell.titleLabel.text = item.title;
@@ -599,6 +630,11 @@
                     cell = [[EnterpriseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify4];
                 }
                 NSMutableArray *array2 = [_results objectAtIndex:indexPath.section];
+                if (indexPath.row+1<array2.count) {
+                    cell.line.backgroundColor = HexRGB(0xcacaca);
+                }else{
+                    cell.line.backgroundColor = HexRGB(0xe0e0e0);
+                }
                 EnterpriseItem *item = [array2 objectAtIndex:indexPath.row];
                 [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:[UIImage imageNamed:@"index_icon_fail"]];
                 cell.titleLabel.text = item.companyname;
@@ -615,6 +651,11 @@
                         cell = [[FileCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify3];
                     }
                     NSMutableArray *array1 = [_results objectAtIndex:indexPath.section];
+                    if (indexPath.row+1<array1.count) {
+                        cell.line.backgroundColor = HexRGB(0xcacaca);
+                    }else{
+                        cell.line.backgroundColor = HexRGB(0xe0e0e0);
+                    }
                     FileItem *item = [array1 objectAtIndex:indexPath.row];
                     [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:[UIImage imageNamed:@"list_fail"]];
                     cell.titleLabel.text = item.title;
@@ -628,6 +669,11 @@
                         cell = [[EnterpriseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify4];
                     }
                     NSMutableArray *array2 = [_results objectAtIndex:indexPath.section];
+                    if (indexPath.row+1<array2.count) {
+                        cell.line.backgroundColor = HexRGB(0xcacaca);
+                    }else{
+                        cell.line.backgroundColor = HexRGB(0xe0e0e0);
+                    }
                     EnterpriseItem *item = [array2 objectAtIndex:indexPath.row];
                     [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:[UIImage imageNamed:@""]];
                     cell.titleLabel.text = item.companyname;
@@ -645,6 +691,11 @@
                 cell = [[FileCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify5];
             }
             NSMutableArray *array3 = [_results objectAtIndex:indexPath.section];
+            if (indexPath.row+1<array3.count) {
+                cell.line.backgroundColor = HexRGB(0xcacaca);
+            }else{
+                cell.line.backgroundColor = HexRGB(0xe0e0e0);
+            }
             FileItem *item = [array3 objectAtIndex:indexPath.row];
             [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:[UIImage imageNamed:@"list_fail"]];
             cell.titleLabel.text = item.title;
@@ -773,11 +824,13 @@
         if ([item isKindOfClass:[FileItem class]]) {
             FileItem *obj = (FileItem *)item;
             CourseDetailController *detail = [[CourseDetailController alloc] init];
+            detail.courseDetailID = obj.uid;
             [self.navigationController pushViewController:detail animated:YES];
         //企业
         }else{
             EnterpriseItem *obj = (EnterpriseItem *)item;
             CompanyHomeControll *company = [[CompanyHomeControll alloc] init];
+            company.companyId = obj.uid;
             [self.navigationController pushViewController:company animated:YES];
         }
     }
@@ -821,6 +874,8 @@
         case 0:
         {
             VideoViewController *video = [[VideoViewController alloc] init];
+            video.type = @"1";
+            video.keywords = _keywords;
             [self.navigationController pushViewController:video animated:YES];
         }
             break;
@@ -828,12 +883,15 @@
         {
             CompySearchController *csc = [[CompySearchController alloc] init];
             csc.keywords = _keywords;
+            csc.type = @"2";
             [self.navigationController pushViewController:csc animated:YES];
         }
             break;
         case 2:
         {
             VideoViewController *video = [[VideoViewController alloc] init];
+            video.type = @"3";
+            video.keywords = _keywords;
             [self.navigationController pushViewController:video animated:YES];
         }
             break;

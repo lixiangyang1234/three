@@ -38,15 +38,17 @@
     
     for (int i = 0 ; i< 4; i++) {
         UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
-        line.backgroundColor = HexRGB(0xe0e0e0);
         [bgView addSubview:line];
-        CGRect frame = CGRectMake(0, 0, bgView.frame.size.width, 1);
+        CGRect frame = CGRectMake(0, 0, bgView.frame.size.width, 0.5);
         if (i==0) {
-            frame.origin.y = 49;
+            frame.origin.y = 50-0.5;
+            line.backgroundColor = HexRGB(0xe0e0e0);
         }else if (i==1){
-            frame.origin.y = 50+30;
+            frame.origin.y = 50+31-0.5;
+            line.backgroundColor = HexRGB(0xe0e0e0);
         }else{
-            frame.origin.y = 31+50*i-1;
+            frame.origin.y = 31+50*i-0.5;
+            line.backgroundColor = HexRGB(0xcacaca);
         }
         line.frame = frame;
         [bgView addSubview:line];
@@ -58,7 +60,7 @@
     telLabel.backgroundColor = [UIColor clearColor];
     telLabel.text = @"15012545412";
     telLabel.textColor = HexRGB(0x323232);
-    telLabel.font = [UIFont systemFontOfSize:18];
+    telLabel.font = [UIFont systemFontOfSize:17];
     [bgView addSubview:telLabel];
     
     //昵称
@@ -67,7 +69,7 @@
     nickLabel.text = @"张玉泉";
     nickLabel.textAlignment = NSTextAlignmentRight;
     nickLabel.textColor = HexRGB(0x323232);
-    nickLabel.font = [UIFont systemFontOfSize:18];
+    nickLabel.font = [UIFont systemFontOfSize:17];
     [bgView addSubview:nickLabel];
     
     //剩余蜕变豆
@@ -92,16 +94,17 @@
     _textField.keyboardType = UIKeyboardTypeNumberPad;
     _textField.backgroundColor = [UIColor clearColor];
     _textField.delegate = self;
+    _textField.font = [UIFont systemFontOfSize:17];
     [bgView addSubview:_textField];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldChange) name:UITextFieldTextDidChangeNotification object:_textField];
     
     NSString *str = @"支付宝付款:";
-    CGSize size = [AdaptationSize getSizeFromString:str Font:[UIFont systemFontOfSize:18] withHight:20 withWidth:CGFLOAT_MAX];
+    CGSize size = [AdaptationSize getSizeFromString:str Font:[UIFont systemFontOfSize:17] withHight:20 withWidth:CGFLOAT_MAX];
     UILabel *payTitle = [[UILabel alloc] initWithFrame:CGRectMake(20,bgView.frame.origin.y+bgView.frame.size.height+20,size.width,20)];
     payTitle.backgroundColor = [UIColor clearColor];
     payTitle.text = str;
     payTitle.textColor = HexRGB(0x323232);
-    payTitle.font = [UIFont systemFontOfSize:18];
+    payTitle.font = [UIFont systemFontOfSize:17];
     [self.view addSubview:payTitle];
     
     
@@ -109,7 +112,7 @@
     _payLabel.backgroundColor = [UIColor clearColor];
     _payLabel.text = @"0.00元";
     _payLabel.textColor = HexRGB(0x1c8cc6);
-    _payLabel.font = [UIFont systemFontOfSize:18];
+    _payLabel.font = [UIFont systemFontOfSize:17];
     [self.view addSubview:_payLabel];
     
     
@@ -140,7 +143,13 @@
         return ;
     }
     //提现请求
-    
+    [HttpTool postWithPath:@"" params:nil success:^(id JSON, int code, NSString *msg) {
+        if (code == 100) {
+            
+        }
+    } failure:^(NSError *error) {
+        [RemindView showViewWithTitle:offline location:MIDDLE];
+    }];
 }
 
 - (void)textFieldChange
