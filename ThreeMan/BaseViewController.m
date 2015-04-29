@@ -97,11 +97,12 @@
     [popView show];
 }
 
-#pragma mark TYPopoverView_delegate
+#pragma mark TYPopoverView_delegate 右上角弹出框代理
 - (void)TYPopoverViewTouch:(UIButton *)btn view:(TYPopoverView *)view
 {
     NSArray *array = self.navigationController.viewControllers;
     switch (btn.tag) {
+        //登陆
         case -1:
         {
             UIWindow *window = [UIApplication sharedApplication].keyWindow;
@@ -117,6 +118,7 @@
             }];
         }
             break;
+        //注册
         case -2:
         {
             UIWindow *window = [UIApplication sharedApplication].keyWindow;
@@ -133,23 +135,31 @@
             
         }
             break;
+        //我的成长
         case 0:
         {
             if ([SystemConfig sharedInstance].isUserLogin) {
-                if (0) {
+                
+                UserInfo *userinfo = [SystemConfig sharedInstance].userInfo;
+                if ([userinfo.type isEqualToString:@"1"]) {
+                    
                     VideoCenterController *center = [[VideoCenterController alloc] init];
                     [self.navigationController pushViewController:center animated:YES];
 
                 }else{
+                    
                     CompFavoriteController *cf = [[CompFavoriteController alloc] init];
                     [self.navigationController pushViewController:cf animated:YES];
+                    
                 }
             }else{
+                
                 [RemindView showViewWithTitle:@"请先登录!" location:TOP];
 
             }
         }
             break;
+        //账户
         case 1:
         {
             if ([SystemConfig sharedInstance].isUserLogin) {
@@ -166,6 +176,7 @@
             }
         }
             break;
+        //消息
         case 2:
         {
             for (UIViewController *subVC in array) {
@@ -178,6 +189,7 @@
             [self.navigationController pushViewController:message animated:YES];
         }
             break;
+        //设置
         case 3:
         {
             for (UIViewController *subVC in array) {
@@ -196,6 +208,7 @@
     }
 }
 
+#pragma mark 头像点击
 - (void)imageViewClick:(TYPopoverView *)view
 {
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
@@ -206,7 +219,7 @@
 }
 
 
-#pragma mark LoginView_delegate
+#pragma mark LoginView_delegate 登录代理
 - (void)loginViewBtnClick:(UIButton *)btn view:(LoginView *)view
 {
     switch (btn.tag) {
@@ -238,8 +251,9 @@
             }
             NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:view.telView.textField.text,@"phone",view.passwordView.textField.text,@"userpwd", nil];
             //登陆请求
+            [MBProgressHUD showHUDAddedTo:self.view animated:YES];
             [HttpTool postWithPath:@"getLogin" params:param success:^(id JSON, int code, NSString *msg) {
-                
+                [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
                 if (code == 100) {
                     NSDictionary *result = JSON[@"data"][@"login"];
                     UserInfo *item = [[UserInfo alloc] init];
@@ -254,6 +268,7 @@
                     [dict setValue:item.username forKey:@"username"];
                     [dict setValue:item.uid forKey:@"uid"];
                     [dict setValue:item.phone forKey:@"phone"];
+                    [dict setValue:item.type forKey:@"type"];
                     if (item.img&&item.img.length!=0) {
                         [dict setValue:item.img forKey:@"img"];
                     }
@@ -267,12 +282,17 @@
                     } completion:^(BOOL finished) {
                         [view removeFromSuperview];
                     }];
+                    
                     [RemindView showViewWithTitle:@"登录成功" location:TOP];
+                    
                 }else{
+                    
                     [RemindView showViewWithTitle:msg location:TOP];
+                    
                 }
             } failure:^(NSError *error) {
-                NSLog(@"%@",error);
+                [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+                [RemindView showViewWithTitle:offline location:TOP];
             }];
             
         }
@@ -301,7 +321,7 @@
 }
 
 
-#pragma mark findView_delegate
+#pragma mark findView_delegate  寻找密码代理
 - (void)findViewBtnClick:(UIButton *)btn view:(FindPsWordView *)view
 {
     switch (btn.tag) {
@@ -319,18 +339,44 @@
             //验证码验证
         case 2:
         {
-            ValidateView *validateView = [[ValidateView alloc] initWithTitle:@"1545454554"];
-            validateView.delegate = self;
-            validateView.keyboardDelegate = self;
-            UIWindow *window = [UIApplication sharedApplication].keyWindow;
-            validateView.center = CGPointMake(kWidth/2, kHeight+validateView.frame.size.height/2);
-            [window addSubview:validateView];
-            [UIView animateWithDuration:0.3 animations:^{
-                view.center = CGPointMake(kWidth/2,-view.frame.size.height/2);
-                validateView.center = CGPointMake(kWidth/2, kHeight/2);
-            } completion:^(BOOL finished) {
-                [view removeFromSuperview];
+            if (view.telView.textField.text.length==0) {
+                [RemindView showViewWithTitle:@"请输入手机号码" location:TOP];
+                return;
+            }
+            if (![AuthencateTool isValidPhone:view.telView.textField.text]) {
+                [RemindView showViewWithTitle:@"手机号不合法" location:TOP];
+                return;
+            }
+            if (view.passwordView.textField.text.length==0) {
+                [RemindView showViewWithTitle:@"请输入重新设置的密码" location:TOP];
+                return;
+            }
+            
+            NSDictionary *param = @{@"phone":view.telView.textField.text,@"userpwd":view.passwordView.textField.text};
+            [HttpTool postWithPath:@"getFindpwd" params:param success:^(id JSON, int code, NSString *msg) {
+                if (code == 100) {
+                    uid = JSON[@"data"];
+                    ValidateView *validateView = [[ValidateView alloc] initWithTitle:view.telView.textField.text];
+                    validateView.delegate = self;
+                    validateView.keyboardDelegate = self;
+                    validateView.tag = 1001;
+                    UIWindow *window = [UIApplication sharedApplication].keyWindow;
+                    validateView.center = CGPointMake(kWidth/2, kHeight+validateView.frame.size.height/2);
+                    [window addSubview:validateView];
+                    [UIView animateWithDuration:0.3 animations:^{
+                        view.center = CGPointMake(kWidth/2,-view.frame.size.height/2);
+                        validateView.center = CGPointMake(kWidth/2, kHeight/2);
+                    } completion:^(BOOL finished) {
+                        [view removeFromSuperview];
+                    }];
+
+                }else{
+                    [RemindView showViewWithTitle:msg location:TOP];
+                }
+            } failure:^(NSError *error) {
+                [RemindView showViewWithTitle:offline location:TOP];
             }];
+            
             
         }
             break;
@@ -339,7 +385,7 @@
     }
 }
 
-#pragma mark validateView_delegate
+#pragma mark validateView_delegate 验证码代理
 - (void)validateViewBtnClick:(UIButton *)btn view:(ValidateView *)view
 {
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
@@ -360,30 +406,59 @@
                 [RemindView showViewWithTitle:@"请输入验证码" location:TOP];
                 return;
             }
-            NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:uid,@"uid",view.yzmView.textField.text,@"code", nil];
-            [MBProgressHUD showHUDAddedTo:window animated:YES];
-            [HttpTool postWithPath:@"getSaveUser" params:param success:^(id JSON, int code, NSString *msg) {
-                [MBProgressHUD hideAllHUDsForView:window animated:YES];
-                //注册成功
-                if (code == 100) {
-                    //注册成功后调用登录接口登录
-                    
-                    [windowView removeFromSuperview];
-                    [UIView animateWithDuration:0.3 animations:^{
-                        view.center = CGPointMake(kWidth/2, kHeight+view.frame.size.height/2);
-                    } completion:^(BOOL finished) {
-                        [view removeFromSuperview];
-                    }];
-                    
-                    [self login:tel pwd:pwd];
-                    [RemindView showViewWithTitle:@"注册成功" location:TOP];
-                }else{
-                    [RemindView showViewWithTitle:msg location:TOP];
-                }
-            } failure:^(NSError *error) {
-                [MBProgressHUD hideAllHUDsForView:window animated:YES];
-                [RemindView showViewWithTitle:offline location:TOP];
-            }];
+            //注册
+            if (view.tag == 1000) {
+                NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:uid,@"uid",view.yzmView.textField.text,@"code", nil];
+                [MBProgressHUD showHUDAddedTo:window animated:YES];
+                [HttpTool postWithPath:@"getSaveUser" params:param success:^(id JSON, int code, NSString *msg) {
+                    [MBProgressHUD hideAllHUDsForView:window animated:YES];
+                    //注册成功
+                    if (code == 100) {
+                        //注册成功后调用登录接口登录
+                        
+                        [windowView removeFromSuperview];
+                        [UIView animateWithDuration:0.3 animations:^{
+                            view.center = CGPointMake(kWidth/2, kHeight+view.frame.size.height/2);
+                        } completion:^(BOOL finished) {
+                            [view removeFromSuperview];
+                        }];
+                        
+                        [self login:tel pwd:pwd];
+                        [RemindView showViewWithTitle:@"注册成功" location:TOP];
+                    }else{
+                        [RemindView showViewWithTitle:msg location:TOP];
+                    }
+                } failure:^(NSError *error) {
+                    [MBProgressHUD hideAllHUDsForView:window animated:YES];
+                    [RemindView showViewWithTitle:offline location:TOP];
+                }];
+            //找回密码
+            }else{
+                NSDictionary *param = @{@"code":view.yzmView.textField.text,@"uid":uid};
+                [MBProgressHUD showHUDAddedTo:window animated:YES];
+                [HttpTool postWithPath:@"getFindpwdCode" params:param success:^(id JSON, int code, NSString *msg) {
+                    [MBProgressHUD hideAllHUDsForView:window animated:YES];
+                    //注册成功
+                    if (code == 100) {
+                        //注册成功后调用登录接口登录
+                        
+                        [windowView removeFromSuperview];
+                        [UIView animateWithDuration:0.3 animations:^{
+                            view.center = CGPointMake(kWidth/2, kHeight+view.frame.size.height/2);
+                        } completion:^(BOOL finished) {
+                            [view removeFromSuperview];
+                        }];
+                        [RemindView showViewWithTitle:msg location:TOP];
+                    }else{
+                        [RemindView showViewWithTitle:msg location:TOP];
+                    }
+                } failure:^(NSError *error) {
+                    [MBProgressHUD hideAllHUDsForView:window animated:YES];
+                    [RemindView showViewWithTitle:offline location:TOP];
+                }];
+            }
+            
+            
         }
             break;
            case 3:
@@ -406,7 +481,7 @@
     }
 }
 
-#pragma mark registView_delegate
+#pragma mark registView_delegate 注册代理
 - (void)registViewBtnClick:(UIButton *)btn view:(RegistView *)view
 {
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
@@ -453,6 +528,7 @@
                     uid = JSON[@"data"];
                     ValidateView *validateView = [[ValidateView alloc] initWithTitle:view.telView.textField.text];
                     validateView.delegate = self;
+                    validateView.tag = 1000;
                     validateView.keyboardDelegate = self;
                     UIWindow *window = [UIApplication sharedApplication].keyWindow;
                     validateView.center = CGPointMake(kWidth/2, kHeight+validateView.frame.size.height/2);
@@ -485,7 +561,7 @@
     }
 }
 
-//注册成功才调用该方法
+#pragma mark 注册成功后调用直接登录
 - (void)login:(NSString *)phone pwd:(NSString *)password
 {
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
@@ -495,6 +571,7 @@
     [HttpTool postWithPath:@"getLogin" params:param success:^(id JSON, int code, NSString *msg) {
         [MBProgressHUD hideAllHUDsForView:window animated:YES];
         if (code == 100) {
+            NSLog(@"%@",JSON);
             NSDictionary *result = JSON[@"data"][@"login"];
             UserInfo *item = [[UserInfo alloc] init];
             [item setValuesForKeysWithDictionary:result];
@@ -508,6 +585,7 @@
             [dict setValue:item.username forKey:@"username"];
             [dict setValue:item.uid forKey:@"uid"];
             [dict setValue:item.phone forKey:@"phone"];
+            [dict setValue:item.type forKey:@"type"];
             if (item.img&&item.img.length!=0) {
                 [dict setValue:item.img forKey:@"img"];
             }
@@ -524,7 +602,7 @@
 
 }
 
-#pragma mark keyboard_delegate
+#pragma mark keyboard_delegate 键盘弹出代理
 - (void)keyboardShow:(UIView *)view frame:(CGRect)frame
 {
     [UIView animateWithDuration:0.3 animations:^{
@@ -532,6 +610,7 @@
     }];
 }
 
+#pragma mark 键盘收回代理
 - (void)keyboardHiden:(UIView *)view
 {
     [UIView animateWithDuration:0.3 animations:^{

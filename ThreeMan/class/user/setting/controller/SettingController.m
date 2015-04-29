@@ -241,11 +241,6 @@
     }
 }
 
-- (void)resetPassword
-{
-
-}
-
 - (void)checkVersion
 {
     

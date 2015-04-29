@@ -79,6 +79,7 @@
 }
 
 
+
 #pragma mark 键盘弹出
 - (void)keyboardWillShow:(NSNotification *)notify
 {
@@ -160,7 +161,7 @@
     
     //搜索按钮
     UIButton *searchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    searchBtn.frame = CGRectMake(0, 0, 44, 44);
+    searchBtn.frame = CGRectMake(0, 0,30, 30);
     [searchBtn setImage:[UIImage imageNamed:@"nav_search"] forState:UIControlStateNormal];
     [searchBtn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
     [searchBtn addTarget:self action:@selector(search) forControlEvents:UIControlEventTouchUpInside];
@@ -876,6 +877,7 @@
             VideoViewController *video = [[VideoViewController alloc] init];
             video.type = @"1";
             video.keywords = _keywords;
+            [video setLeftTitle:@"视频"];
             [self.navigationController pushViewController:video animated:YES];
         }
             break;
@@ -884,6 +886,7 @@
             CompySearchController *csc = [[CompySearchController alloc] init];
             csc.keywords = _keywords;
             csc.type = @"2";
+            [csc setLeftTitle:@"企业"];
             [self.navigationController pushViewController:csc animated:YES];
         }
             break;
@@ -892,6 +895,7 @@
             VideoViewController *video = [[VideoViewController alloc] init];
             video.type = @"3";
             video.keywords = _keywords;
+            [video setLeftTitle:@"课件"];
             [self.navigationController pushViewController:video animated:YES];
         }
             break;

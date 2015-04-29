@@ -11,8 +11,11 @@
 @interface AccountItem : NSObject
 
 @property (nonatomic,copy) NSString *title;
-@property (nonatomic,copy) NSString *desc;
-@property (nonatomic,copy) NSString *amount;
-@property (nonatomic,copy) NSString *date;
+@property (nonatomic,copy) NSString *companyname;
+@property (nonatomic,copy) NSString *price;
+@property (nonatomic,copy) NSString *addtime;
+@property (nonatomic,copy) NSString *sid;
+@property (nonatomic,copy) NSString *type;
+
 
 @end

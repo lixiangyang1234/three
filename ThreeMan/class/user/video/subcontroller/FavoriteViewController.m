@@ -14,12 +14,19 @@
 #import "ErrorView.h"
 #import "NineBlockController.h"
 #import "YYSearchButton.h"
+#import "MJRefresh.h"
+#import "EnterpriseItem.h"
+#import "EnterpriseCell.h"
 
-@interface FavoriteViewController ()<EditViewDelegate,NoDataViewDelegate>
+
+#define pagesize 15
+
+@interface FavoriteViewController ()<EditViewDelegate,NoDataViewDelegate,MJRefreshBaseViewDelegate>
 {
     BOOL isEditting;
     EditView *editView;
     YYSearchButton *seletedBtn;
+    MJRefreshFooterView *refreshFootView;
 }
 @end
 
@@ -30,11 +37,15 @@
     self.view.backgroundColor = HexRGB(0xe8e8e8);
     // Do any additional setup after loading the view.
     
-    _dataArray = [[NSMutableArray alloc] initWithCapacity:0];
+    _demandArray = [[NSMutableArray alloc] initWithCapacity:0];
+    _companyArray = [[NSMutableArray alloc] initWithCapacity:0];
+    
+    
+    demandType = YES;
     
     [self buidlUI];
     
-    [self loadData];
+    [self loadDemandData:NO];
 }
 
 - (void)buidlUI
@@ -69,10 +80,13 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.sectionFooterHeight = 0;
     _tableView.sectionHeaderHeight = 0;
-//    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 10)];
-//    view.backgroundColor = [UIColor clearColor];
-//    _tableView.tableHeaderView = view;
     [self.view addSubview:_tableView];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 8)];
+    _tableView.tableHeaderView = view;
+    
+    refreshFootView = [[MJRefreshFooterView alloc] init];
+    refreshFootView.delegate = self;
+    refreshFootView.scrollView = _tableView;
     
     editView = [[EditView alloc] init];
     editView.delegate = self;
@@ -93,28 +107,109 @@
 
 }
 
-- (void)loadData
+//加载需求数据
+- (void)loadDemandData:(BOOL)loading
 {
-    [HttpTool postWithPath:@"getCollect" params:nil success:^(id JSON, int code, NSString *msg) {
+    NSMutableDictionary *param = nil;
+    [param setObject:[NSString stringWithFormat:@"%lu",(unsigned long)_demandArray.count] forKey:@"pageid"];
+    [param setObject:[NSString stringWithFormat:@"%d",pagesize] forKey:@"pagesize"];
+    //第一次加载数据或刷新数据
+    if (!loading) {
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    }
+    [HttpTool postWithPath:@"getCollect" params:param success:^(id JSON, int code, NSString *msg) {
+        //如果是加载  结束加载动画
+        if (loading) {
+            [refreshFootView endRefreshing];
+        }else{
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        }
         if (code == 100) {
-            NSLog(@"%@",JSON);
+            if (!loading) {
+                [_demandArray removeAllObjects];
+            }
             NSArray *array = JSON[@"data"][@"collect"];
             if (array&&![array isKindOfClass:[NSNull class]]) {
                 for (NSDictionary *dict in array) {
                     FavoriteItem *item = [[FavoriteItem alloc] init];
                     [item setValuesForKeysWithDictionary:dict];
-                    [_dataArray addObject:item];
+                    [_demandArray addObject:item];
                 }
+                if (array.count<pagesize) {
+                    refreshFootView.hidden = YES;
+                }else{
+                    refreshFootView.hidden = NO;
+                }
+            }else{
+                refreshFootView.hidden = YES;
             }
         }
-        if (_dataArray.count==0) {
+        
+        if (_demandArray.count==0) {
             noDataView.hidden = NO;
         }else{
             noDataView.hidden = YES;
         }
         [_tableView reloadData];
     } failure:^(NSError *error) {
+        if (loading) {
+            [refreshFootView endRefreshing];
+        }else{
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        }
+    }];
+}
+
+//加载企业数据
+- (void)loadCompanyData:(BOOL)loading
+{
+    NSMutableDictionary *param = nil;
+    [param setObject:[NSString stringWithFormat:@"%lu",(unsigned long)_companyArray.count] forKey:@"pageid"];
+    [param setObject:[NSString stringWithFormat:@"%d",pagesize] forKey:@"pagesize"];
+    //第一次加载数据或刷新数据
+    if (!loading) {
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    }
+    [HttpTool postWithPath:@"getCollectCompany" params:param success:^(id JSON, int code, NSString *msg) {
+        //如果是加载  结束加载动画
+        if (loading) {
+            [refreshFootView endRefreshing];
+        }else{
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        }
+        if (code == 100) {
+            if (!loading) {
+                [_companyArray removeAllObjects];
+            }
+            NSArray *array = JSON[@"data"];
+            if (array&&![array isKindOfClass:[NSNull class]]) {
+                for (NSDictionary *dict in array) {
+                    EnterpriseItem *item = [[EnterpriseItem alloc] init];
+                    [item setValuesForKeysWithDictionary:dict];
+                    [_companyArray addObject:item];
+                }
+                if (array.count<pagesize) {
+                    refreshFootView.hidden = YES;
+                }else{
+                    refreshFootView.hidden = NO;
+                }
+            }else{
+                refreshFootView.hidden = YES;
+            }
+        }
         
+        if (_companyArray.count==0) {
+            noDataView.hidden = NO;
+        }else{
+            noDataView.hidden = YES;
+        }
+        [_tableView reloadData];
+    } failure:^(NSError *error) {
+        if (loading) {
+            [refreshFootView endRefreshing];
+        }else{
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        }
     }];
 }
 
@@ -143,33 +238,64 @@
     }
 }
 
+#pragma mark refreshView_delegate 加载代理
+- (void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView
+{
+    if (demandType) {
+        [self loadDemandData:YES];
+    }else{
+        [self loadCompanyData:YES];
+    }
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return _dataArray.count;
+    return  demandType?_demandArray.count:_companyArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *identify = @"identify";
-    FavoriteCell *cell = [tableView dequeueReusableCellWithIdentifier:identify];
-    if (cell == nil) {
-        cell = [[FavoriteCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify];
+    if (demandType) {
+        static NSString *identify1 = @"identify1";
+        FavoriteCell *cell = [tableView dequeueReusableCellWithIdentifier:identify1];
+        if (cell == nil) {
+            cell = [[FavoriteCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify1];
+        }
+        UIView *view = [[UIView alloc] initWithFrame:cell.frame];
+        view.backgroundColor = [UIColor clearColor];
+        cell.selectedBackgroundView = [[UIView alloc] init];
+        cell.multipleSelectionBackgroundView = [[UIView alloc] init];
+        
+        FavoriteItem *item = [_demandArray objectAtIndex:indexPath.row];
+        cell.titleLabel.text = item.title;
+        [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:placeHoderImage2];
+        cell.desLabel.text = item.companyname;
+        return cell;
+    }else{
+        static NSString *identify2 = @"identify2";
+        EnterpriseCell *cell = [tableView dequeueReusableCellWithIdentifier:identify2];
+        if (cell == nil) {
+            cell = [[EnterpriseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify2];
+        }
+        EnterpriseItem *item = [_companyArray objectAtIndex:indexPath.row];
+        [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:placeHoderImage1];
+        cell.titleLabel.text = item.companyname;
+        cell.littleLabel.text = [NSString stringWithFormat:@"课程%@",item.scorenums];
+        cell.contentLabel.text = item.introduce;
+        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
+
     }
-    UIView *view = [[UIView alloc] initWithFrame:cell.frame];
-    view.backgroundColor = [UIColor clearColor];
-    cell.selectedBackgroundView = [[UIView alloc] init];
-    cell.multipleSelectionBackgroundView = [[UIView alloc] init];
-    
-    FavoriteItem *item = [_dataArray objectAtIndex:indexPath.row];
-    cell.titleLabel.text = item.title;
-    [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:placeHoderImage2];
-    cell.desLabel.text = item.companyname;
-    return cell;
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 88;
+    if (demandType) {
+        return 88;
+    }
+    return 90;
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -180,20 +306,20 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (!isEditting) {
-        FavoriteItem *item = [_dataArray objectAtIndex:indexPath.row];
+        FavoriteItem *item = [_demandArray objectAtIndex:indexPath.row];
         CourseDetailController *detail = [[CourseDetailController alloc] init];
         detail.courseDetailID = item.sid;
         [self.nav pushViewController:detail animated:YES];
     }
 }
 
-#pragma mark editView_delegate
+#pragma mark editView_delegate 
 - (void)btnClicked:(UIButton *)btn view:(EditView *)view
 {
     if (btn.tag == 0) {
         btn.selected = !btn.selected;
         
-        for (int i = 0; i < _dataArray.count; i++) {
+        for (int i = 0; i < _demandArray.count; i++) {
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
             if (btn.selected) {
                 [_tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
@@ -211,7 +337,7 @@
         NSMutableString *str = [NSMutableString stringWithString:@""];
         for (int i = 0 ; i < array.count; i++) {
             NSIndexPath *indexPath = [array objectAtIndex:i];
-            FavoriteItem *item = [_dataArray objectAtIndex:indexPath.row];
+            FavoriteItem *item = [_demandArray objectAtIndex:indexPath.row];
             if (i==0) {
                 [str appendString:item.mid];
             }else{
@@ -221,19 +347,16 @@
         }
         UIWindow *window = [UIApplication sharedApplication].keyWindow;
         NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:str,@"id", nil];
-        NSLog(@"%@",str);
         [MBProgressHUD showHUDAddedTo:window animated:YES];
         [HttpTool postWithPath:@"getCollectDel" params:param success:^(id JSON, int code, NSString *msg) {
-            NSLog(@"%@",JSON);
             [MBProgressHUD hideAllHUDsForView:window animated:YES];
             if (code == 100) {
-                [_dataArray removeObjectsInArray:arr];
+                [_demandArray removeObjectsInArray:arr];
                 [_tableView deleteRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationAutomatic];
             }else{
                 [RemindView showViewWithTitle:msg location:MIDDLE];
             }
         } failure:^(NSError *error) {
-            NSLog(@"%@",error);
             [MBProgressHUD hideAllHUDsForView:window animated:YES];
             [RemindView showViewWithTitle:offline location:MIDDLE];
         }];
@@ -255,10 +378,12 @@
     btn.isSelected = YES;
     //需求
     if (btn.tag == 1000) {
-        
+        demandType = YES;
+        [self loadDemandData:NO];
     //企业
     }else{
-        
+        demandType = NO;
+        [self loadCompanyData:NO];
     }
 }
 

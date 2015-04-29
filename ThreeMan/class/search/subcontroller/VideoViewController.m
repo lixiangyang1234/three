@@ -9,14 +9,22 @@
 #import "VideoViewController.h"
 #import "CompanyHomeViewCell.h"
 #import "FileModel.h"
+#import "DocumentCell.h"
+#import "CourseDetailController.h"
+#import "MJRefresh.h"
 
-@interface VideoViewController ()
+#define pagesize 15
 
+@interface VideoViewController ()<MJRefreshBaseViewDelegate>
+{
+    MJRefreshFooterView *refreshFootView;
+}
 @end
 
 @implementation VideoViewController
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     _dataArray = [[NSMutableArray alloc] initWithCapacity:0];
@@ -26,15 +34,31 @@
     _tableView.dataSource = self;
     _tableView.separatorColor = [UIColor clearColor];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _tableView.backgroundColor = HexRGB(0xe8e8e8);
+    _tableView.backgroundColor = [UIColor clearColor];
+    _tableView.backgroundView = nil;
     [self.view addSubview:_tableView];
-    [self loadData];
+    
+    refreshFootView = [[MJRefreshFooterView alloc] init];
+    refreshFootView.delegate = self;
+    refreshFootView.scrollView = _tableView;
+
+    
+    [self loadData:NO];
 }
 
-- (void)loadData
+- (void)loadData:(BOOL)loading
 {
-    NSDictionary *param = @{@"keywords":self.keywords,@"type":self.type};;
+    NSDictionary *param = @{@"pageid":[NSString stringWithFormat:@"%lu",(unsigned long)_dataArray.count],@"pagesize":[NSString stringWithFormat:@"%d",pagesize],@"keywords":self.keywords,@"type":self.type};
+    if (!loading) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.labelText = @"加载中...";
+    }
     [HttpTool postWithPath:@"getSelectList" params:param success:^(id JSON, int code, NSString *msg) {
+        if (loading) {
+            [refreshFootView endRefreshing];
+        }else{
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        }
         if (code == 100) {
             NSArray *array = JSON[@"data"][@"select"];
             if (array&&![array isKindOfClass:[NSNull class]]) {
@@ -43,13 +67,29 @@
                     [fileModel setValuesForKeysWithDictionary:dict];
                     [_dataArray addObject:fileModel];
                 }
+                if (array.count<pagesize) {
+                    
+                    refreshFootView.hidden = YES;
+                    
+                }else{
+                    
+                    refreshFootView.hidden = NO;
+                    
+                }
+            }else{
+                refreshFootView.hidden = YES;
             }
             [_tableView reloadData];
         }else{
             [RemindView showViewWithTitle:msg location:MIDDLE];
         }
     } failure:^(NSError *error) {
-        
+        if (loading) {
+            [refreshFootView endRefreshing];
+        }else{
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        }
+
     }];
 }
 
@@ -62,18 +102,28 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identify = @"identify";
-    CompanyHomeViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identify];
+    DocumentCell *cell = [tableView dequeueReusableCellWithIdentifier:identify];
     if (cell == nil) {
-        cell = [[CompanyHomeViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify];
+        cell = [[DocumentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify];
     }
+    FileModel *fileModel = [_dataArray objectAtIndex:indexPath.row];
+    [cell setObject:fileModel];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    FileModel *fileModel = [_dataArray objectAtIndex:indexPath.row];
+    CourseDetailController *course = [[CourseDetailController alloc] init];
+    course.courseDetailID = fileModel.uid;
+    [self.navigationController pushViewController:course animated:YES];
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 100;
+    return 88;
 }
 
 - (void)didReceiveMemoryWarning {

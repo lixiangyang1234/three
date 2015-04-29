@@ -10,4 +10,6 @@
 
 @interface PayViewController : LeftTitleController
 
+@property (nonatomic,copy) NSString *num;
+
 @end

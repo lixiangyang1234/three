@@ -9,12 +9,15 @@
 #import "RootViewController.h"
 #import "NoDataView.h"
 
+
 @interface FavoriteViewController : RootViewController<UITableViewDataSource,UITableViewDelegate>
 {
-    NSMutableArray *_dataArray;
+    NSMutableArray *_demandArray;
+    NSMutableArray *_companyArray;
     UITableView *_tableView;
     ErrorView *networkError;
     NoDataView *noDataView;
+    BOOL demandType;
 }
 
 
