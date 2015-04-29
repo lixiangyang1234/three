@@ -23,6 +23,7 @@
 
 @interface FavoriteViewController ()<EditViewDelegate,NoDataViewDelegate,MJRefreshBaseViewDelegate>
 {
+    UIView *topBgView;
     BOOL isEditting;
     EditView *editView;
     YYSearchButton *seletedBtn;
@@ -50,7 +51,7 @@
 
 - (void)buidlUI
 {
-    UIView *topBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,kWidth,35)];
+    topBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,kWidth,35)];
     topBgView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:topBgView];
     
@@ -110,14 +111,18 @@
 //加载需求数据
 - (void)loadDemandData:(BOOL)loading
 {
-    NSMutableDictionary *param = nil;
-    [param setObject:[NSString stringWithFormat:@"%lu",(unsigned long)_demandArray.count] forKey:@"pageid"];
-    [param setObject:[NSString stringWithFormat:@"%d",pagesize] forKey:@"pagesize"];
+    NSDictionary *param;
+    if (loading) {
+        param = @{@"pageid":[NSString stringWithFormat:@"%lu",(unsigned long)_demandArray.count],@"pagesize":[NSString stringWithFormat:@"%d",pagesize]};
+    }else{
+        param = @{@"pageid":@"0",@"pagesize":[NSString stringWithFormat:@"%d",pagesize]};
+    }
     //第一次加载数据或刷新数据
     if (!loading) {
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     }
     [HttpTool postWithPath:@"getCollect" params:param success:^(id JSON, int code, NSString *msg) {
+        NSLog(@"------%@",JSON);
         //如果是加载  结束加载动画
         if (loading) {
             [refreshFootView endRefreshing];
@@ -143,6 +148,8 @@
             }else{
                 refreshFootView.hidden = YES;
             }
+        }else{
+            [RemindView showViewWithTitle:msg location:TOP];
         }
         
         if (_demandArray.count==0) {
@@ -152,6 +159,7 @@
         }
         [_tableView reloadData];
     } failure:^(NSError *error) {
+        NSLog(@"%@",error);
         if (loading) {
             [refreshFootView endRefreshing];
         }else{
@@ -163,9 +171,12 @@
 //加载企业数据
 - (void)loadCompanyData:(BOOL)loading
 {
-    NSMutableDictionary *param = nil;
-    [param setObject:[NSString stringWithFormat:@"%lu",(unsigned long)_companyArray.count] forKey:@"pageid"];
-    [param setObject:[NSString stringWithFormat:@"%d",pagesize] forKey:@"pagesize"];
+    NSDictionary *param;
+    if (loading) {
+        param = @{@"pageid":[NSString stringWithFormat:@"%lu",(unsigned long)_companyArray.count],@"pagesize":[NSString stringWithFormat:@"%d",pagesize]};
+    }else{
+        param = @{@"pageid":@"0",@"pagesize":[NSString stringWithFormat:@"%d",pagesize]};
+    }
     //第一次加载数据或刷新数据
     if (!loading) {
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -230,11 +241,22 @@
         [UIView animateWithDuration:0.2 animations:^{
             editView.frame = CGRectMake(0,self.view.frame.size.height-editView.frame.size.height,editView.frame.size.width, editView.frame.size.height);
         }];
+        //编辑状态时 设置顶部按钮不可点击
+        for (UIView *subView in topBgView.subviews) {
+            subView.userInteractionEnabled = NO;
+        }
+        
+        
     //非编辑状态
     }else{
         [UIView animateWithDuration:0.2 animations:^{
             editView.frame = CGRectMake(0,self.view.frame.size.height,editView.frame.size.width, editView.frame.size.height);
         }];
+        
+        for (UIView *subView in topBgView.subviews) {
+            subView.userInteractionEnabled = YES;
+        }
+
     }
 }
 
@@ -277,6 +299,12 @@
         if (cell == nil) {
             cell = [[EnterpriseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify2];
         }
+        UIView *view = [[UIView alloc] initWithFrame:cell.frame];
+        view.backgroundColor = [UIColor clearColor];
+        cell.selectedBackgroundView = [[UIView alloc] init];
+        cell.multipleSelectionBackgroundView = [[UIView alloc] init];
+
+        
         EnterpriseItem *item = [_companyArray objectAtIndex:indexPath.row];
         [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:placeHoderImage1];
         cell.titleLabel.text = item.companyname;
@@ -316,17 +344,36 @@
 #pragma mark editView_delegate 
 - (void)btnClicked:(UIButton *)btn view:(EditView *)view
 {
+    //全选/全不选操作
     if (btn.tag == 0) {
         btn.selected = !btn.selected;
-        
-        for (int i = 0; i < _demandArray.count; i++) {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
-            if (btn.selected) {
-                [_tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-            }else{
-                [_tableView deselectRowAtIndexPath:indexPath animated:NO];
+        //设置全选/全不选状态
+        //需求
+        if (demandType) {
+            for (int i = 0; i < _demandArray.count; i++) {
+                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+                //全选
+                if (btn.selected) {
+                    [_tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+                //全不选
+                }else{
+                    [_tableView deselectRowAtIndexPath:indexPath animated:NO];
+                }
+            }
+        //企业
+        }else{
+            for (int i = 0; i < _companyArray.count; i++) {
+                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+                //全选
+                if (btn.selected) {
+                    [_tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+                //全不选
+                }else{
+                    [_tableView deselectRowAtIndexPath:indexPath animated:NO];
+                }
             }
         }
+    //删除操作
     }else{
         NSArray *array = [_tableView indexPathsForSelectedRows];
         NSMutableArray *arr = [[NSMutableArray alloc] initWithCapacity:0];
@@ -373,6 +420,9 @@
 //顶部按钮点击
 - (void)btnDown:(YYSearchButton *)btn
 {
+    if (seletedBtn.tag == btn.tag) {
+        return;
+    }
     seletedBtn.isSelected = NO;
     seletedBtn = btn;
     btn.isSelected = YES;

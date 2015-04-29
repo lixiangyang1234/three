@@ -17,8 +17,11 @@
 {
     UITextField *_textField;
     UILabel *_payLabel;
+    double _scale;
 }
+
 @end
+
 
 @implementation PayViewController
 
@@ -38,6 +41,7 @@
         if (code == 100) {
             NSDictionary *dict = JSON[@"data"];
             [self buildUI:dict];
+            _scale = [[dict objectForKey:@"scale"] doubleValue];
         }else{
             [RemindView showViewWithTitle:msg location:TOP];
         }
@@ -169,7 +173,7 @@
 
 - (void)textFieldChange
 {
-    _payLabel.text = [NSString stringWithFormat:@"%.2f元",[_textField.text doubleValue]];
+    _payLabel.text = [NSString stringWithFormat:@"%.2f元",[_textField.text doubleValue]/_scale];
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
@@ -254,7 +258,7 @@
             int resultStatus = [[resultDic objectForKey:@"resultStatus"] intValue];
             if (resultStatus == 9000) {
                 [RemindView showViewWithTitle:@"支付成功" location:BELLOW];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadOrderView" object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"paySuccess" object:nil];
             }else if (resultStatus == 8000){
                 [RemindView showViewWithTitle:@"正在处理中" location:BELLOW];
             }else{
