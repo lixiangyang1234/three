@@ -689,10 +689,51 @@
 
 #pragma mark---购买课程
 -(void)categoryBtnItem:(UIButton *)item{
+    courseDetailModel *courseModel =[_detailArray objectAtIndex:0];
+    
     if (item.tag ==30) {
+        NSLog(@"用户----》%@----%@",[SystemConfig sharedInstance].userInfo,[SystemConfig sharedInstance].uid);
         
     }else if (item.tag ==31){
-        [self addByTopView];
+        if (![SystemConfig sharedInstance].isUserLogin) {
+            NSArray *titleArr =@[@"否",@"是"];
+            byCompanyCourse =[[byCourseView alloc]initWithFrame:self.view.bounds byTitle:@"购买提示" contentLabel:@"亲，请登录后再进行购买哦！" buttonTitle:titleArr TagType:666];
+            byCompanyCourse.delegate =self;
+            [self.view addSubview:byCompanyCourse];
+            byCompanyCourse.hidden =NO;
+            
+
+        }else if([[SystemConfig sharedInstance].uid isEqualToString:[NSString stringWithFormat:@"%d", courseModel.companyId]]){
+            NSArray *titleArr =@[@"否",@"是"];
+            byCompanyCourse =[[byCourseView alloc]initWithFrame:self.view.bounds byTitle:@"购买提示" contentLabel:@"亲，购买权限只限普通会员,企业账户无法进行购买哦！" buttonTitle:titleArr TagType:666];
+            byCompanyCourse.delegate =self;
+            [self.view addSubview:byCompanyCourse];
+            byCompanyCourse.hidden =NO;
+        }else{
+        NSDictionary *parmDic =[NSDictionary dictionaryWithObjectsAndKeys:[SystemConfig sharedInstance].uid,@"uid",_courseDetailID,@"id", nil];
+        NSLog(@"%@",[SystemConfig sharedInstance].uid);
+        [HttpTool postWithPath:@"buySubject" params:parmDic success:^(id JSON, int code, NSString *msg) {
+            self.bySuccessCode =code;
+            if (code==100) {
+                [self addByTopView];
+                _bySuccessStr =JSON[@"msg"];
+                
+            }else if(code==206) {
+                _byFailStr =JSON[@"msg"];
+                NSArray *titleArr =@[@"取消",@"立即充值"];
+                byFailCourse =[[byCourseView alloc]initWithFrame:self.view.bounds byTitle:@"购买失败" contentLabel:_byFailStr buttonTitle:titleArr TagType:555];
+                byFailCourse.delegate =self;
+                [self.view addSubview:byFailCourse];
+                byFailCourse.hidden =NO;
+            }else{
+                _byFailStr =JSON[@"msg"];
+                            }
+            //            NSLog(@"%@--000---%@------%d",_bySuccessStr,_byFailStr,_bySuccessCode);
+        } failure:^(NSError *error) {
+            
+        }];
+        
+        }
  
     }else if(item.tag ==32){
         
@@ -742,39 +783,12 @@
     if (tag==333) {
 
     }else if (tag==334){
-        NSDictionary *parmDic =[NSDictionary dictionaryWithObjectsAndKeys:[SystemConfig sharedInstance].uid,@"uid",_courseDetailID,@"id", nil];
-        NSLog(@"%@",[SystemConfig sharedInstance].uid);
-        [HttpTool postWithPath:@"buySubject" params:parmDic success:^(id JSON, int code, NSString *msg) {
-            self.bySuccessCode =code;
-            if (code==100) {
-                _bySuccessStr =JSON[@"msg"];
-                NSArray *titleArr =@[@"取消",@"确定"];
-                bySuccessCourse =[[byCourseView alloc]initWithFrame:self.view.bounds byTitle:@"购买提示" contentLabel:_bySuccessStr buttonTitle:titleArr TagType:444 ];
-                bySuccessCourse.delegate =self;
-                [self.view addSubview:bySuccessCourse];
-                bySuccessCourse.hidden =NO;
+        NSArray *titleArr =@[@"取消",@"确定"];
+        bySuccessCourse =[[byCourseView alloc]initWithFrame:self.view.bounds byTitle:@"购买提示" contentLabel:_bySuccessStr buttonTitle:titleArr TagType:444 ];
+        bySuccessCourse.delegate =self;
+        [self.view addSubview:bySuccessCourse];
+        bySuccessCourse.hidden =NO;
 
-            }else if(code==206) {
-                _byFailStr =JSON[@"msg"];
-                NSArray *titleArr =@[@"取消",@"立即充值"];
-                byFailCourse =[[byCourseView alloc]initWithFrame:self.view.bounds byTitle:@"购买失败" contentLabel:_byFailStr buttonTitle:titleArr TagType:555];
-                byFailCourse.delegate =self;
-                [self.view addSubview:byFailCourse];
-                byFailCourse.hidden =NO;
-            }else{
-                _byFailStr =JSON[@"msg"];
-                NSArray *titleArr =@[@"否",@"是"];
-                byCompanyCourse =[[byCourseView alloc]initWithFrame:self.view.bounds byTitle:@"购买提示" contentLabel:_byFailStr buttonTitle:titleArr TagType:666];
-                byCompanyCourse.delegate =self;
-                [self.view addSubview:byCompanyCourse];
-                byCompanyCourse.hidden =NO;
-            }
-//            NSLog(@"%@--000---%@------%d",_bySuccessStr,_byFailStr,_bySuccessCode);
-        } failure:^(NSError *error) {
-            
-        }];
-
-        
     }if (tag ==444) {
         [UIView animateWithDuration:.3 animations:^{
             bySuccessCourse.center =CGPointMake(kWidth/2, kHeight);
