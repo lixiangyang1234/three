@@ -105,8 +105,8 @@
         [returnItem setImage:[UIImage imageNamed:@"nav_return"] forState:UIControlStateNormal];
 
         if (i==1) {
-            [returnItem setImage:[UIImage imageNamed:@"tab_collect"] forState:UIControlStateNormal];
-            [returnItem setImage:[UIImage imageNamed:@"tab_collect_pre"] forState:UIControlStateSelected];
+            [returnItem setImage:[UIImage imageNamed:@"com_collect"] forState:UIControlStateNormal];
+            [returnItem setImage:[UIImage imageNamed:@"com_collect_pre"] forState:UIControlStateSelected];
             if (companyModel.iscollect ==1) {
                 returnItem.selected=YES;
             } if (companyModel.iscollect ==0){
