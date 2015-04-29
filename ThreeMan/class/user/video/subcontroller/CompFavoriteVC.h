@@ -16,7 +16,7 @@
     UITableView *_tableView;
     EditView *editView;
     ErrorView *networkError;
-    NoDataView *noDataView;
+    ErrorView *noDataView;
     BOOL isEditting;
 }
 
@@ -26,3 +26,4 @@
 
 
 @end
+ 

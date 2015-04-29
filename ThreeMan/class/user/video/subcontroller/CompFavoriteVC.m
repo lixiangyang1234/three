@@ -66,10 +66,9 @@
     [self.view addSubview:networkError];
     
     
-    noDataView = [[NoDataView alloc] initWithImage:@"netFailImg_2" title:@"您目前暂无收藏!" btnTitle:@"去收藏"];
+    noDataView = [[ErrorView alloc] initWithImage:@"netFailImg_2" title:@"您目前暂无收藏!"];
     noDataView.center = CGPointMake(kWidth/2, (kHeight-64-40)/2);
     noDataView.hidden = YES;
-    noDataView.delegate = self;
     [self.view addSubview:noDataView];
     
 }
@@ -81,7 +80,12 @@
 
 - (void)loadData:(BOOL)loading
 {
-    NSDictionary *param = @{@"pageid":[NSString stringWithFormat:@"%lu",(unsigned long)_dataArray.count],@"pagesize":[NSString stringWithFormat:@"%d",pagesize]};
+    NSDictionary *param;
+    if (loading) {
+        param = @{@"pageid":[NSString stringWithFormat:@"%lu",(unsigned long)_dataArray.count],@"pagesize":[NSString stringWithFormat:@"%d",pagesize]};
+    }else{
+        param = @{@"pageid":@"0",@"pagesize":[NSString stringWithFormat:@"%d",pagesize]};
+    }
     if (!loading) {
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.labelText = @"加载中...";
@@ -94,6 +98,9 @@
             [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
         }
         if (code == 100) {
+            if (!loading) {
+                [_dataArray removeAllObjects];
+            }
             NSArray *array = JSON[@"data"][@"collect"];
             if (array&&![array isKindOfClass:[NSNull class]]) {
                 for (NSDictionary *dict in array) {
@@ -215,11 +222,11 @@
         NSMutableString *str = [NSMutableString stringWithString:@""];
         for (int i = 0 ; i < array.count; i++) {
             NSIndexPath *indexPath = [array objectAtIndex:i];
-            FavoriteItem *item = [_dataArray objectAtIndex:indexPath.row];
+            EnterpriseItem *item = [_dataArray objectAtIndex:indexPath.row];
             if (i==0) {
-                [str appendString:item.mid];
+                [str appendString:item.uid];
             }else{
-                [str appendString:[NSString stringWithFormat:@",%@",item.mid]];
+                [str appendString:[NSString stringWithFormat:@",%@",item.uid]];
             }
             [arr addObject:item];
         }

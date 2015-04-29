@@ -24,6 +24,7 @@
     
 //        NSLog(@"sssss%@",self.courseImgurl);
     }
+    
     return self;
 }
 -(instancetype)initWithDictionaryForHomeCategory:(NSDictionary *)dict{

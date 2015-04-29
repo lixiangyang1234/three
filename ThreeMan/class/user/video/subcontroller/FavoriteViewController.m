@@ -100,10 +100,9 @@
     [self.view addSubview:networkError];
     
     
-    noDataView = [[NoDataView alloc] initWithImage:@"netFailImg_2" title:@"您目前暂无收藏!" btnTitle:@"去收藏"];
+    noDataView = [[ErrorView alloc] initWithImage:@"netFailImg_2" title:@"您目前暂无收藏!"];
     noDataView.center = CGPointMake(kWidth/2, (kHeight-64-40)/2);
     noDataView.hidden = YES;
-    noDataView.delegate = self;
     [self.view addSubview:noDataView];
 
 }
@@ -122,7 +121,6 @@
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     }
     [HttpTool postWithPath:@"getCollect" params:param success:^(id JSON, int code, NSString *msg) {
-        NSLog(@"------%@",JSON);
         //如果是加载  结束加载动画
         if (loading) {
             [refreshFootView endRefreshing];
@@ -160,6 +158,7 @@
         [_tableView reloadData];
     } failure:^(NSError *error) {
         NSLog(@"%@",error);
+        [_tableView reloadData];
         if (loading) {
             [refreshFootView endRefreshing];
         }else{
@@ -216,6 +215,7 @@
         }
         [_tableView reloadData];
     } failure:^(NSError *error) {
+        [_tableView reloadData];
         if (loading) {
             [refreshFootView endRefreshing];
         }else{
@@ -375,6 +375,7 @@
         }
     //删除操作
     }else{
+        //获取选中的cell
         NSArray *array = [_tableView indexPathsForSelectedRows];
         NSMutableArray *arr = [[NSMutableArray alloc] initWithCapacity:0];
         if (array.count==0) {
@@ -382,31 +383,64 @@
             return;
         }
         NSMutableString *str = [NSMutableString stringWithString:@""];
-        for (int i = 0 ; i < array.count; i++) {
-            NSIndexPath *indexPath = [array objectAtIndex:i];
-            FavoriteItem *item = [_demandArray objectAtIndex:indexPath.row];
-            if (i==0) {
-                [str appendString:item.mid];
-            }else{
-                [str appendString:[NSString stringWithFormat:@",%@",item.mid]];
+        //需求删除
+        if (demandType) {
+            for (int i = 0 ; i < array.count; i++) {
+                NSIndexPath *indexPath = [array objectAtIndex:i];
+                FavoriteItem *item = [_demandArray objectAtIndex:indexPath.row];
+                if (i==0) {
+                    [str appendString:item.mid];
+                }else{
+                    [str appendString:[NSString stringWithFormat:@",%@",item.mid]];
+                }
+                [arr addObject:item];
             }
-            [arr addObject:item];
+            UIWindow *window = [UIApplication sharedApplication].keyWindow;
+            NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:str,@"id", nil];
+            [MBProgressHUD showHUDAddedTo:window animated:YES];
+            [HttpTool postWithPath:@"getCollectDel" params:param success:^(id JSON, int code, NSString *msg) {
+                [MBProgressHUD hideAllHUDsForView:window animated:YES];
+                if (code == 100) {
+                    [_demandArray removeObjectsInArray:arr];
+                    [_tableView deleteRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationAutomatic];
+                }else{
+                    [RemindView showViewWithTitle:msg location:MIDDLE];
+                }
+            } failure:^(NSError *error) {
+                [MBProgressHUD hideAllHUDsForView:window animated:YES];
+                [RemindView showViewWithTitle:offline location:MIDDLE];
+            }];
+
+        //企业删除
+        }else{
+            for (int i = 0 ; i < array.count; i++) {
+                NSIndexPath *indexPath = [array objectAtIndex:i];
+                EnterpriseItem *item = [_companyArray objectAtIndex:indexPath.row];
+                if (i==0) {
+                    [str appendString:item.uid];
+                }else{
+                    [str appendString:[NSString stringWithFormat:@",%@",item.uid]];
+                }
+                [arr addObject:item];
+            }
+            UIWindow *window = [UIApplication sharedApplication].keyWindow;
+            NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:str,@"id", nil];
+            [MBProgressHUD showHUDAddedTo:window animated:YES];
+#warning 此处需要修改接口名称
+            [HttpTool postWithPath:@"getCollectDel" params:param success:^(id JSON, int code, NSString *msg) {
+                [MBProgressHUD hideAllHUDsForView:window animated:YES];
+                if (code == 100) {
+                    [_companyArray removeObjectsInArray:arr];
+                    [_tableView deleteRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationAutomatic];
+                }else{
+                    [RemindView showViewWithTitle:msg location:MIDDLE];
+                }
+            } failure:^(NSError *error) {
+                [MBProgressHUD hideAllHUDsForView:window animated:YES];
+                [RemindView showViewWithTitle:offline location:MIDDLE];
+            }];
+ 
         }
-        UIWindow *window = [UIApplication sharedApplication].keyWindow;
-        NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:str,@"id", nil];
-        [MBProgressHUD showHUDAddedTo:window animated:YES];
-        [HttpTool postWithPath:@"getCollectDel" params:param success:^(id JSON, int code, NSString *msg) {
-            [MBProgressHUD hideAllHUDsForView:window animated:YES];
-            if (code == 100) {
-                [_demandArray removeObjectsInArray:arr];
-                [_tableView deleteRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationAutomatic];
-            }else{
-                [RemindView showViewWithTitle:msg location:MIDDLE];
-            }
-        } failure:^(NSError *error) {
-            [MBProgressHUD hideAllHUDsForView:window animated:YES];
-            [RemindView showViewWithTitle:offline location:MIDDLE];
-        }];
     }
 }
 

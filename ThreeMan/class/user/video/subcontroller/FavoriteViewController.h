@@ -16,7 +16,7 @@
     NSMutableArray *_companyArray;
     UITableView *_tableView;
     ErrorView *networkError;
-    NoDataView *noDataView;
+    ErrorView *noDataView;
     BOOL demandType;
 }
 
