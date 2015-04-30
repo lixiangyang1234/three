@@ -60,15 +60,14 @@ static NSString * const reuseIdentifier = @"Cell";
     [self addUICategory:_categoryArrayOffLine];
     [self addUITrade:_tradeArrayOffLine];
     [self addMBprogressView];
-        [self addLoadStatus];
+    [self addLoadStatus];
     
 }
 #pragma  mark ------显示指示器
 -(void)addMBprogressView{
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"加载中...";
-
-}
+  }
 
 //添加数据
 -(void)addLoadStatus{
@@ -98,11 +97,12 @@ static NSString * const reuseIdentifier = @"Cell";
             homeViewControllModel *homeModel =[[homeViewControllModel alloc]initWithDictionaryForHomeTrade:tradeDict];
             [_tradeArray addObject:homeModel];
         }
-//        //归档离线数据
+//        归档离线数据
         [NSKeyedArchiver archiveRootObject:_adsImage toFile:kadsImageFilePath];
         [NSKeyedArchiver archiveRootObject:_courseArray toFile:kcourseFilePath];
         [NSKeyedArchiver archiveRootObject:_categoryArray toFile:kcategoryFilePath];
         [NSKeyedArchiver archiveRootObject:_tradeArray toFile:ktradeFilePath];
+    
         
         [self addADSimageBtn:_adsImage];
         [self addUIBanner];//1区
@@ -124,7 +124,6 @@ static NSString * const reuseIdentifier = @"Cell";
         [self addUICourse:_courseArrayOffLine];//2区添加八大课程体系
         [self addUICategory:_categoryArrayOffLine];
         [self addUITrade:_tradeArrayOffLine];
-        
 
 
     }];

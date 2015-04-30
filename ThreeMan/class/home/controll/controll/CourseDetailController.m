@@ -710,29 +710,8 @@
             [self.view addSubview:byCompanyCourse];
             byCompanyCourse.hidden =NO;
         }else{
-        NSDictionary *parmDic =[NSDictionary dictionaryWithObjectsAndKeys:[SystemConfig sharedInstance].uid,@"uid",_courseDetailID,@"id", nil];
-        NSLog(@"%@",[SystemConfig sharedInstance].uid);
-        [HttpTool postWithPath:@"buySubject" params:parmDic success:^(id JSON, int code, NSString *msg) {
-            self.bySuccessCode =code;
-            if (code==100) {
-                [self addByTopView];
-                _bySuccessStr =JSON[@"msg"];
-                
-            }else if(code==206) {
-                _byFailStr =JSON[@"msg"];
-                NSArray *titleArr =@[@"取消",@"立即充值"];
-                byFailCourse =[[byCourseView alloc]initWithFrame:self.view.bounds byTitle:@"购买失败" contentLabel:_byFailStr buttonTitle:titleArr TagType:555];
-                byFailCourse.delegate =self;
-                [self.view addSubview:byFailCourse];
-                byFailCourse.hidden =NO;
-            }else{
-                _byFailStr =JSON[@"msg"];
-                            }
-            //            NSLog(@"%@--000---%@------%d",_bySuccessStr,_byFailStr,_bySuccessCode);
-        } failure:^(NSError *error) {
+             [self addByTopView];
             
-        }];
-        
         }
  
     }else if(item.tag ==32){
@@ -783,11 +762,31 @@
     if (tag==333) {
 
     }else if (tag==334){
-        NSArray *titleArr =@[@"取消",@"确定"];
-        bySuccessCourse =[[byCourseView alloc]initWithFrame:self.view.bounds byTitle:@"购买提示" contentLabel:_bySuccessStr buttonTitle:titleArr TagType:444 ];
-        bySuccessCourse.delegate =self;
-        [self.view addSubview:bySuccessCourse];
-        bySuccessCourse.hidden =NO;
+        NSDictionary *parmDic =[NSDictionary dictionaryWithObjectsAndKeys:[SystemConfig sharedInstance].uid,@"uid",_courseDetailID,@"id", nil];
+        NSLog(@"%@",[SystemConfig sharedInstance].uid);
+        [HttpTool postWithPath:@"buySubject" params:parmDic success:^(id JSON, int code, NSString *msg) {
+            self.bySuccessCode =code;
+            if (code==100) {
+                
+                _bySuccessStr =JSON[@"msg"];
+                NSArray *titleArr =@[@"取消",@"确定"];
+                bySuccessCourse =[[byCourseView alloc]initWithFrame:self.view.bounds byTitle:@"购买提示" contentLabel:_bySuccessStr buttonTitle:titleArr TagType:444 ];
+                bySuccessCourse.delegate =self;
+                [self.view addSubview:bySuccessCourse];
+                bySuccessCourse.hidden =NO;
+            }else if(code==206) {
+                _byFailStr =JSON[@"msg"];
+                NSArray *titleArr =@[@"取消",@"立即充值"];
+                byFailCourse =[[byCourseView alloc]initWithFrame:self.view.bounds byTitle:@"购买失败" contentLabel:_byFailStr buttonTitle:titleArr TagType:555];
+                byFailCourse.delegate =self;
+                [self.view addSubview:byFailCourse];
+                byFailCourse.hidden =NO;
+            }
+        } failure:^(NSError *error) {
+            
+        }];
+
+       
 
     }if (tag ==444) {
         [UIView animateWithDuration:.3 animations:^{
