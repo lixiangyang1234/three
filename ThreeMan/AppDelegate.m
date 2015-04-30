@@ -23,7 +23,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     
     [[DBTool shareDBToolClass] openDB];
@@ -53,17 +52,12 @@
     if ([version isEqualToString:saveVersion]) { // 不是第一次使用这个版本
         // 显示状态栏
         application.statusBarHidden = NO;
-        //        self.window.rootViewController =[[WBNavigationController alloc]initWithRootViewController:[MainControllerViewController alloc]];
+        
         MainControllerViewController *main = [[MainControllerViewController alloc] init];
         
         WBNavigationController *nav =[[WBNavigationController alloc]initWithRootViewController:main];
         self.window.rootViewController =nav;
-        //        if ([AccountTool sharedAccountTool].account) {
-        //            self.window.rootViewController = [[MainController alloc] init];
-        //        } else {
-        //            self.window.rootViewController = [[OauthController alloc] init];
-        //        }
-    } else { // 版本号不一样：第一次使用新版本
+        } else { // 版本号不一样：第一次使用新版本
         // 将新版本号写入沙盒
         [[NSUserDefaults standardUserDefaults] setObject:version forKey:key];
         [[NSUserDefaults standardUserDefaults] synchronize];
