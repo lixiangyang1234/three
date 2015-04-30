@@ -91,6 +91,7 @@
             [btn setTitle:[array objectAtIndex:i] forState:UIControlStateNormal];
             [btn setTitleColor:HexRGB(0x959595) forState:UIControlStateNormal];
             btn.titleLabel.font = [UIFont systemFontOfSize:15];
+            
             if (i == 0) {
                 self.loginBtn = btn;
                 self.loginBtn.tag = -1;
@@ -105,6 +106,7 @@
                 [self.registBtn addTarget:self action:@selector(btnDown:) forControlEvents:UIControlEventTouchUpInside];
                 [self addSubview:self.registBtn];
             }
+            
         }
     }
     

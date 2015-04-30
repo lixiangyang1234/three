@@ -12,6 +12,7 @@
 #import "FeedBackController.h"
 #import "ResetSecretView.h"
 #import "OperationController.h"
+#import "SystemConfig.h"
 
 @interface SettingController ()<ResetSecretViewDelegate,KeyboardDelegate>
 {
@@ -196,16 +197,20 @@
             //修改密码
             case 0:
             {
-                ResetSecretView *resetView = [[ResetSecretView alloc] init];
-                resetView.center = CGPointMake(kWidth/2, kHeight+resetView.frame.size.height/2);
-                resetView.delegate = self;
-                resetView.keyboardDelegate = self;
-                UIWindow *window = [UIApplication sharedApplication].keyWindow;
-                [window addSubview:windownView];
-                [window addSubview:resetView];
-                [UIView animateWithDuration:0.3 animations:^{
-                    resetView.center = CGPointMake(kWidth/2, kHeight/2);
-                }];
+                if (![SystemConfig sharedInstance].isUserLogin) {
+                    [RemindView showViewWithTitle:@"抱歉，请先点击右上角注册或登录!" location:TOP];
+                }else{
+                    ResetSecretView *resetView = [[ResetSecretView alloc] init];
+                    resetView.center = CGPointMake(kWidth/2, kHeight+resetView.frame.size.height/2);
+                    resetView.delegate = self;
+                    resetView.keyboardDelegate = self;
+                    UIWindow *window = [UIApplication sharedApplication].keyWindow;
+                    [window addSubview:windownView];
+                    [window addSubview:resetView];
+                    [UIView animateWithDuration:0.3 animations:^{
+                        resetView.center = CGPointMake(kWidth/2, kHeight/2);
+                    }];
+                }
             }
                 break;
             //意见反馈

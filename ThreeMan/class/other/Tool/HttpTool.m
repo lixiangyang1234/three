@@ -9,7 +9,7 @@
 
 + (void)postWithPath:(NSString *)path params:(NSDictionary *)params success:(HttpSuccessBlock)success failure:(HttpFailureBlock)failure
 {
-    NSString *pathStr = [NSString stringWithFormat:@"http://192.168.1.100/sanshenxing/index.php?s=/Home/Api/%@",path];
+    NSString *pathStr = [NSString stringWithFormat:@"http://192.168.1.122/sanshenxing/index.php?s=/Home/Api/%@",path];
     
     NSMutableDictionary *allParams = [NSMutableDictionary dictionary];
     //拼接传进来的参数
@@ -50,7 +50,7 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         failure(error);
        
-    }];
+    }];    
 }
 
 

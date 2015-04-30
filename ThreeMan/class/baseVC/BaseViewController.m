@@ -157,7 +157,7 @@
                 }
             }else{
                 
-                [RemindView showViewWithTitle:@"请先登录!" location:TOP];
+                [RemindView showViewWithTitle:@"抱歉，请先点击右上角注册或登录!" location:TOP];
 
             }
         }
@@ -175,7 +175,7 @@
                 AccountController *account = [[AccountController alloc] init];
                 [self.navigationController pushViewController:account animated:YES];
             }else{
-                [RemindView showViewWithTitle:@"请先登录!" location:TOP];
+                [RemindView showViewWithTitle:@"抱歉，请先点击右上角注册或登录!" location:TOP];
             }
         }
             break;
