@@ -54,7 +54,12 @@
 
 - (void)loadData:(BOOL)loading
 {
-    NSDictionary *param = @{@"pageid":[NSString stringWithFormat:@"%lu",(unsigned long)_dataArray.count],@"pagesize":[NSString stringWithFormat:@"%d",pagesize],@"keywords":self.keywords,@"type":self.type};
+    NSDictionary *param;
+    if (loading) {
+        param = @{@"pageid":[NSString stringWithFormat:@"%lu",(unsigned long)_dataArray.count],@"pagesize":[NSString stringWithFormat:@"%d",pagesize],@"keywords":self.keywords,@"type":self.type};
+    }else{
+        param = @{@"pageid":@"0",@"pagesize":[NSString stringWithFormat:@"%d",pagesize],@"keywords":self.keywords,@"type":self.type};
+    }
     if (!loading) {
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.labelText = @"加载中...";

@@ -63,10 +63,9 @@
     [self.view addSubview:networkError];
     
     
-    noDataView = [[NoDataView alloc] initWithImage:@"netFailImg_2" title:@"您目前暂无收藏!" btnTitle:@"去收藏"];
+    noDataView = [[ErrorView alloc] initWithImage:@"netFailImg_2" title:@"您目前暂无收藏!"];
     noDataView.center = CGPointMake(kWidth/2, (kHeight-64-40)/2);
     noDataView.hidden = YES;
-    noDataView.delegate = self;
     [self.view addSubview:noDataView];
     
 }
@@ -92,7 +91,9 @@
             [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
         }
         if (code == 100) {
-            NSLog(@"%@",JSON);
+            if (!loading) {
+                [_dataArray removeAllObjects];
+            }
             NSArray *array = JSON[@"data"][@"collect"];
             if (array&&![array isKindOfClass:[NSNull class]]) {
                 for (NSDictionary *dict in array) {
@@ -230,10 +231,8 @@
         }
         UIWindow *window = [UIApplication sharedApplication].keyWindow;
         NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:str,@"id", nil];
-        NSLog(@"%@",str);
         [MBProgressHUD showHUDAddedTo:window animated:YES];
         [HttpTool postWithPath:@"getCollectDel" params:param success:^(id JSON, int code, NSString *msg) {
-            NSLog(@"%@",JSON);
             [MBProgressHUD hideAllHUDsForView:window animated:YES];
             if (code == 100) {
                 [_dataArray removeObjectsInArray:arr];

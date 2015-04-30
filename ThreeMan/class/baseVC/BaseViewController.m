@@ -44,7 +44,6 @@
     windowView.backgroundColor = [UIColor blackColor];
     windowView.alpha = 0.4;
     
-    
 }
 
 
@@ -83,8 +82,12 @@
 - (void)navItemRight:(UIButton *)btn
 {
     CGPoint point = CGPointMake(kWidth-60, btn.frame.origin.y + btn.frame.size.height+15);
-    
-    NSArray * titles = @[@"我的成长", @"账户", @"消息",@"设置"];
+    NSArray *titles;
+    if ([SystemConfig sharedInstance].isUserLogin&&[[SystemConfig sharedInstance].userInfo.type isEqualToString:@"2"]) {
+        titles = @[@"我的收藏", @"账户", @"消息",@"设置"];
+    }else{
+        titles = @[@"我的成长", @"账户", @"消息",@"设置"];
+    }
     NSArray *  images = @[@"video", @"account", @"message", @"setting"];
     
     TYPopoverView *popView = [[TYPopoverView alloc] initWithPoint:point titles:titles images:images];

@@ -48,7 +48,12 @@
 
 - (void)loadData:(BOOL)loading
 {
-    NSDictionary *param = @{@"pageid":[NSString stringWithFormat:@"%lu",(unsigned long)_dataArray.count],@"pagesize":[NSString stringWithFormat:@"%d",pagesize],@"keywords":self.keywords,@"type":self.type};
+    NSDictionary *param;
+    if (loading) {
+        param = @{@"pageid":[NSString stringWithFormat:@"%lu",(unsigned long)_dataArray.count],@"pagesize":[NSString stringWithFormat:@"%d",pagesize],@"keywords":self.keywords,@"type":self.type};
+    }else{
+        param = @{@"pageid":@"0",@"pagesize":[NSString stringWithFormat:@"%d",pagesize],@"keywords":self.keywords,@"type":self.type};
+    }
     if (!loading) {
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.labelText = @"加载中...";
@@ -60,6 +65,9 @@
             [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
         }
         if (code == 100) {
+            if (!loading) {
+                [_dataArray removeAllObjects];
+            }
             NSArray *array = JSON[@"data"][@"select"];
             if (array&&![array isKindOfClass:[NSNull class]]) {
                 for (NSDictionary *dict in array) {

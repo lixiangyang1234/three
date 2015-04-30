@@ -61,7 +61,12 @@
 #pragma mark 请求数据
 - (void)loadData:(BOOL)loading
 {
-    NSDictionary *param = @{@"pageid":[NSString stringWithFormat:@"%lu",(unsigned long)_dataArray.count],@"pagesize":[NSString stringWithFormat:@"%d",pagesize]};
+    NSDictionary *param;
+    if (loading) {
+        param = @{@"pageid":[NSString stringWithFormat:@"%lu",(unsigned long)_dataArray.count],@"pagesize":[NSString stringWithFormat:@"%d",pagesize]};
+    }else{
+        param = @{@"pageid":@"0",@"pagesize":[NSString stringWithFormat:@"%d",pagesize]};
+    }
     if (!loading) {
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.labelText = @"加载中...";
@@ -73,6 +78,9 @@
             [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
         }
         if (code == 100) {
+            if (!loading) {
+                [_dataArray removeAllObjects];
+            }
             NSArray *array = [JSON objectForKey:@"data"];
             if (![array isKindOfClass:[NSNull class]]) {
                 for (NSDictionary *dict in array) {
@@ -91,6 +99,7 @@
             [_tableView reloadData];
         }
     } failure:^(NSError *error) {
+        NSLog(@"%@",error);
         if (loading) {
             [refreshFootView endRefreshing];
         }else{

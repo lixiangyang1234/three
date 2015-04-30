@@ -29,11 +29,13 @@
     
     
     [self buildUI];
+    [self loadData];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadView) name:@"paySuccess" object:nil];
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)reloadView
 {
-    [super viewWillAppear:animated];
     [self loadData];
 }
 
@@ -83,7 +85,6 @@
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [HttpTool postWithPath:@"getUserCenter" params:nil success:^(id JSON, int code, NSString *msg) {
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-        NSLog(@"%@",JSON);
         if (code == 100) {
             if (_dataArray.count!=0) {
                 [_dataArray removeAllObjects];
@@ -159,6 +160,11 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 55;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"paySuccess" object:nil];
 }
 
 

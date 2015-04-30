@@ -73,6 +73,9 @@
     _tableView.showsHorizontalScrollIndicator = NO;
     _tableView.showsVerticalScrollIndicator = NO;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth,8)];
+    view.backgroundColor = [UIColor clearColor];
+    _tableView.tableHeaderView = view;
     [self.view addSubview:_tableView];
 }
 #pragma mark - Table view data source
