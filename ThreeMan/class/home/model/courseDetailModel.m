@@ -9,10 +9,12 @@
 #import "courseDetailModel.h"
 
 @implementation courseDetailModel
-@synthesize courseImgurl,courseCompanyname,courseContent,courseDownloadnum,courseId,coursePrice,courseTitle;
+@synthesize courseImgurl,courseCompanyname,courseContent,courseDownloadnum,courseId,coursePrice,courseTitle,courseDownloadurl;
 -(instancetype)initWithDictnoaryForCourseDetail:(NSDictionary *)dict{
     if ([super self ]) {
         self.courseImgurl =dict[@"imgurl"];
+        self.courseDownloadurl =dict[@"downloadurl"];
+
         self.courseId =[dict[@"id"]intValue];
         self.companyId =[dict[@"cid"]intValue];
 

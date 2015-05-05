@@ -96,7 +96,8 @@
 -(void)start
 {
     [UIApplication sharedApplication].statusBarHidden =NO;
-    self.view.window.rootViewController =[[MainControllerViewController alloc]init];
+    WBNavigationController *navMain =[[WBNavigationController alloc]initWithRootViewController:[[MainControllerViewController alloc]init]];
+    self.view.window.rootViewController =navMain;
     
 }
 

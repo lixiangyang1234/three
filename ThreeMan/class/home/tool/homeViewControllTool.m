@@ -14,13 +14,12 @@
 //首页
 + (void)statusesWithSuccess:(StatusSuccessBlock)success failure:(StatusFailureBlock)failure{
     
-    //    NSDictionary *dict =[NSDictionary dictionaryWithObjectsAndKeys:uid,@"uid", nil];
     [HttpTool postWithPath:@"getIndex" params:nil success:^(id JSON, int code, NSString *msg) {
         NSMutableArray *statuses =[NSMutableArray array];
         
-        //        NSDictionary *dic =[NSJSONSerialization JSONObjectWithData:JSON options:NSJSONReadingMutableContainers error:nil];
+       
         NSDictionary *dict =JSON[@"data"];
-        
+//        NSLog(@"%@",JSON);
         homeViewArrayModel *homeModel =[[homeViewArrayModel alloc]initWithForHomeArray:dict];
         
         [statuses addObject:homeModel];

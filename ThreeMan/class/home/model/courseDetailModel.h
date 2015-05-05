@@ -11,6 +11,8 @@
 @interface courseDetailModel : NSObject
 //详情
 @property(nonatomic,copy)NSString *courseCompanyname;
+@property(nonatomic,copy)NSString *courseDownloadurl;
+
 @property(nonatomic,copy)NSString *courseContent;
 @property(nonatomic,assign)int courseDownloadnum;
 @property(nonatomic,assign)int courseId;

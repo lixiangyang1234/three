@@ -17,7 +17,7 @@
 #import "homeViewArrayModel.h"
 #import "homeViewControllModel.h"
 #define BANNER    135           //banner高度
-#define EIGHTH    87          //八大课程体系
+#define EIGHTH    83          //八大课程体系
 #define NEEDH     135         //按需求
 #define BUSINESS  182       //按行业
 #define NEEDTAG  200
@@ -164,13 +164,14 @@ static NSString * const reuseIdentifier = @"Cell";
         homeViewControllModel *homeModel =[course objectAtIndex:c];
 //        NSLog(@"-----%@",homeModel.courseImgurl);
 
-        CGFloat courseBorderW = 35;//边界宽
-        CGFloat courseBorderH = 5;//边界高
-        CGFloat betweenW = 39;// 间距宽
+        CGFloat courseBorderW = 36;//边界宽
+        CGFloat courseBorderH = 7.5;//边界高
+        CGFloat betweenW = 32;// 间距宽
         CGFloat imageWith =(kWidth-courseBorderW*2-betweenW *3)/4; //图片宽
         
         UIImageView *courseImage =[[UIImageView alloc]init];
-        courseImage.frame =CGRectMake(courseBorderW+c%4*(betweenW+imageWith),4+courseBorderH+ BANNER+c/4*(23+courseBorderH+(kWidth-courseBorderW*2-betweenW*3)/4), imageWith,imageWith);
+        courseImage.frame =CGRectMake(courseBorderW+c%4*(betweenW+imageWith),courseBorderH+ BANNER+c/4*(21+imageWith), imageWith,imageWith);
+        NSLog(@"---->%f",imageWith);
         [courseImage setBackgroundColor:[UIColor lightGrayColor]];
         courseImage.layer.cornerRadius =(kWidth-courseBorderW*2-betweenW*3)/8;
         courseImage.layer.masksToBounds=YES;
@@ -180,7 +181,7 @@ static NSString * const reuseIdentifier = @"Cell";
         
         UIButton *courseButtTitle =[UIButton buttonWithType:UIButtonTypeCustom];
         
-        courseButtTitle.frame =CGRectMake(courseBorderW-5+c%4*(courseImage.frame.size.width+betweenW), courseImage.frame.origin.y+30+c/4, imageWith+10, 30);
+        courseButtTitle.frame =CGRectMake(courseBorderW-5+c%4*(courseImage.frame.size.width+betweenW), courseImage.frame.origin.y+33+c/4, imageWith+10, 30);
         [self.backScrollView addSubview:courseButtTitle];
         [courseButtTitle setTitle:homeModel.courseName forState:UIControlStateNormal];
         [courseButtTitle setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
@@ -190,9 +191,11 @@ static NSString * const reuseIdentifier = @"Cell";
         
         
         UIButton *courseBtn =[UIButton buttonWithType:UIButtonTypeCustom];
-        courseBtn.frame =CGRectMake(courseBorderW-10+c%4*(imageWith+betweenW), courseImage.frame.origin.y+c/4, 50,60);
+        courseBtn.frame =CGRectMake(courseBorderW-6+c%4*(imageWith+betweenW), courseImage.frame.origin.y+c/4, 50,60);
         [courseBtn setTitle:self.noticeArray[c] forState:UIControlStateNormal  ];
         [courseBtn setTitleColor:[UIColor clearColor] forState:UIControlStateNormal];
+        courseBtn.backgroundColor =[UIColor clearColor];
+//        courseBtn.alpha =.4;
         [_backScrollView addSubview:courseBtn];
         courseBtn.tag =100+c;
         courseImage.userInteractionEnabled = NO;

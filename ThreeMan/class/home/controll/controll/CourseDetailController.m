@@ -82,7 +82,7 @@
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
         [failView removeFromSuperview];
 
-//        NSLog(@"%@",JSON);
+        NSLog(@"%@",JSON);
         if (code==100) {
             [failView removeFromSuperview];
 
@@ -457,35 +457,43 @@
     line.backgroundColor =HexRGB(0xd1d1d1);
     
     //添加标题
-    UILabel *titleLabel =[[UILabel alloc]initWithFrame:CGRectMake(23, 27, 40, 20)];
+    UILabel *titleLabel =[[UILabel alloc]initWithFrame:CGRectMake(18, 27, 50, 20)];
     [downloadView addSubview:titleLabel];
     titleLabel.font =[UIFont systemFontOfSize:PxFont(16)];
     titleLabel.textColor =HexRGB(0x1c8cc6);
     titleLabel.backgroundColor =[UIColor clearColor];
     titleLabel.textAlignment =NSTextAlignmentCenter;
-    titleLabel.text =[NSString stringWithFormat:@"( %d )",couseModel.courseDownloadnum];
+    titleLabel.text =[NSString stringWithFormat:@"(%d)",couseModel.courseDownloadnum];
     
     
     for (int i=0; i<3; i++) {
+        courseDetailModel *coureseModel =[_detailArray objectAtIndex:0];
+
         UIButton *categoryBtn =[UIButton buttonWithType:UIButtonTypeCustom];
         [downloadView addSubview:categoryBtn];
         categoryBtn.backgroundColor =[UIColor clearColor];
         if (i==0) {
             categoryBtn.frame =CGRectMake(23, 5, 40, 40) ;
             [categoryBtn setImage:[UIImage imageNamed:@"tab_download"] forState:UIControlStateNormal];
+            categoryBtn.enabled =NO;
+            
             categoryBtn.imageEdgeInsets =UIEdgeInsetsMake(0, 0, 10, 0);
         }if (i==1) {
             categoryBtn.frame =CGRectMake(83, 9, 160, 32) ;
             [categoryBtn setBackgroundImage:[UIImage imageNamed:@"buy_img"] forState:UIControlStateNormal];
-            
-            [categoryBtn setTitle:@"购买课程" forState:UIControlStateNormal];
+            if (coureseModel.coursePrice <=0) {
+                [categoryBtn setTitle:@"立即下载" forState:UIControlStateNormal];
+
+            }else{
+                [categoryBtn setTitle:@"购买课程" forState:UIControlStateNormal];
+ 
+            }
             [categoryBtn setTitleColor:HexRGB(0xffffff) forState:UIControlStateNormal];
             
         }if (i==2) {
             categoryBtn.frame =CGRectMake(kWidth-63, 5, 40, 40) ;
             [categoryBtn setImage:[UIImage imageNamed:@"tab_collect"] forState:UIControlStateNormal];
             [categoryBtn setImage:[UIImage imageNamed:@"tab_collect_pre"] forState:UIControlStateSelected];
-            courseDetailModel *coureseModel =[_detailArray objectAtIndex:0];
             if (coureseModel.iscollect ==1) {
                 categoryBtn.selected =YES;
             }else if (coureseModel.iscollect ==0){
@@ -696,20 +704,15 @@
         
     }else if (item.tag ==31){
         if (![SystemConfig sharedInstance].isUserLogin) {
-            NSArray *titleArr =@[@"否",@"是"];
-            byCompanyCourse =[[byCourseView alloc]initWithFrame:self.view.bounds byTitle:@"购买提示" contentLabel:@"亲，请登录后再进行购买哦！" buttonTitle:titleArr TagType:666];
-            byCompanyCourse.delegate =self;
-            [self.view addSubview:byCompanyCourse];
-            byCompanyCourse.hidden =NO;
+            [RemindView showViewWithTitle:@"抱歉，请先点击右上角注册或登录！" location:BELLOW] ;
             
 
         }else if([[SystemConfig sharedInstance].uid isEqualToString:[NSString stringWithFormat:@"%d", courseModel.companyId]]){
-            NSArray *titleArr =@[@"否",@"是"];
-            byCompanyCourse =[[byCourseView alloc]initWithFrame:self.view.bounds byTitle:@"购买提示" contentLabel:@"亲，购买权限只限普通会员,企业账户无法进行购买哦！" buttonTitle:titleArr TagType:666];
-            byCompanyCourse.delegate =self;
-            [self.view addSubview:byCompanyCourse];
-            byCompanyCourse.hidden =NO;
-        }else{
+            [RemindView showViewWithTitle:@"抱歉，请以普通会员身份购买！" location:BELLOW] ;
+        }else if (courseModel.coursePrice <=0) {
+            [RemindView showViewWithTitle:@"已经加入下载列表" location:BELLOW];
+        }
+        else{
              [self addByTopView];
             
         }
@@ -717,7 +720,7 @@
     }else if(item.tag ==32){
         
         if (![SystemConfig sharedInstance].isUserLogin ) {
-            [RemindView showViewWithTitle:@"请登录" location:BELLOW];
+            [RemindView showViewWithTitle:@"抱歉，请先点击右上角注册或登录！" location:BELLOW];
         }else{
     if (item.selected ==YES)  // uncollectSubject   collectSubject
       {
@@ -848,12 +851,12 @@
 -(void)notByRecommend{
     
 
-    failView =[[NetFailView alloc]initWithFrameForDetail:CGRectMake((kWidth-NETFAILIMGWH)/2+kWidth, -28, NETFAILIMGWH, NETFAILIMGWH) backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"抱歉！该需求暂时还没有推荐！"];
+    failView =[[NetFailView alloc]initWithFrameForDetail:CGRectMake((kWidth-NETFAILIMGWH)/2+kWidth, 15, NETFAILIMGWH, NETFAILIMGWH) backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"抱歉！该需求暂时还没有推荐！"];
     [categoryScrollView addSubview:failView];
 }
 // 答疑 没有购买课程
 -(void)notByAnswer{
-    failView =[[NetFailView alloc]initWithFrameForDetail:CGRectMake((kWidth-NETFAILIMGWH)/2+kWidth*2, -28, NETFAILIMGWH, NETFAILIMGWH) backImage:[UIImage imageNamed:@"netFailImg_2"] promptTitle:@"抱歉！您还未购买该课程！点击下方“购买”按钮购买！"];
+    failView =[[NetFailView alloc]initWithFrameForDetail:CGRectMake((kWidth-NETFAILIMGWH)/2+kWidth*2, 15, NETFAILIMGWH, NETFAILIMGWH) backImage:[UIImage imageNamed:@"netFailImg_2"] promptTitle:@"抱歉！您还未购买该课程！点击下方“购买”按钮购买！"];
     [categoryScrollView addSubview:failView];
 }
 //没有网络
