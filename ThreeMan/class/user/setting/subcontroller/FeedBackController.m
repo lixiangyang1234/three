@@ -107,7 +107,7 @@
                 NSLog(@"%@",error);
             }];
         }else{
-            [RemindView showViewWithTitle:@"请先登录!" location:TOP];
+            [RemindView showViewWithTitle:@"抱歉，请先点击右上角注册或登录!" location:TOP];
         }
     }
 }

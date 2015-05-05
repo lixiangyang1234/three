@@ -51,7 +51,7 @@
 
 - (void)buidlUI
 {
-    topBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,kWidth,35)];
+    topBgView = [[UIView alloc] initWithFrame:CGRectMake(8,8,kWidth-8*2,35)];
     topBgView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:topBgView];
     
@@ -72,7 +72,7 @@
         
     }
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,topBgView.frame.size.height, kWidth, kHeight-64-40-topBgView.frame.size.height) style:UITableViewStylePlain];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,topBgView.frame.size.height, kWidth, kHeight-64-40-topBgView.frame.size.height-8) style:UITableViewStylePlain];
     _tableView.dataSource = self;
     _tableView.delegate = self;
     _tableView.backgroundColor = [UIColor clearColor];
