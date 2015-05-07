@@ -145,12 +145,24 @@
                 
                 UserInfo *userinfo = [SystemConfig sharedInstance].userInfo;
                 if ([userinfo.type isEqualToString:@"1"]) {
-                    
+                    for (UIViewController *subVC in array) {
+                        if ([subVC isKindOfClass:[VideoCenterController class]]) {
+                            [self.navigationController popToViewController:subVC animated:NO];
+                            return;
+                        }
+                    }
+
                     VideoCenterController *center = [[VideoCenterController alloc] init];
                     [self.navigationController pushViewController:center animated:YES];
 
                 }else{
-                    
+                    for (UIViewController *subVC in array) {
+                        if ([subVC isKindOfClass:[CompFavoriteController class]]) {
+                            [self.navigationController popToViewController:subVC animated:NO];
+                            return;
+                        }
+                    }
+
                     CompFavoriteController *cf = [[CompFavoriteController alloc] init];
                     [self.navigationController pushViewController:cf animated:YES];
                     

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		040673961AF9BF8A00D39728 /* CircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 040673951AF9BF8A00D39728 /* CircularProgressView.m */; };
 		0414AC7B1AEDE7B500631B8E /* AliPayTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 0414AC781AEDE7B500631B8E /* AliPayTool.m */; };
 		0414AC7C1AEDE7B500631B8E /* Order.m in Sources */ = {isa = PBXBuildFile; fileRef = 0414AC7A1AEDE7B500631B8E /* Order.m */; };
 		0414AC801AEE194900631B8E /* FileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0414AC7F1AEE194900631B8E /* FileModel.m */; };
@@ -244,6 +245,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		040673941AF9BF8A00D39728 /* CircularProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircularProgressView.h; sourceTree = "<group>"; };
+		040673951AF9BF8A00D39728 /* CircularProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircularProgressView.m; sourceTree = "<group>"; };
 		0414AC771AEDE7B500631B8E /* AliPayTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliPayTool.h; sourceTree = "<group>"; };
 		0414AC781AEDE7B500631B8E /* AliPayTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliPayTool.m; sourceTree = "<group>"; };
 		0414AC791AEDE7B500631B8E /* Order.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Order.h; sourceTree = "<group>"; };
@@ -1194,6 +1197,8 @@
 				04C73A2E1ACE7C49007B1283 /* SectionHeadView.m */,
 				04B9A28A1AD3E2BF009446D1 /* CustomBtn.h */,
 				04B9A28B1AD3E2BF009446D1 /* CustomBtn.m */,
+				040673941AF9BF8A00D39728 /* CircularProgressView.h */,
+				040673951AF9BF8A00D39728 /* CircularProgressView.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -2199,6 +2204,7 @@
 				0469E0171AEA27040083601C /* CompFavoriteVC.m in Sources */,
 				5592A62E1AE781B200E8F77C /* SUNSlideSwitchView.m in Sources */,
 				04CC33511ACA8118008A85B5 /* FileItem.m in Sources */,
+				040673961AF9BF8A00D39728 /* CircularProgressView.m in Sources */,
 				55E373D31AC2B54200C794DD /* HttpTool.m in Sources */,
 				55C7FA551ADF57A1003EDFE8 /* courseDetailModel.m in Sources */,
 				04C73A201ACE2524007B1283 /* DrawViewController.m in Sources */,
