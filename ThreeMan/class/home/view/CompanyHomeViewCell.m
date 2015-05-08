@@ -7,8 +7,8 @@
 //
 
 #import "CompanyHomeViewCell.h"
-#define YYBorderX 10
-#define YYBorderY 10
+#define YYBorderX 5
+#define YYBorderY 5
 @implementation CompanyHomeViewCell
 
 
@@ -34,7 +34,7 @@
         companyHomeImage.backgroundColor =[UIColor clearColor];
         companyHomeImage.userInteractionEnabled =YES;
         
-        companyHomeSmailImage =[[typeView alloc]initWithFrame:CGRectMake(YYBorderX*2+90, YYBorderY, 30, 20)];
+        companyHomeSmailImage =[[typeView alloc]initWithFrame:CGRectMake(YYBorderX*2+90, YYBorderY*2, 27, 15)];
         [backCell addSubview:companyHomeSmailImage];
         companyHomeSmailImage.backgroundColor =[UIColor clearColor];
         companyHomeSmailImage.userInteractionEnabled =YES;
@@ -45,7 +45,7 @@
         [backCell addSubview:companyHomeTitle];
         
         companyHomeTitle.numberOfLines =2;
-        companyHomeTitle.font =[UIFont systemFontOfSize:PxFont(22)];
+        companyHomeTitle.font =[UIFont systemFontOfSize:PxFont(18)];
         
         downLoadBtn =[UIButton buttonWithType:UIButtonTypeCustom];
         [backCell addSubview:downLoadBtn];
@@ -55,7 +55,8 @@
         
         [downLoadBtn setImage:[UIImage imageNamed:@"companyDownload_img"] forState:UIControlStateNormal];
         [downLoadBtn setTitleColor:HexRGB(0xa8a8a8) forState:UIControlStateNormal];
-        
+        downLoadBtn.titleLabel.font =[UIFont systemFontOfSize:PxFont(16)];
+
         zanBtn =[UIButton buttonWithType:UIButtonTypeCustom];
         [backCell addSubview:zanBtn];
         zanBtn.frame =CGRectMake(200, YYBorderY*2+35, 100, 20);
@@ -64,7 +65,8 @@
         zanBtn.titleEdgeInsets =UIEdgeInsetsMake(0, 7, 0, 0);
         [zanBtn setImage:[UIImage imageNamed:@"browser_number_icon"] forState:UIControlStateNormal];
         [zanBtn setTitleColor:HexRGB(0x1c8cc6) forState:UIControlStateNormal];
-        
+        zanBtn.titleLabel.font =[UIFont systemFontOfSize:PxFont(18)];
+
         
         
         

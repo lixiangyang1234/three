@@ -216,6 +216,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     CourseEightController *courseEightVc=[[CourseEightController alloc]init];
     courseEightVc.courseID =[NSString stringWithFormat:@"%d",homeModel.courseId];
+        courseEightVc.courseTitle=homeModel.courseName;
     [self.nav pushViewController:courseEightVc animated:YES];
     }
 }
@@ -288,12 +289,12 @@ static NSString * const reuseIdentifier = @"Cell";
 
             
         }else if (i==1){
-            needBtn.frame =CGRectMake(kWidth-149.25, needHeight+50, 150, 44.5);
+            needBtn.frame =CGRectMake(kWidth-149.75, needHeight+50, 150, 44.5);
             needBtn.titleEdgeInsets =UIEdgeInsetsMake(0, 0, 20, 0);
-            needLabel.frame =CGRectMake(kWidth-149.25, needHeight+70, 130, 20);
+            needLabel.frame =CGRectMake(kWidth-149, needHeight+70, 130, 20);
 
         }else if (i==2){
-            needBtn.frame =CGRectMake(kWidth-149.5, needHeight+50+45, 150, 45);
+            needBtn.frame =CGRectMake(kWidth-149.75, needHeight+50+45, 150, 45);
             needBtn.titleEdgeInsets =UIEdgeInsetsMake(0, -80, 0, 0);
             needBtn.imageEdgeInsets =UIEdgeInsetsMake(0, 80, 0, 0);
 

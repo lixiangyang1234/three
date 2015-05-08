@@ -34,7 +34,7 @@
     label.backgroundColor = [UIColor clearColor];
     label.textColor = HexRGB(0xffffff);
     label.text = leftTitle;
-    label.font = [UIFont systemFontOfSize:18];
+    label.font = [UIFont systemFontOfSize:16];
     [titleView addSubview:label];
     
     

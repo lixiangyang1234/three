@@ -153,7 +153,7 @@
     titleLabel.textColor =HexRGB(0xffffff);
     contentLabel.textColor =HexRGB(0xf1f1f1);
     contentLabel.shadowColor =HexRGB(0xa2a2a2);
-    contentLabel.shadowOffset =CGSizeMake(0, 3);
+    contentLabel.shadowOffset =CGSizeMake(0, 1);
     contentLabel.numberOfLines =5;
     [animationView addSubview:contentLabel];
     NSLog(@"%f---%f",headerImage.frame.size.height,headerImage.frame.origin.y);
@@ -168,7 +168,7 @@
     alpha.backgroundColor =[UIColor clearColor];
     
     UIButton *animationBtn =[UIButton buttonWithType:UIButtonTypeCustom];
-    animationBtn.frame =CGRectMake((kWidth-80)/2, bannerImage.frame.size.height-36, 80, 30);
+    animationBtn.frame =CGRectMake((kWidth-80)/2, bannerImage.frame.size.height-40, 80, 30);
     animationBtn.backgroundColor =[UIColor clearColor];
     [bannerImage addSubview:animationBtn];
     [animationBtn setImage:[UIImage imageNamed:@"animationBtn"] forState:UIControlStateNormal];
@@ -209,8 +209,8 @@
     companyListModel *companyModel =[_companyArray objectAtIndex:indexPath.row];
     [cell.companyHomeImage setImageWithURL:[NSURL URLWithString:companyModel.companyImgurl] placeholderImage:placeHoderImage2];
     CGFloat titleH =[companyModel.companyTitle sizeWithFont:[UIFont systemFontOfSize:PxFont(20)] constrainedToSize:CGSizeMake(kWidth-156, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping].height;
-    cell.companyHomeTitle.frame =CGRectMake(135, 9, kWidth-156, titleH);
-    cell.companyHomeTitle.text =[NSString stringWithFormat:@"   %@",companyModel.companyTitle];
+    cell.companyHomeTitle.frame =CGRectMake(100, 9, kWidth-156, titleH);
+    cell.companyHomeTitle.text =[NSString stringWithFormat:@"        %@",companyModel.companyTitle];
     [cell.downLoadBtn setTitle:[NSString stringWithFormat:@"%d",companyModel.companyDownloadnum] forState:UIControlStateNormal];
      [cell.zanBtn setTitle:[NSString stringWithFormat:@"%d",companyModel.companyPrice] forState:UIControlStateNormal];
     [cell.companyHomeSmailImage typeID:companyModel.companyType];

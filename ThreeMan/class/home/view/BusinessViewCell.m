@@ -25,7 +25,7 @@
         [self addSubview:backCell];
         backCell.backgroundColor =[UIColor whiteColor];
         
-        businessImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderW, borderH, 40, 40)];
+        businessImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderW, borderH+10, 40, 40)];
         [backCell addSubview:businessImage];
         businessImage.backgroundColor =[UIColor clearColor];
         businessImage.userInteractionEnabled =YES;

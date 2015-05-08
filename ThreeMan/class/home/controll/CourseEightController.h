@@ -10,4 +10,6 @@
 
 @interface CourseEightController : LeftTitleController
 @property(nonatomic,strong)NSString * courseID;
+@property(nonatomic,strong)NSString * courseTitle;
+
 @end
