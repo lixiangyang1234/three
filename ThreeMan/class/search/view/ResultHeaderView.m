@@ -35,8 +35,7 @@
         
         midLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         midLabel.backgroundColor = [UIColor clearColor];
-        midLabel.textColor = [UIColor greenColor];
-        rigthLabel.textColor = HexRGB(0x1c8cc6);
+        midLabel.textColor = HexRGB(0x1c8cc6);
         midLabel.font = titleFont;
         [self addSubview:midLabel];
         

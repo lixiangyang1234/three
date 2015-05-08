@@ -25,7 +25,7 @@
 
 //号码验证
 + (BOOL)isValidPhone:(NSString *)phoneNum{
-    NSString *phoneRegex  =  @"^((13[0-9])|(15[^4,\\D])|(18[0,0-9])|(17[0,0-9]))\\d{8}$";
+    NSString *phoneRegex  =  @"^((13[0-9])|(14[0,0-9])|(15[^4,\\D])|(18[0,0-9])|(17[0,0-9]))\\d{8}$";
     NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",phoneRegex];
     return [phoneTest evaluateWithObject:phoneNum];
 }
