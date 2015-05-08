@@ -216,6 +216,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     CourseEightController *courseEightVc=[[CourseEightController alloc]init];
     courseEightVc.courseID =[NSString stringWithFormat:@"%d",homeModel.courseId];
+        courseEightVc.courseTitle=homeModel.courseName;
     [self.nav pushViewController:courseEightVc animated:YES];
     }
 }

@@ -144,7 +144,7 @@
             if ([SystemConfig sharedInstance].isUserLogin) {
                 
                 UserInfo *userinfo = [SystemConfig sharedInstance].userInfo;
-                if ([userinfo.type isEqualToString:@"1"]) {
+                if (![userinfo.type isEqualToString:@"1"]) {
                     
                     VideoCenterController *center = [[VideoCenterController alloc] init];
                     [self.navigationController pushViewController:center animated:YES];

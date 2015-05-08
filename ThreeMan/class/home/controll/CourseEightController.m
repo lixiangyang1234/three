@@ -28,7 +28,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = HexRGB(0xe8e8e8);
-    [self setLeftTitle:@"课程详情"];
+    [self setLeftTitle:_courseTitle];
     _courseEightArray =[NSMutableArray array];
     [self addErrorView];
     [self addMBprogressView];

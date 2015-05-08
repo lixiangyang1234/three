@@ -118,15 +118,16 @@
             NSDictionary *dic = [JSON objectForKey:@"data"];
             NSArray *array = [dic objectForKey:@"recommend_list"];
              recommendCount=[dic objectForKey:@"recommend_count"];
-            NSLog(@"----->%@",recommendCount);
-
+            NSLog(@"----->%@",array);
+            [_recommendArray removeAllObjects];
+            [_answerArray removeAllObjects];
             if (![array isKindOfClass:[NSNull class]]) {
                 for (NSDictionary *dict in array) {
-                    [_recommendArray removeAllObjects];
-                    [_answerArray removeAllObjects];
+                    
 
                     courseDetailModel *item = [[courseDetailModel alloc] initWithDictnoaryForCourseRecommend:dict];
                     [_recommendArray addObject:item];
+                    NSLog(@"------11111---->%d",_recommendArray.count);
                 }
             }
             [recommendTableView reloadData];
@@ -152,10 +153,11 @@
             NSDictionary *dic = [JSON objectForKey:@"data"];
             NSLog(@"%@",JSON);
             NSArray *array = [dic objectForKey:@"question_list"];
+            [_recommendArray removeAllObjects];
+            [_answerArray removeAllObjects];
             if (![array isKindOfClass:[NSNull class]]) {
                 for (NSDictionary *dict in array) {
-                    [_recommendArray removeAllObjects];
-                    [_answerArray removeAllObjects];
+                   
                     courseDetailModel *item = [[courseDetailModel alloc] initWithDictnoaryForCourseAnswer:dict];
                     [_answerArray addObject:item];
                 }
@@ -535,6 +537,8 @@
             RecommandCell.selectionStyle =UITableViewCellSelectionStyleNone;
 
         }
+        NSLog(@"------22222---->%d",_recommendArray.count);
+
         courseDetailModel *recommendModel =[_recommendArray objectAtIndex:indexPath.row];
         RecommandCellH =[recommendModel.recommendContent sizeWithFont:[UIFont systemFontOfSize:PxFont(18)] constrainedToSize:CGSizeMake(self.view.frame.size.width-33, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping ].height;
 
@@ -566,9 +570,15 @@
         answerCell.backLineCell .frame=CGRectMake(0, answerCell.backCell.frame.size.height-1, answerCell.backCell.frame.size.width, 1);
 
         answerCell.answerTitle.text =answerModel.answerTitle;
-        [answerCell.companyAnswerImage setImageWithURL:[NSURL URLWithString:answerModel.answerImg] placeholderImage:placeHoderImage1];
         answerCell.contentAnswerLabel.frame =CGRectMake(11, 35, self.view.frame.size.width-33, cellContentH);
         NSLog(@"---%f---->%f",cellContentH,answerCell.backCell.frame.size.height);
+        CGFloat contentH =answerCell.contentAnswerLabel.frame.size.height+answerCell.contentAnswerLabel.frame.origin.y+5;
+        answerCell.companyAnswerImage.frame =CGRectMake(11, contentH, 26, 26);
+        answerCell.nameAnswerLabel.frame =CGRectMake(11+30, contentH+5, kWidth-140, 20);
+        answerCell.timeAnswerLabel.frame =CGRectMake(kWidth-90, contentH+5, 70, 20);
+
+        [answerCell.companyAnswerImage setImageWithURL:[NSURL URLWithString:answerModel.answerImg] placeholderImage:placeHoderImage1];
+
         answerCell.timeAnswerLabel.text =answerModel.answerAddtime;
         answerCell.nameAnswerLabel.text =answerModel.answerName;
         answerCell.contentAnswerLabel.text =answerModel.answerContent;
@@ -700,7 +710,6 @@
     courseDetailModel *courseModel =[_detailArray objectAtIndex:0];
     
     if (item.tag ==30) {
-        NSLog(@"用户----》%@----%@",[SystemConfig sharedInstance].userInfo,[SystemConfig sharedInstance].uid);
         
     }else if (item.tag ==31){
         if (![SystemConfig sharedInstance].isUserLogin) {
@@ -726,7 +735,6 @@
       {
           
             NSDictionary *paramDic =[NSDictionary dictionaryWithObjectsAndKeys:[SystemConfig sharedInstance].uid,@"uid",_courseDetailID,@"id" ,nil];
-//        NSLog(@"%@",[SystemConfig sharedInstance].uid);
             [HttpTool postWithPath:@"uncollectSubject" params:paramDic success:^(id JSON, int code, NSString *msg) {
 //                NSLog(@"%@",JSON);
                 if (code ==100) {
@@ -738,7 +746,6 @@
             }];
       }  else{
           NSDictionary *paramDic =[NSDictionary dictionaryWithObjectsAndKeys:[SystemConfig sharedInstance].uid,@"uid",_courseDetailID,@"id" ,nil];
-//          NSLog(@"%@",[SystemConfig sharedInstance].uid);
           [HttpTool postWithPath:@"collectSubject" params:paramDic success:^(id JSON, int code, NSString *msg) {
 //              NSLog(@"-----%@",JSON);
               if (code ==100) {
@@ -850,13 +857,19 @@
 // 推荐 没有推荐
 -(void)notByRecommend{
     
-
     failView =[[NetFailView alloc]initWithFrameForDetail:CGRectMake((kWidth-NETFAILIMGWH)/2+kWidth, 15, NETFAILIMGWH, NETFAILIMGWH) backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"抱歉！该需求暂时还没有推荐！"];
+    if (kHeight>500) {
+        failView.frame =CGRectMake((kWidth-NETFAILIMGWH)/2+kWidth, 100, NETFAILIMGWH, NETFAILIMGWH);
+    }
     [categoryScrollView addSubview:failView];
 }
 // 答疑 没有购买课程
 -(void)notByAnswer{
     failView =[[NetFailView alloc]initWithFrameForDetail:CGRectMake((kWidth-NETFAILIMGWH)/2+kWidth*2, 15, NETFAILIMGWH, NETFAILIMGWH) backImage:[UIImage imageNamed:@"netFailImg_2"] promptTitle:@"抱歉！您还未购买该课程！点击下方“购买”按钮购买！"];
+    if (kHeight>500) {
+        failView.frame =CGRectMake((kWidth-NETFAILIMGWH)/2+kWidth*2, 100, NETFAILIMGWH, NETFAILIMGWH);
+    }
+
     [categoryScrollView addSubview:failView];
 }
 //没有网络

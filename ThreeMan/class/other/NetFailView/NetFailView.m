@@ -33,12 +33,12 @@
 -(id)initWithFrameForDetail:(CGRect)frame backImage:(UIImage *)img promptTitle:(NSString *)title{
     self =[super initWithFrame:frame];
     if (self) {
-        UIImageView *   netFailImg =[[UIImageView alloc]initWithFrame:CGRectMake(20, 15, NETFAILIMGWH, NETFAILIMGWH)];
+        UIImageView *   netFailImg =[[UIImageView alloc]initWithFrame:CGRectMake(20, 15, 145, NETFAILIMGWH)];
         [self addSubview:netFailImg];
         netFailImg.backgroundColor =[UIColor clearColor];
         netFailImg.image =img;
         
-        UILabel *netFailLabel =[[UILabel alloc]initWithFrame:CGRectMake(10, self.frame.size.height-40, 145, 40)];
+        UILabel *netFailLabel =[[UILabel alloc]initWithFrame:CGRectMake(0, self.frame.size.height-40, 180, 40)];
         netFailLabel.backgroundColor =[UIColor clearColor];
         netFailLabel.text =title;
         [self addSubview:netFailLabel];

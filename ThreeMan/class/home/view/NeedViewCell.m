@@ -45,7 +45,7 @@
         needTitle.numberOfLines =2;
         needTitle .font =[UIFont systemFontOfSize:PxFont(18)];
 
-        needSmailImage =[[typeView alloc]initWithFrame:CGRectMake(borderW*2+imageW, YYBorderY+borderW, 26, 16)];
+        needSmailImage =[[typeView alloc]initWithFrame:CGRectMake(borderW*2+imageW, YYBorderY+borderW, 27, 15)];
         [backCell addSubview:needSmailImage];
         needSmailImage.backgroundColor =[UIColor clearColor];
     
