@@ -412,7 +412,7 @@
     answerTableView.showsHorizontalScrollIndicator =NO;
     answerTableView.showsVerticalScrollIndicator= NO;
     answerTableView.hidden =NO;
-    answerTableView.hidden =NO;
+    answerTableView.scrollEnabled =NO;
 }
 #pragma mark ----分类的点击事件
 //添加分类
