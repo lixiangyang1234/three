@@ -12,17 +12,22 @@
 #import "companyListModel.h"
 #define KStartY 20
 #define BannerH  195
+#define pageSize 6
 #define DEGREES_TO_RADIANS(angle) ((angle)/180.0 *M_PI)
 
-@interface CompanyHomeControll ()<UITableViewDataSource,UITableViewDelegate>
+@interface CompanyHomeControll ()<UITableViewDataSource,UITableViewDelegate,MJRefreshBaseViewDelegate>
 {
     ErrorView *networkError;
+    NetFailView *failView;
     UIImageView *headerImage;
     
     UITableView *_tableView;
     CGFloat starY;
     UIImageView *alpha;
     UIView *animationView;
+    MJRefreshFooterView *refreshFooterView;
+    MJRefreshHeaderView *refreshHeaderView;
+    BOOL isRefresh;
     
 }
 @end
@@ -45,47 +50,106 @@
     [self.view setBackgroundColor:HexRGB(0xe0e0e0)];
     _companyArray =[NSMutableArray array];
     _companyLogeArray =[NSMutableArray array];
+    isRefresh =NO;
 
     [self addErrorView];
-    [self addMBprogressView];
+    [self notCompanyStatuse];
+
+    [self addRefreshView];
 
     [self addLoadStatus];
     // Do any additional setup after loading the view.
 }
-#pragma  mark ------显示指示器
--(void)addMBprogressView{
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"加载中...";
+-(void)addRefreshView{
+    refreshHeaderView =[[MJRefreshHeaderView alloc]init];
+    refreshHeaderView.delegate =self;
+    refreshHeaderView.scrollView =_tableView;
+    
+    refreshFooterView =[[MJRefreshFooterView alloc]init];
+    refreshFooterView.delegate =self;
+    refreshFooterView.scrollView=_tableView;
+    
+}
+-(void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView{
+    if ([refreshView isKindOfClass:[MJRefreshFooterView class]]) {
+        isRefresh =YES;
+        [self addLoadStatus];
+    }else{
+        isRefresh =NO;
+        [self addLoadStatus];
+    }
 }
 
 #pragma mark=====添加数据
 -(void)addLoadStatus{
-    NSDictionary *paraDic =[NSDictionary dictionaryWithObjectsAndKeys:_companyId,@"id", nil];
-//    NSLog(@"---->ffffff%@",_companyId);
+    NSDictionary *paraDic;
+    if (isRefresh) {
+        paraDic =@{@"pageid" :[NSString stringWithFormat:@"%ld",(unsigned long)_companyArray.count],@"pagesize":[NSString stringWithFormat:@"%d",pageSize],@"id":_companyId };
+    }else{
+        paraDic =@{@"pageid" :@"0",@"pagesize":[NSString stringWithFormat:@"%d",pageSize],@"id":_companyId };
+    }
+    if (!isRefresh) {
+        MBProgressHUD *progress =[MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        progress.labelText =@"加载中。。。";
+    }
+//    NSDictionary *paraDic =[NSDictionary dictionaryWithObjectsAndKeys:_companyId,@"id", nil];
+    NSLog(@"---->ffffff%@",paraDic);
     [HttpTool postWithPath:@"getCompanyCourseList" params:paraDic success:^(id JSON, int code, NSString *msg) {
-        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        if (isRefresh) {
+            [refreshFooterView endRefreshing];
+        }else{
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+            [refreshHeaderView endRefreshing];
+            
+        }
+        if (!isRefresh) {
+            [_companyArray removeAllObjects];
+        }
 
-        NSDictionary *dict =JSON[@"data"];
-        NSArray *arr =dict[@"subject_list"];
-        NSDictionary *dict1 =JSON[@"data"][@"company_info"];
-        if (code==100) {
-            for (NSDictionary *dicArr in arr) {
-                companyListModel *businessModel =[[companyListModel alloc]initWithDictonaryForCompanyList:dicArr];
-                [_companyArray addObject:businessModel];
-            }
+                if (code==100) {
+                    NSDictionary *dict =JSON[@"data"];
+                    NSArray *arr =dict[@"subject_list"];
+                    NSDictionary *dict1 =JSON[@"data"][@"company_info"];
+
+            if (![arr isKindOfClass:[NSNull class]]) {
+                for (NSDictionary *dicArr in arr) {
+                    companyListModel *businessModel =[[companyListModel alloc]initWithDictonaryForCompanyList:dicArr];
+                    [_companyArray addObject:businessModel];
+                    if (arr.count<pageSize) {
+                        refreshFooterView.hidden =YES;
+                        [RemindView showViewWithTitle:@"数据加载完毕！" location:MIDDLE];
+                    }else{
+                        refreshFooterView.hidden =NO;
+                    }
+                }
                 companyListModel *businessModel =[[companyListModel alloc]initWithDictonaryForCompany_info:dict1];
                 [_companyLogeArray addObject:businessModel];
-            
-
+                
+                
+            }
+        }else{
+            refreshFooterView.hidden =NO;
         }
-               NSLog(@"%@",JSON);
-        [_tableView reloadData];
+            
+//               NSLog(@"%@",JSON);
         [self addUIBannerView];
         [self addTableView];
+        [_tableView reloadData];
 
+        if (_companyArray.count<=0) {
+            failView.hidden =NO;
+        }else{
+            failView.hidden =YES;
+        }
     } failure:^(NSError *error) {
-        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-
+        if (isRefresh) {
+            [refreshFooterView endRefreshing];
+        }else{
+            [refreshHeaderView endRefreshing];
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+            
+        }
+        
         networkError.hidden =NO;
     }];
 }
@@ -126,7 +190,6 @@
     headerImage.layer.masksToBounds =YES;
     headerImage.layer.borderColor =[UIColor whiteColor].CGColor;
     headerImage.layer.borderWidth=1.0f;
-    
     
     UIImageView *headerImg  =[[UIImageView alloc]initWithFrame:CGRectMake(5, 5, 60, 60)];
     headerImg.layer.cornerRadius =30;
@@ -187,6 +250,7 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     [self.view addSubview:_tableView];
+//    [self.view sendSubviewToBack:_tableView];
 }
 
 #pragma mark - Table view data source
@@ -304,8 +368,9 @@
 }
 //没有需求
 -(void)notCompanyStatuse{
-    NetFailView *failView =[[NetFailView alloc]initWithFrame:self.view.bounds backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"对不起，该企业还未发布需求！去其他企业看看吧! "];
+     failView =[[NetFailView alloc]initWithFrame:self.view.bounds backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"对不起，该企业还未发布需求！去其他企业看看吧! "];
     [self.view addSubview:failView];
+    failView.hidden =YES;
 }
 #pragma mark 控件将要显示
 - (void)viewWillAppear:(BOOL)animated

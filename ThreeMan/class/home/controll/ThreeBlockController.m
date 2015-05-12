@@ -14,20 +14,25 @@
 #import "categoryView.h"
 #import "threeBlockModel.h"
 #define DEGREES_TO_RADIANS(angle) ((angle)/180.0 *M_PI)
+#define pageSize 6
 
-
-@interface ThreeBlockController ()<UITableViewDelegate,UITableViewDataSource>
+@interface ThreeBlockController ()<UITableViewDelegate,UITableViewDataSource,MJRefreshBaseViewDelegate>
 {
     ErrorView *networkError;
     ErrorView *notStatus;
     UITableView *_tableView;
     YYSearchButton *_selectedItem;
+    MJRefreshHeaderView *refreshHeaderView;
+    MJRefreshFooterView *refreshFooterView;
+    BOOL isRefresh;
 }
 @end
 
 @implementation ThreeBlockController
 - (void)viewDidLoad {
     [super viewDidLoad];
+   
+
     // Do any additional setup after loading the view.
     [self.view setBackgroundColor:HexRGB(0xffffff)];
     _threeArray =[NSMutableArray array];
@@ -38,22 +43,77 @@
     [self addTableView];
     [self addErrorView];
     [self addNotLoatStatus];
-    [self addMBprogressView];
+    [self addRefreshView];
     [self addUIChooseBtn];//添加筛选按钮
     [self addCategoryBtn];
     [self addLoadStatus:@"0"];
 }
--(void)addMBprogressView{
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"加载中...";
+-(void)addRefreshView{
+    refreshHeaderView =[[MJRefreshHeaderView alloc]init];
+    refreshHeaderView.delegate =self;
+    refreshHeaderView.scrollView =_tableView;
     
+    refreshFooterView =[[MJRefreshFooterView alloc]init];
+    refreshFooterView.delegate =self;
+    refreshFooterView.scrollView =_tableView;
 }
+-(void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView{
+    if (![refreshView isKindOfClass:[MJRefreshHeaderView class]]) {
+        isRefresh = YES;
+        if (_selectedItem.tag ==10000)
+        {
+            
+            [self addLoadStatus:@"0" ];
+            
+        }if (_selectedItem.tag ==10001) {
+            [self addLoadStatus:@"1" ];
+            
+        }if (_selectedItem.tag ==10002) {
+            [self addLoadStatus:@"2||3||4||5||6||7||8" ];
+            
+        }
+        
+    }else{
+        isRefresh = NO;
+        if (_selectedItem.tag ==10000)
+        {
+            
+            [self addLoadStatus:@"0" ];
+            
+        }if (_selectedItem.tag ==10001) {
+            [self addLoadStatus:@"1" ];
+            
+        }if (_selectedItem.tag ==10002) {
+            [self addLoadStatus:@"2||3||4||5||6||7||8" ];
+            
+        }
+    }
 
+}
 -(void)addLoadStatus:(NSString *)typestr{
-    NSDictionary *parmDic =[NSDictionary dictionaryWithObjectsAndKeys:_threeId,@"id",typestr,@"type" ,nil];
+    NSDictionary *parmDic;
+    if (isRefresh) {
+        parmDic =@{@"pageid":[NSString stringWithFormat:@"%ld",(unsigned long)_threeListArray.count],@"pagesize":[NSString stringWithFormat:@"%d",pageSize],@"id":_threeId,@"type":typestr    };
+    }else{
+        parmDic =@{@"pageid":@"0",@"pagesize":[NSString stringWithFormat:@"%d",pageSize],@"id":_threeId,@"type":typestr    };
+    }
+    if (!isRefresh) {
+        MBProgressHUD *progress =[MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        progress.labelText =@"加载中。。。";
+    }
+//    NSDictionary *parmDic =[NSDictionary dictionaryWithObjectsAndKeys:_threeId,@"id",typestr,@"type" ,nil];
     [HttpTool postWithPath:@"getNeedList" params:parmDic success:^(id JSON, int code, NSString *msg) {
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        if (isRefresh) {
+            [refreshFooterView endRefreshing];
+        }else{
+            [refreshHeaderView endRefreshing];
 
+            [MBProgressHUD hideAllHUDsForView :self.view animated:YES];
+        }
+        if (!isRefresh) {
+            [_threeListArray removeAllObjects];
+        }
 
         if (code == 100) {
             NSDictionary *dic = [JSON objectForKey:@"data"][@"subcategory_list"];
@@ -64,8 +124,7 @@
             NSDictionary *arrdic =arr[@"subcategory"];
             NSDictionary *dic2 = [JSON objectForKey:@"data"][@"subject_list"];
 
-            [_threeListArray removeAllObjects];
-            [_tableView reloadData];
+            
 
             NSLog(@"%@",array);
 
@@ -85,11 +144,22 @@
                 }
             }
             if (![dic2 isKindOfClass:[NSNull class]]) {
+                if (dic2.count<pageSize) {
+                    refreshFooterView.hidden =YES;
+
+                    [RemindView showViewWithTitle:@"数据加载完毕！" location:MIDDLE];
+                }else{
+                    refreshFooterView.hidden = NO;
+
+                }
             for (NSDictionary *dict1 in dic2) {
                 threeBlockModel *cateModel = [[threeBlockModel alloc] initWithForThreeList:dict1];
                 [_threeListArray addObject:cateModel];
                 
             }
+            }else{
+                refreshFooterView.hidden = NO;
+
             }
             
             [_tableView reloadData];
@@ -101,7 +171,13 @@
             }
         }
     } failure:^(NSError *error) {
-        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        if (isRefresh) {
+            [refreshFooterView endRefreshing];
+        }else{
+            [refreshHeaderView endRefreshing];
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+
+        }
 
         networkError.hidden =NO;
     }];
@@ -166,6 +242,7 @@
         _selectedItem=sender;
             
     }
+    isRefresh =NO;
     if (sender.tag ==10000) {
         [self addLoadStatus:@"0"];
         

@@ -219,7 +219,6 @@
 		55E670CA1AF08D1E00FE4507 /* AlipaySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55E670C61AF08D1E00FE4507 /* AlipaySDK.framework */; };
 		55E670CB1AF08D1E00FE4507 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55E670C71AF08D1E00FE4507 /* libcrypto.a */; };
 		55E670CC1AF08D1E00FE4507 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55E670C81AF08D1E00FE4507 /* libssl.a */; };
-		55E767E41AEF572600E473F8 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 55E767E31AEF572600E473F8 /* Default-568h@2x.png */; };
 		55E99B581AF209E000CA4F1C /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E99B551AF209E000CA4F1C /* BaseViewController.m */; };
 		55E99B591AF209E000CA4F1C /* LeftTitleController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E99B571AF209E000CA4F1C /* LeftTitleController.m */; };
 		55E99B6D1AF209F700CA4F1C /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E99B5B1AF209F700CA4F1C /* AFHTTPRequestOperation.m */; };
@@ -231,6 +230,7 @@
 		55E99B731AF209F700CA4F1C /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E99B681AF209F700CA4F1C /* AFURLRequestSerialization.m */; };
 		55E99B741AF209F700CA4F1C /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E99B6A1AF209F700CA4F1C /* AFURLResponseSerialization.m */; };
 		55E99B751AF209F700CA4F1C /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E99B6C1AF209F700CA4F1C /* AFURLSessionManager.m */; };
+		55F947C41B0051AC00B0FBAC /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 55F947C31B0051AC00B0FBAC /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -705,7 +705,6 @@
 		55E670C61AF08D1E00FE4507 /* AlipaySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlipaySDK.framework; sourceTree = "<group>"; };
 		55E670C71AF08D1E00FE4507 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libcrypto.a; sourceTree = "<group>"; };
 		55E670C81AF08D1E00FE4507 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libssl.a; sourceTree = "<group>"; };
-		55E767E31AEF572600E473F8 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		55E99B541AF209E000CA4F1C /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		55E99B551AF209E000CA4F1C /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		55E99B561AF209E000CA4F1C /* LeftTitleController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeftTitleController.h; sourceTree = "<group>"; };
@@ -729,6 +728,7 @@
 		55E99B6A1AF209F700CA4F1C /* AFURLResponseSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLResponseSerialization.m; sourceTree = "<group>"; };
 		55E99B6B1AF209F700CA4F1C /* AFURLSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLSessionManager.h; sourceTree = "<group>"; };
 		55E99B6C1AF209F700CA4F1C /* AFURLSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLSessionManager.m; sourceTree = "<group>"; };
+		55F947C31B0051AC00B0FBAC /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1931,7 +1931,7 @@
 		55E3736E1AC2B54200C794DD /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				55E767E31AEF572600E473F8 /* Default-568h@2x.png */,
+				55F947C31B0051AC00B0FBAC /* Default-568h@2x.png */,
 				55C7FA511ADF40DD003EDFE8 /* browser_number_icon@2x.png */,
 				55B828021AC53A54008EAFA4 /* img.png */,
 				55E373751AC2B54200C794DD /* nav_bg@2x.png */,
@@ -2084,11 +2084,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				5592A6281AE781B200E8F77C /* red_line_and_shadow@2x.png in Resources */,
-				55E767E41AEF572600E473F8 /* Default-568h@2x.png in Resources */,
 				55E373BD1AC2B54200C794DD /* ShareSDKLocalizable.strings in Resources */,
 				5592A62B1AE781B200E8F77C /* slide_line_btn@2x.png in Resources */,
 				55E373A41AC2B54200C794DD /* MJRefresh.bundle in Resources */,
 				5592A62D1AE781B200E8F77C /* slide_linli_btn_pressed@2x.png in Resources */,
+				55F947C41B0051AC00B0FBAC /* Default-568h@2x.png in Resources */,
 				55E373BE1AC2B54200C794DD /* Resource.bundle in Resources */,
 				55E372991AC2B4C600C794DD /* Images.xcassets in Resources */,
 				55E373C31AC2B54200C794DD /* WeiboSDK.bundle in Resources */,

@@ -10,10 +10,7 @@
 #import "PatternCell.h"
 #import "PatternItem.h"
 #import "PatternDetailController.h"
-#import "HttpTool.h"
 #import "UIImageView+WebCache.h"
-#import "ErrorView.h"
-#import "MJRefresh.h"
 
 #define pagesize 15
 
@@ -50,7 +47,7 @@
     networkError.center = CGPointMake(kWidth/2, (kHeight-64-40)/2);
     networkError.hidden = YES;
     [self.view addSubview:networkError];
-    [self loadData:NO];
+//    [self loadData:NO];
 }
 
 - (void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView
