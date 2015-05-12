@@ -10,29 +10,16 @@
 
 @implementation DownloadManager
 
-+ (DownloadManager *)shareInstance
++ (void)setDelegate:(id<DownloadDelegate>)delegate
 {
-    static DownloadManager *manager = nil;
-    @synchronized(self){
-        if (manager == nil) {
-            manager = [[DownloadManager alloc] init];
-        }
-    }
-    return manager;
-}
-
-
-- (void)setDelegate:(id<DownloadDelegate>)delegate
-{
-    _delegate = delegate;
     if (![UIDevice currentDevice].systemVersion.floatValue>=7.0) {
-        [UrlSessionDownload shareInstance].delegate = _delegate;
+        [UrlSessionDownload shareInstance].delegate = delegate;
     }else{
-        [AFDownload shareInstance].delegate = _delegate;
+        [AFDownload shareInstance].delegate = delegate;
     }
 }
 
-- (void)downloadFileWithUrl:(NSString *)urlStr type:(NSString *)type fileInfo:(NSDictionary *)fileInfo
++ (void)downloadFileWithUrl:(NSString *)urlStr type:(NSString *)type fileInfo:(NSDictionary *)fileInfo
 {
     if (![UIDevice currentDevice].systemVersion.floatValue>=7.0) {
         [[UrlSessionDownload shareInstance] downloadFileWithUrl:urlStr type:type fileInfo:fileInfo];
@@ -42,7 +29,7 @@
 }
 
 
-- (NSMutableArray *)finishedArray
++ (NSMutableArray *)arrayOfFinished
 {
     NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:0];
     if (![UIDevice currentDevice].systemVersion.floatValue>=7.0) {
@@ -53,8 +40,7 @@
     return array;
 }
 
-
-- (NSMutableArray *)unFinidhedArray
++ (NSMutableArray *)arrayOfUnfinished
 {
     NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:0];
     if (![UIDevice currentDevice].systemVersion.floatValue>=7.0) {
@@ -66,7 +52,7 @@
 }
 
 
-- (void)stopDownload:(DownloadFileModel *)fileModel
++ (void)stopDownload:(DownloadFileModel *)fileModel
 {
     if (![UIDevice currentDevice].systemVersion.floatValue>=7.0) {
         [[UrlSessionDownload shareInstance] stopDownload:fileModel];
@@ -76,7 +62,7 @@
     
 }
 
-- (void)resumeDownload:(DownloadFileModel *)fileModel
++ (void)resumeDownload:(DownloadFileModel *)fileModel
 {
     if (![UIDevice currentDevice].systemVersion.floatValue>=7.0) {
         [[UrlSessionDownload shareInstance] resumeDownload:fileModel];
@@ -86,7 +72,7 @@
     
 }
 
-- (void)cancelDownload:(DownloadFileModel *)fileModel
++ (void)cancelDownload:(DownloadFileModel *)fileModel
 {
     if (![UIDevice currentDevice].systemVersion.floatValue>=7.0) {
         [[UrlSessionDownload shareInstance] cancelDownload:fileModel];
@@ -95,5 +81,13 @@
     }
 }
 
++ (void)cancelDownloads:(NSArray *)arr
+{
+    if (![UIDevice currentDevice].systemVersion.floatValue>=7.0) {
+        [[UrlSessionDownload shareInstance] cancelDownloads:arr];
+    }else{
+        [[AFDownload shareInstance] cancelDownloads:arr];
+    }
+}
 
 @end

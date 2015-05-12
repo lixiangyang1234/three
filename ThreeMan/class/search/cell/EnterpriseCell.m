@@ -8,6 +8,13 @@
 
 #import "EnterpriseCell.h"
 
+@interface EnterpriseCell ()
+{
+    UIView *bgView;
+}
+
+@end
+
 @implementation EnterpriseCell
 
 - (void)awakeFromNib {
@@ -18,9 +25,9 @@
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         self.backgroundColor = HexRGB(0xe8e8e8);
-        CGFloat heigth = 90;
+        CGFloat height = 90;
         
-        UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(8, 0,kWidth-8*2,heigth)];
+        bgView = [[UIView alloc] initWithFrame:CGRectMake(8, 0,kWidth-8*2,height)];
         bgView.backgroundColor = [UIColor whiteColor];
         _imgView = [[UIImageView alloc] initWithFrame:CGRectMake(12, 12, 38, 38)];
         _imgView.layer.cornerRadius = 38/2;
@@ -44,19 +51,26 @@
         [bgView addSubview:_littleLabel];
         
         CGFloat y =  _littleLabel.frame.origin.y+_littleLabel.frame.size.height;
-        _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(_titleLabel.frame.origin.x,y, kWidth-10*2-_titleLabel.frame.origin.x,heigth-y)];
+        _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(_titleLabel.frame.origin.x,y, kWidth-10*2-_titleLabel.frame.origin.x,height-y)];
         _contentLabel.numberOfLines = 0;
         _contentLabel.textColor = HexRGB(0x1c8cc6);
         _contentLabel.font = [UIFont systemFontOfSize:13];
         _contentLabel.backgroundColor = [UIColor clearColor];
         [bgView addSubview:_contentLabel];
         
-        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, heigth-0.5, bgView.frame.size.width,0.5)];
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, height-0.5, bgView.frame.size.width,0.5)];
         line.backgroundColor = HexRGB(0xe0e0e0);
         [bgView addSubview:line];
     }
     return self;
 }
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    bgView.backgroundColor = HexRGB(0xffffff);
+}
+
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

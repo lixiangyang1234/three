@@ -29,6 +29,7 @@
     return self;
 }
 
+
 - (void)tapDown
 {
     [self.telView.textField resignFirstResponder];
@@ -63,6 +64,7 @@
     self.passwordView.textField.tag = 1001;
     self.passwordView.imgView.image = [UIImage imageNamed:@"lock2"];
     self.passwordView.textField.placeholder = @"密码";
+    self.passwordView.textField.secureTextEntry = YES;
     self.passwordView.textField.delegate = self;
     [self addSubview:self.passwordView];
     

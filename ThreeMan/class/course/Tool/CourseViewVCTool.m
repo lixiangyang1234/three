@@ -6,7 +6,7 @@
 //  Copyright (c) 2015年 ___普马克___. All rights reserved.
 //
 
-#import "CourseViewVCTool.h"
+#import "CourseViewVCTool.h"    
 #import "CourseViewVCModel.h"
 @implementation CourseViewVCTool
 //

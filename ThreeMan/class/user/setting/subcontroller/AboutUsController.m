@@ -10,7 +10,9 @@
 #import "AdaptationSize.h"
 
 @interface AboutUsController ()
-
+{
+    UIScrollView *_scrollView;
+}
 @end
 
 @implementation AboutUsController
@@ -18,6 +20,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kHeight-64)];
+    _scrollView.backgroundColor = [UIColor clearColor];
+    
+    [self.view addSubview:_scrollView];
+    
+    
     [self setLeftTitle:@"关于我们"];
     
     [self loadData];
@@ -30,7 +39,7 @@
     [HttpTool postWithPath:@"getAboutUs" params:nil success:^(id JSON, int code, NSString *msg) {
         if (code == 100) {
             NSLog(@"%@",JSON);
-            NSDictionary *dict = JSON[@"data"][@"aboutus"];
+            NSMutableDictionary *dict = JSON[@"data"][@"aboutus"];
             if (dict) {
                 [self buildUI:dict];
             }
@@ -41,14 +50,14 @@
     }];
 }
 
-- (void)buildUI:(NSDictionary *)dict
+- (void)buildUI:(NSMutableDictionary *)dict
 {
     CGFloat y = 54;
     //图标
     UIImageView *iconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 55, 55)];
     iconImageView.image = [UIImage imageNamed:@"smallLogo"];
     iconImageView.center = CGPointMake(kWidth/2, y+iconImageView.frame.size.height/2);
-    [self.view addSubview:iconImageView];
+    [_scrollView addSubview:iconImageView];
     
     y+=iconImageView.frame.size.height+10;
     //名称
@@ -58,20 +67,16 @@
     nameLabel.textColor = HexRGB(0x323232);
     nameLabel.text = @"南京三身行";
     nameLabel.textAlignment = NSTextAlignmentCenter;
-    [self.view addSubview:nameLabel];
+    [_scrollView addSubview:nameLabel];
     
-    
-    UIImage *image = [UIImage imageNamed:@"title"];
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-    imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
-    imageView.center = CGPointMake(kWidth/2,kHeight-64-image.size.height/2-30);
-    [self.view addSubview:imageView];
-
     
     y+=nameLabel.frame.size.height+20;
     
-    if (!dict) {
-        return;
+    if (!dict||[dict isKindOfClass:[NSNull class]]) {
+        dict = [NSMutableDictionary dictionary];
+        [dict setObject:@"" forKey:@"email"];
+        [dict setObject:@"" forKey:@"fax"];
+
     }
     
     
@@ -115,7 +120,7 @@
     UIView *line2 = [[UIView alloc] initWithFrame:CGRectMake(0, 39*2, bgView.frame.size.width,1)];
     line2.backgroundColor = HexRGB(0xe0e0e0);
     [bgView addSubview:line2];
-
+    
     if (content&&content.length!=0) {
         CGSize size = [AdaptationSize getSizeFromString:content Font:[UIFont systemFontOfSize:14] withHight:CGFLOAT_MAX withWidth:bgView.frame.size.width-10-5];
         UILabel *contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,39*2+10, bgView.frame.size.width-10-5,size.height)];
@@ -132,6 +137,16 @@
     }
     bgView.frame = CGRectMake(bgView.frame.origin.x, bgView.frame.origin.y, bgView.frame.size.width, height);
     
+    [_scrollView setContentSize:CGSizeMake(kWidth, bgView.frame.origin.y+bgView.frame.size.height+20)];
+    
+    
+    if (_scrollView.contentSize.height<=kHeight-64) {
+        UIImage *image = [UIImage imageNamed:@"title"];
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+        imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
+        imageView.center = CGPointMake(kWidth/2,kHeight-64-image.size.height/2-30);
+        [_scrollView addSubview:imageView];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

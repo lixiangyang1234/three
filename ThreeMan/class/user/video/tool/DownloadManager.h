@@ -13,23 +13,29 @@
 #import "DownloadFileModel.h"
 
 @interface DownloadManager : NSObject
-@property (nonatomic,readonly) NSMutableArray *finishedArray;
-@property (nonatomic,readonly) NSMutableArray *unFinidhedArray;
-@property (nonatomic,assign) id<DownloadDelegate> delegate;
+
++ (void)downloadFileWithUrl:(NSString *)urlStr type:(NSString *)type fileInfo:(NSDictionary *)fileInfo;
 
 
-+ (DownloadManager *)shareInstance;
++ (void)stopDownload:(DownloadFileModel *)fileModel;
 
 
-- (void)downloadFileWithUrl:(NSString *)urlStr type:(NSString *)type fileInfo:(NSDictionary *)fileInfo;
++ (void)resumeDownload:(DownloadFileModel *)fileModel;
 
 
-- (void)stopDownload:(DownloadFileModel *)fileModel;
++ (void)cancelDownload:(DownloadFileModel *)fileModel;
+
++ (NSMutableArray *)arrayOfFinished;
 
 
-- (void)resumeDownload:(DownloadFileModel *)fileModel;
++ (NSMutableArray *)arrayOfUnfinished;
 
 
-- (void)cancelDownload:(DownloadFileModel *)fileModel;
++ (void)setDelegate:(id<DownloadDelegate>)delegate;
+
++ (void)deleteFinisedFiles:(NSArray *)arr;
+
++ (void)cancelDownloads:(NSArray *)arr;
+
 
 @end

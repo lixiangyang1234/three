@@ -14,6 +14,7 @@
 #import "MJRefresh.h"
 #import "EnterpriseCell.h"
 #import "EnterpriseItem.h"
+#import "CompanyHomeControll.h"
 
 #define pagesize 15
 
@@ -50,7 +51,11 @@
     _tableView.sectionFooterHeight = 0;
     _tableView.sectionHeaderHeight = 0;
     [self.view addSubview:_tableView];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth,8)];
+    view.backgroundColor = [UIColor clearColor];
+    _tableView.tableHeaderView = view;
     
+
     refreshFootView = [[MJRefreshFooterView alloc] init];
     refreshFootView.delegate = self;
     refreshFootView.scrollView = _tableView;
@@ -86,12 +91,12 @@
     }else{
         param = @{@"pageid":@"0",@"pagesize":[NSString stringWithFormat:@"%d",pagesize]};
     }
+    //第一次加载数据或刷新数据
     if (!loading) {
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        hud.labelText = @"加载中...";
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     }
-
     [HttpTool postWithPath:@"getCollectCompany" params:param success:^(id JSON, int code, NSString *msg) {
+        //如果是加载  结束加载动画
         if (loading) {
             [refreshFootView endRefreshing];
         }else{
@@ -101,23 +106,31 @@
             if (!loading) {
                 [_dataArray removeAllObjects];
             }
-            NSArray *array = JSON[@"data"][@"collect"];
+            NSArray *array = JSON[@"data"];
             if (array&&![array isKindOfClass:[NSNull class]]) {
                 for (NSDictionary *dict in array) {
                     EnterpriseItem *item = [[EnterpriseItem alloc] init];
                     [item setValuesForKeysWithDictionary:dict];
                     [_dataArray addObject:item];
                 }
+                if (array.count<pagesize) {
+                    refreshFootView.hidden = YES;
+                }else{
+                    refreshFootView.hidden = NO;
+                }
+            }else{
+                refreshFootView.hidden = YES;
             }
         }
+        
         if (_dataArray.count==0) {
             noDataView.hidden = NO;
         }else{
             noDataView.hidden = YES;
         }
         [_tableView reloadData];
-        
     } failure:^(NSError *error) {
+        [_tableView reloadData];
         if (loading) {
             [refreshFootView endRefreshing];
         }else{
@@ -174,7 +187,6 @@
     cell.littleLabel.text = [NSString stringWithFormat:@"课程%@",item.scorenums];
     cell.contentLabel.text = item.introduce;
     
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
@@ -191,9 +203,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (!isEditting) {
-        FavoriteItem *item = [_dataArray objectAtIndex:indexPath.row];
-        CourseDetailController *detail = [[CourseDetailController alloc] init];
-        detail.courseDetailID = item.sid;
+        EnterpriseItem *item = [_dataArray objectAtIndex:indexPath.row];
+        CompanyHomeControll *detail = [[CompanyHomeControll alloc] init];
+        detail.companyId = item.cid;
         [self.nav pushViewController:detail animated:YES];
     }
 }
@@ -261,7 +273,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    NSLog(@"%s",__func__);
 }
 
 

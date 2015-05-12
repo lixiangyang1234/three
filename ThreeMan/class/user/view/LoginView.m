@@ -60,6 +60,7 @@
     self.passwordView = [[ImageFieldView alloc] initWithFrame:CGRectMake(30,self.telView.frame.origin.y+self.telView.frame.size.height+15,self.telView.frame.size.width,30)];
     self.passwordView.imgView.image = [UIImage imageNamed:@"lock2"];
     self.passwordView.textField.tag = 1001;
+    self.passwordView.textField.secureTextEntry = YES;
     self.passwordView.textField.delegate = self;
     self.passwordView.textField.placeholder = @"密码";
     [self addSubview:self.passwordView];

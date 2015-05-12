@@ -11,7 +11,7 @@
 #import "RemindView.h"
 #import "AppDelegate.h"
 
-#define MAX_DOWN_COUNT 2        //最大下载数量
+#define MAX_DOWN_COUNT 3        //最大下载数量
 #define BASE_PATH @"DownloadFile"  //存储的最上层目录名
 #define VIDEO_PATH  @"Video"    //存储完成下载的视频目录名
 #define TEMP_PATH @"Temp"      //临时存储目录
@@ -190,26 +190,37 @@
     DownloadFileModel *file = [self.fileDic objectForKey:identify];
     
     if (count<MAX_DOWN_COUNT) {
+        
         file.isDownloading = YES;
+        
         NSURLSession *urlsession = [self.sessionDic objectForKey:identify];
+        
         if (file.resumeData) {
+          
             NSURLSessionDownloadTask *downloadTask = [urlsession downloadTaskWithResumeData:file.resumeData];
             
             [self.downloadTaskDic setObject:downloadTask forKey:identify];
+            
             [downloadTask resume];
             
         }else{
             
             NSURL *url = [NSURL URLWithString:fileModel.urlLink];
+            
             NSURLRequest *request = [NSURLRequest requestWithURL:url];
+            
             NSURLSessionDownloadTask *downloadTask = [urlsession downloadTaskWithRequest:request];
+            
             [downloadTask resume];
+            
             [self.downloadTaskDic setObject:downloadTask forKey:[self getIdentify:file.fileName]];
             
         }
         //下载数量已满 改为等待状态
     }else{
+        
         file.willDownloading = YES;
+    
     }
     
 }
@@ -218,21 +229,29 @@
 {
     
     NSString *identify = [self getIdentify:fileModel.fileName];
+    
     DownloadFileModel *file = [self.fileDic objectForKey:identify];
     
     [self.fileDic removeObjectForKey:identify];
+    
     [_unfinishArray removeObject:file];
     
     NSURLSession *urlsession = [self.sessionDic objectForKey:identify];
+    
     [urlsession invalidateAndCancel];
     
     if ([self.downloadTaskDic objectForKey:identify]) {
+        
         [self.downloadTaskDic removeObjectForKey:identify];
+        
     }
     //移除临时缓存文件
     NSFileManager *fileManager = [NSFileManager defaultManager];
+    
     if ([fileManager fileExistsAtPath:fileModel.tempfilePath]) {
+        
         [fileManager removeItemAtPath:fileModel.tempfilePath error:nil];
+        
     }
 }
 
@@ -243,7 +262,7 @@
     
     NSMutableArray *finishedInfo = [[NSMutableArray alloc] init];
     for (DownloadFileModel *file in self.finishArray) {
-        NSDictionary *filedic = [NSDictionary dictionaryWithObjectsAndKeys:file.fileName,@"filename",file.urlLink,@"urllink",file.targetPath,@"targetpath",file.tempfilePath,@"tempfilepath",file.tempPath,@"temppath",file.fileReceivedSize,@"filerecievesize",nil];
+        NSDictionary *filedic = [NSDictionary dictionaryWithObjectsAndKeys:file.fileName,@"filename",file.urlLink,@"urllink",file.targetPath,@"targetpath",file.tempfilePath,@"tempfilepath",file.tempPath,@"temppath",file.fileReceivedSize,@"filerecievesize",file.fileInfo,@"fileinfo",nil];
         [finishedInfo addObject:filedic];
     }
     
@@ -271,6 +290,7 @@
             file.targetPath = [dic objectForKey:@"targetpath"];
             file.tempfilePath = [dic objectForKey:@"tempfilepath"];
             file.tempPath = [dic objectForKey:@"temppath"];
+            file.fileInfo = [dic objectForKey:@"fileinfo"];
             [self.finishArray addObject:file];
         }
     }
@@ -284,7 +304,7 @@
     
     NSMutableArray *finishedInfo = [[NSMutableArray alloc] init];
     for (DownloadFileModel *file in self.unfinishArray) {
-        NSDictionary *filedic = [NSDictionary dictionaryWithObjectsAndKeys:file.fileName,@"filename",file.urlLink,@"urllink",file.targetPath,@"targetpath",file.tempfilePath,@"tempfilepath",file.tempPath,@"temppath",file.fileReceivedSize,@"filerecievesize",file.resumeData,@"resumedata",nil];
+        NSDictionary *filedic = [NSDictionary dictionaryWithObjectsAndKeys:file.fileName,@"filename",file.urlLink,@"urllink",file.targetPath,@"targetpath",file.tempfilePath,@"tempfilepath",file.tempPath,@"temppath",file.fileReceivedSize,@"filerecievesize",file.resumeData,@"resumedata",file.fileInfo,@"fileinfo",nil];
         [finishedInfo addObject:filedic];
     }
     
@@ -310,6 +330,7 @@
             file.tempfilePath = [dic objectForKey:@"tempfilepath"];
             file.tempPath = [dic objectForKey:@"temppath"];
             file.resumeData = [dic objectForKey:@"resumedata"];
+            file.fileInfo = [dic objectForKey:@"fileinfo"];
             file.isDownloading = NO;
             file.willDownloading = NO;
             NSString *identify = [self getIdentify:file.fileName];
@@ -321,6 +342,35 @@
             NSURLSession *urlSession = [self backgroundSession:identify];
             [self.sessionDic setObject:urlSession forKey:identify];
         }
+    }
+}
+
+- (void)deleteFinisedFiles:(NSArray *)arr
+{
+    for (DownloadFileModel *file in arr) {
+        [self deleteFinisedFile:file];
+    }
+}
+
+- (void)deleteFinisedFile:(DownloadFileModel *)file
+{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    for (DownloadFileModel *fileModel in _finishArray) {
+        if ([file.fileName isEqualToString:fileModel.fileName]) {
+            if ([fileManager fileExistsAtPath:file.targetPath]) {
+                [fileManager removeItemAtPath:file.targetPath error:nil];
+                [_finishArray removeObject:fileModel];
+                [_fileDic removeObjectForKey:[self getIdentify:fileModel.fileName]];
+            }
+        }
+    }
+}
+
+- (void)cancelDownloads:(NSArray *)arr
+{
+    for (DownloadFileModel *fileModel in arr) {
+        [self cancelDownload:fileModel];
     }
 }
 
@@ -412,6 +462,9 @@
         }
         
     }else{
+        
+        fileModel.isDownloading = NO;
+        
         if ([error.userInfo objectForKey:NSURLSessionDownloadTaskResumeData]) {
             fileModel.resumeData = [error.userInfo objectForKey:NSURLSessionDownloadTaskResumeData];
         }else{
@@ -421,6 +474,8 @@
         }
     }
 }
+
+
 
 
 #pragma mark NSURLSessionDownloadDelegate
@@ -434,12 +489,6 @@
     [fileManager copyItemAtURL:location toURL:destinationURL  error:NULL];
 }
 
-
-
-- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didResumeAtOffset:(int64_t)fileOffset expectedTotalBytes:(int64_t)expectedTotalBytes
-{
-    
-}
 
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didWriteData:(int64_t)bytesWritten totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 {

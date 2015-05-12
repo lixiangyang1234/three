@@ -11,7 +11,7 @@
 #import "RemindView.h"
 #import "AppDelegate.h"
 
-#define MAX_DOWN_COUNT 2        //最大下载数量
+#define MAX_DOWN_COUNT 3        //最大下载数量
 #define BASE_PATH @"DownloadFile"  //存储的最上层目录名
 #define VIDEO_PATH  @"Video"    //存储完成下载的视频目录名
 #define TEMP_PATH @"Temp"      //临时存储目录
@@ -109,7 +109,7 @@
 
     
     
-    NSDictionary *filedic = [NSDictionary dictionaryWithObjectsAndKeys:fileModel.fileName,@"filename",fileModel.urlLink,@"urllink",fileModel.targetPath,@"targetpath",fileModel.tempfilePath,@"tempfilepath",fileModel.tempPath,@"temppath",fileModel.fileReceivedSize,@"filerecievesize",nil];
+    NSDictionary *filedic = [NSDictionary dictionaryWithObjectsAndKeys:fileModel.fileName,@"filename",fileModel.urlLink,@"urllink",fileModel.targetPath,@"targetpath",fileModel.tempfilePath,@"tempfilepath",fileModel.tempPath,@"temppath",fileModel.fileReceivedSize,@"filerecievesize",fileModel.fileInfo,@"fileinfo",nil];
     
     if ([filedic writeToFile:fileModel.tempfilePath atomically:YES]) {
         NSString *identify = [self getIdentify:fileModel.fileName];
@@ -371,6 +371,7 @@
 {
     NSString *identify = [self getIdentify:fileModel.fileName];
     DownloadFileModel *file = [self.fileDic objectForKey:identify];
+    
     [self.fileDic removeObjectForKey:identify];
     [_unfinishArray removeObject:file];
     
@@ -398,7 +399,7 @@
     
     NSMutableArray *finishedInfo = [[NSMutableArray alloc] init];
     for (DownloadFileModel *file in self.finishArray) {
-        NSDictionary *filedic = [NSDictionary dictionaryWithObjectsAndKeys:file.fileName,@"filename",file.urlLink,@"urllink",file.targetPath,@"targetpath",file.tempfilePath,@"tempfilepath",file.tempPath,@"temppath",file.fileReceivedSize,@"filerecievesize",nil];
+        NSDictionary *filedic = [NSDictionary dictionaryWithObjectsAndKeys:file.fileName,@"filename",file.urlLink,@"urllink",file.targetPath,@"targetpath",file.tempfilePath,@"tempfilepath",file.tempPath,@"temppath",file.fileReceivedSize,@"filerecievesize",file.fileInfo,@"fileinfo",nil];
         [finishedInfo addObject:filedic];
     }
     
@@ -426,6 +427,7 @@
             file.targetPath = [dic objectForKey:@"targetpath"];
             file.tempfilePath = [dic objectForKey:@"tempfilepath"];
             file.tempPath = [dic objectForKey:@"temppath"];
+            file.fileInfo = [dic objectForKey:@"fileinfo"];
             [self.finishArray addObject:file];
         }
     }
@@ -464,6 +466,7 @@
             file.targetPath = [dic objectForKey:@"targetpath"];
             file.tempfilePath = [dic objectForKey:@"tempfilepath"];
             file.tempPath = [dic objectForKey:@"temppath"];
+            file.fileInfo = [dic objectForKey:@"fileinfo"];
             file.isDownloading = NO;
             file.willDownloading = NO;
             NSString *identify = [self getIdentify:file.fileName];
@@ -474,6 +477,37 @@
         }
     }
 }
+
+- (void)deleteFinisedFiles:(NSArray *)arr
+{
+    for (DownloadFileModel *file in arr) {
+        [self deleteFinisedFile:file];
+    }
+}
+
+- (void)deleteFinisedFile:(DownloadFileModel *)file
+{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    for (DownloadFileModel *fileModel in _finishArray) {
+        if ([file.fileName isEqualToString:fileModel.fileName]) {
+            if ([fileManager fileExistsAtPath:file.targetPath]) {
+                [fileManager removeItemAtPath:file.targetPath error:nil];
+                [_finishArray removeObject:fileModel];
+                [_fileDic removeObjectForKey:[self getIdentify:fileModel.fileName]];
+            }
+        }
+    }
+}
+
+
+- (void)cancelDownloads:(NSArray *)arr
+{
+    for (DownloadFileModel *fileModel in arr) {
+        [self cancelDownload:fileModel];
+    }
+}
+
 
 - (unsigned long long)fileSizeForPath:(NSString *)path {
     
