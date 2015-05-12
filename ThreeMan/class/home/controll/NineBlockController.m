@@ -30,7 +30,7 @@
     [self addErrorView];
     [self addMBprogressView];
     [self addLoadStatus];
-   
+    
     
 }
 -(void)addMBprogressView{

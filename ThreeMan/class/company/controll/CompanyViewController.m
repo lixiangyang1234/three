@@ -10,10 +10,7 @@
 #import "PatternCell.h"
 #import "PatternItem.h"
 #import "PatternDetailController.h"
-#import "HttpTool.h"
 #import "UIImageView+WebCache.h"
-#import "ErrorView.h"
-#import "MJRefresh.h"
 
 #define pagesize 15
 

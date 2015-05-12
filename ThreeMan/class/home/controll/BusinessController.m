@@ -10,11 +10,15 @@
 #import "BusinessViewCell.h"
 #import "CompanyHomeControll.h"
 #import "businessListModel.h"
-@interface BusinessController ()<UITableViewDataSource,UITableViewDelegate>
+#define pageSize 6
+@interface BusinessController ()<UITableViewDataSource,UITableViewDelegate,MJRefreshBaseViewDelegate>
 {
     ErrorView *notStatus;
     ErrorView *networkError;
     UITableView *_tableView;
+    MJRefreshFooterView *refreshFooterView;
+    MJRefreshHeaderView *refreshHeaderView;
+    BOOL isRefresh;
 }
 @end
 
@@ -26,39 +30,90 @@
     [self setLeftTitle:self.navTitle];
     _businessArray =[NSMutableArray array];
     [self addTableView];
-    [self addMBprogressView];
+    [self addRefreshView];
     [self addErrorView];
     [self addNotLoatStatus];
+    isRefresh =NO;
     [self addLoadStatus];
 }
--(void)addMBprogressView{
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"加载中...";
+-(void)addRefreshView{
+    refreshHeaderView =[[MJRefreshHeaderView alloc]init];
+    refreshHeaderView.delegate =self;
+    refreshHeaderView.scrollView =_tableView;
     
+    refreshFooterView =[[MJRefreshFooterView alloc]init];
+    refreshFooterView.delegate =self;
+    refreshFooterView.scrollView=_tableView;
+    
+}
+-(void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView{
+    if ([refreshView isKindOfClass:[MJRefreshFooterView class]]) {
+        isRefresh =YES;
+        [self addLoadStatus];
+    }else{
+        isRefresh =NO;
+        [self addLoadStatus];
+    }
 }
 #pragma mark=====添加数据
 -(void)addLoadStatus{
-    NSDictionary *paraDic =[NSDictionary dictionaryWithObjectsAndKeys:_tradeId,@"id", nil];
+    NSDictionary *paraDic;
+    if (isRefresh) {
+        paraDic =@{@"pageid" :[NSString stringWithFormat:@"%ld",(unsigned long)_businessArray.count],@"pagesize":[NSString stringWithFormat:@"%d",pageSize],@"id":_tradeId };
+    }else{
+         paraDic =@{@"pageid" :@"0",@"pagesize":[NSString stringWithFormat:@"%d",pageSize],@"id":_tradeId };
+    }
+    if (!isRefresh) {
+        MBProgressHUD *progress =[MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        progress.labelText =@"加载中。。。";
+    }
+//    NSDictionary *paraDic =[NSDictionary dictionaryWithObjectsAndKeys:_tradeId,@"id", nil];
    [HttpTool postWithPath:@"getCompanyList" params:paraDic success:^(id JSON, int code, NSString *msg) {
-       [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+       if (isRefresh) {
+           [refreshFooterView endRefreshing];
+       }else{
+           [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+           [refreshHeaderView endRefreshing];
 
+       }
+       if (!isRefresh) {
+           [_businessArray removeAllObjects];
+       }
        NSDictionary *dict =JSON[@"data"];
        NSArray *arr =dict[@"company_list"];
-       if (code==100) {
-           for (NSDictionary *dicArr in arr) {
-               businessListModel *businessModel =[[businessListModel alloc]initWithDictonaryForBusinessList:dicArr];
-               [_businessArray addObject:businessModel];
+       if ([arr isKindOfClass:[NSNull class]]) {
+           if (code==100) {
+               for (NSDictionary *dicArr in arr) {
+                   businessListModel *businessModel =[[businessListModel alloc]initWithDictonaryForBusinessList:dicArr];
+                   [_businessArray addObject:businessModel];
+                   
+                   if (arr.count<pageSize) {
+                       refreshFooterView.hidden =YES;
+                       [RemindView showViewWithTitle:@"数据加载完毕！" location:MIDDLE];
+                   }else{
+                       refreshFooterView.hidden =NO;
+                   }
+               }
+               
+           }else{
+               refreshFooterView.hidden =NO;
            }
-           
+
        }
-       [_tableView reloadData];
+              [_tableView reloadData];
        if (_businessArray.count<=0) {
            notStatus.hidden =NO;
        }else{
            notStatus.hidden =YES;
        }
    } failure:^(NSError *error) {
-       [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+       if (isRefresh) {
+           [refreshFooterView endRefreshing];
+       }else{
+           [refreshHeaderView endRefreshing];
+           [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+
+       }
 
        networkError.hidden =NO;
    }];

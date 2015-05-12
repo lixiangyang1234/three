@@ -11,12 +11,19 @@
 #import "YYSearchButton.h"
 #import "needListModel.h"
 #import "CourseDetailController.h"
-@interface NeedViewController ()<UITableViewDelegate,UITableViewDataSource>
+#define pagesize 6
+
+@interface NeedViewController ()<UITableViewDelegate,UITableViewDataSource,MJRefreshBaseViewDelegate>
 {
     ErrorView *notStatus;
     ErrorView *networkError;
     UITableView *_tableView;
     YYSearchButton *_selectedItem;
+    BOOL isRefresh;
+    MJRefreshFooterView *refreshFootView;
+    MJRefreshHeaderView *refreshHeaderView;
+
+
 }
 @property(nonatomic,strong)NSMutableArray *needListArray;
 @end
@@ -33,38 +40,102 @@
     [self addErrorView];
      [self addNotLoatStatus];
     [self addUIChooseBtn];//添加筛选按钮
-    [self addMBprogressView];
-    [self addLoadStatus:@"0"];
+    [self addRefreshView];
+    [self addLoadStatus:@"0" ];
 }
--(void)addMBprogressView{
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"加载中...";
+
+-(void)addRefreshView{
+    refreshFootView = [[MJRefreshFooterView alloc] init];
+    refreshFootView.delegate = self;
+    refreshFootView.scrollView = _tableView;
+    
+    refreshHeaderView = [[MJRefreshHeaderView alloc] init];
+    refreshHeaderView.delegate = self;
+    refreshHeaderView.scrollView = _tableView;
     
 }
--(void)addLoadStatus:(NSString *)typestr{
-    NSDictionary *parmDic =[NSDictionary dictionaryWithObjectsAndKeys:_categoryId,@"id",typestr,@"type" ,nil];
-    NSLog(@"--------->sssss>>>%@",typestr);
-    [HttpTool postWithPath:@"getNeedList" params:parmDic success:^(id JSON, int code, NSString *msg) {
-        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-        NSLog(@"%@",JSON);
-        [_needListArray removeAllObjects];
-        [_tableView reloadData];
+- (void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView
+{
+    if (![refreshView isKindOfClass:[MJRefreshHeaderView class]]) {
+    isRefresh = YES;
+    if (_selectedItem.tag ==1000)
+    {
+        
+        [self addLoadStatus:@"0" ];
 
+    }if (_selectedItem.tag ==1001) {
+        [self addLoadStatus:@"1" ];
+        
+    }if (_selectedItem.tag ==1002) {
+        [self addLoadStatus:@"2||3||4||5||6||7||8" ];
+        
+    }
+    
+    }else{
+        isRefresh = NO;
+        if (_selectedItem.tag ==1000)
+        {
+            
+            [self addLoadStatus:@"0" ];
+            
+        }if (_selectedItem.tag ==1001) {
+            [self addLoadStatus:@"1" ];
+            
+        }if (_selectedItem.tag ==1002) {
+            [self addLoadStatus:@"2||3||4||5||6||7||8" ];
+            
+        }
+    }
+}
+
+-(void)addLoadStatus:(NSString *)typestr {
+    NSDictionary *param;
+    if (isRefresh) {
+        param = @{@"pageid":[NSString stringWithFormat:@"%lu",(unsigned long)_needListArray.count],@"pagesize":[NSString stringWithFormat:@"%d",pagesize],@"id":_categoryId,@"type":typestr};
+    }else{
+        param = @{@"pageid":@"0",@"pagesize":[NSString stringWithFormat:@"%d",pagesize],@"id":_categoryId,@"type":typestr};
+    }
+    if (!isRefresh) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.labelText = @"加载中...";
+    }
+    [HttpTool postWithPath:@"getNeedList" params:param success:^(id JSON, int code, NSString *msg) {
+//        [_needListArray removeAllObjects];
+        NSLog(@"%@",param);
+        if (isRefresh) {
+            [refreshFootView endRefreshing];
+
+        }else{
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+            [refreshHeaderView endRefreshing];
+        }
+        if (!isRefresh) {
+            [_needListArray removeAllObjects];
+        }
         if (code == 100) {
+            
             NSDictionary *dic = [JSON objectForKey:@"data"];
             NSArray *array = [dic objectForKey:@"subject_list"];
-            [_needListArray removeAllObjects];
 
             if (![array isKindOfClass:[NSNull class]]) {
                 for (NSDictionary *dict in array) {
                     needListModel *item = [[needListModel alloc] init];
                     [item setValuesForKeysWithDictionary:dict];
                     [_needListArray addObject:item];
+                    if (array.count<pagesize) {
+                        refreshFootView.hidden = YES;
+                        [RemindView showViewWithTitle:@"数据加载完毕！" location:BELLOW];
+                    }else{
+                        refreshFootView.hidden = NO;
+                    }
                 }
-            }
-            [_tableView reloadData];
-            }
+            }else{
+                refreshFootView.hidden = NO;
 
+            }
+           
+            }
+         [_tableView reloadData];
         if (_needListArray.count<=0) {
             notStatus.hidden =NO;
         }else{
@@ -73,9 +144,16 @@
         }
 
     } failure:^(NSError *error) {
-        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        if (isRefresh) {
+            [refreshFootView endRefreshing];
+        }else{
+            [refreshHeaderView endRefreshing];
 
-        networkError.hidden =NO;
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        }
+        if (_needListArray.count==0) {
+            networkError.hidden = NO;
+        }
     }];
 
 }
@@ -115,16 +193,17 @@
 }
 //筛选按钮
 -(void)chooseBtnClick:(YYSearchButton *)sender{
-
+    isRefresh =NO;
     if (sender.tag==1000) {
+        
         [self addLoadStatus:@"0"];
 
     }else if(sender.tag ==1001){
-        [self addLoadStatus:@"1"];
+        [self addLoadStatus:@"1" ];
 
     }
     else if(sender.tag ==1002){
-        [self addLoadStatus:@"2||3||4||5||6||7||8"];
+        [self addLoadStatus:@"2||3||4||5||6||7||8" ];
 
     }
     if (sender!=_selectedItem) {
