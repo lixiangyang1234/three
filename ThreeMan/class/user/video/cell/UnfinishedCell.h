@@ -7,12 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CustomBtn.h"
+#import "CircularProgressView.h"
 
 @interface UnfinishedCell : UITableViewCell
 
 @property (nonatomic,strong) UIImageView *imgView;
 @property (nonatomic,strong) UILabel *titleLabel;
+@property (nonatomic,strong) CircularProgressView *progressView;
+@property (nonatomic,strong) UILabel *progressLabel;
 
 
 @end

@@ -207,7 +207,7 @@
             if (arr.count!=0) {
                 
                 [_dataArray addObject:arr];
-
+                
                 DefaultHeaderView *headerView = [[DefaultHeaderView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 40)];
                 [headerView setImgView:[UIImage imageNamed:@"hot_search"] title:@"热门搜索"];
                 [_defaultHeadViewArray addObject:headerView];

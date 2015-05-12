@@ -34,14 +34,13 @@
         [bgView addSubview:_imgView];
         
         
-        CGFloat x = _imgView.frame.size.width+_imgView.frame.origin.x+13;
-        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(x,5,bgView.frame.size.width-x-35,50)];
+        CGFloat x = _imgView.frame.size.width+_imgView.frame.origin.x+10;
+        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(x,5,bgView.frame.size.width-x-10-25,50)];
         _titleLabel.backgroundColor = [UIColor clearColor];
         _titleLabel.font = [UIFont systemFontOfSize:14];
         _titleLabel.textColor = HexRGB(0x323232);
         _titleLabel.numberOfLines = 2;
         [bgView addSubview:_titleLabel];
-        
         
         _recommendBtn = [[CustomBtn alloc] initWithFrame:CGRectMake(_titleLabel.frame.origin.x,55,50,25)];
         [_recommendBtn setTitle:@"推荐" forState:UIControlStateNormal];
@@ -54,9 +53,9 @@
         [bgView addSubview:_questionBtn];
         
         _playBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _playBtn.frame = CGRectMake(0, 0, 20, 20);
+        _playBtn.frame = CGRectMake(0, 0, 25, 25);
         _playBtn.center = CGPointMake(bgView.frame.size.width-10-_playBtn.frame.size.width/2,bgView.frame.size.height/2);
-        [_playBtn setBackgroundImage:[UIImage imageNamed:@"play"] forState:UIControlStateNormal];
+        [_playBtn setImage:[UIImage imageNamed:@"play"] forState:UIControlStateNormal];
         [bgView addSubview:_playBtn];
         
     }

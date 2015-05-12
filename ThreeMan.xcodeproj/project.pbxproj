@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		040673961AF9BF8A00D39728 /* CircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 040673951AF9BF8A00D39728 /* CircularProgressView.m */; };
 		0414AC7B1AEDE7B500631B8E /* AliPayTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 0414AC781AEDE7B500631B8E /* AliPayTool.m */; };
 		0414AC7C1AEDE7B500631B8E /* Order.m in Sources */ = {isa = PBXBuildFile; fileRef = 0414AC7A1AEDE7B500631B8E /* Order.m */; };
 		0414AC801AEE194900631B8E /* FileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0414AC7F1AEE194900631B8E /* FileModel.m */; };
@@ -80,6 +81,11 @@
 		04D0872D1AD4C0AD0070184A /* RecommendController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D0872C1AD4C0AC0070184A /* RecommendController.m */; };
 		04D087301AD4C0C00070184A /* QuestionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D0872F1AD4C0C00070184A /* QuestionController.m */; };
 		04D087331AD508230070184A /* MemorySizeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D087321AD508230070184A /* MemorySizeView.m */; };
+		04DA99D91AFCABC3004A5BCD /* DownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DA99D81AFCABC3004A5BCD /* DownloadManager.m */; };
+		04DA99DC1AFCABF8004A5BCD /* UrlSessionDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DA99DB1AFCABF8004A5BCD /* UrlSessionDownload.m */; };
+		04DA99DF1AFCAC08004A5BCD /* AFDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DA99DE1AFCAC08004A5BCD /* AFDownload.m */; };
+		04DA99E31AFCAD2F004A5BCD /* DownloadFileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DA99E21AFCAD2F004A5BCD /* DownloadFileModel.m */; };
+		04DA99E61AFCAD66004A5BCD /* CommonHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DA99E51AFCAD66004A5BCD /* CommonHelper.m */; };
 		04DECDA41AD616F100EC53D2 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DECD9B1AD616F100EC53D2 /* FMDatabase.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		04DECDA51AD616F100EC53D2 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DECD9D1AD616F100EC53D2 /* FMDatabaseAdditions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		04DECDA61AD616F100EC53D2 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DECD9F1AD616F100EC53D2 /* FMDatabasePool.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -244,6 +250,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		040673941AF9BF8A00D39728 /* CircularProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircularProgressView.h; sourceTree = "<group>"; };
+		040673951AF9BF8A00D39728 /* CircularProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircularProgressView.m; sourceTree = "<group>"; };
 		0414AC771AEDE7B500631B8E /* AliPayTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliPayTool.h; sourceTree = "<group>"; };
 		0414AC781AEDE7B500631B8E /* AliPayTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliPayTool.m; sourceTree = "<group>"; };
 		0414AC791AEDE7B500631B8E /* Order.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Order.h; sourceTree = "<group>"; };
@@ -468,6 +476,17 @@
 		04D0872F1AD4C0C00070184A /* QuestionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuestionController.m; sourceTree = "<group>"; };
 		04D087311AD508230070184A /* MemorySizeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemorySizeView.h; sourceTree = "<group>"; };
 		04D087321AD508230070184A /* MemorySizeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemorySizeView.m; sourceTree = "<group>"; };
+		04DA99D71AFCABC3004A5BCD /* DownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadManager.h; sourceTree = "<group>"; };
+		04DA99D81AFCABC3004A5BCD /* DownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadManager.m; sourceTree = "<group>"; };
+		04DA99DA1AFCABF8004A5BCD /* UrlSessionDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UrlSessionDownload.h; sourceTree = "<group>"; };
+		04DA99DB1AFCABF8004A5BCD /* UrlSessionDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UrlSessionDownload.m; sourceTree = "<group>"; };
+		04DA99DD1AFCAC08004A5BCD /* AFDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFDownload.h; sourceTree = "<group>"; };
+		04DA99DE1AFCAC08004A5BCD /* AFDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFDownload.m; sourceTree = "<group>"; };
+		04DA99E01AFCAC49004A5BCD /* DownloadDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadDelegate.h; sourceTree = "<group>"; };
+		04DA99E11AFCAD2F004A5BCD /* DownloadFileModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadFileModel.h; sourceTree = "<group>"; };
+		04DA99E21AFCAD2F004A5BCD /* DownloadFileModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadFileModel.m; sourceTree = "<group>"; };
+		04DA99E41AFCAD66004A5BCD /* CommonHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonHelper.h; sourceTree = "<group>"; };
+		04DA99E51AFCAD66004A5BCD /* CommonHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonHelper.m; sourceTree = "<group>"; };
 		04DECD9A1AD616F100EC53D2 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
 		04DECD9B1AD616F100EC53D2 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
 		04DECD9C1AD616F100EC53D2 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseAdditions.h; sourceTree = "<group>"; };
@@ -1181,6 +1200,8 @@
 				04C73A271ACE44A2007B1283 /* FavoriteItem.m */,
 				04DECDA91AD61C7200EC53D2 /* RecordItem.h */,
 				04DECDAA1AD61C7200EC53D2 /* RecordItem.m */,
+				04DA99E11AFCAD2F004A5BCD /* DownloadFileModel.h */,
+				04DA99E21AFCAD2F004A5BCD /* DownloadFileModel.m */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -1194,6 +1215,8 @@
 				04C73A2E1ACE7C49007B1283 /* SectionHeadView.m */,
 				04B9A28A1AD3E2BF009446D1 /* CustomBtn.h */,
 				04B9A28B1AD3E2BF009446D1 /* CustomBtn.m */,
+				040673941AF9BF8A00D39728 /* CircularProgressView.h */,
+				040673951AF9BF8A00D39728 /* CircularProgressView.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -1255,6 +1278,15 @@
 			children = (
 				04DECDAD1AD61CCD00EC53D2 /* RecordDbService.h */,
 				04DECDAE1AD61CCD00EC53D2 /* RecordDbService.m */,
+				04DA99D71AFCABC3004A5BCD /* DownloadManager.h */,
+				04DA99D81AFCABC3004A5BCD /* DownloadManager.m */,
+				04DA99DA1AFCABF8004A5BCD /* UrlSessionDownload.h */,
+				04DA99DB1AFCABF8004A5BCD /* UrlSessionDownload.m */,
+				04DA99DD1AFCAC08004A5BCD /* AFDownload.h */,
+				04DA99DE1AFCAC08004A5BCD /* AFDownload.m */,
+				04DA99E41AFCAD66004A5BCD /* CommonHelper.h */,
+				04DA99E51AFCAD66004A5BCD /* CommonHelper.m */,
+				04DA99E01AFCAC49004A5BCD /* DownloadDelegate.h */,
 			);
 			path = tool;
 			sourceTree = "<group>";
@@ -2155,6 +2187,7 @@
 				04D087301AD4C0C00070184A /* QuestionController.m in Sources */,
 				55E4226A1AE874A400B038C4 /* companyListModel.m in Sources */,
 				55E373991AC2B54200C794DD /* UIBarButtonItem+MJ.m in Sources */,
+				04DA99E61AFCAD66004A5BCD /* CommonHelper.m in Sources */,
 				55B8BDF21ADB5A3A0008C21F /* DBTool.m in Sources */,
 				55E99B701AF209F700CA4F1C /* AFNetworkReachabilityManager.m in Sources */,
 				04CC33201ACA802D008A85B5 /* VideoViewController.m in Sources */,
@@ -2171,6 +2204,7 @@
 				55E373AF1AC2B54200C794DD /* SDWebImageManager.m in Sources */,
 				55C24F841ACB8EE500BFEBED /* CompanyHomeControll.m in Sources */,
 				55C122E31ACE168600D53630 /* CompySearchController.m in Sources */,
+				04DA99DC1AFCABF8004A5BCD /* UrlSessionDownload.m in Sources */,
 				04C64B6E1ACCEB3A00825EF0 /* VideoCenterController.m in Sources */,
 				55E3737F1AC2B54200C794DD /* CompanyViewController.m in Sources */,
 				55D7304F1AD7B03A002222F7 /* homeViewArrayModel.m in Sources */,
@@ -2199,6 +2233,7 @@
 				0469E0171AEA27040083601C /* CompFavoriteVC.m in Sources */,
 				5592A62E1AE781B200E8F77C /* SUNSlideSwitchView.m in Sources */,
 				04CC33511ACA8118008A85B5 /* FileItem.m in Sources */,
+				040673961AF9BF8A00D39728 /* CircularProgressView.m in Sources */,
 				55E373D31AC2B54200C794DD /* HttpTool.m in Sources */,
 				55C7FA551ADF57A1003EDFE8 /* courseDetailModel.m in Sources */,
 				04C73A201ACE2524007B1283 /* DrawViewController.m in Sources */,
@@ -2228,6 +2263,7 @@
 				049002351AEDD9AA00EF6AD1 /* RSADataVerifier.m in Sources */,
 				55E373981AC2B54200C794DD /* NSString+MJ.m in Sources */,
 				04C64B941ACD2F3A00825EF0 /* MessageItem.m in Sources */,
+				04DA99DF1AFCAC08004A5BCD /* AFDownload.m in Sources */,
 				04B9A28C1AD3E2BF009446D1 /* CustomBtn.m in Sources */,
 				04B9A2921AD3E4D6009446D1 /* FinishedCell.m in Sources */,
 				049002341AEDD9AA00EF6AD1 /* RSADataSigner.m in Sources */,
@@ -2241,6 +2277,7 @@
 				04C58CD01AE4900C001E1BB3 /* OperationController.m in Sources */,
 				55E3739C1AC2B54200C794DD /* DateManeger.m in Sources */,
 				55C24F8B1ACB8EE500BFEBED /* BusinessViewCell.m in Sources */,
+				04DA99D91AFCABC3004A5BCD /* DownloadManager.m in Sources */,
 				045636AB1AEE27D500558776 /* DocumentCell.m in Sources */,
 				04DECDA71AD616F100EC53D2 /* FMDatabaseQueue.m in Sources */,
 				552C990D1ADE6B4D00C02599 /* needListModel.m in Sources */,
@@ -2268,6 +2305,7 @@
 				04C73A2F1ACE7C49007B1283 /* SectionHeadView.m in Sources */,
 				55E422721AE8770200B038C4 /* NeedViewCell.m in Sources */,
 				0490022F1AEDD9AA00EF6AD1 /* DataSigner.m in Sources */,
+				04DA99E31AFCAD2F004A5BCD /* DownloadFileModel.m in Sources */,
 				55E99B591AF209E000CA4F1C /* LeftTitleController.m in Sources */,
 				55E373AE1AC2B54200C794DD /* SDWebImageDownloaderOperation.m in Sources */,
 				04CC332C1ACA8042008A85B5 /* HistoryCell.m in Sources */,

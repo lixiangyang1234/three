@@ -11,7 +11,11 @@
 @interface DownloadListController : RootViewController<UITableViewDataSource,UITableViewDelegate>
 {
     NSMutableArray *_dataArray;
+    NSMutableArray *_headViewArray;
+    NSMutableArray *_finishedArray;
+    NSMutableArray *_unFinishedArray;
     UITableView *_tableView;
+    
 }
 
 - (void)edit:(BOOL)editting;

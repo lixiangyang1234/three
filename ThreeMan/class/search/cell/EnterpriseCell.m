@@ -25,6 +25,8 @@
         _imgView = [[UIImageView alloc] initWithFrame:CGRectMake(12, 12, 38, 38)];
         _imgView.layer.cornerRadius = 38/2;
         _imgView.layer.masksToBounds = YES;
+        _imgView.layer.borderColor = HexRGB(0xdde5eb).CGColor;
+        _imgView.layer.borderWidth = 1;
         [self.contentView addSubview:bgView];
         
         [bgView addSubview:_imgView];

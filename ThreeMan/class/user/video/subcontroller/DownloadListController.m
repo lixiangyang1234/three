@@ -18,7 +18,7 @@
 #import "SectionHeadView.h"
 #import "MemorySizeView.h"
 
-@interface DownloadListController ()<EditViewDelegate>
+@interface DownloadListController ()<EditViewDelegate,CircularProgressViewDelegate>
 {
     BOOL isEditting;
     EditView *editView;
@@ -33,7 +33,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
     _dataArray = [[NSMutableArray alloc] initWithCapacity:0];
+    _headViewArray = [[NSMutableArray alloc] initWithCapacity:0];
+    _finishedArray = [[NSMutableArray alloc] initWithCapacity:0];
+    _unFinishedArray = [[NSMutableArray alloc] initWithCapacity:0];
+    
     
     [self addView];
     
@@ -65,24 +70,37 @@
 
 - (void)loadData
 {
-    NSMutableArray *arr1 = [[NSMutableArray alloc] initWithCapacity:0];
     for (int i = 0; i < 4; i++) {
         FavoriteItem *item = [[FavoriteItem alloc] init];
         item.img = @"";
         item.title = @"与大师有约门票－成功第一网";
         item.companyname = @"王大妈老师";
-        [arr1 addObject:item];
+        [_finishedArray addObject:item];
     }
-    NSMutableArray *arr2 = [[NSMutableArray alloc] initWithCapacity:0];
+    
     for (int i = 0; i < 6; i++) {
         FavoriteItem *item = [[FavoriteItem alloc] init];
         item.img = @"";
         item.title = @"与大师有约门票－成功第一网";
         item.companyname = @"王大妈老师";
-        [arr2 addObject:item];
+        [_unFinishedArray addObject:item];
     }
-    [_dataArray addObject:arr1];
-    [_dataArray addObject:arr2];
+    
+    if (_finishedArray.count!=0) {
+        [_dataArray addObject:_finishedArray];
+        SectionHeadView *headView = [[SectionHeadView alloc] initWithFrame:CGRectMake(0, 0,kWidth,36)];
+        [headView setImgView:[UIImage imageNamed:@"finish"] title:@"完成"];
+        [_headViewArray addObject:headView];
+        
+    }
+    
+    if (_unFinishedArray.count!=0) {
+        [_dataArray addObject:_unFinishedArray];
+        SectionHeadView *headView = [[SectionHeadView alloc] initWithFrame:CGRectMake(0, 0,kWidth,36)];
+        [headView setImgView:[UIImage imageNamed:@"unfinish"] title:@"未完成"];
+        [_headViewArray addObject:headView];
+    }
+    
     [_tableView reloadData];
 }
 
@@ -122,26 +140,146 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *identify = @"identify";
-    FinishedCell *cell = [tableView dequeueReusableCellWithIdentifier:identify];
-    if (cell == nil) {
-        cell = [[FinishedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify];
-    }
-    UIView *view = [[UIView alloc] initWithFrame:cell.frame];
-    view.backgroundColor = [UIColor clearColor];
-    cell.selectedBackgroundView = [[UIView alloc] init];
-    cell.multipleSelectionBackgroundView = [[UIView alloc] init];
-    cell.recommendBtn.tag = 1000+indexPath.row;
-    cell.questionBtn.tag = 2000+indexPath.row;
-    [cell.recommendBtn addTarget:self action:@selector(recommend:) forControlEvents:UIControlEventTouchUpInside];
-    [cell.questionBtn addTarget:self action:@selector(question:) forControlEvents:UIControlEventTouchUpInside];
+    static NSString *identify1 = @"identify1";
+    static NSString *identify2 = @"identify2";
+    if (_dataArray.count==2) {
+        if (indexPath.section == 0) {
+            FinishedCell *cell = [tableView dequeueReusableCellWithIdentifier:identify1];
+            if (cell == nil) {
+                cell = [[FinishedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify1];
+            }
+            UIView *view = [[UIView alloc] initWithFrame:cell.frame];
+            view.backgroundColor = [UIColor clearColor];
+            cell.selectedBackgroundView = [[UIView alloc] init];
+            cell.multipleSelectionBackgroundView = [[UIView alloc] init];
 
-    NSMutableArray *arr;
-    arr = [_dataArray objectAtIndex:indexPath.section];
-    FavoriteItem *item = [arr objectAtIndex:indexPath.row];
-    cell.titleLabel.text = item.title;
-    cell.imgView.image = [UIImage imageNamed:@"img"];
-    return cell;
+            
+            FavoriteItem *fileInfo = [_finishedArray objectAtIndex:indexPath.row];
+            cell.imgView.image = [UIImage imageNamed:@"img"];
+            cell.titleLabel.text = fileInfo.title;
+            
+            cell.recommendBtn.tag = 1000+indexPath.row;
+            cell.questionBtn.tag = 2000+indexPath.row;
+            cell.playBtn.tag = 3000+indexPath.row;
+            [cell.recommendBtn addTarget:self action:@selector(recommend:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.questionBtn addTarget:self action:@selector(question:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.playBtn addTarget:self action:@selector(play:) forControlEvents:UIControlEventTouchUpInside];
+            
+            return cell;
+            
+        }else{
+            
+            UnfinishedCell *cell = [tableView dequeueReusableCellWithIdentifier:identify2];
+            if (cell == nil) {
+                cell = [[UnfinishedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify2];
+            }
+            
+            UIView *view = [[UIView alloc] initWithFrame:cell.frame];
+            view.backgroundColor = [UIColor clearColor];
+            cell.selectedBackgroundView = [[UIView alloc] init];
+            cell.multipleSelectionBackgroundView = [[UIView alloc] init];
+
+            
+            FavoriteItem *fileInfo = [_unFinishedArray objectAtIndex:indexPath.row];
+            cell.imgView.image = [UIImage imageNamed:@"img"];
+            cell.titleLabel.text = fileInfo.title;
+            
+            cell.progressView.downloadState = startState;
+            cell.progressView.progress = 0.6;
+            cell.progressLabel.text = @"30M/50M";
+            cell.progressView.delegate = self;
+//            if (fileInfo.isDownloading) {
+//                cell.controlBtn.downloadState = stopState;
+//            }else{
+//                
+//                if (fileInfo.willDownloading) {
+//                    cell.controlBtn.downloadState = waitingState;
+//                    
+//                }else{
+//                    cell.controlBtn.downloadState = startState;
+//                    
+//                }
+//            }
+//            cell.controlBtn.tag = 1000+indexPath.row;
+//            cell.titleLabel.text = fileInfo.fileName;
+//            cell.controlBtn.delegate = self;
+//            if (fileInfo.fileReceivedSize) {
+//            }else{
+//            }
+//            
+            return cell;
+            
+        }
+    }else{
+        if (_finishedArray.count==0) {
+            //下载列表
+            UnfinishedCell *cell = [tableView dequeueReusableCellWithIdentifier:identify2];
+            if (cell == nil) {
+                cell = [[UnfinishedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify2];
+            }
+            UIView *view = [[UIView alloc] initWithFrame:cell.frame];
+            view.backgroundColor = [UIColor clearColor];
+            cell.selectedBackgroundView = [[UIView alloc] init];
+            cell.multipleSelectionBackgroundView = [[UIView alloc] init];
+
+            FavoriteItem *fileInfo = [_unFinishedArray objectAtIndex:indexPath.row];
+            cell.imgView.image = [UIImage imageNamed:@"img"];
+            cell.titleLabel.text = fileInfo.title;
+            
+            cell.progressView.downloadState = startState;
+            cell.progressView.progress = 0.6;
+            cell.progressLabel.text = @"23M/50M";
+            cell.progressView.delegate = self;
+//            if (fileInfo.isDownloading) {
+//                cell.controlBtn.downloadState = stopState;
+//            }else{
+//                
+//                if (fileInfo.willDownloading) {
+//                    cell.controlBtn.downloadState = waitingState;
+//                    
+//                }else{
+//                    cell.controlBtn.downloadState = startState;
+//                    
+//                }
+//            }
+//            
+//            cell.controlBtn.tag = 1000+indexPath.row;
+//            cell.titleLabel.text = fileInfo.fileName;
+//            cell.controlBtn.delegate = self;
+//            
+//            if (fileInfo.fileReceivedSize) {
+//            }else{
+//            }
+//            
+            return cell;
+        }else{
+            //已完成列表
+            FinishedCell *cell = [tableView dequeueReusableCellWithIdentifier:identify1];
+            if (cell == nil) {
+                cell = [[FinishedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify1];
+            }
+            UIView *view = [[UIView alloc] initWithFrame:cell.frame];
+            view.backgroundColor = [UIColor clearColor];
+            cell.selectedBackgroundView = [[UIView alloc] init];
+            cell.multipleSelectionBackgroundView = [[UIView alloc] init];
+
+            
+            FavoriteItem *fileInfo = [_finishedArray objectAtIndex:indexPath.row];
+            cell.imgView.image = [UIImage imageNamed:@"img"];
+            cell.titleLabel.text = fileInfo.title;
+            
+            cell.recommendBtn.tag = 1000+indexPath.row;
+            cell.questionBtn.tag = 2000+indexPath.row;
+            cell.playBtn.tag = 3000+indexPath.row;
+            [cell.recommendBtn addTarget:self action:@selector(recommend:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.questionBtn addTarget:self action:@selector(question:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.playBtn addTarget:self action:@selector(play:) forControlEvents:UIControlEventTouchUpInside];
+
+            
+            return cell;
+        }
+    }
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -185,49 +323,40 @@
             }
         }
     }else{
+        //获取选中的cell的 NSIndexPath
         NSArray *array = [_tableView indexPathsForSelectedRows];
         
         if (array.count==0) {
             return;
         }
+        //存储选中的已完成的对象
         NSMutableArray *arr1 = [[NSMutableArray alloc] initWithCapacity:0];
+        //存储选中的未完成的对象
         NSMutableArray *arr2 = [[NSMutableArray alloc] initWithCapacity:0];
-        NSMutableArray *a1 = [[NSMutableArray alloc] initWithCapacity:0];
-        NSMutableArray *a2 = [[NSMutableArray alloc] initWithCapacity:0];
-        
+        //遍历array
         for (int i = 0 ; i < array.count; i++) {
             NSIndexPath *indexPath = [array objectAtIndex:i];
             FavoriteItem *item = [[_dataArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-            if (indexPath.section == 0) {
+            if ([_finishedArray containsObject:item]) {
                 [arr1 addObject:item];
-            }else if(indexPath.section == 1){
+            }else if ([_unFinishedArray containsObject:item]){
                 [arr2 addObject:item];
             }
-            
         }
         
-        NSMutableArray *mutableArr = [[NSMutableArray alloc] initWithCapacity:0];
-        if (_dataArray.count>0) {
-            NSMutableArray *array1 = [_dataArray objectAtIndex:0];
-            [array1 removeObjectsInArray:arr1];
-            if (array1.count != 0) {
-                [mutableArr addObject:array1];
-            }
-            if (_dataArray.count>1) {
-                NSMutableArray *array2 = [_dataArray objectAtIndex:1];
-                [array2 removeObjectsInArray:arr2];
-                if (array2.count != 0) {
-                    [mutableArr addObject:array2];
-                }
-            }
+        if (arr1.count!=0) {
+            //删除缓存下已下载的文件
+        }
+        if (arr2.count!=0) {
+            //取消当前选中的下载任务
         }
         
+        //移除当前数据中的所有数据  重新导入
         [_dataArray removeAllObjects];
-        if (mutableArr.count!=0) {
-            [_dataArray addObjectsFromArray:mutableArr];
-        }
+        [_finishedArray removeAllObjects];
+        [_unFinishedArray removeAllObjects];
+        
         [_tableView reloadData];
-        //        [_tableView deleteRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationNone];
     }
 }
 
@@ -270,6 +399,18 @@
     QuestionController *question = [[QuestionController alloc] init];
     question.sid = @"1";
     [self.nav pushViewController:question animated:YES];
+}
+
+#pragma mark 播放按钮点击
+- (void)play:(UIButton *)btn
+{
+    
+}
+
+#pragma mark CircularProgressView_delegate
+- (void)progressViewClicked:(CircularProgressView *)view
+{
+    NSLog(@"--------------");
 }
 
 

@@ -33,13 +33,24 @@
         [bgView addSubview:_imgView];
         
         
-        CGFloat x = _imgView.frame.size.width+_imgView.frame.origin.x+13;
-        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(x,5,bgView.frame.size.width-x-35,50)];
+        CGFloat x = _imgView.frame.size.width+_imgView.frame.origin.x+10;
+        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(x,5,bgView.frame.size.width-x-10-25,50)];
         _titleLabel.backgroundColor = [UIColor clearColor];
         _titleLabel.font = [UIFont systemFontOfSize:14];
         _titleLabel.textColor = HexRGB(0x323232);
         _titleLabel.numberOfLines = 2;
         [bgView addSubview:_titleLabel];
+        
+        _progressView = [[CircularProgressView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
+        _progressView.center = CGPointMake(bgView.frame.size.width-10-_progressView.frame.size.width/2,bgView.frame.size.height/2);
+        [bgView addSubview:_progressView];
+        
+        _progressLabel = [[UILabel alloc] initWithFrame:CGRectMake(bgView.frame.size.width-100-5,_progressView.frame.origin.y+_progressView.frame.size.height+5, 100, 15)];
+        _progressLabel.backgroundColor = [UIColor clearColor];
+        _progressLabel.textAlignment = NSTextAlignmentRight;
+        _progressLabel.textColor = HexRGB(0x323232);
+        _progressLabel.font = [UIFont systemFontOfSize:13];
+        [bgView addSubview:_progressLabel];
         
     }
     return self;

@@ -30,6 +30,7 @@
     _scrollView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_scrollView];
     [self loadData];
+    
 }
 
 - (void)loadData
