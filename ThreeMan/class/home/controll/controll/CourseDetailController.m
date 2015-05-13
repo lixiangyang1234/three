@@ -18,7 +18,7 @@
 #define borderw            5 //内边界
 #define BUTTONH           40  //按钮高度
 #define  NETFAILIMGWH  165   //没有数据的图片宽高
-@interface CourseDetailController ()<UIScrollViewDelegate,UITableViewDataSource,UITableViewDelegate,byCourseViewDelegate,UIWebViewDelegate>
+@interface CourseDetailController ()<UIScrollViewDelegate,UITableViewDataSource,UITableViewDelegate,byCourseViewDelegate,UIWebViewDelegate,MJRefreshBaseViewDelegate>
 {
     NetFailView *failView;
     UIView *_orangLin;
@@ -41,6 +41,13 @@
     CGFloat cellContentH;
     CGFloat RecommandCellH;
     NSString *recommendCount;
+    
+    BOOL isAnswerRefresh;
+    BOOL isRecommendRefresh;
+    MJRefreshFooterView *footerRefreshAnswer;
+    MJRefreshFooterView *footerRefreshRecommend;
+    MJRefreshHeaderView *headerRefreshAnswer;
+    MJRefreshHeaderView *headerRefreshRecommend;
 }
 
 @property(nonatomic,strong)UIScrollView *backScrollView;
@@ -61,18 +68,35 @@
     _bySuccessCode =0;
     _byFailStr=@"";
     _bySuccessStr=@"";
+    [self addRefreshView];
     [self addMBprogressView];
-    
     [self addRecommendLoadStatus];
     [self addLoadStatus];
     
 
     // Do any additional setup after loading the view.
 }
-
 -(void)addMBprogressView{
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"加载中...";
+}
+-(void)addRefreshView{
+    footerRefreshAnswer =[[MJRefreshFooterView alloc]init];
+    footerRefreshAnswer.delegate =self;
+    footerRefreshAnswer.scrollView =answerTableView;
+    
+    headerRefreshAnswer =[[MJRefreshHeaderView alloc]init];
+    headerRefreshAnswer.delegate =self;
+    headerRefreshAnswer.scrollView =answerTableView;
+    
+    
+    footerRefreshRecommend =[[MJRefreshFooterView alloc]init];
+    footerRefreshRecommend.delegate =self;
+    footerRefreshRecommend.scrollView =answerTableView;
+    
+    headerRefreshRecommend =[[MJRefreshHeaderView alloc]init];
+    headerRefreshRecommend.delegate =self;
+    headerRefreshRecommend.scrollView =answerTableView;
     
 }
 #pragma mark ---添加数据
@@ -127,7 +151,6 @@
 
                     courseDetailModel *item = [[courseDetailModel alloc] initWithDictnoaryForCourseRecommend:dict];
                     [_recommendArray addObject:item];
-                    NSLog(@"------11111---->%d",_recommendArray.count);
                 }
             }
             [recommendTableView reloadData];
@@ -537,7 +560,6 @@
             RecommandCell.selectionStyle =UITableViewCellSelectionStyleNone;
 
         }
-        NSLog(@"------22222---->%d",_recommendArray.count);
 
         courseDetailModel *recommendModel =[_recommendArray objectAtIndex:indexPath.row];
         RecommandCellH =[recommendModel.recommendContent sizeWithFont:[UIFont systemFontOfSize:PxFont(18)] constrainedToSize:CGSizeMake(self.view.frame.size.width-33, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping ].height;
