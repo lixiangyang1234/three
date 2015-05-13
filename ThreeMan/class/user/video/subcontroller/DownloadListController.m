@@ -147,9 +147,12 @@
             cell.multipleSelectionBackgroundView = [[UIView alloc] init];
 
             
-            FavoriteItem *fileInfo = [_finishedArray objectAtIndex:indexPath.row];
-            cell.imgView.image = [UIImage imageNamed:@"img"];
-            cell.titleLabel.text = fileInfo.title;
+            DownloadFileModel *fileInfo = [_finishedArray objectAtIndex:indexPath.row];
+            NSDictionary *dic = fileInfo.fileInfo;
+            NSString *imageurl = [dic objectForKey:@"imgurl"];
+            NSString *title = [dic objectForKey:@"title"];
+            cell.titleLabel.text = title;
+            [cell.imgView setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:placeHoderImage];
             
             cell.recommendBtn.tag = 1000+indexPath.row;
             cell.questionBtn.tag = 2000+indexPath.row;
@@ -174,7 +177,11 @@
 
             
             DownloadFileModel *fileInfo = [_unFinishedArray objectAtIndex:indexPath.row];
-            cell.imgView.image = [UIImage imageNamed:@"img"];
+            NSDictionary *dic = fileInfo.fileInfo;
+            NSString *imageurl = [dic objectForKey:@"imgurl"];
+            NSString *title = [dic objectForKey:@"title"];
+            cell.titleLabel.text = title;
+            [cell.imgView setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:placeHoderImage];
             
             if (fileInfo.isDownloading) {
                 cell.progressView.downloadState = stopState;
@@ -212,7 +219,11 @@
             cell.multipleSelectionBackgroundView = [[UIView alloc] init];
 
             DownloadFileModel *fileInfo = [_unFinishedArray objectAtIndex:indexPath.row];
-            cell.imgView.image = [UIImage imageNamed:@"img"];
+            NSDictionary *dic = fileInfo.fileInfo;
+            NSString *imageurl = [dic objectForKey:@"imgurl"];
+            NSString *title = [dic objectForKey:@"title"];
+            cell.titleLabel.text = title;
+            [cell.imgView setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:placeHoderImage];
             
             if (fileInfo.isDownloading) {
                 cell.progressView.downloadState = stopState;
@@ -242,9 +253,12 @@
             cell.multipleSelectionBackgroundView = [[UIView alloc] init];
 
             
-            FavoriteItem *fileInfo = [_finishedArray objectAtIndex:indexPath.row];
-            cell.imgView.image = [UIImage imageNamed:@"img"];
-            cell.titleLabel.text = fileInfo.title;
+            DownloadFileModel *fileInfo = [_finishedArray objectAtIndex:indexPath.row];
+            NSDictionary *dic = fileInfo.fileInfo;
+            NSString *imageurl = [dic objectForKey:@"imgurl"];
+            NSString *title = [dic objectForKey:@"title"];
+            cell.titleLabel.text = title;
+            [cell.imgView setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:placeHoderImage];
             
             cell.recommendBtn.tag = 1000+indexPath.row;
             cell.questionBtn.tag = 2000+indexPath.row;
@@ -371,16 +385,18 @@
 #pragma mark 推荐按钮点击
 - (void)recommend:(UIButton *)btn
 {
+    DownloadFileModel *file = [_finishedArray objectAtIndex:btn.tag - 1000];
     RecommendController *recommend = [[RecommendController alloc] init];
-    recommend.sid = @"1";
+    recommend.sid = [file.fileInfo objectForKey:@"id"];
     [self.nav pushViewController:recommend animated:YES];
 }
 
 #pragma mark 提问按钮点击
 - (void)question:(UIButton *)btn
 {
+    DownloadFileModel *file = [_finishedArray objectAtIndex:btn.tag - 2000];
     QuestionController *question = [[QuestionController alloc] init];
-    question.sid = @"1";
+    question.sid =[file.fileInfo objectForKey:@"id"];
     [self.nav pushViewController:question animated:YES];
 }
 
@@ -393,7 +409,21 @@
 #pragma mark CircularProgressView_delegate
 - (void)progressViewClicked:(CircularProgressView *)view
 {
-    NSLog(@"--------------");
+    DownloadFileModel *fileInfo =[_unFinishedArray objectAtIndex:view.tag-1000];
+    //点击停止下载
+    if (fileInfo.isDownloading) {
+        [DownloadManager stopDownload:fileInfo];
+    }else{
+        //点击等待下载
+        if (fileInfo.willDownloading) {
+            return;
+            //点击开始下载
+        }else{
+            [DownloadManager resumeDownload:fileInfo];
+        }
+    }
+    
+    [_tableView reloadData];
 }
 
 #pragma mark Download_delegate

@@ -71,6 +71,10 @@
 #define kBaseURL @"http://ebingoo.bingoso.com"
 #define kUrl @"http://fish.ebingoo.com"
 
+
+//通知名称
+#define SystemConfigChange @"systemConfigChange"  //systemConfig改变
+
 // 2.日志输出宏定义
 #ifdef DEBUG
 // 调试状态

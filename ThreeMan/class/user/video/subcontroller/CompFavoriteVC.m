@@ -40,7 +40,6 @@
 
 - (void)buidlUI
 {
-    
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,0, kWidth, kHeight-64-40) style:UITableViewStylePlain];
     _tableView.dataSource = self;
     _tableView.delegate = self;
@@ -87,8 +86,11 @@
 {
     NSDictionary *param;
     if (loading) {
+        
         param = @{@"pageid":[NSString stringWithFormat:@"%lu",(unsigned long)_dataArray.count],@"pagesize":[NSString stringWithFormat:@"%d",pagesize]};
+        
     }else{
+        
         param = @{@"pageid":@"0",@"pagesize":[NSString stringWithFormat:@"%d",pagesize]};
     }
     //第一次加载数据或刷新数据

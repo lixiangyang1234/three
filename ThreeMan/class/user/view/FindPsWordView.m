@@ -37,6 +37,12 @@
 }
 
 
+- (void)resignFirstResponder
+{
+    [self.telView.textField resignFirstResponder];
+    [self.passwordView.textField resignFirstResponder];
+}
+
 - (void)buildUI
 {
     UIImageView *logoView = [[UIImageView alloc] initWithFrame:CGRectMake(46, 30, 92, 32)];
