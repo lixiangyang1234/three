@@ -17,7 +17,7 @@
 #import "MJRefresh.h"
 #import "EnterpriseItem.h"
 #import "EnterpriseCell.h"
-
+#import "CompanyHomeControll.h"
 
 #define pagesize 15
 
@@ -72,7 +72,7 @@
         
     }
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,topBgView.frame.size.height, kWidth, kHeight-64-40-topBgView.frame.size.height-8) style:UITableViewStylePlain];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,topBgView.frame.origin.y+topBgView.frame.size.height, kWidth, kHeight-64-40-(topBgView.frame.origin.y+topBgView.frame.size.height)) style:UITableViewStylePlain];
     _tableView.dataSource = self;
     _tableView.delegate = self;
     _tableView.backgroundColor = [UIColor clearColor];
@@ -311,7 +311,6 @@
         cell.littleLabel.text = [NSString stringWithFormat:@"课程%@",item.scorenums];
         cell.contentLabel.text = item.introduce;
         
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
 
     }
@@ -334,10 +333,17 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (!isEditting) {
-        FavoriteItem *item = [_demandArray objectAtIndex:indexPath.row];
-        CourseDetailController *detail = [[CourseDetailController alloc] init];
-        detail.courseDetailID = item.sid;
-        [self.nav pushViewController:detail animated:YES];
+        if (demandType) {
+            FavoriteItem *item = [_demandArray objectAtIndex:indexPath.row];
+            CourseDetailController *detail = [[CourseDetailController alloc] init];
+            detail.courseDetailID = item.sid;
+            [self.nav pushViewController:detail animated:YES];
+        }else{
+            EnterpriseItem *item = [_companyArray objectAtIndex:indexPath.row];
+            CompanyHomeControll *detail = [[CompanyHomeControll alloc] init];
+            detail.companyId = item.cid;
+            [self.nav pushViewController:detail animated:YES];
+        }
     }
 }
 
@@ -382,6 +388,7 @@
             [RemindView showViewWithTitle:@"请选中删除选项" location:MIDDLE];
             return;
         }
+        
         NSMutableString *str = [NSMutableString stringWithString:@""];
         //需求删除
         if (demandType) {
@@ -426,7 +433,7 @@
             UIWindow *window = [UIApplication sharedApplication].keyWindow;
             NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:str,@"id", nil];
             [MBProgressHUD showHUDAddedTo:window animated:YES];
-#warning 此处需要修改接口名称
+            
             [HttpTool postWithPath:@"getCollectDel" params:param success:^(id JSON, int code, NSString *msg) {
                 [MBProgressHUD hideAllHUDsForView:window animated:YES];
                 if (code == 100) {

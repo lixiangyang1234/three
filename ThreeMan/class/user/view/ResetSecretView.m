@@ -50,8 +50,9 @@
     self.telView.textField.keyboardType = UIKeyboardTypeNumberPad;
     self.telView.textField.delegate = self;
     self.telView.textField.tag = 1000;
-    self.telView.imgView.image = [UIImage imageNamed:@"tel"];
-    self.telView.textField.placeholder = @"手机号码";
+    self.telView.imgView.image = [UIImage imageNamed:@"lock2"];
+    self.telView.textField.placeholder = @"原密码";
+    self.telView.textField.secureTextEntry = YES;
     [self addSubview:self.telView];
     
     UIView *line1 = [[UIView alloc] initWithFrame:CGRectMake(10,self.telView.frame.origin.y+self.telView.frame.size.height+3,self.frame.size.width-10*2, 0.5)];
@@ -61,8 +62,9 @@
     //用户名
     self.originView = [[ImageFieldView alloc] initWithFrame:CGRectMake(30,self.telView.frame.origin.y+self.telView.frame.size.height+15,self.telView.frame.size.width,30)];
     self.originView.textField.delegate = self;
-    self.originView.imgView.image = [UIImage imageNamed:@"lock2"];
-    self.originView.textField.placeholder = @"原密码";
+    self.originView.imgView.image = [UIImage imageNamed:@"lock1"];
+    self.originView.textField.placeholder = @"新密码";
+    self.originView.textField.secureTextEntry = YES;
     self.originView.textField.tag = 1001;
     [self addSubview:self.originView];
     
@@ -75,7 +77,8 @@
     self.freshView.textField.tag = 1002;
     self.freshView.textField.delegate = self;
     self.freshView.imgView.image = [UIImage imageNamed:@"lock1"];
-    self.freshView.textField.placeholder = @"新密码";
+    self.freshView.textField.placeholder = @"确认新密码";
+    self.freshView.textField.secureTextEntry = YES;
     [self addSubview:self.freshView];
     
     UIView *line3 = [[UIView alloc] initWithFrame:CGRectMake(10,self.freshView.frame.origin.y+self.freshView.frame.size.height+3,self.frame.size.width-10*2, 0.5)];

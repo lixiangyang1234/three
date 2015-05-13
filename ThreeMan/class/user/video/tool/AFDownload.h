@@ -48,5 +48,10 @@
 
 - (void)loadunFinishedFile;
 
+- (void)deleteFinisedFiles:(NSArray *)arr;
+
+- (void)cancelDownloads:(NSArray *)arr;
+
+
 
 @end

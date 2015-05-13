@@ -83,7 +83,7 @@
 {
     CGPoint point = CGPointMake(kWidth-60, btn.frame.origin.y + btn.frame.size.height+15);
     NSArray *titles;
-    if ([SystemConfig sharedInstance].isUserLogin&&[[SystemConfig sharedInstance].userInfo.type isEqualToString:@"2"]) {
+    if ([SystemConfig sharedInstance].isUserLogin&&[[SystemConfig sharedInstance].userInfo.type isEqualToString:@"1"]) {
         titles = @[@"我的收藏", @"账户", @"消息",@"设置"];
     }else{
         titles = @[@"我的成长", @"账户", @"消息",@"设置"];
@@ -144,7 +144,7 @@
             if ([SystemConfig sharedInstance].isUserLogin) {
                 
                 UserInfo *userinfo = [SystemConfig sharedInstance].userInfo;
-                if ([userinfo.type isEqualToString:@"1"]) {
+                if ([userinfo.type isEqualToString:@"0"]) {
                     for (UIViewController *subVC in array) {
                         if ([subVC isKindOfClass:[VideoCenterController class]]) {
                             [self.navigationController popToViewController:subVC animated:NO];
@@ -268,6 +268,7 @@
             //登陆请求
             [MBProgressHUD showHUDAddedTo:self.view animated:YES];
             [HttpTool postWithPath:@"getLogin" params:param success:^(id JSON, int code, NSString *msg) {
+                NSLog(@"%@",JSON);
                 [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
                 if (code == 100) {
                     NSDictionary *result = JSON[@"data"][@"login"];

@@ -17,8 +17,9 @@
 #import "CourseDetailController.h"
 #import "SectionHeadView.h"
 #import "MemorySizeView.h"
+#import "DownloadManager.h"
 
-@interface DownloadListController ()<EditViewDelegate,CircularProgressViewDelegate>
+@interface DownloadListController ()<EditViewDelegate,CircularProgressViewDelegate,DownloadDelegate>
 {
     BOOL isEditting;
     EditView *editView;
@@ -66,25 +67,15 @@
     memoryView = [[MemorySizeView alloc] init];
     memoryView.frame = CGRectMake(0,_tableView.frame.size.height,memoryView.frame.size.width,memoryView.frame.size.height);
     [self.view addSubview:memoryView];
+    
+    [DownloadManager setDelegate:self];
 }
+
 
 - (void)loadData
 {
-    for (int i = 0; i < 4; i++) {
-        FavoriteItem *item = [[FavoriteItem alloc] init];
-        item.img = @"";
-        item.title = @"与大师有约门票－成功第一网";
-        item.companyname = @"王大妈老师";
-        [_finishedArray addObject:item];
-    }
-    
-    for (int i = 0; i < 6; i++) {
-        FavoriteItem *item = [[FavoriteItem alloc] init];
-        item.img = @"";
-        item.title = @"与大师有约门票－成功第一网";
-        item.companyname = @"王大妈老师";
-        [_unFinishedArray addObject:item];
-    }
+    [_finishedArray addObjectsFromArray:[DownloadManager arrayOfFinished]];
+    [_unFinishedArray addObjectsFromArray:[DownloadManager arrayOfUnfinished]];
     
     if (_finishedArray.count!=0) {
         [_dataArray addObject:_finishedArray];
@@ -100,9 +91,9 @@
         [headView setImgView:[UIImage imageNamed:@"unfinish"] title:@"未完成"];
         [_headViewArray addObject:headView];
     }
-    
     [_tableView reloadData];
 }
+
 
 - (void)edit:(BOOL)editting
 {
@@ -129,6 +120,8 @@
     }
 }
 
+
+#pragma mark tableView_datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return [[_dataArray objectAtIndex:section] count];
@@ -180,33 +173,29 @@
             cell.multipleSelectionBackgroundView = [[UIView alloc] init];
 
             
-            FavoriteItem *fileInfo = [_unFinishedArray objectAtIndex:indexPath.row];
+            DownloadFileModel *fileInfo = [_unFinishedArray objectAtIndex:indexPath.row];
             cell.imgView.image = [UIImage imageNamed:@"img"];
-            cell.titleLabel.text = fileInfo.title;
             
-            cell.progressView.downloadState = startState;
-            cell.progressView.progress = 0.6;
-            cell.progressLabel.text = @"30M/50M";
+            if (fileInfo.isDownloading) {
+                cell.progressView.downloadState = stopState;
+            }else{
+                
+                if (fileInfo.willDownloading) {
+                    cell.progressView.downloadState = waitingState;
+                    
+                }else{
+                    cell.progressView.downloadState = startState;
+                    
+                }
+            }
+            cell.progressView.tag = 1000+indexPath.row;
+            cell.titleLabel.text = fileInfo.fileName;
             cell.progressView.delegate = self;
-//            if (fileInfo.isDownloading) {
-//                cell.controlBtn.downloadState = stopState;
-//            }else{
-//                
-//                if (fileInfo.willDownloading) {
-//                    cell.controlBtn.downloadState = waitingState;
-//                    
-//                }else{
-//                    cell.controlBtn.downloadState = startState;
-//                    
-//                }
-//            }
-//            cell.controlBtn.tag = 1000+indexPath.row;
-//            cell.titleLabel.text = fileInfo.fileName;
-//            cell.controlBtn.delegate = self;
-//            if (fileInfo.fileReceivedSize) {
-//            }else{
-//            }
-//            
+            
+            if (fileInfo.fileReceivedSize) {
+            }else{
+            }
+            
             return cell;
             
         }
@@ -222,35 +211,24 @@
             cell.selectedBackgroundView = [[UIView alloc] init];
             cell.multipleSelectionBackgroundView = [[UIView alloc] init];
 
-            FavoriteItem *fileInfo = [_unFinishedArray objectAtIndex:indexPath.row];
+            DownloadFileModel *fileInfo = [_unFinishedArray objectAtIndex:indexPath.row];
             cell.imgView.image = [UIImage imageNamed:@"img"];
-            cell.titleLabel.text = fileInfo.title;
             
-            cell.progressView.downloadState = startState;
-            cell.progressView.progress = 0.6;
-            cell.progressLabel.text = @"23M/50M";
+            if (fileInfo.isDownloading) {
+                cell.progressView.downloadState = stopState;
+            }else{
+                
+                if (fileInfo.willDownloading) {
+                    cell.progressView.downloadState = waitingState;
+                    
+                }else{
+                    cell.progressView.downloadState = startState;
+                    
+                }
+            }
+            cell.progressView.tag = 1000+indexPath.row;
+            cell.titleLabel.text = fileInfo.fileName;
             cell.progressView.delegate = self;
-//            if (fileInfo.isDownloading) {
-//                cell.controlBtn.downloadState = stopState;
-//            }else{
-//                
-//                if (fileInfo.willDownloading) {
-//                    cell.controlBtn.downloadState = waitingState;
-//                    
-//                }else{
-//                    cell.controlBtn.downloadState = startState;
-//                    
-//                }
-//            }
-//            
-//            cell.controlBtn.tag = 1000+indexPath.row;
-//            cell.titleLabel.text = fileInfo.fileName;
-//            cell.controlBtn.delegate = self;
-//            
-//            if (fileInfo.fileReceivedSize) {
-//            }else{
-//            }
-//            
             return cell;
         }else{
             //已完成列表
@@ -282,16 +260,14 @@
     return nil;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 88;
-}
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return UITableViewCellEditingStyleDelete|UITableViewCellEditingStyleInsert;
 }
 
+
+#pragma mark tableView_delegate
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     if (section == 0) {
@@ -304,6 +280,32 @@
         return headView;
     }
     return nil;
+}
+
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (!isEditting) {
+        CourseDetailController *detail = [[CourseDetailController alloc] init];
+        [self.nav pushViewController:detail animated:YES];
+    }
+}
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 88;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 49;
+}
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 0.00000000000000001;
 }
 
 #pragma mark editView_delegate
@@ -346,44 +348,25 @@
         
         if (arr1.count!=0) {
             //删除缓存下已下载的文件
+            
         }
         if (arr2.count!=0) {
             //取消当前选中的下载任务
         }
         
         //移除当前数据中的所有数据  重新导入
+        
+        
         [_dataArray removeAllObjects];
+        
         [_finishedArray removeAllObjects];
+        
         [_unFinishedArray removeAllObjects];
         
         [_tableView reloadData];
     }
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (!isEditting) {
-        CourseDetailController *detail = [[CourseDetailController alloc] init];
-        [self.nav pushViewController:detail animated:YES];
-    }
-}
-
-
-- (void)deleteSections:(NSArray *)sections rows:(NSArray *)rows
-{
-    
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 49;
-}
-
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 0.00000000000000001;
-}
 
 #pragma mark 推荐按钮点击
 - (void)recommend:(UIButton *)btn
@@ -413,6 +396,55 @@
     NSLog(@"--------------");
 }
 
+#pragma mark Download_delegate
+//下载失败
+- (void)downloadFailure:(DownloadFileModel *)fileinfo
+{
+    [_tableView reloadData];
+}
+
+//下载成功
+- (void)downloadFinished:(DownloadFileModel *)fileinfo
+{
+    [_finishedArray removeAllObjects];
+    [_unFinishedArray removeAllObjects];
+    [_dataArray removeAllObjects];
+    
+    [_finishedArray addObjectsFromArray:[DownloadManager arrayOfFinished]];
+    [_unFinishedArray addObjectsFromArray:[DownloadManager arrayOfUnfinished]];
+    
+    if (_finishedArray.count!=0) {
+        [_dataArray addObject:_finishedArray];
+    }
+    
+    if (_unFinishedArray.count!=0) {
+        [_dataArray addObject:_unFinishedArray];
+    }
+    [_tableView reloadData];
+}
+
+//更新进度
+- (void)updateUI:(DownloadFileModel *)fileinfo progress:(float)progress
+{
+    for (DownloadFileModel *file in _unFinishedArray) {
+        
+        if ([file.fileName isEqualToString:fileinfo.fileName]) {
+            
+            NSInteger count = [_unFinishedArray indexOfObject:file];
+            
+            UnfinishedCell *cell = (UnfinishedCell *)[_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:count inSection:_dataArray.count-1]];
+            
+            cell.progressView.progress = progress;
+            
+            return;
+        }
+    }
+}
+
+- (void)dealloc
+{
+    [DownloadManager setDelegate:nil];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

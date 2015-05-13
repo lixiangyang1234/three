@@ -47,6 +47,9 @@
     _tableView.sectionFooterHeight = 0;
     _tableView.sectionHeaderHeight = 0;
     [self.view addSubview:_tableView];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth,8)];
+    view.backgroundColor = [UIColor clearColor];
+    _tableView.tableHeaderView = view;
     
     refreshFootView = [[MJRefreshFooterView alloc] init];
     refreshFootView.delegate = self;
@@ -78,13 +81,18 @@
 //请求数据
 - (void)loadData:(BOOL)loading
 {
-    NSDictionary *param = @{@"pageid":[NSString stringWithFormat:@"%lu",(unsigned long)_dataArray.count],@"pagesize":[NSString stringWithFormat:@"%d",pagesize]};
-    if (!loading) {
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        hud.labelText = @"加载中...";
+    NSDictionary *param;
+    if (loading) {
+        param = @{@"pageid":[NSString stringWithFormat:@"%lu",(unsigned long)_dataArray.count],@"pagesize":[NSString stringWithFormat:@"%d",pagesize]};
+    }else{
+        param = @{@"pageid":@"0",@"pagesize":[NSString stringWithFormat:@"%d",pagesize]};
     }
-    
+    //第一次加载数据或刷新数据
+    if (!loading) {
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    }
     [HttpTool postWithPath:@"getCollect" params:param success:^(id JSON, int code, NSString *msg) {
+        //如果是加载  结束加载动画
         if (loading) {
             [refreshFootView endRefreshing];
         }else{
@@ -101,7 +109,16 @@
                     [item setValuesForKeysWithDictionary:dict];
                     [_dataArray addObject:item];
                 }
+                if (array.count<pagesize) {
+                    refreshFootView.hidden = YES;
+                }else{
+                    refreshFootView.hidden = NO;
+                }
+            }else{
+                refreshFootView.hidden = YES;
             }
+        }else{
+            [RemindView showViewWithTitle:msg location:TOP];
         }
         
         if (_dataArray.count==0) {
@@ -111,21 +128,14 @@
         }
         [_tableView reloadData];
     } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+        [_tableView reloadData];
         if (loading) {
             [refreshFootView endRefreshing];
         }else{
             [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
         }
     }];
-    
-    for (int i = 0; i < 10; i++) {
-        FavoriteItem *item = [[FavoriteItem alloc] init];
-        item.title = @"123";
-        item.companyname = @"1234";
-        item.img = @"123";
-        [_dataArray addObject:item];
-    }
-    [_tableView reloadData];
 }
 
 - (void)edit:(BOOL)editting
