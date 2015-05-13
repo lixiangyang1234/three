@@ -47,7 +47,6 @@
     
     //手机号码
     self.telView = [[ImageFieldView alloc] initWithFrame:CGRectMake(30,logoView.frame.origin.y+logoView.frame.size.height+30,self.frame.size.width-30*2,30)];
-    self.telView.textField.keyboardType = UIKeyboardTypeNumberPad;
     self.telView.textField.delegate = self;
     self.telView.textField.tag = 1000;
     self.telView.imgView.image = [UIImage imageNamed:@"lock2"];

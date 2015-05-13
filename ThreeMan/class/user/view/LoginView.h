@@ -26,4 +26,7 @@
 @property (nonatomic,assign) id<LoginViewDelegate> delegate;
 @property (nonatomic,assign) id <KeyboardDelegate> keyboardDelegate;
 
+- (void)resignFirstResponder;
+
+
 @end

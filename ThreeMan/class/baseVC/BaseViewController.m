@@ -25,10 +25,6 @@
 
 @interface BaseViewController ()<TYPopoverViewDelegate,LoginViewDelegate,FindPsWordViewDelegate,KeyboardDelegate,ValidateViewDelegate,RegistViewDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 {
-    UIView *windowView;
-    NSString *uid;
-    NSString *pwd;
-    NSString *tel;
 }
 @end
 
@@ -40,9 +36,9 @@
     self.view.backgroundColor = HexRGB(0xe8e8e8);
     [self loadNavItems];
     
-    windowView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,kWidth,kHeight)];
-    windowView.backgroundColor = [UIColor blackColor];
-    windowView.alpha = 0.4;
+    windowBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,kWidth,kHeight)];
+    windowBgView.backgroundColor = [UIColor blackColor];
+    windowBgView.alpha = 0.4;
     
 }
 
@@ -108,24 +104,14 @@
         //登陆
         case -1:
         {
-            UIWindow *window = [UIApplication sharedApplication].keyWindow;
-            [window addSubview:windowView];
-            LoginView *loginView = [[LoginView alloc] init];
-            loginView.center = CGPointMake(kWidth/2, kHeight+loginView.frame.size.height/2);
-            loginView.delegate = self;
-            loginView.keyboardDelegate = self;
-            [window addSubview:loginView];
-            
-            [UIView animateWithDuration:0.3 animations:^{
-                loginView.center = CGPointMake(kWidth/2, kHeight/2);
-            }];
+            [self showLoginView];
         }
             break;
         //注册
         case -2:
         {
             UIWindow *window = [UIApplication sharedApplication].keyWindow;
-            [window addSubview:windowView];
+            [window addSubview:windowBgView];
             RegistView *loginView = [[RegistView alloc] init];
             loginView.center = CGPointMake(kWidth/2, kHeight+loginView.frame.size.height/2);
             loginView.delegate = self;
@@ -223,6 +209,22 @@
     }
 }
 
+//推出登录视图
+- (void)showLoginView
+{
+    UIWindow *window = [UIApplication sharedApplication].keyWindow;
+    [window addSubview:windowBgView];
+    LoginView *loginView = [[LoginView alloc] init];
+    loginView.center = CGPointMake(kWidth/2, kHeight+loginView.frame.size.height/2);
+    loginView.delegate = self;
+    loginView.keyboardDelegate = self;
+    [window addSubview:loginView];
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        loginView.center = CGPointMake(kWidth/2, kHeight/2);
+    }];
+}
+
 #pragma mark 头像点击
 - (void)imageViewClick:(TYPopoverView *)view
 {
@@ -241,7 +243,7 @@
             //移除
         case 1:
         {
-            [windowView removeFromSuperview];
+            [windowBgView removeFromSuperview];
             [UIView animateWithDuration:0.3 animations:^{
                 view.center = CGPointMake(kWidth/2, kHeight+view.frame.size.height/2);
             } completion:^(BOOL finished) {
@@ -264,6 +266,9 @@
                 [RemindView showViewWithTitle:@"请输入密码" location:TOP];
                 return;
             }
+            
+            [view resignFirstResponder];
+            
             NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:view.telView.textField.text,@"phone",view.passwordView.textField.text,@"userpwd", nil];
             //登陆请求
             [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -292,7 +297,7 @@
                     [userDefaults synchronize];
                     
                     //移除登陆视图
-                    [windowView removeFromSuperview];
+                    [windowBgView removeFromSuperview];
                     [UIView animateWithDuration:0.3 animations:^{
                         view.center = CGPointMake(kWidth/2, kHeight+view.frame.size.height/2);
                     } completion:^(BOOL finished) {
@@ -344,7 +349,7 @@
             //移除
         case 1:
         {
-            [windowView removeFromSuperview];
+            [windowBgView removeFromSuperview];
             [UIView animateWithDuration:0.3 animations:^{
                 view.center = CGPointMake(kWidth/2, kHeight+view.frame.size.height/2);
             } completion:^(BOOL finished) {
@@ -363,13 +368,18 @@
                 [RemindView showViewWithTitle:@"手机号不合法" location:TOP];
                 return;
             }
+            
             if (view.passwordView.textField.text.length==0) {
                 [RemindView showViewWithTitle:@"请输入重新设置的密码" location:TOP];
                 return;
             }
             
+            [view resignFirstResponder];
+            
             NSDictionary *param = @{@"phone":view.telView.textField.text,@"userpwd":view.passwordView.textField.text};
+            [MBProgressHUD showHUDAddedTo:self.view animated:YES];
             [HttpTool postWithPath:@"getFindpwd" params:param success:^(id JSON, int code, NSString *msg) {
+                [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
                 if (code == 100) {
                     uid = JSON[@"data"];
                     ValidateView *validateView = [[ValidateView alloc] initWithTitle:view.telView.textField.text];
@@ -390,6 +400,7 @@
                     [RemindView showViewWithTitle:msg location:TOP];
                 }
             } failure:^(NSError *error) {
+                [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
                 [RemindView showViewWithTitle:offline location:TOP];
             }];
             
@@ -408,7 +419,7 @@
     switch (btn.tag) {
         case 1:
         {
-            [windowView removeFromSuperview];
+            [windowBgView removeFromSuperview];
             [UIView animateWithDuration:0.3 animations:^{
                 view.center = CGPointMake(kWidth/2, kHeight+view.frame.size.height/2);
             } completion:^(BOOL finished) {
@@ -432,7 +443,7 @@
                     if (code == 100) {
                         //注册成功后调用登录接口登录
                         
-                        [windowView removeFromSuperview];
+                        [windowBgView removeFromSuperview];
                         [UIView animateWithDuration:0.3 animations:^{
                             view.center = CGPointMake(kWidth/2, kHeight+view.frame.size.height/2);
                         } completion:^(BOOL finished) {
@@ -458,7 +469,7 @@
                     if (code == 100) {
                         //注册成功后调用登录接口登录
                         
-                        [windowView removeFromSuperview];
+                        [windowBgView removeFromSuperview];
                         [UIView animateWithDuration:0.3 animations:^{
                             view.center = CGPointMake(kWidth/2, kHeight+view.frame.size.height/2);
                         } completion:^(BOOL finished) {
@@ -504,7 +515,7 @@
     switch (btn.tag) {
         case 1:
         {
-            [windowView removeFromSuperview];
+            [windowBgView removeFromSuperview];
             [UIView animateWithDuration:0.3 animations:^{
                 view.center = CGPointMake(kWidth/2, kHeight+view.frame.size.height/2);
             } completion:^(BOOL finished) {

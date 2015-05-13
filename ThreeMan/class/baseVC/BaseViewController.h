@@ -9,5 +9,15 @@
 #import <UIKit/UIKit.h>
 
 @interface BaseViewController : UIViewController
+{
+    UIView *windowBgView;
+    NSString *uid;
+    NSString *pwd;
+    NSString *tel;
+}
+
+
+- (void)showLoginView;
+
 
 @end

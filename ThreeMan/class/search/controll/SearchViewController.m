@@ -803,6 +803,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (tableView.tag ==1000) {
+        [_textField resignFirstResponder];
         if (existHots) {
             if (indexPath.section==0) {
                 return;
@@ -843,7 +844,7 @@
 #pragma mark 热门搜索按钮点击
 - (void)hotBtnDown:(UIButton *)btn
 {
-    [self.view endEditing:YES];
+    [_textField resignFirstResponder];
     NSMutableArray *array = [_dataArray objectAtIndex:0];
     HotItem *item = [array objectAtIndex:btn.tag-1000];
     _textField.text = item.keywords;
