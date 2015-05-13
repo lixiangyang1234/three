@@ -90,4 +90,14 @@
     }
 }
 
++ (void)deleteFinisedFiles:(NSArray *)arr
+{
+    if ([UIDevice currentDevice].systemVersion.floatValue>=7.0) {
+        [[UrlSessionDownload shareInstance] deleteFinisedFiles:arr];
+    }else{
+        [[AFDownload shareInstance] deleteFinisedFiles:arr];
+    }
+
+}
+
 @end

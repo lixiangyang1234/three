@@ -14,6 +14,13 @@
 
 @interface DownloadManager : NSObject
 
+/**
+ *  <#Description#>
+ *
+ *  @param urlStr   下载链接
+ *  @param type     文件类型  1表示视频  2表示文件
+ *  @param fileInfo 文件相关信息
+ */
 + (void)downloadFileWithUrl:(NSString *)urlStr type:(NSString *)type fileInfo:(NSDictionary *)fileInfo;
 
 

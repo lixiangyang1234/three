@@ -52,9 +52,11 @@
     DownloadFileModel *fileModel = [[DownloadFileModel alloc] init];
     fileModel.fileName = [self getFileNameForKey:urlStr];
     fileModel.urlLink = urlStr;
+    fileModel.fileInfo = fileInfo;
+    fileModel.type = type;
     fileModel.willDownloading = YES;
     fileModel.isDownloading = NO;
-    fileModel.fileInfo = fileInfo;
+    
     NSString *targetPath = [CommonHelper getTargetPathWithBasepath:BASE_PATH subpath:VIDEO_PATH];
     
     NSString *basetempPath = [CommonHelper getTargetPathWithBasepath:BASE_PATH subpath:TEMP_PATH];
@@ -399,7 +401,7 @@
     
     NSMutableArray *finishedInfo = [[NSMutableArray alloc] init];
     for (DownloadFileModel *file in self.finishArray) {
-        NSDictionary *filedic = [NSDictionary dictionaryWithObjectsAndKeys:file.fileName,@"filename",file.urlLink,@"urllink",file.targetPath,@"targetpath",file.tempfilePath,@"tempfilepath",file.tempPath,@"temppath",file.fileReceivedSize,@"filerecievesize",file.fileInfo,@"fileinfo",nil];
+        NSDictionary *filedic = [NSDictionary dictionaryWithObjectsAndKeys:file.fileName,@"filename",file.urlLink,@"urllink",file.targetPath,@"targetpath",file.tempfilePath,@"tempfilepath",file.tempPath,@"temppath",file.fileReceivedSize,@"filerecievesize",file.fileInfo,@"fileinfo",file.type,@"type",nil];
         [finishedInfo addObject:filedic];
     }
     
@@ -428,6 +430,7 @@
             file.tempfilePath = [dic objectForKey:@"tempfilepath"];
             file.tempPath = [dic objectForKey:@"temppath"];
             file.fileInfo = [dic objectForKey:@"fileinfo"];
+            file.type = [dic objectForKey:@"type"];
             [self.finishArray addObject:file];
         }
     }
@@ -441,7 +444,7 @@
     
     NSMutableArray *finishedInfo = [[NSMutableArray alloc] init];
     for (DownloadFileModel *file in self.unfinishArray) {
-        NSDictionary *filedic = [NSDictionary dictionaryWithObjectsAndKeys:file.fileName,@"filename",file.urlLink,@"urllink",file.targetPath,@"targetpath",file.tempfilePath,@"tempfilepath",file.tempPath,@"temppath",file.fileReceivedSize,@"filerecievesize",nil];
+        NSDictionary *filedic = [NSDictionary dictionaryWithObjectsAndKeys:file.fileName,@"filename",file.urlLink,@"urllink",file.targetPath,@"targetpath",file.tempfilePath,@"tempfilepath",file.tempPath,@"temppath",file.fileReceivedSize,@"filerecievesize",file.fileInfo,@"fileinfo",file.type,@"type",nil];
         [finishedInfo addObject:filedic];
     }
     
@@ -467,6 +470,7 @@
             file.tempfilePath = [dic objectForKey:@"tempfilepath"];
             file.tempPath = [dic objectForKey:@"temppath"];
             file.fileInfo = [dic objectForKey:@"fileinfo"];
+            file.type = [dic objectForKey:@"type"];
             file.isDownloading = NO;
             file.willDownloading = NO;
             NSString *identify = [self getIdentify:file.fileName];
