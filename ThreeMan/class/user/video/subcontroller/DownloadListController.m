@@ -447,6 +447,7 @@
             [DownloadManager resumeDownload:fileInfo];
         }
     }
+    
     [_tableView reloadData];
 }
 
