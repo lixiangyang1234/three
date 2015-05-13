@@ -354,9 +354,10 @@
     
     CGFloat companyHomeW =douDetailW+detailDouLabel.frame.size.width+10;
     //企业首页
+    
     UIButton *companyHomeDetail =[UIButton buttonWithType:UIButtonTypeCustom];
-    companyHomeDetail.frame =CGRectMake(companyHomeW, titleDetailH, kWidth-companyHomeW-detailWH*2, 25);
-    [companyHomeDetail setBackgroundImage:[UIImage imageNamed:@"company_name"] forState:UIControlStateNormal];
+    companyHomeDetail.frame =CGRectMake(companyHomeW, titleDetailH+3, kWidth-companyHomeW-detailWH*2, 25);
+//    [companyHomeDetail setImage:[UIImage imageNamed:@"company_name"] forState:UIControlStateNormal];
     [detailScrollView addSubview:companyHomeDetail];
     [companyHomeDetail setTitle:courseModel.courseCompanyname forState:UIControlStateNormal];
     companyHomeDetail.titleEdgeInsets =UIEdgeInsetsMake(0, 28, 0, 10);
@@ -364,6 +365,15 @@
     [companyHomeDetail setTitleColor:HexRGB(0x1c8cc6) forState:UIControlStateNormal];
     [companyHomeDetail.titleLabel setFont:[UIFont systemFontOfSize:PxFont(16)]];
     companyHomeDetail.backgroundColor =[UIColor clearColor];
+    companyHomeDetail.layer.masksToBounds =YES;
+    companyHomeDetail.layer.borderColor =HexRGB(0x178ac5).CGColor;
+    companyHomeDetail.layer.borderWidth=1.0f;
+    companyHomeDetail.layer.cornerRadius =15;
+    //banner图片
+    UIImageView *companyHomeImg =[[UIImageView alloc]initWithFrame:CGRectMake(-5, 0,19 , 19)];
+    [companyHomeDetail addSubview:companyHomeImg];
+    companyHomeImg.userInteractionEnabled=YES;
+    companyHomeImg.image =[UIImage imageNamed:@"company_name"];
     [companyHomeDetail addTarget:self action:@selector(companyhomeDetailBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
     
@@ -743,8 +753,9 @@
         }else if([[SystemConfig sharedInstance].uid isEqualToString:[NSString stringWithFormat:@"%d", courseModel.companyId]]){
             [RemindView showViewWithTitle:@"抱歉，请以普通会员身份购买！" location:BELLOW] ;
         }else if (courseModel.coursePrice <=0) {
-            [DownloadManager downloadFileWithUrl:courseModel.courseDownloadurl type:nil fileInfo:dic];
-            [RemindView showViewWithTitle:@"已经加入下载列表" location:BELLOW];
+            
+            [DownloadManager downloadFileWithUrl:courseModel.courseDownloadurl type:[NSString stringWithFormat:@"%d",courseModel.courseType] fileInfo:dic];
+//            [RemindView showViewWithTitle:@"已经加入下载列表" location:BELLOW];
         }
         else{
              [self addByTopView];

@@ -17,6 +17,7 @@
 @property(nonatomic,assign)int courseDownloadnum;
 @property(nonatomic,assign)int courseId;
 @property(nonatomic,assign)int companyId;
+@property(nonatomic,assign)int courseType;
 
 @property(nonatomic,copy)NSString *courseImgurl;
 @property(nonatomic,assign)int coursePrice;

@@ -406,14 +406,14 @@
 #pragma mark 播放按钮点击
 - (void)play:(UIButton *)btn
 {
-    DownloadFileModel *file = [_finishedArray objectAtIndex:btn.tag-1000];
+    DownloadFileModel *file = [_finishedArray objectAtIndex:btn.tag-3000];
     //视频
     if ([file.type isEqualToString:@"1"]) {
         
         NSURL *url = [NSURL fileURLWithPath:file.targetPath];
         MPMoviePlayerViewController *movieController = [[MPMoviePlayerViewController alloc] initWithContentURL:url];
         
-        [self presentMoviePlayerViewControllerAnimated:movieController];
+        [self.view.window.rootViewController presentMoviePlayerViewControllerAnimated:movieController];
 
     }else if([file.type isEqualToString:@"2"]){
         
