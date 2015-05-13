@@ -18,6 +18,7 @@
 @property(nonatomic,assign)int courseId;
 @property(nonatomic,assign)int companyId;
 @property(nonatomic,assign)int courseType;
+@property(nonatomic,assign)int courseIsbuy;
 
 @property(nonatomic,copy)NSString *courseImgurl;
 @property(nonatomic,assign)int coursePrice;

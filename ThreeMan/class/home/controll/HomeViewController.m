@@ -240,9 +240,10 @@ static NSString * const reuseIdentifier = @"Cell";
         
         
     }
+    NSArray *titleArray =@[@" 按需求 ",@" 按行业"];
+    NSArray *imgArray =@[[UIImage imageNamed:@"needImg"],[UIImage imageNamed:@"businessImg"]];
     for (int t=0; t<2; t++) {
-        NSArray *titleArray =@[@" 按需求 ",@" 按行业"];
-        NSArray *imgArray =@[[UIImage imageNamed:@"needImg"],[UIImage imageNamed:@"businessImg"]];
+       
         UIButton* titleBtn =[UIButton buttonWithType:UIButtonTypeCustom];
         titleBtn.frame =CGRectMake(15, needHeight+12+t%2*(NEEDH+24+27), kWidth-20, 37 );
         [self.backScrollView addSubview:titleBtn];
