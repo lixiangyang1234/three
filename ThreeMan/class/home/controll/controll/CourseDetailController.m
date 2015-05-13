@@ -731,7 +731,7 @@
 #pragma mark---购买课程
 -(void)categoryBtnItem:(UIButton *)item{
     courseDetailModel *courseModel =[_detailArray objectAtIndex:0];
-    NSDictionary *dic =[NSDictionary dictionaryWithObjectsAndKeys:courseModel.courseImgurl,@"imgurl",courseModel.courseId,@"id",courseModel.courseTitle,@"title" ,nil];
+    NSDictionary *dic =[NSDictionary dictionaryWithObjectsAndKeys:courseModel.courseImgurl,@"imgurl",[NSString stringWithFormat:@"%d",courseModel.courseId],@"id",courseModel.courseTitle,@"title" ,nil];
     
     if (item.tag ==30) {
         

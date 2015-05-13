@@ -300,7 +300,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (!isEditting) {
+        DownloadFileModel *file = [[_dataArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
         CourseDetailController *detail = [[CourseDetailController alloc] init];
+        detail.courseDetailID = [file.fileInfo objectForKey:@"id"];
         [self.nav pushViewController:detail animated:YES];
     }
 }

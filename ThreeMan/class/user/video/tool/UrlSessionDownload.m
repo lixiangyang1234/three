@@ -55,7 +55,7 @@
     fileModel.urlLink = urlStr;
     fileModel.willDownloading = YES;
     fileModel.isDownloading = NO;
-    
+    fileModel.fileInfo = fileInfo;
     NSString *targetPath = [CommonHelper getTargetPathWithBasepath:BASE_PATH subpath:VIDEO_PATH];
     
     NSString *basetempPath = [CommonHelper getTargetPathWithBasepath:BASE_PATH subpath:TEMP_PATH];
