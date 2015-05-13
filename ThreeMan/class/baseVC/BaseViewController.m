@@ -25,6 +25,9 @@
 
 @interface BaseViewController ()<TYPopoverViewDelegate,LoginViewDelegate,FindPsWordViewDelegate,KeyboardDelegate,ValidateViewDelegate,RegistViewDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 {
+    NSString *uid;
+    NSString *pwd;
+    NSString *tel;
 }
 @end
 
@@ -41,6 +44,23 @@
     windowBgView.alpha = 0.4;
     
 }
+
+- (BOOL)shouldAutorotate
+
+{
+    
+    return NO;
+    
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+
+{
+    
+    return UIInterfaceOrientationMaskPortrait;//只支持这一个方向(正常的方向)
+    
+}
+
 
 
 - (void)loadNavItems

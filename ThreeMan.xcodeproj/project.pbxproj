@@ -18,6 +18,7 @@
 		0469E00E1AEA251A0083601C /* CompFavoriteController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0469E00D1AEA251A0083601C /* CompFavoriteController.m */; };
 		0469E0141AEA26E60083601C /* DemandFavController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0469E0131AEA26E60083601C /* DemandFavController.m */; };
 		0469E0171AEA27040083601C /* CompFavoriteVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0469E0161AEA27040083601C /* CompFavoriteVC.m */; };
+		0474CBC81B03537E00BAEAF4 /* DirectionMPMoviePlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0474CBC71B03537E00BAEAF4 /* DirectionMPMoviePlayerViewController.m */; };
 		0490022E1AEDD9AA00EF6AD1 /* base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 0490021E1AEDD9AA00EF6AD1 /* base64.m */; };
 		0490022F1AEDD9AA00EF6AD1 /* DataSigner.m in Sources */ = {isa = PBXBuildFile; fileRef = 049002211AEDD9AA00EF6AD1 /* DataSigner.m */; };
 		049002301AEDD9AA00EF6AD1 /* DataVerifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 049002231AEDD9AA00EF6AD1 /* DataVerifier.m */; };
@@ -273,6 +274,8 @@
 		0469E0131AEA26E60083601C /* DemandFavController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemandFavController.m; sourceTree = "<group>"; };
 		0469E0151AEA27040083601C /* CompFavoriteVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompFavoriteVC.h; sourceTree = "<group>"; };
 		0469E0161AEA27040083601C /* CompFavoriteVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompFavoriteVC.m; sourceTree = "<group>"; };
+		0474CBC61B03537E00BAEAF4 /* DirectionMPMoviePlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectionMPMoviePlayerViewController.h; sourceTree = "<group>"; };
+		0474CBC71B03537E00BAEAF4 /* DirectionMPMoviePlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectionMPMoviePlayerViewController.m; sourceTree = "<group>"; };
 		049001D11AEDD99F00EF6AD1 /* aes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aes.h; sourceTree = "<group>"; };
 		049001D21AEDD99F00EF6AD1 /* asn1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asn1.h; sourceTree = "<group>"; };
 		049001D31AEDD99F00EF6AD1 /* asn1_mac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asn1_mac.h; sourceTree = "<group>"; };
@@ -1010,6 +1013,8 @@
 				0469E0131AEA26E60083601C /* DemandFavController.m */,
 				0469E0151AEA27040083601C /* CompFavoriteVC.h */,
 				0469E0161AEA27040083601C /* CompFavoriteVC.m */,
+				0474CBC61B03537E00BAEAF4 /* DirectionMPMoviePlayerViewController.h */,
+				0474CBC71B03537E00BAEAF4 /* DirectionMPMoviePlayerViewController.m */,
 			);
 			path = subcontroller;
 			sourceTree = "<group>";
@@ -2286,6 +2291,7 @@
 				04C64B901ACD2CBD00825EF0 /* MessageCell.m in Sources */,
 				55E3738B1AC2B54200C794DD /* MainControllerViewController.m in Sources */,
 				55E373A01AC2B54200C794DD /* WBNavigationController.m in Sources */,
+				0474CBC81B03537E00BAEAF4 /* DirectionMPMoviePlayerViewController.m in Sources */,
 				04C64BA01ACD459A00825EF0 /* AccountItem.m in Sources */,
 				55B714FA1ACCC0DD00959DF8 /* CourseViewCell.m in Sources */,
 				55E373B21AC2B54200C794DD /* UIImage+GIF.m in Sources */,

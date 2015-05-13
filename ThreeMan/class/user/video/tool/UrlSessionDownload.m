@@ -49,11 +49,12 @@
 
 - (void)downloadFileWithUrl:(NSString *)urlStr type:(NSString *)type fileInfo:(NSDictionary *)fileInfo
 {
+    NSAssert(type != nil&&![type isEqualToString:@""], @"datasource must not nil or empty");
     NSURL *url = [NSURL URLWithString:urlStr];
     DownloadFileModel *fileModel = [[DownloadFileModel alloc] init];
     fileModel.fileName = [self getFileNameForKey:urlStr];
     fileModel.urlLink = urlStr;
-    fileModel.fileInfo = fileInfo;
+    fileModel.fileInfo = [NSDictionary dictionaryWithDictionary:fileInfo];
     fileModel.type = type;
     fileModel.willDownloading = YES;
     fileModel.isDownloading = NO;
@@ -62,6 +63,7 @@
     NSString *targetPath = [CommonHelper getTargetPathWithBasepath:BASE_PATH subpath:VIDEO_PATH];
     
     NSString *basetempPath = [CommonHelper getTargetPathWithBasepath:BASE_PATH subpath:TEMP_PATH];
+    NSString *baseTempFilePath = [CommonHelper getTargetPathWithBasepath:BASE_PATH subpath:TEMP_PATH];
     
     //下载最终路径
     targetPath = [targetPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@",fileModel.fileName,url.lastPathComponent]];
@@ -70,7 +72,7 @@
     fileModel.targetPath = targetPath;
     fileModel.tempPath = tempPath;
     
-    NSString *tempfilePath = [basetempPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.plist",fileModel.fileName]];
+    NSString *tempfilePath = [baseTempFilePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.plist",fileModel.fileName]];
     fileModel.tempfilePath = tempfilePath;
     
     //该文件已下载完成
@@ -96,15 +98,20 @@
         NSString *identify = [self getIdentify:fileModel.fileName];
         
         [self.fileDic setObject:fileModel forKey:identify];
-        [_unfinishArray addObject:fileModel];
+        
+        [self.unfinishArray addObject:fileModel];
         
         NSURLSession *urlSession = [self backgroundSession:identify];
         [self.sessionDic setObject:urlSession forKey:identify];
         
-        [self nextRequest];
         
         [self saveunFinishedFile];
         
+        [self nextRequest];
+
+        [RemindView showViewWithTitle:@"已加入下载队列" location:MIDDLE];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:addNewDownload object:nil];
     }
 }
 
@@ -256,6 +263,8 @@
         [fileManager removeItemAtPath:fileModel.tempfilePath error:nil];
         
     }
+    
+    [self saveunFinishedFile];
 }
 
 
@@ -265,7 +274,7 @@
     
     NSMutableArray *finishedInfo = [[NSMutableArray alloc] init];
     for (DownloadFileModel *file in self.finishArray) {
-        NSDictionary *filedic = [NSDictionary dictionaryWithObjectsAndKeys:file.fileName,@"filename",file.urlLink,@"urllink",file.targetPath,@"targetpath",file.tempfilePath,@"tempfilepath",file.tempPath,@"temppath",file.fileReceivedSize,@"filerecievesize",file.fileInfo,@"fileinfo",file.type,@"type",nil];
+        NSDictionary *filedic = [self setDictionaryForFileModel:file];
         [finishedInfo addObject:filedic];
     }
     
@@ -296,6 +305,8 @@
             file.fileInfo = [dic objectForKey:@"fileinfo"];
             file.type = [dic objectForKey:@"type"];
             [self.finishArray addObject:file];
+            [self.fileDic setObject:file forKey:[self getIdentify:file.fileName]];
+
         }
     }
 }
@@ -307,9 +318,11 @@
     NSString *plistPath = [document stringByAppendingPathComponent:UNFINISHED_PATH_NAME];
     
     NSMutableArray *finishedInfo = [[NSMutableArray alloc] init];
+    
     for (DownloadFileModel *file in self.unfinishArray) {
-        NSDictionary *filedic = [NSDictionary dictionaryWithObjectsAndKeys:file.fileName,@"filename",file.urlLink,@"urllink",file.targetPath,@"targetpath",file.tempfilePath,@"tempfilepath",file.tempPath,@"temppath",file.fileReceivedSize,@"filerecievesize",file.resumeData,@"resumedata",file.fileInfo,@"fileinfo",file.type,@"type",nil];
-        [finishedInfo addObject:filedic];
+        NSDictionary *fileDic = [self setDictionaryForFileModel:file];
+        [finishedInfo addObject:fileDic];
+        NSLog(@"------filedic------%@",[fileDic objectForKey:@"fileinfo"]);
     }
     
     if (![finishedInfo writeToFile:plistPath atomically:YES]) {
@@ -339,9 +352,10 @@
             file.isDownloading = NO;
             file.willDownloading = NO;
             NSString *identify = [self getIdentify:file.fileName];
-            [RemindView showViewWithTitle:[self getIdentify:file.fileName] location:TOP];
             [self.fileDic setObject:file forKey:identify];
             [_unfinishArray addObject:file];
+            
+            [self.fileDic setObject:file forKey:identify];
             
             //创建session对象  这样可以获取上次退出程序时对应session的下载情况
             NSURLSession *urlSession = [self backgroundSession:identify];
@@ -360,16 +374,17 @@
 - (void)deleteFinisedFile:(DownloadFileModel *)file
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    
     for (DownloadFileModel *fileModel in _finishArray) {
         if ([file.fileName isEqualToString:fileModel.fileName]) {
+            [_finishArray removeObject:fileModel];
+            [_fileDic removeObjectForKey:[self getIdentify:fileModel.fileName]];
             if ([fileManager fileExistsAtPath:file.targetPath]) {
                 [fileManager removeItemAtPath:file.targetPath error:nil];
-                [_finishArray removeObject:fileModel];
-                [_fileDic removeObjectForKey:[self getIdentify:fileModel.fileName]];
             }
         }
     }
+    
+    [self saveFinishedFile];
 }
 
 - (void)cancelDownloads:(NSArray *)arr
@@ -383,6 +398,7 @@
 - (NSURLSession *)backgroundSession:(NSString *)identify
 {
     NSURLSession *backgroundSession =nil;
+    
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration backgroundSessionConfiguration:identify];
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -399,6 +415,20 @@
     }
     backgroundSession = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:[NSOperationQueue mainQueue]];
     return backgroundSession;
+}
+
+- (NSDictionary *)setDictionaryForFileModel:(DownloadFileModel *)file
+{
+    NSDictionary *filedic = [NSDictionary dictionaryWithObjectsAndKeys:file.fileName,@"filename",file.urlLink,@"urllink",file.targetPath,@"targetpath",file.tempfilePath,@"tempfilepath",file.tempPath,@"temppath",file.fileInfo,@"fileinfo",file.type,@"type",nil];
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:filedic];
+
+    if (file.resumeData) {
+        [dict setObject:file.resumeData forKey:@"resumedata"];
+    }
+    if (file.fileReceivedSize) {
+        [dict setObject:file.fileReceivedSize forKey:@"filerecievesize"];
+    }
+    return [dict copy];
 }
 
 
@@ -481,17 +511,23 @@
 }
 
 
-
-
 #pragma mark NSURLSessionDownloadDelegate
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location
 {
+    
     //将临时缓存文件移到目标目标路径下
     DownloadFileModel *fileModel = [self.fileDic objectForKey:session.configuration.identifier];
+    
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSURL *destinationURL = [NSURL fileURLWithPath:fileModel.targetPath];
     [fileManager removeItemAtURL:destinationURL error:NULL];
-    [fileManager copyItemAtURL:location toURL:destinationURL  error:NULL];
+    BOOL ret =  [fileManager copyItemAtURL:location toURL:destinationURL  error:NULL];
+    if (!ret) {
+        if ([_finishArray containsObject:fileModel]) {
+            [_finishArray removeObject:fileModel];
+            [self.fileDic removeObjectForKey:session.configuration.identifier];
+        }
+    }
 }
 
 
@@ -499,7 +535,7 @@
 {
     //更新进度
     double progress = (double)totalBytesWritten / (double)totalBytesExpectedToWrite;
-    NSLog(@"%f",progress);
+//    NSLog(@"%f",progress);
     DownloadFileModel *fileModel = [self.fileDic objectForKey:session.configuration.identifier];
     fileModel.fileReceivedSize = [NSString stringWithFormat:@"%lld",totalBytesWritten];
     fileModel.totalSize = [NSString stringWithFormat:@"%lld",totalBytesExpectedToWrite];

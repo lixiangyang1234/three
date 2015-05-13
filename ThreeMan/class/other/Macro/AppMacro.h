@@ -74,6 +74,8 @@
 
 //通知名称
 #define SystemConfigChange @"systemConfigChange"  //systemConfig改变
+#define addNewDownload @"newDownload"  //添加了一个新的下载
+
 
 // 2.日志输出宏定义
 #ifdef DEBUG

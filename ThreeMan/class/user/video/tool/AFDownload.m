@@ -48,11 +48,12 @@
 
 - (void)downloadFileWithUrl:(NSString *)urlStr type:(NSString *)type fileInfo:(NSDictionary *)fileInfo
 {
+    NSAssert(type != nil&&![type isEqualToString:@""], @"datasource must not nil or empty");
     NSURL *url = [NSURL URLWithString:urlStr];
     DownloadFileModel *fileModel = [[DownloadFileModel alloc] init];
     fileModel.fileName = [self getFileNameForKey:urlStr];
     fileModel.urlLink = urlStr;
-    fileModel.fileInfo = fileInfo;
+    fileModel.fileInfo = [NSDictionary dictionaryWithDictionary:fileInfo];
     fileModel.type = type;
     fileModel.willDownloading = YES;
     fileModel.isDownloading = NO;
@@ -60,7 +61,8 @@
     NSString *targetPath = [CommonHelper getTargetPathWithBasepath:BASE_PATH subpath:VIDEO_PATH];
     
     NSString *basetempPath = [CommonHelper getTargetPathWithBasepath:BASE_PATH subpath:TEMP_PATH];
-    
+    NSString *baseTempFilePath = [CommonHelper getTargetPathWithBasepath:BASE_PATH subpath:TEMP_PATH];
+
     //下载最终路径
     targetPath = [targetPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@",fileModel.fileName,url.lastPathComponent]];
     //ios7以下系统用 临时缓存路径
@@ -68,7 +70,7 @@
     fileModel.targetPath = targetPath;
     fileModel.tempPath = tempPath;
     
-    NSString *tempfilePath = [basetempPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.plist",fileModel.fileName]];
+    NSString *tempfilePath = [baseTempFilePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.plist",fileModel.fileName]];
     fileModel.tempfilePath = tempfilePath;
     
     //该文件已下载完成
@@ -124,6 +126,9 @@
         [self saveunFinishedFile];
         
         [self nextRequest];
+        
+        [RemindView showViewWithTitle:@"已加入下载队列" location:MIDDLE];
+
     }
 }
 
@@ -392,16 +397,19 @@
     if ([fileManager fileExistsAtPath:fileModel.tempPath]) {
         [fileManager removeItemAtPath:fileModel.tempPath error:nil];
     }
+    [self saveunFinishedFile];
 }
 
 
 //存储下载好的文件信息到沙盒中
 - (void)saveFinishedFile
 {
-    
     NSMutableArray *finishedInfo = [[NSMutableArray alloc] init];
+    
     for (DownloadFileModel *file in self.finishArray) {
-        NSDictionary *filedic = [NSDictionary dictionaryWithObjectsAndKeys:file.fileName,@"filename",file.urlLink,@"urllink",file.targetPath,@"targetpath",file.tempfilePath,@"tempfilepath",file.tempPath,@"temppath",file.fileReceivedSize,@"filerecievesize",file.fileInfo,@"fileinfo",file.type,@"type",nil];
+        
+        NSDictionary *filedic = [self setDictionaryForFileModel:file];
+
         [finishedInfo addObject:filedic];
     }
     
@@ -432,6 +440,7 @@
             file.fileInfo = [dic objectForKey:@"fileinfo"];
             file.type = [dic objectForKey:@"type"];
             [self.finishArray addObject:file];
+            [self.fileDic setObject:file forKey:[self getIdentify:file.fileName]];
         }
     }
 }
@@ -444,7 +453,7 @@
     
     NSMutableArray *finishedInfo = [[NSMutableArray alloc] init];
     for (DownloadFileModel *file in self.unfinishArray) {
-        NSDictionary *filedic = [NSDictionary dictionaryWithObjectsAndKeys:file.fileName,@"filename",file.urlLink,@"urllink",file.targetPath,@"targetpath",file.tempfilePath,@"tempfilepath",file.tempPath,@"temppath",file.fileReceivedSize,@"filerecievesize",file.fileInfo,@"fileinfo",file.type,@"type",nil];
+        NSDictionary *filedic = [self setDictionaryForFileModel:file];
         [finishedInfo addObject:filedic];
     }
     
@@ -452,6 +461,19 @@
         NSLog(@"write phist fail");
     }
 }
+
+
+- (NSDictionary *)setDictionaryForFileModel:(DownloadFileModel *)file
+{
+    NSDictionary *filedic = [NSDictionary dictionaryWithObjectsAndKeys:file.fileName,@"filename",file.urlLink,@"urllink",file.targetPath,@"targetpath",file.tempfilePath,@"tempfilepath",file.tempPath,@"temppath",file.fileInfo,@"fileinfo",file.type,@"type",nil];
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:filedic];
+    
+    if (file.fileReceivedSize) {
+        [dict setObject:file.fileReceivedSize forKey:@"filerecievesize"];
+    }
+    return [dict copy];
+}
+
 
 //从磁盘导出未下载好的文件信息
 - (void)loadunFinishedFile
@@ -477,7 +499,6 @@
             [RemindView showViewWithTitle:[self getIdentify:file.fileName] location:TOP];
             [self.fileDic setObject:file forKey:identify];
             [_unfinishArray addObject:file];
-            
         }
     }
 }
@@ -495,13 +516,16 @@
     
     for (DownloadFileModel *fileModel in _finishArray) {
         if ([file.fileName isEqualToString:fileModel.fileName]) {
+            
+            [_finishArray removeObject:fileModel];
+            [_fileDic removeObjectForKey:[self getIdentify:fileModel.fileName]];
+            
             if ([fileManager fileExistsAtPath:file.targetPath]) {
                 [fileManager removeItemAtPath:file.targetPath error:nil];
-                [_finishArray removeObject:fileModel];
-                [_fileDic removeObjectForKey:[self getIdentify:fileModel.fileName]];
             }
         }
     }
+    [self saveFinishedFile];
 }
 
 

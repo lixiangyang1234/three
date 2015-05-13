@@ -10,11 +10,13 @@
 #import "SettingController.h"
 #import "AccountController.h"
 #import "MessageController.h"
+#import "ErrorView.h"
 
 
 @interface VideoCenterController ()
 {
     BOOL isEditting;
+    ErrorView *noDataView;
 }
 
 @end
@@ -29,6 +31,7 @@
     [self setLeftTitle:@"我的成长"];
     [self addUI];
     [self loadRigthNavItems];
+    
     
 }
 
@@ -83,6 +86,7 @@
     self.recordVC.title =@"成长记录";
     [self.sliderSwitchView buildUI];
     self.selectedIndex = 0;
+    
     
 }
 
