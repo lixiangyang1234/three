@@ -18,8 +18,9 @@
 #import "SectionHeadView.h"
 #import "MemorySizeView.h"
 #import "DownloadManager.h"
+#import <MediaPlayer/MediaPlayer.h>
 
-@interface DownloadListController ()<EditViewDelegate,CircularProgressViewDelegate,DownloadDelegate>
+@interface DownloadListController ()<EditViewDelegate,CircularProgressViewDelegate,DownloadDelegate,UIDocumentInteractionControllerDelegate>
 {
     BOOL isEditting;
     EditView *editView;
@@ -405,8 +406,30 @@
 #pragma mark 播放按钮点击
 - (void)play:(UIButton *)btn
 {
-    
+    DownloadFileModel *file = [_finishedArray objectAtIndex:btn.tag-1000];
+    //视频
+    if ([file.type isEqualToString:@"1"]) {
+        
+        NSURL *url = [NSURL fileURLWithPath:file.targetPath];
+        MPMoviePlayerViewController *movieController = [[MPMoviePlayerViewController alloc] initWithContentURL:url];
+        
+        [self presentMoviePlayerViewControllerAnimated:movieController];
+
+    }else if([file.type isEqualToString:@"2"]){
+        
+        UIDocumentInteractionController *documentController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:file.targetPath]];
+        documentController.delegate = self;
+        [documentController presentPreviewAnimated:YES];
+
+    }
 }
+
+#pragma mark UIDocumentInteractionControllerDelegate
+- (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)controller
+{
+    return self;
+}
+
 
 #pragma mark CircularProgressView_delegate
 - (void)progressViewClicked:(CircularProgressView *)view
@@ -424,7 +447,6 @@
             [DownloadManager resumeDownload:fileInfo];
         }
     }
-    
     [_tableView reloadData];
 }
 

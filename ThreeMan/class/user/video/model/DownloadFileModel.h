@@ -18,6 +18,7 @@
 @property (nonatomic,copy) NSString *targetPath;
 @property (nonatomic,copy) NSString *tempPath;
 @property (nonatomic,copy) NSString *tempfilePath;
+@property (nonatomic,copy) NSString *type;  //1表示视频  2表示文件
 @property (nonatomic,assign) BOOL isDownloading;
 @property (nonatomic,assign) BOOL willDownloading;
 
