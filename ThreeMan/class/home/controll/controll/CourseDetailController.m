@@ -12,6 +12,7 @@
 #import "CourseAnswerViewCell.h"
 #import "byCourseView.h"
 #import "courseDetailModel.h"
+#import "DownloadManager.h"
 
 #define BANNERH         167   //banner高度
 #define YYBORDERWH        8  //外边界
@@ -730,6 +731,7 @@
 #pragma mark---购买课程
 -(void)categoryBtnItem:(UIButton *)item{
     courseDetailModel *courseModel =[_detailArray objectAtIndex:0];
+    NSDictionary *dic =[NSDictionary dictionaryWithObjectsAndKeys:courseModel.courseImgurl,@"imgurl",courseModel.courseId,@"id",courseModel.courseTitle,@"title" ,nil];
     
     if (item.tag ==30) {
         
@@ -741,6 +743,7 @@
         }else if([[SystemConfig sharedInstance].uid isEqualToString:[NSString stringWithFormat:@"%d", courseModel.companyId]]){
             [RemindView showViewWithTitle:@"抱歉，请以普通会员身份购买！" location:BELLOW] ;
         }else if (courseModel.coursePrice <=0) {
+            [DownloadManager downloadFileWithUrl:courseModel.courseDownloadurl type:nil fileInfo:dic];
             [RemindView showViewWithTitle:@"已经加入下载列表" location:BELLOW];
         }
         else{
