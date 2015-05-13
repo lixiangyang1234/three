@@ -355,8 +355,8 @@
     CGFloat companyHomeW =douDetailW+detailDouLabel.frame.size.width+10;
     //企业首页
     UIButton *companyHomeDetail =[UIButton buttonWithType:UIButtonTypeCustom];
-    companyHomeDetail.frame =CGRectMake(companyHomeW, titleDetailH, kWidth-companyHomeW-detailWH*2, 25);
-    [companyHomeDetail setBackgroundImage:[UIImage imageNamed:@"company_name"] forState:UIControlStateNormal];
+    companyHomeDetail.frame =CGRectMake(companyHomeW, titleDetailH+3, kWidth-companyHomeW-detailWH*2, 25);
+    [companyHomeDetail setImage:[UIImage imageNamed:@"company_name"] forState:UIControlStateNormal];
     [detailScrollView addSubview:companyHomeDetail];
     [companyHomeDetail setTitle:courseModel.courseCompanyname forState:UIControlStateNormal];
     companyHomeDetail.titleEdgeInsets =UIEdgeInsetsMake(0, 28, 0, 10);
@@ -743,8 +743,9 @@
         }else if([[SystemConfig sharedInstance].uid isEqualToString:[NSString stringWithFormat:@"%d", courseModel.companyId]]){
             [RemindView showViewWithTitle:@"抱歉，请以普通会员身份购买！" location:BELLOW] ;
         }else if (courseModel.coursePrice <=0) {
+            
             [DownloadManager downloadFileWithUrl:courseModel.courseDownloadurl type:nil fileInfo:dic];
-            [RemindView showViewWithTitle:@"已经加入下载列表" location:BELLOW];
+//            [RemindView showViewWithTitle:@"已经加入下载列表" location:BELLOW];
         }
         else{
              [self addByTopView];
