@@ -96,6 +96,7 @@
         param = @{@"pageid":@"0",@"pagesize":[NSString stringWithFormat:@"%d",pagesize],@"id":_categoryId,@"type":typestr};
     }
     if (!isRefresh) {
+        
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.labelText = @"加载中...";
     }

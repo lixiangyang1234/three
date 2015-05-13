@@ -67,8 +67,10 @@
         MBProgressHUD *progress =[MBProgressHUD showHUDAddedTo:self.view animated:YES];
         progress.labelText =@"加载中。。。";
     }
+    NSLog(@"---->sssssss%@",paraDic);
 //    NSDictionary *paraDic =[NSDictionary dictionaryWithObjectsAndKeys:_tradeId,@"id", nil];
    [HttpTool postWithPath:@"getCompanyList" params:paraDic success:^(id JSON, int code, NSString *msg) {
+       
        if (isRefresh) {
            [refreshFooterView endRefreshing];
        }else{
@@ -81,9 +83,12 @@
        }
        NSDictionary *dict =JSON[@"data"];
        NSArray *arr =dict[@"company_list"];
-       if ([arr isKindOfClass:[NSNull class]]) {
+      
            if (code==100) {
+                if (![arr isKindOfClass:[NSNull class]]) {
                for (NSDictionary *dicArr in arr) {
+                   NSLog(@"------->%@",arr);
+
                    businessListModel *businessModel =[[businessListModel alloc]initWithDictonaryForBusinessList:dicArr];
                    [_businessArray addObject:businessModel];
                    
@@ -100,12 +105,13 @@
            }
 
        }
-              [_tableView reloadData];
        if (_businessArray.count<=0) {
            notStatus.hidden =NO;
        }else{
            notStatus.hidden =YES;
        }
+       [_tableView reloadData];
+
    } failure:^(NSError *error) {
        if (isRefresh) {
            [refreshFooterView endRefreshing];

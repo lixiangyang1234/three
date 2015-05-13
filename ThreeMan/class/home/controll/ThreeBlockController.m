@@ -178,8 +178,10 @@
             [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
 
         }
+        if (_threeListArray.count<=0) {
+            networkError.hidden =NO;
 
-        networkError.hidden =NO;
+        }
     }];
     
 }

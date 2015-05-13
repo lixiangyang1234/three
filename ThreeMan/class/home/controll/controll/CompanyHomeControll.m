@@ -51,14 +51,17 @@
     _companyArray =[NSMutableArray array];
     _companyLogeArray =[NSMutableArray array];
     isRefresh =NO;
+ [_tableView reloadData];
+    [self addTableView];
 
     [self addErrorView];
     [self notCompanyStatuse];
+    [self addLoadStatus];
 
     [self addRefreshView];
 
-    [self addLoadStatus];
-    // Do any additional setup after loading the view.
+   
+    
 }
 -(void)addRefreshView{
     refreshHeaderView =[[MJRefreshHeaderView alloc]init];
@@ -85,6 +88,7 @@
     NSDictionary *paraDic;
     if (isRefresh) {
         paraDic =@{@"pageid" :[NSString stringWithFormat:@"%ld",(unsigned long)_companyArray.count],@"pagesize":[NSString stringWithFormat:@"%d",pageSize],@"id":_companyId };
+        NSLog(@"------->%lu",(unsigned long)_companyArray.count);
     }else{
         paraDic =@{@"pageid" :@"0",@"pagesize":[NSString stringWithFormat:@"%d",pageSize],@"id":_companyId };
     }
@@ -133,7 +137,7 @@
             
 //               NSLog(@"%@",JSON);
         [self addUIBannerView];
-        [self addTableView];
+
         [_tableView reloadData];
 
         if (_companyArray.count<=0) {
@@ -197,7 +201,7 @@
     [headerImg setImageWithURL:[NSURL URLWithString:companyModel.companyLogo] placeholderImage:placeHoderImage];
     headerImg.layer.masksToBounds =YES;
     
-    animationView =[[UIView alloc]initWithFrame:CGRectMake(0, 107, kWidth, 88)];
+    animationView =[[UIView alloc]initWithFrame:CGRectMake(0, 105, kWidth, 88)];
     [bannerImage addSubview:animationView];
     animationView.backgroundColor =[UIColor clearColor];
     
@@ -210,28 +214,30 @@
     titleLabel.textColor =[UIColor cyanColor];
     titleLabel.textAlignment =NSTextAlignmentCenter;
     titleLabel.font =[UIFont systemFontOfSize:PxFont(18)];
-    
-    UILabel * contentLabel =[[UILabel alloc]initWithFrame:CGRectMake((kWidth-260)/2, 20, 260, 80)];
-    contentLabel.font =[UIFont systemFontOfSize:PxFont(14)];
+    titleLabel.shadowOffset =CGSizeMake(0, 1);
+    titleLabel.shadowColor =HexRGB(0xa2a2a2);
+
+    UILabel * contentLabel =[[UILabel alloc]initWithFrame:CGRectMake((kWidth-260)/2, 15, 260, 80)];
+    contentLabel.font =[UIFont systemFontOfSize:PxFont(12)];
     titleLabel.textColor =HexRGB(0xffffff);
     contentLabel.textColor =HexRGB(0xf1f1f1);
     contentLabel.shadowColor =HexRGB(0xa2a2a2);
     contentLabel.shadowOffset =CGSizeMake(0, 1);
-    contentLabel.numberOfLines =5;
+    contentLabel.numberOfLines =6;
     [animationView addSubview:contentLabel];
     NSLog(@"%f---%f",headerImage.frame.size.height,headerImage.frame.origin.y);
     
     
     contentLabel.text =companyModel.companyIntroduce;
     
-    alpha =[[UIImageView alloc]initWithFrame:CGRectMake(0, 42, kWidth, 80)];
+    alpha =[[UIImageView alloc]initWithFrame:CGRectMake(0, 35, kWidth, 55)];
     [animationView addSubview:alpha];
     alpha.image =[UIImage imageNamed:@"alphabg"];
     alpha.hidden =NO;
     alpha.backgroundColor =[UIColor clearColor];
     
     UIButton *animationBtn =[UIButton buttonWithType:UIButtonTypeCustom];
-    animationBtn.frame =CGRectMake((kWidth-80)/2, bannerImage.frame.size.height-40, 80, 30);
+    animationBtn.frame =CGRectMake((kWidth-80)/2, bannerImage.frame.size.height-36, 80, 30);
     animationBtn.backgroundColor =[UIColor clearColor];
     [bannerImage addSubview:animationBtn];
     [animationBtn setImage:[UIImage imageNamed:@"animationBtn"] forState:UIControlStateNormal];
@@ -240,7 +246,7 @@
     NSLog(@"%f",bannerImage.frame.size.height);
 }
 -(void)addTableView{
-    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, BannerH-8, kWidth, kHeight-BannerH+8) style:UITableViewStylePlain];
+    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, BannerH, kWidth, kHeight-BannerH) style:UITableViewStylePlain];
     _tableView.delegate =self;
     _tableView.dataSource =self;
     [_tableView setBackgroundColor:HexRGB(0xe0e0e0)];
@@ -250,7 +256,7 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     [self.view addSubview:_tableView];
-//    [self.view sendSubviewToBack:_tableView];
+    [self.view bringSubviewToFront:_tableView];
 }
 
 #pragma mark - Table view data source
@@ -328,7 +334,7 @@
         }];
         
         animationView.frame =CGRectMake(0, 45, kWidth, 88);
-        alpha.frame =CGRectMake(0, 90, kWidth, 80);
+        alpha.frame =CGRectMake(0, 90, kWidth, 55);
         
         
         headerImage.frame =CGRectMake((kWidth-70)/2, -100, 70, 70);
@@ -343,8 +349,8 @@
         
         headerImage.frame =CGRectMake((kWidth-70)/2, 30, 70, 70);
         
-        animationView.frame =CGRectMake(0, 107, kWidth, 88);
-        alpha.frame =CGRectMake(0, 42, kWidth, 80);
+        animationView.frame =CGRectMake(0, 105, kWidth, 88);
+        alpha.frame =CGRectMake(0, 35, kWidth, 55);
         
         
         [UIView animateWithDuration:0.001 animations:^{
@@ -375,6 +381,7 @@
 #pragma mark 控件将要显示
 - (void)viewWillAppear:(BOOL)animated
 {
+    
     [super viewWillAppear:animated];
     //隐藏导航栏
     self.navigationController.navigationBarHidden = YES;

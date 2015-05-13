@@ -47,7 +47,7 @@
     networkError.center = CGPointMake(kWidth/2, (kHeight-64-40)/2);
     networkError.hidden = YES;
     [self.view addSubview:networkError];
-    [self loadData:NO];
+//    [self loadData:NO];
 }
 
 - (void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView
