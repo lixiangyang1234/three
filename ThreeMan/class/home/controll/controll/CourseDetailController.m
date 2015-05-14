@@ -38,7 +38,6 @@
     byCourseView *byFailCourse;
     byCourseView *byCompanyCourse;
     
-    UIButton *downloadBtn;
 
     CGFloat webh;
     CGFloat cellContentH;
@@ -596,7 +595,6 @@
             NSLog(@"------111111-----》%d",coureseModel.courseIsbuy);
             if (coureseModel.coursePrice <=0||coureseModel.courseIsbuy==1) {
                 [categoryBtn setTitle:@"立即下载" forState:UIControlStateNormal];
-                downloadBtn =categoryBtn;
             }else{
                 [categoryBtn setTitle:@"购买课程" forState:UIControlStateNormal];
  
@@ -929,7 +927,6 @@
             
         } completion:^(BOOL finished) {
             bySuccessCourse.hidden =YES;
-            [downloadBtn setTitle:@"立即下载" forState:UIControlStateNormal];
 
         }];
         
@@ -978,17 +975,22 @@
 // 推荐 没有推荐
 -(void)notByRecommend{
     
-    failView =[[NetFailView alloc]initWithFrameForDetail:CGRectMake((kWidth-NETFAILIMGWH)/2+kWidth, 15, NETFAILIMGWH, NETFAILIMGWH) backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"抱歉！该需求暂时还没有推荐！"];
+    failView =[[NetFailView alloc]initWithFrameForDetail:CGRectMake((kWidth-NETFAILIMGWH-YYBORDERWH*2)/2+kWidth, 15, NETFAILIMGWH, NETFAILIMGWH) backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"抱歉！该需求暂时还没有推荐！"];
     if (kHeight>500) {
-        failView.frame =CGRectMake((kWidth-NETFAILIMGWH)/2+kWidth, 100, NETFAILIMGWH, NETFAILIMGWH);
+        failView.frame =CGRectMake((kWidth-NETFAILIMGWH-YYBORDERWH*2)/2+kWidth, 100, NETFAILIMGWH, NETFAILIMGWH);
     }
     [categoryScrollView addSubview:failView];
 }
 // 答疑 没有购买课程
 -(void)notByAnswer{
-    failView =[[NetFailView alloc]initWithFrameForDetail:CGRectMake((kWidth-NETFAILIMGWH)/2+kWidth*2, 15, NETFAILIMGWH, NETFAILIMGWH) backImage:[UIImage imageNamed:@"netFailImg_2"] promptTitle:@"抱歉！您还未购买该课程！点击下方“购买”按钮购买！"];
+    courseDetailModel *courseModel =[_detailArray objectAtIndex:0];
+    if (courseModel.courseIsbuy==1||courseModel.coursePrice==0) {
+        failView =[[NetFailView alloc]initWithFrameForDetail:CGRectMake((kWidth-NETFAILIMGWH-YYBORDERWH*2)/2+kWidth*2, 15, NETFAILIMGWH, NETFAILIMGWH) backImage:[UIImage imageNamed:@"netFailImg_2"] promptTitle:@"抱歉！该需求暂时还没有答疑！"];
+    }else {
+    failView =[[NetFailView alloc]initWithFrameForDetail:CGRectMake((kWidth-NETFAILIMGWH-YYBORDERWH*2)/2+kWidth*2, 15, NETFAILIMGWH, NETFAILIMGWH) backImage:[UIImage imageNamed:@"netFailImg_2"] promptTitle:@"抱歉！您还未购买该课程！点击下方“购买”按钮购买！"];
+    }
     if (kHeight>500) {
-        failView.frame =CGRectMake((kWidth-NETFAILIMGWH)/2+kWidth*2, 100, NETFAILIMGWH, NETFAILIMGWH);
+        failView.frame =CGRectMake((kWidth-NETFAILIMGWH-YYBORDERWH*2)/2+kWidth*2, 100, NETFAILIMGWH, NETFAILIMGWH);
     }
 
     [categoryScrollView addSubview:failView];
