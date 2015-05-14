@@ -15,7 +15,7 @@
 @interface UrlSessionDownload : NSObject<NSURLSessionDelegate,NSURLSessionDownloadDelegate,NSURLSessionTaskDelegate>
 
 
-@property (nonatomic,strong) NSMutableDictionary *fileDic;
+@property (nonatomic,strong) NSMutableDictionary *fileDic;  //存储下载和未下载好的文件信息
 @property (nonatomic,strong) NSMutableDictionary *sessionDic;        //对象urlsession
 @property (nonatomic,strong) NSMutableDictionary *downloadTaskDic;   //对象downloadtask
 @property (nonatomic,strong) NSMutableArray *finishArray;   //已完成下载任务

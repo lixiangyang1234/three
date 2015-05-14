@@ -19,12 +19,16 @@
 #import "MemorySizeView.h"
 #import "DownloadManager.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import "ErrorView.h"
+#import "CommenHelper.h"
+#import "DirectionMPMoviePlayerViewController.h"
 
 @interface DownloadListController ()<EditViewDelegate,CircularProgressViewDelegate,DownloadDelegate,UIDocumentInteractionControllerDelegate>
 {
     BOOL isEditting;
     EditView *editView;
     MemorySizeView *memoryView;
+    ErrorView *noDataView;
 }
 
 
@@ -44,6 +48,13 @@
     
     [self addView];
     
+    [self loadData];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newDownload) name:addNewDownload object:nil];
+}
+
+- (void)newDownload
+{
     [self loadData];
 }
 
@@ -69,12 +80,25 @@
     memoryView.frame = CGRectMake(0,_tableView.frame.size.height,memoryView.frame.size.width,memoryView.frame.size.height);
     [self.view addSubview:memoryView];
     
+    noDataView = [[ErrorView alloc] initWithImage:@"netFailImg_2" title:@"亲,您暂时还未下载任何文件哦!"];
+    noDataView.center = CGPointMake(kWidth/2, (kHeight-64-40)/2);
+    noDataView.hidden = YES;
+    [self.view addSubview:noDataView];
+    
+
+    
     [DownloadManager setDelegate:self];
 }
 
 
+#pragma mark 添加下载数据
 - (void)loadData
 {
+    [_finishedArray removeAllObjects];
+    [_unFinishedArray removeAllObjects];
+    [_dataArray removeAllObjects];
+    [_headViewArray removeAllObjects];
+
     [_finishedArray addObjectsFromArray:[DownloadManager arrayOfFinished]];
     [_unFinishedArray addObjectsFromArray:[DownloadManager arrayOfUnfinished]];
     
@@ -92,7 +116,14 @@
         [headView setImgView:[UIImage imageNamed:@"unfinish"] title:@"未完成"];
         [_headViewArray addObject:headView];
     }
+
     [_tableView reloadData];
+    
+    if (_dataArray.count==0) {
+        noDataView.hidden = NO;
+    }else{
+        noDataView.hidden = YES;
+    }
 }
 
 
@@ -197,7 +228,6 @@
                 }
             }
             cell.progressView.tag = 1000+indexPath.row;
-            cell.titleLabel.text = fileInfo.fileName;
             cell.progressView.delegate = self;
             
             if (fileInfo.fileReceivedSize) {
@@ -239,8 +269,8 @@
                 }
             }
             cell.progressView.tag = 1000+indexPath.row;
-            cell.titleLabel.text = fileInfo.fileName;
             cell.progressView.delegate = self;
+            
             return cell;
         }else{
             //已完成列表
@@ -259,6 +289,7 @@
             NSString *imageurl = [dic objectForKey:@"imgurl"];
             NSString *title = [dic objectForKey:@"title"];
             cell.titleLabel.text = title;
+            
             [cell.imgView setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:placeHoderImage];
             
             cell.recommendBtn.tag = 1000+indexPath.row;
@@ -268,7 +299,6 @@
             [cell.questionBtn addTarget:self action:@selector(question:) forControlEvents:UIControlEventTouchUpInside];
             [cell.playBtn addTarget:self action:@selector(play:) forControlEvents:UIControlEventTouchUpInside];
 
-            
             return cell;
         }
     }
@@ -285,16 +315,7 @@
 #pragma mark tableView_delegate
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (section == 0) {
-        SectionHeadView *headView = [[SectionHeadView alloc] initWithFrame:CGRectMake(0, 0,kWidth,36)];
-        [headView setImgView:[UIImage imageNamed:@"finish"] title:@"完成"];
-        return headView;
-    }else{
-        SectionHeadView *headView = [[SectionHeadView alloc] initWithFrame:CGRectMake(0, 0,kWidth,36)];
-        [headView setImgView:[UIImage imageNamed:@"unfinish"] title:@"未完成"];
-        return headView;
-    }
-    return nil;
+    return [_headViewArray objectAtIndex:section];
 }
 
 
@@ -365,14 +386,14 @@
         
         if (arr1.count!=0) {
             //删除缓存下已下载的文件
-            
+            [DownloadManager deleteFinisedFiles:arr1];
         }
         if (arr2.count!=0) {
             //取消当前选中的下载任务
+            [DownloadManager cancelDownloads:arr2];
         }
         
         //移除当前数据中的所有数据  重新导入
-        
         
         [_dataArray removeAllObjects];
         
@@ -411,9 +432,11 @@
     if ([file.type isEqualToString:@"1"]) {
         
         NSURL *url = [NSURL fileURLWithPath:file.targetPath];
-        MPMoviePlayerViewController *movieController = [[MPMoviePlayerViewController alloc] initWithContentURL:url];
-        
-        [self.view.window.rootViewController presentMoviePlayerViewControllerAnimated:movieController];
+        DirectionMPMoviePlayerViewController *movieController = [[DirectionMPMoviePlayerViewController alloc] initWithContentURL:url];
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        if ([fileManager fileExistsAtPath:file.targetPath]) {
+            [self.view.window.rootViewController presentMoviePlayerViewControllerAnimated:movieController];
+        }
 
     }else if([file.type isEqualToString:@"2"]){
         
@@ -451,8 +474,7 @@
     [_tableView reloadData];
 }
 
-#pragma mark Download_delegate
-//下载失败
+#pragma mark Download_delegate  下载失败
 - (void)downloadFailure:(DownloadFileModel *)fileinfo
 {
     [_tableView reloadData];
@@ -461,21 +483,7 @@
 //下载成功
 - (void)downloadFinished:(DownloadFileModel *)fileinfo
 {
-    [_finishedArray removeAllObjects];
-    [_unFinishedArray removeAllObjects];
-    [_dataArray removeAllObjects];
-    
-    [_finishedArray addObjectsFromArray:[DownloadManager arrayOfFinished]];
-    [_unFinishedArray addObjectsFromArray:[DownloadManager arrayOfUnfinished]];
-    
-    if (_finishedArray.count!=0) {
-        [_dataArray addObject:_finishedArray];
-    }
-    
-    if (_unFinishedArray.count!=0) {
-        [_dataArray addObject:_unFinishedArray];
-    }
-    [_tableView reloadData];
+    [self loadData];
 }
 
 //更新进度

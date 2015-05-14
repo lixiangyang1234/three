@@ -47,7 +47,7 @@
     networkError.center = CGPointMake(kWidth/2, (kHeight-64-40)/2);
     networkError.hidden = YES;
     [self.view addSubview:networkError];
-//    [self loadData:NO];
+    [self loadData:NO];
 }
 
 - (void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView
@@ -69,6 +69,7 @@
         hud.labelText = @"加载中...";
     }
     [HttpTool postWithPath:@"getCaseList" params:param success:^(id JSON, int code, NSString *msg) {
+        NSLog(@"%@",JSON);
         if (loading) {
             [refreshFootView endRefreshing];
         }else{
@@ -121,7 +122,7 @@
         cell = [[PatternCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify];
     }
     PatternItem *item =[_dataArray objectAtIndex:indexPath.row];
-    [cell.imgView setImageWithURL:[NSURL URLWithString:item.imgurl] placeholderImage:placeHoderImage2];
+    [cell.imgView setImageWithURL:[NSURL URLWithString:item.imgurl] placeholderImage:placeHoderImage3];
     cell.titleLabel.text = item.title;
     cell.readLabel.text = item.number;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;

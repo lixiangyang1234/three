@@ -181,6 +181,7 @@
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     }
     [HttpTool postWithPath:@"getCollectCompany" params:param success:^(id JSON, int code, NSString *msg) {
+        NSLog(@"%@",JSON);
         //如果是加载  结束加载动画
         if (loading) {
             [refreshFootView endRefreshing];
@@ -290,7 +291,7 @@
         
         FavoriteItem *item = [_demandArray objectAtIndex:indexPath.row];
         cell.titleLabel.text = item.title;
-        [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:placeHoderImage2];
+        [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:placeHoderImage3];
         cell.desLabel.text = item.companyname;
         return cell;
     }else{
@@ -308,7 +309,7 @@
         EnterpriseItem *item = [_companyArray objectAtIndex:indexPath.row];
         [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:placeHoderImage1];
         cell.titleLabel.text = item.companyname;
-        cell.littleLabel.text = [NSString stringWithFormat:@"课程%@",item.scorenums];
+        cell.littleLabel.text = [NSString stringWithFormat:@"课程 %@",item.scorenums];
         cell.contentLabel.text = item.introduce;
         
         return cell;

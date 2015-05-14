@@ -62,7 +62,7 @@
     [_scrollView addSubview:imgBgView];
     
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5,imgBgView.frame.size.width-5*2,imgBgView.frame.size.height-5*2)];
-    [imageView setImageWithURL:[NSURL URLWithString:item.imgurl] placeholderImage:[UIImage imageNamed:@""]];
+    [imageView setImageWithURL:[NSURL URLWithString:item.imgurl] placeholderImage:placeHoderImage];
     [imgBgView addSubview:imageView];
 
     //标题背景
