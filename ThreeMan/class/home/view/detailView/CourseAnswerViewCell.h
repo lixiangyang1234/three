@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "courseDetailModel.h"
 @interface CourseAnswerViewCell : UITableViewCell
 @property(nonatomic,strong)UIImageView *answerImage;
 @property(nonatomic,strong)UIImageView *companyAnswerImage;
@@ -17,5 +17,5 @@
 @property(nonatomic,strong)UILabel *contentAnswerLabel;
 @property(nonatomic,strong)UIView *backCell;
 @property(nonatomic,strong)UIView *backLineCell;
-
+-(void)setObjectCell:(courseDetailModel *)object;
 @end

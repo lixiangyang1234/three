@@ -10,7 +10,6 @@
 #import "CourseDetailController.h"
 #import "NeedViewCell.h"
 #import "YYSearchButton.h"
-#import "RootNavView.h"
 #import "categoryView.h"
 #import "threeBlockModel.h"
 #define DEGREES_TO_RADIANS(angle) ((angle)/180.0 *M_PI)
@@ -25,6 +24,8 @@
     MJRefreshHeaderView *refreshHeaderView;
     MJRefreshFooterView *refreshFooterView;
     BOOL isRefresh;
+    
+    NSInteger indexBtn;
 }
 @end
 
@@ -58,6 +59,10 @@
     refreshFooterView.scrollView =_tableView;
 }
 -(void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView{
+    
+    
+
+
     if (![refreshView isKindOfClass:[MJRefreshHeaderView class]]) {
         isRefresh = YES;
         if (_selectedItem.tag ==10000)
@@ -65,29 +70,56 @@
             
             [self addLoadStatus:@"0" ];
             
-        }if (_selectedItem.tag ==10001) {
+        }else if (_selectedItem.tag ==10001) {
             [self addLoadStatus:@"1" ];
             
-        }if (_selectedItem.tag ==10002) {
+        }else if (_selectedItem.tag ==10002)
+        {
             [self addLoadStatus:@"2||3||4||5||6||7||8" ];
+            
+        }
+       else if (indexBtn ==101||indexBtn==102||indexBtn==103) {
+            threeBlockModel *threeModel =[_threeArray objectAtIndex:indexBtn-101];
+            NSString * indexid1=[NSString stringWithFormat:@"%d", threeModel.categoryid];
+            [self addLoadStatus:indexid1];
+            
+        }else if(indexBtn ==10||indexBtn==11||indexBtn==12||indexBtn ==13||indexBtn==14||indexBtn==15||indexBtn ==16){
+            threeBlockModel *threeModel =[_categoryArray objectAtIndex:indexBtn-10];
+            NSString * indexid2=[NSString stringWithFormat:@"%d", threeModel.cateid];
+            [self addLoadStatus:indexid2];
             
         }
         
     }else{
         isRefresh = NO;
+      
         if (_selectedItem.tag ==10000)
         {
             
             [self addLoadStatus:@"0" ];
             
-        }if (_selectedItem.tag ==10001) {
+        }else if (_selectedItem.tag ==10001) {
             [self addLoadStatus:@"1" ];
             
-        }if (_selectedItem.tag ==10002) {
+        } else  if(_selectedItem.tag ==10002)
+        {
             [self addLoadStatus:@"2||3||4||5||6||7||8" ];
             
         }
+       else if  (indexBtn ==101||indexBtn==102||indexBtn==103) {
+            threeBlockModel *threeModel =[_threeArray objectAtIndex:indexBtn-101];
+            NSString * indexid1=[NSString stringWithFormat:@"%d", threeModel.categoryid];
+            [self addLoadStatus:indexid1];
+            
+        }else if(indexBtn ==10||indexBtn==11||indexBtn==12||indexBtn ==13||indexBtn==14||indexBtn==15||indexBtn ==16){
+            threeBlockModel *threeModel =[_categoryArray objectAtIndex:indexBtn-10];
+            NSString * indexid2=[NSString stringWithFormat:@"%d", threeModel.cateid];
+            [self addLoadStatus:indexid2];
+            
+        }
+
     }
+//    NSLog(@"------%d",indexBtn);
 
 }
 -(void)addLoadStatus:(NSString *)typestr{
@@ -110,8 +142,8 @@
             [refreshHeaderView endRefreshing];
 
             [MBProgressHUD hideAllHUDsForView :self.view animated:YES];
-        }
-        if (!isRefresh) {
+//        }
+//        if (!isRefresh) {
             [_threeListArray removeAllObjects];
         }
 
@@ -126,7 +158,7 @@
 
             
 
-            NSLog(@"%@",array);
+//            NSLog(@"%@",array);
 
             if (![dic isKindOfClass:[NSNull class]]) {
                 for (NSDictionary *dict in dic) {
@@ -299,6 +331,9 @@
         popView.threeCount1 =_categoryArray.count;
     popView.selectRowAtIndex = ^(NSInteger index)
     {
+        isRefresh = NO;
+        indexBtn =index;
+//        NSLog(@"%------------>lu",index);
         [UIView animateWithDuration:0.001 animations:^{
             sender.imageView.transform = CGAffineTransformRotate(sender.imageView.transform, DEGREES_TO_RADIANS(180));
         }];
@@ -311,13 +346,15 @@
             threeBlockModel *threeModel =[_threeArray objectAtIndex:index-101];
             NSString * indexid1=[NSString stringWithFormat:@"%d", threeModel.categoryid];
             [self addLoadStatus:indexid1];
-            NSLog(@"2222-------->%@----%d---%ld",indexid1,threeModel.categoryid,index);
+//            NSLog(@"1111-------->%@----%d---%ld",indexid1,threeModel.categoryid,index);
 
         }else{
 //         NSLog(@"333----------%ld",index);
             threeBlockModel *threeModel =[_categoryArray objectAtIndex:index-10];
             NSString * indexid2=[NSString stringWithFormat:@"%d", threeModel.cateid];
             [self addLoadStatus:indexid2];
+//            NSLog(@"2222-------->%@----%d---%ld",indexid2,threeModel.categoryid,index);
+
         }
         
     };

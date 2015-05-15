@@ -51,16 +51,15 @@
     
 
         needSmailImage.userInteractionEnabled =YES;
-        companyName =[[UILabel alloc]initWithFrame:CGRectMake(borderW*2+imageW, backCell.frame.size.height-20, 110, 16)];
+        companyName =[[UILabel alloc]initWithFrame:CGRectMake(borderW*2+imageW, backCell.frame.size.height-20, 100, 16)];
         companyName.backgroundColor =[UIColor clearColor];
-        companyName.text =@"新东方恒仁大学";
         [backCell addSubview:companyName];
         companyName.font =[UIFont systemFontOfSize:9];
         companyName.textColor=HexRGB(0x959595);
     
         zanBtn =[UIButton buttonWithType:UIButtonTypeCustom];
         [backCell addSubview:zanBtn];
-        zanBtn.frame =CGRectMake(backCell.frame.size.width-60, backCell.frame.size.height-25, 55, 20);
+        zanBtn.frame =CGRectMake(backCell.frame.size.width-70, backCell.frame.size.height-25, 65, 20);
         zanBtn .titleEdgeInsets =UIEdgeInsetsMake(0, 7, 0, 0);
         [zanBtn setImage:[UIImage imageNamed:@"browser_number_icon"] forState:UIControlStateNormal];
         [zanBtn setTitleColor:HexRGB(0x1c8cc6) forState:UIControlStateNormal];

@@ -131,7 +131,6 @@
 		55C24F891ACB8EE500BFEBED /* NineBlockController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C24F731ACB8EE500BFEBED /* NineBlockController.m */; };
 		55C24F8A1ACB8EE500BFEBED /* ThreeBlockController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C24F751ACB8EE500BFEBED /* ThreeBlockController.m */; };
 		55C24F8B1ACB8EE500BFEBED /* BusinessViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C24F781ACB8EE500BFEBED /* BusinessViewCell.m */; };
-		55C24F8F1ACB8EE500BFEBED /* RootNavView.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C24F801ACB8EE500BFEBED /* RootNavView.m */; };
 		55C24F901ACB8EE500BFEBED /* YYSearchButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C24F821ACB8EE500BFEBED /* YYSearchButton.m */; };
 		55C24F931ACB940E00BFEBED /* categoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C24F921ACB940E00BFEBED /* categoryView.m */; };
 		55C3D1571ACA89FE00778940 /* AdaptationSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C3D1521ACA89FE00778940 /* AdaptationSize.m */; };
@@ -565,8 +564,6 @@
 		55C24F751ACB8EE500BFEBED /* ThreeBlockController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThreeBlockController.m; sourceTree = "<group>"; };
 		55C24F771ACB8EE500BFEBED /* BusinessViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusinessViewCell.h; sourceTree = "<group>"; };
 		55C24F781ACB8EE500BFEBED /* BusinessViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BusinessViewCell.m; sourceTree = "<group>"; };
-		55C24F7F1ACB8EE500BFEBED /* RootNavView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootNavView.h; sourceTree = "<group>"; };
-		55C24F801ACB8EE500BFEBED /* RootNavView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootNavView.m; sourceTree = "<group>"; };
 		55C24F811ACB8EE500BFEBED /* YYSearchButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYSearchButton.h; sourceTree = "<group>"; };
 		55C24F821ACB8EE500BFEBED /* YYSearchButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYSearchButton.m; sourceTree = "<group>"; };
 		55C24F911ACB940E00BFEBED /* categoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = categoryView.h; sourceTree = "<group>"; };
@@ -1482,8 +1479,6 @@
 				55C122E41ACE198700D53630 /* detailView */,
 				55C24F771ACB8EE500BFEBED /* BusinessViewCell.h */,
 				55C24F781ACB8EE500BFEBED /* BusinessViewCell.m */,
-				55C24F7F1ACB8EE500BFEBED /* RootNavView.h */,
-				55C24F801ACB8EE500BFEBED /* RootNavView.m */,
 				55C24F811ACB8EE500BFEBED /* YYSearchButton.h */,
 				55C24F821ACB8EE500BFEBED /* YYSearchButton.m */,
 				55C24F911ACB940E00BFEBED /* categoryView.h */,
@@ -2214,7 +2209,6 @@
 				04C73A341ACE7CB5007B1283 /* DefaultHeaderView.m in Sources */,
 				55E373AC1AC2B54200C794DD /* SDWebImageDecoder.m in Sources */,
 				55C24F861ACB8EE500BFEBED /* CourseEightController.m in Sources */,
-				55C24F8F1ACB8EE500BFEBED /* RootNavView.m in Sources */,
 				04B9A2791AD36259009446D1 /* LoginView.m in Sources */,
 				55E373AD1AC2B54200C794DD /* SDWebImageDownloader.m in Sources */,
 				55D7304C1AD7AA45002222F7 /* homeViewControllModel.m in Sources */,

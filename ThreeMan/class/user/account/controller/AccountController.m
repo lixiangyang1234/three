@@ -68,7 +68,7 @@
 - (void)btnDown
 {
     UserInfo *userinfo = [SystemConfig sharedInstance].userInfo;
-    if ([userinfo.type isEqualToString:@"1"]) {
+    if ([userinfo.type isEqualToString:@"0"]) {
         //支付
         PayViewController *pay = [[PayViewController alloc] init];
         [self.navigationController pushViewController:pay animated:YES];
@@ -107,7 +107,7 @@
             _tableView.tableHeaderView = headView;
             headView.amountLabel.text = num;
             UserInfo *userinfo = [SystemConfig sharedInstance].userInfo;
-            if ([type isEqualToString:@"1"]&&[userinfo.type isEqualToString:@"1"]) {
+            if ([type isEqualToString:@"0"]&&[userinfo.type isEqualToString:@"0"]) {
                 [headView.btn setTitle:@"充值" forState:UIControlStateNormal];
             }else{
                 [headView.btn setTitle:@"提现" forState:UIControlStateNormal];

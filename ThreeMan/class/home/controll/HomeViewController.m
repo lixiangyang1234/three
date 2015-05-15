@@ -61,6 +61,7 @@ static NSString * const reuseIdentifier = @"Cell";
     [self addUITrade:_tradeArrayOffLine];
     [self addMBprogressView];
     [self addLoadStatus];
+    NSLog(@"----%f--->------%f",kWidth,kHeight);
    
 }
 #pragma  mark ------显示指示器
@@ -250,7 +251,7 @@ static NSString * const reuseIdentifier = @"Cell";
         [titleBtn setTitle:titleArray[t] forState:UIControlStateNormal];
         [titleBtn setTitleColor:HexRGB(0x404040) forState:UIControlStateNormal];
         titleBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;
-        [titleBtn.titleLabel setFont:[UIFont systemFontOfSize:PxFont(18)]];
+        [titleBtn.titleLabel setFont:[UIFont systemFontOfSize:PxFont(16)]];
         [titleBtn setBackgroundColor:[UIColor clearColor]];
         
     }
@@ -281,7 +282,7 @@ static NSString * const reuseIdentifier = @"Cell";
         needLabel.textColor =HexRGB(0x9a9a9a);
         needLabel.textAlignment=NSTextAlignmentRight;
         if (i==0) {
-            needBtn.frame =CGRectMake(0, needHeight+50, kWidth-150, 90);
+            needBtn.frame =CGRectMake(0, needHeight+50, kWidth-149.5, 90);
             [needBtn .titleLabel setFont:[UIFont systemFontOfSize:PxFont(25)]];
             needBtn.titleEdgeInsets =UIEdgeInsetsMake(0, 0, 30, 0);
             needLabel.frame =CGRectMake(0, needHeight+90, kWidth-160, 20);
@@ -290,12 +291,12 @@ static NSString * const reuseIdentifier = @"Cell";
             
         }else if (i==1){
             
-            needBtn.frame =CGRectMake(kWidth-149.5, needHeight+50, 149.5, 44.5);
+            needBtn.frame =CGRectMake(kWidth-149, needHeight+50, 149.5, 44.5);
             needBtn.titleEdgeInsets =UIEdgeInsetsMake(0, 0, 20, 0);
             needLabel.frame =CGRectMake(kWidth-149, needHeight+70, 130, 20);
 
         }else if (i==2){
-            needBtn.frame =CGRectMake(kWidth-149.5, needHeight+50+45, 149.5, 45);
+            needBtn.frame =CGRectMake(kWidth-149, needHeight+50+45, 149.5, 45);
             needBtn.titleEdgeInsets =UIEdgeInsetsMake(0, -80, 0, 0);
             needBtn.imageEdgeInsets =UIEdgeInsetsMake(0, 80, 0, 0);
 

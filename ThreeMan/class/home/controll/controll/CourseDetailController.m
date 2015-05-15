@@ -13,6 +13,8 @@
 #import "byCourseView.h"
 #import "courseDetailModel.h"
 #import "DownloadManager.h"
+#import "PayViewController.h"
+#import "AdaptationSize.h"
 #define pageSize 6
 #define BANNERH         167   //banner高度
 #define YYBORDERWH        8  //外边界
@@ -38,8 +40,7 @@
     byCourseView *byFailCourse;
     byCourseView *byCompanyCourse;
     
-    UIButton *downloadBtn;
-
+    
     CGFloat webh;
     CGFloat cellContentH;
     CGFloat RecommandCellH;
@@ -47,7 +48,7 @@
     BOOL isRefresh;
     MJRefreshHeaderView *refreshHeaderView;
     MJRefreshFooterView *refreshFooterView;
-
+    
 }
 
 @property(nonatomic,strong)UIScrollView *backScrollView;
@@ -66,7 +67,7 @@
     
     refreshHeaderView =[[MJRefreshHeaderView alloc]init];
     refreshHeaderView.delegate =self;
-
+    
     [self setLeftTitle:@"课程详情"];
     self.detailArray =[NSMutableArray array];
     self.recommendArray =[NSMutableArray array];
@@ -78,8 +79,8 @@
     [self addMBprogressView];
     [self addRecommendLoadStatus];
     [self addLoadStatus];
-
-
+    
+    NSLog(@"%f------%f",kWidth,kHeight);
     // Do any additional setup after loading the view.
 }
 -(void)addMBprogressView{
@@ -97,8 +98,8 @@
         isRefresh =NO;
         [self addRecommendLoadStatus];
         [self refreshFooterView];
-
-
+        
+        
     }
 }
 #pragma mark ---添加数据
@@ -107,32 +108,32 @@
     [HttpTool postWithPath:@"getNeedDetail" params:paramDic success:^(id JSON, int code, NSString *msg) {
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
         [failView removeFromSuperview];
-
+        
         NSLog(@"%@",JSON);
         if (code==100) {
             [failView removeFromSuperview];
-
+            
             NSDictionary *dict =JSON[@"data"][@"subject_detail"];
             if (![dict isKindOfClass:[NSNull class]]) {
                 courseDetailModel *courseModel =[[courseDetailModel alloc]initWithDictnoaryForCourseDetail:dict];
                 [_detailArray addObject:courseModel];
             }
-                    }
-       
+        }
+        
         [failView removeFromSuperview];
-
+        
         [self addUIBannerView];
         [self addUICategoryView];
         [self addUIDownloadView];
         [self addCategoryBackScrollView];
         
     } failure:^(NSError *error) {
-//        NSLog(@"%@",error);
+        //        NSLog(@"%@",error);
         [failView removeFromSuperview];
-
+        
         [self notNetFailView];
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-
+        
     }];
 }
 -(void)addRecommendLoadStatus{
@@ -147,11 +148,9 @@
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.labelText = @"加载中...";
     }
-
-//    NSDictionary *paramDic =[NSDictionary dictionaryWithObjectsAndKeys:_courseDetailID,@"id", nil];
-
+    
     [HttpTool postWithPath:@"getRecommendList" params:param success:^(id JSON, int code, NSString *msg) {
-//        NSLog(@"------>%@",JSON);
+                NSLog(@"------>%@",JSON);
         if (isRefresh) {
             [refreshFooterView endRefreshing];
             
@@ -159,15 +158,15 @@
             [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
             [refreshHeaderView endRefreshing];
             [_recommendArray removeAllObjects];
-
+            
         }
-      
-       
+        
+        
         if (code == 100) {
             NSDictionary *dic = [JSON objectForKey:@"data"];
             NSArray *array = [dic objectForKey:@"recommend_list"];
-             recommendCount=[dic objectForKey:@"recommend_count"];
-//            NSLog(@"----->%@",array);
+            recommendCount=[dic objectForKey:@"recommend_count"];
+            //            NSLog(@"----->%@",array);
             
             if (![array isKindOfClass:[NSNull class]]) {
                 for (NSDictionary *dict in array) {
@@ -190,7 +189,7 @@
             [self notByRecommend];
             [recommendTableView setHidden:YES];
         }
-//        [self addUICategoryView];
+        //        [self addUICategoryView];
     } failure:^(NSError *error) {
         if (isRefresh) {
             [refreshFooterView endRefreshing];
@@ -214,8 +213,7 @@
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.labelText = @"加载中...";
     }
-
-//    NSDictionary *paramDic =[NSDictionary dictionaryWithObjectsAndKeys:_courseDetailID,@"id", nil];
+    
     
     [HttpTool postWithPath:@"getQuestionList" params:param success:^(id JSON, int code, NSString *msg) {
         if (isRefresh) {
@@ -224,21 +222,20 @@
         }else{
             [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
             [refreshHeaderView endRefreshing];
-       
-       
-//            [_recommendArray removeAllObjects];
+            
+            
             [_answerArray removeAllObjects];
         }
-       
+        
         NSLog(@"-----ddddddddd----》%@",JSON);
-
+        
         if (code == 100) {
             NSDictionary *dic = [JSON objectForKey:@"data"];
             NSArray *array = [dic objectForKey:@"question_list"];
             
             if (![array isKindOfClass:[NSNull class]]) {
                 for (NSDictionary *dict in array) {
-                   
+                    
                     courseDetailModel *item = [[courseDetailModel alloc] initWithDictnoaryForCourseAnswer:dict];
                     [_answerArray addObject:item];
                     if (array.count<pageSize) {
@@ -250,7 +247,7 @@
                 }
             }else{
                 refreshFooterView.hidden = NO;
- 
+                
             }
             
             [answerTableView reloadData];
@@ -322,11 +319,11 @@
     categoryLine.backgroundColor =HexRGB(0xe9eaec);
     
     [categoryView addSubview:categoryLine];
-    
+    NSString *recommendStr =[NSString stringWithFormat:@"推荐（%@）",recommendCount==nil ? @"0" :recommendCount];
+    NSArray *companyArr =@[@"详情",recommendStr,@"答疑"];
     for (int p=0; p<3; p++)
-    {            NSLog(@"-22222---->%@",recommendCount);
-        NSString *recommendStr =[NSString stringWithFormat:@"推荐（%@）",recommendCount==nil ? @"0" :recommendCount];
-        NSArray *companyArr =@[@"详情",recommendStr,@"答疑"];
+    {
+        
         UIButton *companyBtn =[UIButton buttonWithType:UIButtonTypeCustom];
         [categoryView addSubview:companyBtn];
         
@@ -358,8 +355,8 @@
 #pragma mark分类背景CategoryScrollview
 -(void)addCategoryBackScrollView
 {
-    categoryScrollView =[[UIScrollView alloc]initWithFrame:CGRectMake(0, bannerHeightLine+BUTTONH, kWidth, kHeight-BUTTONH-50-64+YYBORDERWH)];
-    categoryScrollView.contentSize = CGSizeMake(kWidth*3, categoryScrollView.frame.size.height);
+    categoryScrollView =[[UIScrollView alloc]initWithFrame:CGRectMake(0, bannerHeightLine+BUTTONH, kWidth, kHeight-BUTTONH-50-64)];
+    categoryScrollView.contentSize = CGSizeMake(kWidth*3, kHeight-BUTTONH-50-64-YYBORDERWH);
     categoryScrollView.showsHorizontalScrollIndicator = NO;
     categoryScrollView.showsVerticalScrollIndicator = NO;
     categoryScrollView.pagingEnabled = YES;
@@ -372,7 +369,7 @@
     categoryScrollView.delegate = self;
     [self.backScrollView addSubview:categoryScrollView];
     [self addDetailView];
-   
+    
 }
 #pragma mark----详情
 -(void)addDetailView{
@@ -382,7 +379,7 @@
     detailScrollView.showsHorizontalScrollIndicator = NO;
     detailScrollView.showsVerticalScrollIndicator = NO;
     detailScrollView.pagingEnabled = YES;
-//        detailScrollView.bounces = NO;
+    //        detailScrollView.bounces = NO;
     detailScrollView.userInteractionEnabled = YES;
     detailScrollView.backgroundColor =HexRGB(0xffffff);
     //    detailScrollView.backgroundColor =[UIColor cyanColor];
@@ -390,56 +387,56 @@
     [categoryScrollView addSubview:detailScrollView];
     detailScrollView.scrollEnabled =NO;
     detailScrollView.tag =990;
-    CGFloat detailWH =11;
+    CGFloat detailWH =9;
     //添加标题
-    UILabel *detailTitle =[[UILabel alloc]initWithFrame:CGRectMake(detailWH, detailWH, kWidth-detailWH*2-YYBORDERWH*2, 30)];
+    UILabel *detailTitle =[[UILabel alloc]initWithFrame:CGRectMake(detailWH, detailWH, kWidth-detailWH*2-YYBORDERWH*2, 20)];
     [detailScrollView addSubview:detailTitle];
     detailTitle.text =courseModel.courseTitle;
-    detailTitle.font =[UIFont systemFontOfSize:PxFont(22)];
+    detailTitle.font =[UIFont systemFontOfSize:PxFont(18)];
     detailTitle.textColor=HexRGB(0x323232);
-    
-    CGFloat titleDetailH =detailTitle.frame.size.height+detailTitle.frame.origin.y;
+    detailTitle.backgroundColor =[UIColor clearColor];
+    CGFloat titleDetailH =detailTitle.frame.size.height+detailTitle.frame.origin.y+5;
     //添加蜕变豆
+    //    RecommandCellH =[recommendModel.recommendContent sizeWithFont:[UIFont systemFontOfSize:PxFont(18)] constrainedToSize:CGSizeMake(self.view.frame.size.width-33, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping ].height;
     
+    CGFloat douW =[[NSString stringWithFormat:@"%d", courseModel.coursePrice] sizeWithFont:[UIFont systemFontOfSize:PxFont(24)]constrainedToSize:CGSizeMake(MAXFLOAT, 30)].width;
     UIButton *detailDou =[UIButton buttonWithType:UIButtonTypeCustom];
-    detailDou.frame =CGRectMake(detailWH, titleDetailH, 60, 30);
+    detailDou.frame =CGRectMake(detailWH, titleDetailH, douW+30, 30);
     [detailDou setImage:[UIImage imageNamed:@"browser_number_icon"] forState:UIControlStateNormal];
     [detailDou setTitle:[NSString stringWithFormat:@"%d", courseModel.coursePrice] forState:UIControlStateNormal];
     [detailScrollView addSubview:detailDou];
     detailDou.titleEdgeInsets =UIEdgeInsetsMake(0, 5, 0, 0);
     detailDou.backgroundColor =[UIColor clearColor];
     [detailDou setTitleColor:HexRGB(0x1c8cc6) forState:UIControlStateNormal];
-    [detailDou.titleLabel setFont:[UIFont systemFontOfSize:PxFont(28)]];
-    detailDou.backgroundColor =[UIColor clearColor];
+    [detailDou.titleLabel setFont:[UIFont systemFontOfSize:PxFont(24)]];
     detailDou.contentHorizontalAlignment =UIControlContentHorizontalAlignmentLeft;
     
-    CGFloat douDetailW =detailDou.frame.size.width+detailDou.frame.origin.x+3;
-    UILabel *detailDouLabel =[[UILabel alloc]initWithFrame:CGRectMake(douDetailW, titleDetailH, 45, 30)];
+    CGFloat douDetailW =detailDou.frame.size.width+detailDou.frame.origin.x;
+    UILabel *detailDouLabel =[[UILabel alloc]initWithFrame:CGRectMake(douDetailW, titleDetailH+3, 45, 30)];
     [detailScrollView addSubview:detailDouLabel];
     detailDouLabel.text =@"蜕变豆";
-    detailDouLabel.font =[UIFont systemFontOfSize:PxFont(18)];
+    detailDouLabel.font =[UIFont systemFontOfSize:PxFont(14)];
     detailDouLabel.textColor=HexRGB(0x323232);
     detailDouLabel.backgroundColor =[UIColor clearColor];
     
-    CGFloat companyHomeW =douDetailW+detailDouLabel.frame.size.width+10;
+    CGFloat companyHomeW =douDetailW+detailDouLabel.frame.size.width;
     //企业首页
+    CGFloat homeNameW =[courseModel.courseCompanyname sizeWithFont:[UIFont systemFontOfSize:PxFont(14)]constrainedToSize:CGSizeMake(MAXFLOAT, 19)].width;
     
     UIButton *companyHomeDetail =[UIButton buttonWithType:UIButtonTypeCustom];
-    companyHomeDetail.frame =CGRectMake(companyHomeW, titleDetailH+6, kWidth-companyHomeW-detailWH*2, 20);
-//    [companyHomeDetail setImage:[UIImage imageNamed:@"company_name"] forState:UIControlStateNormal];
+    companyHomeDetail.frame =CGRectMake(companyHomeW, titleDetailH+6, homeNameW+10, 19);
     [detailScrollView addSubview:companyHomeDetail];
     [companyHomeDetail setTitle:courseModel.courseCompanyname forState:UIControlStateNormal];
-    companyHomeDetail.titleEdgeInsets =UIEdgeInsetsMake(0, 15, 0, 10);
-    companyHomeDetail.backgroundColor =[UIColor clearColor];
+    companyHomeDetail.titleEdgeInsets =UIEdgeInsetsMake(0, 20, 0, 5);
     [companyHomeDetail setTitleColor:HexRGB(0x1c8cc6) forState:UIControlStateNormal];
-    [companyHomeDetail.titleLabel setFont:[UIFont systemFontOfSize:PxFont(16)]];
+    [companyHomeDetail.titleLabel setFont:[UIFont systemFontOfSize:PxFont(12)]];
     companyHomeDetail.backgroundColor =[UIColor clearColor];
     companyHomeDetail.layer.masksToBounds =YES;
     companyHomeDetail.layer.borderColor =HexRGB(0x178ac5).CGColor;
-    companyHomeDetail.layer.borderWidth=1.0f;
+    companyHomeDetail.layer.borderWidth=0.8f;
     companyHomeDetail.layer.cornerRadius =10;
     //banner图片
-    UIImageView *companyHomeImg =[[UIImageView alloc]initWithFrame:CGRectMake(-1, 0,20 , 20)];
+    UIImageView *companyHomeImg =[[UIImageView alloc]initWithFrame:CGRectMake(-1, 0,19 , 19)];
     [companyHomeDetail addSubview:companyHomeImg];
     companyHomeImg.userInteractionEnabled=YES;
     companyHomeImg.image =[UIImage imageNamed:@"company_name"];
@@ -459,17 +456,17 @@
     //添加WebView
     _courseWeb = [[UIWebView alloc]initWithFrame:CGRectMake(0, webh, kWidth-YYBORDERWH*2, kHeight-webh-64)];
     
-        [_courseWeb loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://www.baidu.com/"]]];
+    [_courseWeb loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://www.baidu.com/"]]];
     _courseWeb.userInteractionEnabled = NO;
     _courseWeb.delegate =self;
     [detailScrollView addSubview:_courseWeb];
-//    NSLog(@"1111-----%f----%f",_courseWeb.frame.size.height,detailScrollView.contentSize.height);
-
+    //    NSLog(@"1111-----%f----%f",_courseWeb.frame.size.height,detailScrollView.contentSize.height);
+    
     
 }
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-
+    
     return YES;
 }
 - (void)webViewDidFinishLoad:(UIWebView *)webView
@@ -481,14 +478,14 @@
     
     detailScrollView.contentSize = CGSizeMake(kWidth-YYBORDERWH*2,webheight+webh);
     
-//    NSLog(@"-----%f-%f---%f",_courseWeb.frame.size.height,detailScrollView.frame.size.height,webheight);
+    //    NSLog(@"-----%f-%f---%f",_courseWeb.frame.size.height,detailScrollView.frame.size.height,webheight);
     
 }
 
 #pragma mark ----推荐
 -(void)addRecommendTableview
 {
-    recommendTableView =[[UITableView alloc]initWithFrame:CGRectMake(kWidth-YYBORDERWH*2, 0, kWidth,categoryScrollView.frame.size.height-8 ) style:UITableViewStylePlain];
+    recommendTableView =[[UITableView alloc]initWithFrame:CGRectMake(kWidth-YYBORDERWH*2, 0, kWidth,categoryScrollView.frame.size.height ) style:UITableViewStylePlain];
     recommendTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [categoryScrollView addSubview:recommendTableView];
     recommendTableView.backgroundColor =HexRGB(0xe0e0e0);
@@ -497,10 +494,10 @@
     recommendTableView.delegate =self;
     recommendTableView.dataSource = self;
     recommendTableView.hidden =NO;
-    recommendTableView.scrollEnabled =NO;
+//    recommendTableView.scrollEnabled =NO;
     refreshHeaderView.scrollView=recommendTableView;
     refreshFooterView.scrollView =recommendTableView;
-   
+    
 }
 
 
@@ -508,8 +505,8 @@
 #pragma mark----- 答疑
 -(void)addAnswerTableview
 {
-//    [self notByAnswer];
-    answerTableView =[[UITableView alloc]initWithFrame:CGRectMake(kWidth*2, 0, kWidth, categoryScrollView.frame.size.height-8) style:UITableViewStylePlain];
+    //    [self notByAnswer];
+    answerTableView =[[UITableView alloc]initWithFrame:CGRectMake(kWidth*2, 0, kWidth, categoryScrollView.frame.size.height) style:UITableViewStylePlain];
     answerTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [categoryScrollView addSubview:answerTableView];
     answerTableView.backgroundColor =HexRGB(0xe0e0e0);
@@ -518,15 +515,15 @@
     answerTableView.showsHorizontalScrollIndicator =NO;
     answerTableView.showsVerticalScrollIndicator= NO;
     answerTableView.hidden =NO;
-    answerTableView.scrollEnabled =NO;
+//    answerTableView.scrollEnabled =NO;
     refreshFooterView.scrollView =answerTableView;
     refreshHeaderView.scrollView =answerTableView;
     
-  }
+}
 #pragma mark ----分类的点击事件
 //添加分类
 -(void)categoryBtnClick:(UIButton *)sender{
-//    NSLog(@"dddd;;");
+    //    NSLog(@"dddd;;");
     _selectedBtn = sender;
     if (sender.tag == 20)
     {
@@ -538,7 +535,7 @@
     else if(sender.tag ==21)
     {isRefresh =NO;
         [self addRecommendTableview];
-//        [self addMBprogressView];
+        //        [self addMBprogressView];
         [self addRecommendLoadStatus];
         //        _footer.scrollView = recommendTableView;
         [categoryScrollView setContentOffset:CGPointMake(kWidth, 0) animated:YES];
@@ -546,8 +543,8 @@
     else if(sender.tag ==22)
     {
         [self addAnswerTableview];
-
-//        [self addMBprogressView];
+        
+        //        [self addMBprogressView];
         isRefresh =NO;
         [self refreshFooterView];
         //        _footer.scrollView = answerTableView;
@@ -561,15 +558,15 @@
 //添加底部下载  download  buyCourse collect
 -(void)addUIDownloadView{
     courseDetailModel *couseModel =[_detailArray objectAtIndex:0];
-    UIView *downloadView =[[UIView alloc]initWithFrame:CGRectMake(0, kHeight-64-50, kWidth, 50)];
+    UIView *downloadView =[[UIView alloc]initWithFrame:CGRectMake(YYBORDERWH, kHeight-64-50, kWidth-YYBORDERWH*2, 50)];
     [self.view addSubview:downloadView];
     downloadView.backgroundColor =[UIColor whiteColor];
-    UIView *line =[[UIView alloc]initWithFrame:CGRectMake(0, 0, kWidth, 1)];
+    UIView *line =[[UIView alloc]initWithFrame:CGRectMake(0, 0, kWidth-YYBORDERWH*2, 1)];
     [downloadView addSubview:line];
     line.backgroundColor =HexRGB(0xd1d1d1);
     
     //添加标题
-    UILabel *titleLabel =[[UILabel alloc]initWithFrame:CGRectMake(18, 27, 50, 20)];
+    UILabel *titleLabel =[[UILabel alloc]initWithFrame:CGRectMake(15, 27, 50, 20)];
     [downloadView addSubview:titleLabel];
     titleLabel.font =[UIFont systemFontOfSize:PxFont(16)];
     titleLabel.textColor =HexRGB(0x1c8cc6);
@@ -580,38 +577,38 @@
     
     for (int i=0; i<3; i++) {
         courseDetailModel *coureseModel =[_detailArray objectAtIndex:0];
-
+        
         UIButton *categoryBtn =[UIButton buttonWithType:UIButtonTypeCustom];
         [downloadView addSubview:categoryBtn];
         categoryBtn.backgroundColor =[UIColor clearColor];
         if (i==0) {
-            categoryBtn.frame =CGRectMake(23, 5, 40, 40) ;
+            categoryBtn.frame =CGRectMake(20, 5, 40, 40) ;
             [categoryBtn setImage:[UIImage imageNamed:@"tab_download"] forState:UIControlStateNormal];
             categoryBtn.enabled =NO;
             
             categoryBtn.imageEdgeInsets =UIEdgeInsetsMake(0, 0, 10, 0);
         }if (i==1) {
-            categoryBtn.frame =CGRectMake(83, 9, 160, 32) ;
+            categoryBtn.frame =CGRectMake(80, 9, kWidth-160, 32) ;
+            categoryBtn.titleLabel.font =[UIFont systemFontOfSize:PxFont(20)];
             [categoryBtn setBackgroundImage:[UIImage imageNamed:@"buy_img"] forState:UIControlStateNormal];
             NSLog(@"------111111-----》%d",coureseModel.courseIsbuy);
             if (coureseModel.coursePrice <=0||coureseModel.courseIsbuy==1) {
                 [categoryBtn setTitle:@"立即下载" forState:UIControlStateNormal];
-                downloadBtn =categoryBtn;
             }else{
                 [categoryBtn setTitle:@"购买课程" forState:UIControlStateNormal];
- 
+                
             }
             [categoryBtn setTitleColor:HexRGB(0xffffff) forState:UIControlStateNormal];
             
         }if (i==2) {
-            categoryBtn.frame =CGRectMake(kWidth-63, 5, 40, 40) ;
+            categoryBtn.frame =CGRectMake(kWidth-66, 5, 40, 40) ;
             [categoryBtn setImage:[UIImage imageNamed:@"tab_collect"] forState:UIControlStateNormal];
             [categoryBtn setImage:[UIImage imageNamed:@"tab_collect_pre"] forState:UIControlStateSelected];
             if (coureseModel.iscollect ==1) {
                 categoryBtn.selected =YES;
             }else if (coureseModel.iscollect ==0){
                 categoryBtn.selected =NO;
-
+                
             }
         }
         [categoryBtn addTarget:self action:@selector(categoryBtnItem:) forControlEvents:UIControlEventTouchUpInside];
@@ -637,7 +634,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    NSLog(@"%d",_selectedBtn.tag);
+    //    NSLog(@"%d",_selectedBtn.tag);
     if (_selectedBtn.tag ==21) {
         static NSString *cellIndexfider =@"RecommendCell";
         
@@ -646,23 +643,11 @@
             RecommandCell =[[CourseRecommendViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndexfider];
             [RecommandCell setBackgroundColor:HexRGB(0xe0e0e0)];
             RecommandCell.selectionStyle =UITableViewCellSelectionStyleNone;
-
+            
         }
-
+        
         courseDetailModel *recommendModel =[_recommendArray objectAtIndex:indexPath.row];
-        RecommandCellH =[recommendModel.recommendContent sizeWithFont:[UIFont systemFontOfSize:PxFont(18)] constrainedToSize:CGSizeMake(self.view.frame.size.width-33, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping ].height;
-
-        RecommandCell.backCell.frame =CGRectMake(16, 0, RecommandCell.frame.size.width, RecommandCellH+58);
-        RecommandCell.backLineCell.frame =CGRectMake(0, RecommandCell.backCell.frame.size.height-1, RecommandCell.frame.size.width, 1);
-        [RecommandCell.headerRecommendImage setImageWithURL:[NSURL URLWithString:recommendModel.recommendImg] placeholderImage:placeHoderImage1];
-        RecommandCell.contentRecomendLabel.text =recommendModel.recommendContent;
-        RecommandCell.contentRecomendLabel.frame =CGRectMake(11, 50, kWidth-33, RecommandCellH);
-        RecommandCell.nameRecomendLabel.text =recommendModel.recommendUseame;
-        RecommandCell.timeRecomendLabel.text =recommendModel.recommednAddtime;
-//        NSLog(@"-qqqqqqq--%f---->%f",RecommandCellH,RecommandCell.backCell.frame.size.height);
-        
-        
-       
+        [RecommandCell setObjectRecommendItem:recommendModel];
         return RecommandCell;
         
     }else if (_selectedBtn.tag ==22){
@@ -675,24 +660,8 @@
             answerCell.selectionStyle =UITableViewCellSelectionStyleNone;
         }
         courseDetailModel *answerModel =[_answerArray objectAtIndex:indexPath.row];
-        cellContentH =[answerModel.answerContent sizeWithFont:[UIFont systemFontOfSize:PxFont(18)] constrainedToSize:CGSizeMake(self.view.frame.size.width-33, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping ].height;
-        answerCell.backCell.frame =CGRectMake(0, 0, answerCell.frame.size.width, cellContentH+72);
-        answerCell.backLineCell .frame=CGRectMake(0, answerCell.backCell.frame.size.height-1, answerCell.backCell.frame.size.width, 1);
-
-        answerCell.answerTitle.text =answerModel.answerTitle;
-        answerCell.contentAnswerLabel.frame =CGRectMake(11, 35, self.view.frame.size.width-33, cellContentH);
-        NSLog(@"---%f---->%f",cellContentH,answerCell.backCell.frame.size.height);
-        CGFloat contentH =answerCell.contentAnswerLabel.frame.size.height+answerCell.contentAnswerLabel.frame.origin.y+5;
-        answerCell.companyAnswerImage.frame =CGRectMake(11, contentH, 26, 26);
-        answerCell.nameAnswerLabel.frame =CGRectMake(11+30, contentH+5, kWidth-140, 20);
-        answerCell.timeAnswerLabel.frame =CGRectMake(kWidth-90, contentH+5, 70, 20);
-
-        [answerCell.companyAnswerImage setImageWithURL:[NSURL URLWithString:answerModel.answerImg] placeholderImage:placeHoderImage1];
-
-        answerCell.timeAnswerLabel.text =answerModel.answerAddtime;
-        answerCell.nameAnswerLabel.text =answerModel.answerName;
-        answerCell.contentAnswerLabel.text =answerModel.answerContent;
-       
+        [answerCell setObjectCell:answerModel ];
+        
         return answerCell;
         
     }
@@ -701,32 +670,54 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
     if (_selectedBtn.tag ==21) {
-        return RecommandCellH+66;
+        return [self getCellHeight:indexPath typeStr:1];
     }else if(_selectedBtn.tag ==22){
-        return 80+cellContentH;
+        return [self getCellHeight:indexPath typeStr:2];
     }
-    return 118;
+    return 0;
+}
+#pragma mark 获取cell的高度
+- (CGFloat)getCellHeight:(NSIndexPath *)indexPath typeStr:(NSInteger)type
+{      if (type==1){
+        CGFloat cellHeight = 0;
+        courseDetailModel *recomModel =[_recommendArray objectAtIndex:indexPath.row];
+        CGSize size = [AdaptationSize getSizeFromString:recomModel.recommendContent Font:[UIFont systemFontOfSize:PxFont(16)] withHight:CGFLOAT_MAX withWidth:kWidth-33];
+     CGSize nameRecommendSize =[AdaptationSize getSizeFromString:recomModel.recommendUseame Font:[UIFont systemFontOfSize:PxFont(18)] withHight:CGFLOAT_MAX withWidth:kWidth-YYBORDERWH*2-130];
+        //        NSLog(@"fffff------11111------>>>%f",size.height);
+        cellHeight =55+size.height+nameRecommendSize.height;
+        return cellHeight;
+    }
+    if (type==2) {
+        CGFloat cellHeight = 0;
+        courseDetailModel *answerModel =[_answerArray objectAtIndex:indexPath.row];
+        CGSize size = [AdaptationSize getSizeFromString:answerModel.answerContent Font:[UIFont systemFontOfSize:PxFont(18)] withHight:CGFLOAT_MAX withWidth:kWidth-33];
+        cellHeight =80+size.height;
+        return cellHeight;
+        
+    }
+    return 0;
 }
 
 #pragma mark  ------scrollview_delegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if (scrollView.tag ==998) {
-//        NSLog(@"%f----%f",scrollView.contentOffset.y,bannerHeightLine);
+        //        NSLog(@"%f----%f",scrollView.contentOffset.y,bannerHeightLine);
         if (scrollView.contentOffset.y>=175) {
             //            scrollView.contentOffset =CGPointMake(0, 0);
             detailScrollView.scrollEnabled =YES;
-            recommendTableView.scrollEnabled =YES;
-            answerTableView.scrollEnabled =YES;
+//            recommendTableView.scrollEnabled =YES;
+//            answerTableView.scrollEnabled =YES;
         }else{
             detailScrollView.scrollEnabled =NO;
-            recommendTableView.scrollEnabled =NO;
-            answerTableView.scrollEnabled =NO;
-
+//            recommendTableView.scrollEnabled =NO;
+//            answerTableView.scrollEnabled =NO;
+            
         }
         
-
+        
     }
     
     if (scrollView.tag ==9999) {
@@ -767,7 +758,7 @@
                         _selectedBtn=btn;
                         _selectedBtn.selected=YES;
                         [self addRecommendTableview];
-//                        [self addMBprogressView];
+                        //                        [self addMBprogressView];
                         isRefresh =NO;
                         [self addRecommendLoadStatus];
                         
@@ -789,7 +780,7 @@
                         _selectedBtn=btn;
                         _selectedBtn.selected=YES;
                         [self addAnswerTableview];
-//                        [self addMBprogressView];
+                        //                        [self addMBprogressView];
                         isRefresh =NO;
                         [self refreshFooterView];
                     }else{
@@ -828,64 +819,64 @@
         if (![SystemConfig sharedInstance].isUserLogin) {
             [RemindView showViewWithTitle:@"抱歉，请先点击右上角注册或登录！" location:BELLOW] ;
             
-
+            
         }else if([[SystemConfig sharedInstance].uid isEqualToString:[NSString stringWithFormat:@"%d", courseModel.companyId]]){
             [RemindView showViewWithTitle:@"抱歉，请以普通会员身份购买！" location:BELLOW] ;
         }else if (courseModel.coursePrice <=0||courseModel.courseIsbuy==1) {
             
             [DownloadManager downloadFileWithUrl:courseModel.courseDownloadurl type:[NSString stringWithFormat:@"%d",courseModel.courseType] fileInfo:dic];
-//            [RemindView showViewWithTitle:@"已经加入下载列表" location:BELLOW];
+            //            [RemindView showViewWithTitle:@"已经加入下载列表" location:BELLOW];
         }
         else{
-             [self addByTopView];
+            [self addByTopView];
             
         }
- 
+        
     }else if(item.tag ==32){
         
         if (![SystemConfig sharedInstance].isUserLogin ) {
             [RemindView showViewWithTitle:@"抱歉，请先点击右上角注册或登录！" location:BELLOW];
         }else{
-    if (item.selected ==YES)  // uncollectSubject   collectSubject
-      {
-          
-            NSDictionary *paramDic =[NSDictionary dictionaryWithObjectsAndKeys:[SystemConfig sharedInstance].uid,@"uid",_courseDetailID,@"id" ,nil];
-            [HttpTool postWithPath:@"uncollectSubject" params:paramDic success:^(id JSON, int code, NSString *msg) {
-//                NSLog(@"%@",JSON);
-                if (code ==100) {
-                    [RemindView showViewWithTitle:@"取消收藏成功!" location:BELLOW];
-                    item.selected =NO;
-                }
-            } failure:^(NSError *error) {
+            if (item.selected ==YES)  // uncollectSubject   collectSubject
+            {
                 
-            }];
-      }  else{
-          NSDictionary *paramDic =[NSDictionary dictionaryWithObjectsAndKeys:[SystemConfig sharedInstance].uid,@"uid",_courseDetailID,@"id" ,nil];
-          [HttpTool postWithPath:@"collectSubject" params:paramDic success:^(id JSON, int code, NSString *msg) {
-//              NSLog(@"-----%@",JSON);
-              if (code ==100) {
-                  [RemindView showViewWithTitle:@"收藏成功!" location:BELLOW];
-                  item.selected =YES;
-              }
-          } failure:^(NSError *error) {
-              
-          }];
-      }
-
-        
-    }
+                NSDictionary *paramDic =[NSDictionary dictionaryWithObjectsAndKeys:[SystemConfig sharedInstance].uid,@"uid",_courseDetailID,@"id" ,nil];
+                [HttpTool postWithPath:@"uncollectSubject" params:paramDic success:^(id JSON, int code, NSString *msg) {
+                    //                NSLog(@"%@",JSON);
+                    if (code ==100) {
+                        [RemindView showViewWithTitle:@"取消收藏成功!" location:BELLOW];
+                        item.selected =NO;
+                    }
+                } failure:^(NSError *error) {
+                    
+                }];
+            }  else{
+                NSDictionary *paramDic =[NSDictionary dictionaryWithObjectsAndKeys:[SystemConfig sharedInstance].uid,@"uid",_courseDetailID,@"id" ,nil];
+                [HttpTool postWithPath:@"collectSubject" params:paramDic success:^(id JSON, int code, NSString *msg) {
+                    //              NSLog(@"-----%@",JSON);
+                    if (code ==100) {
+                        [RemindView showViewWithTitle:@"收藏成功!" location:BELLOW];
+                        item.selected =YES;
+                    }
+                } failure:^(NSError *error) {
+                    
+                }];
+            }
+            
+            
+        }
     }
 }
 -(void)chooseBtn:(UIButton *)choose chooseTag:(NSInteger)tag{
     [UIView animateWithDuration:.3 animations:^{
         byCourse.center =CGPointMake(kWidth/2, kHeight);
-
+        
     } completion:^(BOOL finished) {
         byCourse.hidden =YES;
     }];
-
+    
     if (tag==333) {
-
+        
     }else if (tag==334){
         NSDictionary *parmDic =[NSDictionary dictionaryWithObjectsAndKeys:[SystemConfig sharedInstance].uid,@"uid",_courseDetailID,@"id", nil];
         NSLog(@"%@",[SystemConfig sharedInstance].uid);
@@ -910,9 +901,9 @@
         } failure:^(NSError *error) {
             
         }];
-
-       
-
+        
+        
+        
     }if (tag ==444) {
         [UIView animateWithDuration:.3 animations:^{
             bySuccessCourse.center =CGPointMake(kWidth/2, kHeight);
@@ -923,14 +914,13 @@
     }else if (tag ==445){
         NSLog(@"ddddddddd");
         [self viewDidLoad];
-
+        
         [UIView animateWithDuration:.3 animations:^{
             bySuccessCourse.center =CGPointMake(kWidth/2, kHeight);
             
         } completion:^(BOOL finished) {
             bySuccessCourse.hidden =YES;
-            [downloadBtn setTitle:@"立即下载" forState:UIControlStateNormal];
-
+            
         }];
         
     }
@@ -942,6 +932,8 @@
             byFailCourse.hidden =YES;
         }];
     }else if (tag ==556){
+        PayViewController *payVc =[[PayViewController alloc]init];
+        [self.navigationController pushViewController:payVc animated:YES];
         [UIView animateWithDuration:.3 animations:^{
             byFailCourse.center =CGPointMake(kWidth/2, kHeight);
             
@@ -963,14 +955,14 @@
             byCompanyCourse.hidden =YES;
         }];
     }
-
+    
 }
 
 
 -(void)companyhomeDetailBtnClick:(UIButton *)sender{
-//    [self.navigationController popViewControllerAnimated:YES];
+    //    [self.navigationController popViewControllerAnimated:YES];
     courseDetailModel *courseModel =[_detailArray objectAtIndex:0];
-
+    
     CompanyHomeControll *companyHomeVC=[[CompanyHomeControll alloc]init];
     companyHomeVC.companyId =[NSString stringWithFormat:@"%d", courseModel.companyId];
     [self.navigationController pushViewController:companyHomeVC animated:YES];
@@ -978,24 +970,29 @@
 // 推荐 没有推荐
 -(void)notByRecommend{
     
-    failView =[[NetFailView alloc]initWithFrameForDetail:CGRectMake((kWidth-NETFAILIMGWH)/2+kWidth, 15, NETFAILIMGWH, NETFAILIMGWH) backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"抱歉！该需求暂时还没有推荐！"];
+    failView =[[NetFailView alloc]initWithFrameForDetail:CGRectMake((kWidth-NETFAILIMGWH-YYBORDERWH*2)/2+kWidth, 15, NETFAILIMGWH, NETFAILIMGWH) backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"抱歉！该需求暂时还没有推荐！"];
     if (kHeight>500) {
-        failView.frame =CGRectMake((kWidth-NETFAILIMGWH)/2+kWidth, 100, NETFAILIMGWH, NETFAILIMGWH);
+        failView.frame =CGRectMake((kWidth-NETFAILIMGWH-YYBORDERWH*2)/2+kWidth, 100, NETFAILIMGWH, NETFAILIMGWH);
     }
     [categoryScrollView addSubview:failView];
 }
 // 答疑 没有购买课程
 -(void)notByAnswer{
-    failView =[[NetFailView alloc]initWithFrameForDetail:CGRectMake((kWidth-NETFAILIMGWH)/2+kWidth*2, 15, NETFAILIMGWH, NETFAILIMGWH) backImage:[UIImage imageNamed:@"netFailImg_2"] promptTitle:@"抱歉！您还未购买该课程！点击下方“购买”按钮购买！"];
-    if (kHeight>500) {
-        failView.frame =CGRectMake((kWidth-NETFAILIMGWH)/2+kWidth*2, 100, NETFAILIMGWH, NETFAILIMGWH);
+    courseDetailModel *courseModel =[_detailArray objectAtIndex:0];
+    if (courseModel.courseIsbuy==1||courseModel.coursePrice==0) {
+        failView =[[NetFailView alloc]initWithFrameForDetail:CGRectMake((kWidth-NETFAILIMGWH-YYBORDERWH*2)/2+kWidth*2, 15, NETFAILIMGWH, NETFAILIMGWH) backImage:[UIImage imageNamed:@"netFailImg_2"] promptTitle:@"抱歉！该需求暂时还没有答疑！"];
+    }else {
+        failView =[[NetFailView alloc]initWithFrameForDetail:CGRectMake((kWidth-NETFAILIMGWH-YYBORDERWH*2)/2+kWidth*2, 15, NETFAILIMGWH, NETFAILIMGWH) backImage:[UIImage imageNamed:@"netFailImg_2"] promptTitle:@"抱歉！您还未购买该课程！点击下方“购买”按钮购买！"];
     }
-
+    if (kHeight>500) {
+        failView.frame =CGRectMake((kWidth-NETFAILIMGWH-YYBORDERWH*2)/2+kWidth*2, 100, NETFAILIMGWH, NETFAILIMGWH);
+    }
+    
     [categoryScrollView addSubview:failView];
 }
 //没有网络
 -(void)notNetFailView{
-     failView =[[NetFailView alloc]initWithFrame:self.view.bounds backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"对不起，网络不给力!请检查您的网络设置! "];
+    failView =[[NetFailView alloc]initWithFrame:self.view.bounds backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"对不起，网络不给力!请检查您的网络设置! "];
     [self.view addSubview:failView];
 }
 @end
