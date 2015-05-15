@@ -41,10 +41,19 @@
         [bgView addSubview:_desLabel];
         
         UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0,height-0.5,bgView.frame.size.width,0.5)];
+        line.backgroundColor = HexRGB(0xe0e0e0);
         [bgView addSubview:line];
 
     }
     return self;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    if ([UIDevice currentDevice].systemVersion.floatValue<7.0) {
+        self.contentView.frame = self.bounds;
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

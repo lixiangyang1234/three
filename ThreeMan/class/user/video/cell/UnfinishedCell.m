@@ -61,6 +61,9 @@
 {
     [super layoutSubviews];
     bgView.backgroundColor = HexRGB(0xffffff);
+    if ([UIDevice currentDevice].systemVersion.floatValue<7.0) {
+        self.contentView.frame = self.bounds;
+    }
 }
 
 

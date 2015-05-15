@@ -28,28 +28,29 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self setLeftTitle:@"我的成长"];
     [self addUI];
     [self loadRigthNavItems];
-    
-    
+    self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(35,0,kWidth/2-44,44)];
+    self.titleLabel.font = [UIFont systemFontOfSize:16];
+    self.titleLabel.backgroundColor = [UIColor clearColor];
+    self.titleLabel.text = @"我的成长";
+    self.titleLabel.textColor = [UIColor whiteColor];
 }
 
-- (void)setLeftTitle:(NSString *)leftTitle
+- (void)viewWillAppear:(BOOL)animated
 {
-    UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth,44)];
-    titleView.backgroundColor = [UIColor clearColor];
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(-30, 0, 150, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = HexRGB(0xffffff);
-    label.text = leftTitle;
-    [titleView addSubview:label];
-    self.navigationItem.titleView = titleView;
+    [super viewWillAppear:animated];
+    [self.navigationController.navigationBar addSubview:self.titleLabel];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.titleLabel removeFromSuperview];
 }
 
 - (void)loadRigthNavItems
 {
-    
     UIButton *deleteItem =[UIButton buttonWithType:UIButtonTypeCustom];
     deleteItem.frame =CGRectMake(kWidth-50-40, 8, 44, 44);
     [deleteItem setImage:[UIImage imageNamed:@"nav_delete"] forState:UIControlStateNormal];

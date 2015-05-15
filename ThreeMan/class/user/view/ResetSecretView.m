@@ -148,6 +148,13 @@
     return YES;
 }
 
+- (void)resignFirstResponder
+{
+    [self.telView.textField resignFirstResponder];
+    [self.originView.textField resignFirstResponder];
+    [self.freshView.textField resignFirstResponder];
+}
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];

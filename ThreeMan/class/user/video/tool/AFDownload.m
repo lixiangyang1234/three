@@ -129,13 +129,15 @@
         
         [RemindView showViewWithTitle:@"已加入下载队列" location:MIDDLE];
 
+        [[NSNotificationCenter defaultCenter] postNotificationName:addNewDownload object:nil];
+
     }
 }
 
-//当某个文件下载完成后  查看可否其他下载任务 有则加入下载队列下载
+//当某个文件下载完成后  查看可否有其他下载任务 有则加入下载队列下载
 - (void)nextRequest
 {
-    if (self.fileDic.count==0) {
+    if (self.unfinishArray.count==0) {
         return;
     }
     
@@ -205,20 +207,20 @@
             [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
                 
                 NSFileManager *manager = [NSFileManager defaultManager];
+                
+                [_unfinishArray removeObject:file];
+                [_finishArray addObject:file];
+
                 //移除临时文件
                 if ([manager fileExistsAtPath:file.tempfilePath]) {
                     [manager removeItemAtPath:file.tempfilePath error:nil];
                 }
                 
-                [_finishArray addObject:file];
-                
-                [self.fileDic removeObjectForKey:[self getIdentify:file.fileName]];
                 //将下载好的文件从临时目录拷贝到目标目录下
                 [manager copyItemAtPath:file.tempPath toPath:file.targetPath error:nil];
                 //移除临时下载文件
                 [manager removeItemAtPath:file.tempPath error:nil];
                 
-                [_unfinishArray removeObject:file];
                 
                 //更新沙盒中存储已完成任务信息
                 [self saveFinishedFile];
@@ -266,138 +268,119 @@
 
 - (void)resumeDownload:(DownloadFileModel *)fileModel
 {
-    //查看当前下载数量已满
+    //查看当前下载数量是否已满
     int count = 0;
-    for (NSString *key in self.fileDic) {
-        DownloadFileModel *fileModel = [self.fileDic objectForKey:key];
+    
+    for (DownloadFileModel *fileModel in self.unfinishArray) {
         if (fileModel.isDownloading) {
             count++;
         }
     }
+    
     NSString *identify = [self getIdentify:fileModel.fileName];
+    
     DownloadFileModel *file = [self.fileDic objectForKey:identify];
     
     //下载数量未满
     if (count<MAX_DOWN_COUNT) {
         
-        file.isDownloading = YES;
-        
-        NSURL *url = [NSURL URLWithString:file.urlLink];
-        
-        NSURLRequest *request = [NSURLRequest requestWithURL:url];
-        
-        unsigned long long downloadedBytes = 0;
-        
-        //检查文件是否已经下载了一部分
-        if ([[NSFileManager defaultManager] fileExistsAtPath:file.tempPath]) {
+        if ([self.unfinishArray containsObject:file]) {
+            file.isDownloading = YES;
             
-            //获取已下载的文件长度
-            downloadedBytes = [self fileSizeForPath:file.tempPath];
+            NSURL *url = [NSURL URLWithString:file.urlLink];
             
-            if (downloadedBytes>0) {
+            NSURLRequest *request = [NSURLRequest requestWithURL:url];
+            
+            unsigned long long downloadedBytes = 0;
+            
+            //检查文件是否已经下载了一部分
+            if ([[NSFileManager defaultManager] fileExistsAtPath:file.tempPath]) {
                 
-                NSMutableURLRequest *mutableURLRequest = [request mutableCopy];
-                NSString *requestRange = [NSString stringWithFormat:@"bytes=%llu-", downloadedBytes];
-                [mutableURLRequest setValue:requestRange forHTTPHeaderField:@"Range"];
-                request = mutableURLRequest;
+                //获取已下载的文件长度
+                downloadedBytes = [self fileSizeForPath:file.tempPath];
                 
-            }
-        }
-        
-        //不使用缓存，避免断点续传出现问题
-        [[NSURLCache sharedURLCache] removeCachedResponseForRequest:request];
-        
-        AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-        op.outputStream = [NSOutputStream outputStreamToFileAtPath:file.tempPath append:YES];
-        
-        [op setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead) {
-            if (!file.totalSize) {
-                file.totalSize = [NSString stringWithFormat:@"%lld",totalBytesExpectedToRead];
-            }
-            file.fileReceivedSize = [NSString stringWithFormat:@"%lld",totalBytesRead+downloadedBytes];
-            double progress = ((double)totalBytesRead+(double)downloadedBytes)/((double)downloadedBytes+(double)totalBytesExpectedToRead);
-            NSLog(@"%f",progress);
-            
-            if ([self.delegate respondsToSelector:@selector(updateUI:progress:)]) {
-                [self.delegate updateUI:file progress:progress];
+                if (downloadedBytes>0) {
+                    
+                    NSMutableURLRequest *mutableURLRequest = [request mutableCopy];
+                    NSString *requestRange = [NSString stringWithFormat:@"bytes=%llu-", downloadedBytes];
+                    [mutableURLRequest setValue:requestRange forHTTPHeaderField:@"Range"];
+                    request = mutableURLRequest;
+                    
+                }
             }
             
-        }];
-        
-        [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+            //不使用缓存，避免断点续传出现问题
+            [[NSURLCache sharedURLCache] removeCachedResponseForRequest:request];
             
-            NSFileManager *manager = [NSFileManager defaultManager];
+            AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+            op.outputStream = [NSOutputStream outputStreamToFileAtPath:file.tempPath append:YES];
             
-            [_finishArray addObject:file];
+            [op setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead) {
+                if (!file.totalSize) {
+                    file.totalSize = [NSString stringWithFormat:@"%lld",totalBytesExpectedToRead];
+                }
+                file.fileReceivedSize = [NSString stringWithFormat:@"%lld",totalBytesRead+downloadedBytes];
+                double progress = ((double)totalBytesRead+(double)downloadedBytes)/((double)downloadedBytes+(double)totalBytesExpectedToRead);
+                NSLog(@"%f",progress);
+                
+                if ([self.delegate respondsToSelector:@selector(updateUI:progress:)]) {
+                    [self.delegate updateUI:file progress:progress];
+                }
+                
+            }];
             
-            [self.fileDic removeObjectForKey:[self getIdentify:file.fileName]];
-            //将下载好的文件从临时路径拷贝到目标路径下
-            [manager copyItemAtPath:file.tempPath toPath:file.targetPath error:nil];
+            [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+                
+                NSFileManager *manager = [NSFileManager defaultManager];
+                
+                [_unfinishArray removeObject:file];
+                [_finishArray addObject:file];
+                
+                
+                //移除plist临时文件
+                [manager removeItemAtPath:fileModel.tempfilePath error:nil];
+                
+                //将下载好的文件从临时路径拷贝到目标路径下
+                [manager copyItemAtPath:file.tempPath toPath:file.targetPath error:nil];
+                
+                //移除在临时路径下的下载文件
+                [manager removeItemAtPath:file.tempPath error:nil];
+                
+                
+                //更新沙盒中存储已完成任务信息
+                [self saveFinishedFile];
+                
+                //更新沙盒中存储未完成任务信息
+                [self saveunFinishedFile];
+                
+                [self nextRequest];
+                
+                if ([self.delegate respondsToSelector:@selector(downloadFinished:)]) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self.delegate downloadFinished:file];
+                    });
+                }
+                
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                file.isDownloading = NO;
+                if ([self.delegate respondsToSelector:@selector(downloadFailure:)]) {
+                    [self.delegate downloadFailure:file];
+                }
+            }];
             
+            [self.opertaionDic setObject:op forKey:identify];
+            [op start];
             
-            //移除plist临时文件
-            [manager removeItemAtPath:fileModel.tempfilePath error:nil];
-            
-            
-            //移除在临时路径下的下载文件
-            [manager removeItemAtPath:file.tempPath error:nil];
-            
-            [_unfinishArray removeObject:file];
-            
-            //更新沙盒中存储已完成任务信息
-            [self saveFinishedFile];
-            
-            //更新沙盒中存储未完成任务信息
-            [self saveunFinishedFile];
-            
-            [self nextRequest];
-            
-            if ([self.delegate respondsToSelector:@selector(downloadFinished:)]) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.delegate downloadFinished:file];
-                });
-            }
-            
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            file.isDownloading = NO;
-            if ([self.delegate respondsToSelector:@selector(downloadFailure:)]) {
-                [self.delegate downloadFailure:file];
-            }
-        }];
-        
-        [self.opertaionDic setObject:op forKey:identify];
-        [op start];
-        
-        //下载数量已满 改为等待状态
-    }else{
-        file.willDownloading = YES;
-    }
-}
+            //下载数量已满 改为等待状态
 
-- (void)cancelDownload:(DownloadFileModel *)fileModel
-{
-    NSString *identify = [self getIdentify:fileModel.fileName];
-    DownloadFileModel *file = [self.fileDic objectForKey:identify];
-    
-    [self.fileDic removeObjectForKey:identify];
-    [_unfinishArray removeObject:file];
-    
-    if ([self.opertaionDic objectForKey:identify]) {
-        AFHTTPRequestOperation *op = [self.opertaionDic objectForKey:identify];
-        [op cancel];
-        [self.opertaionDic removeObjectForKey:identify];
+        }else
+            return;
+        
+    }else{
+        if ([self.unfinishArray containsObject:file]) {
+            file.willDownloading = YES;
+        }
     }
-    
-    //移除临时缓存文件
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    if ([fileManager fileExistsAtPath:fileModel.tempfilePath]) {
-        [fileManager removeItemAtPath:fileModel.tempfilePath error:nil];
-    }
-    //移除下载的数据
-    if ([fileManager fileExistsAtPath:fileModel.tempPath]) {
-        [fileManager removeItemAtPath:fileModel.tempPath error:nil];
-    }
-    [self saveunFinishedFile];
 }
 
 
@@ -503,36 +486,66 @@
     }
 }
 
-- (void)deleteFinisedFiles:(NSArray *)arr
+- (void)cancelDownload:(DownloadFileModel *)fileModel
 {
-    for (DownloadFileModel *file in arr) {
-        [self deleteFinisedFile:file];
-    }
-}
-
-- (void)deleteFinisedFile:(DownloadFileModel *)file
-{
-    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *identify = [self getIdentify:fileModel.fileName];
+    DownloadFileModel *file = [self.fileDic objectForKey:identify];
     
-    for (DownloadFileModel *fileModel in _finishArray) {
-        if ([file.fileName isEqualToString:fileModel.fileName]) {
-            
-            [_finishArray removeObject:fileModel];
-            [_fileDic removeObjectForKey:[self getIdentify:fileModel.fileName]];
-            
-            if ([fileManager fileExistsAtPath:file.targetPath]) {
-                [fileManager removeItemAtPath:file.targetPath error:nil];
-            }
-        }
+    [_unfinishArray removeObject:file];
+    
+    if ([self.opertaionDic objectForKey:identify]) {
+        AFHTTPRequestOperation *op = [self.opertaionDic objectForKey:identify];
+        [op cancel];
+        [self.opertaionDic removeObjectForKey:identify];
     }
-    [self saveFinishedFile];
+    
+    //移除临时缓存文件
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if ([fileManager fileExistsAtPath:fileModel.tempfilePath]) {
+        [fileManager removeItemAtPath:fileModel.tempfilePath error:nil];
+    }
+    //移除下载的数据
+    if ([fileManager fileExistsAtPath:fileModel.tempPath]) {
+        [fileManager removeItemAtPath:fileModel.tempPath error:nil];
+    }
+    
+    [self.fileDic removeObjectForKey:identify];
+    
+    [self saveunFinishedFile];
 }
-
 
 - (void)cancelDownloads:(NSArray *)arr
 {
     for (DownloadFileModel *fileModel in arr) {
         [self cancelDownload:fileModel];
+    }
+}
+
+
+- (void)deleteFinisedFile:(DownloadFileModel *)file
+{
+    NSString *identify = [self getIdentify:file.fileName];
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    DownloadFileModel *fileModel = [self.fileDic objectForKey:identify];
+    
+    if ([self.finishArray containsObject:fileModel]) {
+        [self.finishArray removeObject:fileModel];
+        if ([fileManager fileExistsAtPath:file.targetPath]) {
+            [fileManager removeItemAtPath:file.targetPath error:nil];
+        }
+    }
+    
+    [self.fileDic removeObjectForKey:identify];
+    //更新磁盘中已下载信息
+    [self saveFinishedFile];
+}
+
+- (void)deleteFinisedFiles:(NSArray *)arr
+{
+    for (DownloadFileModel *file in arr) {
+        [self deleteFinisedFile:file];
     }
 }
 

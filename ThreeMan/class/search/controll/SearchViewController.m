@@ -28,6 +28,7 @@
 {
     ErrorView *noResultView;
     ErrorView *networkError;
+    UIView *textBgView;
 }
 @end
 
@@ -38,6 +39,10 @@
     
     // Do any additional setup after loading the view.
     self.view.backgroundColor = HexRGB(0xe8e8e8);
+    
+    if ([self respondsToSelector:@selector(edgesForExtendedLayout)]) {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    }
 
     _dataArray = [[NSMutableArray alloc] initWithCapacity:0];
     
@@ -54,6 +59,9 @@
     _resultHeadViewArray = [[NSMutableArray alloc] initWithCapacity:0];
     
     frame = CGRectMake(0, 0, kWidth, kHeight-64);
+    
+    self.navigationItem.hidesBackButton =YES;
+
     
     
     [self loadNavItems];
@@ -76,6 +84,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHidden) name:UIKeyboardWillHideNotification object:nil];
+    
 }
 
 
@@ -140,30 +149,47 @@
     _resultTableView.hidden = YES;
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController.navigationBar addSubview:textBgView];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [textBgView removeFromSuperview];
+}
+
 #pragma mark 导航栏相关视图
 - (void)loadNavItems
 {
     //搜索框
-    CGFloat width = kWidth-140;
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0,0,width,32)];
-    view.backgroundColor = [UIColor whiteColor];
-    view.layer.cornerRadius = 32/2;
-    view.layer.masksToBounds = YES;
+    CGFloat width = kWidth-50*2;
+    textBgView = [[UIView alloc] initWithFrame:CGRectMake(0,0,width,32)];
+    textBgView.backgroundColor = [UIColor whiteColor];
+    textBgView.center = CGPointMake(kWidth/2,44/2);
+    textBgView.layer.cornerRadius = 32/2;
+    textBgView.layer.masksToBounds = YES;
     _textField = [[UITextField alloc] initWithFrame:CGRectMake(32/2, 0,width-32/2, 32)];
     _textField.backgroundColor = [UIColor clearColor];
     _textField.clearButtonMode = UITextFieldViewModeAlways;
+    [_textField setReturnKeyType:UIReturnKeySearch];
     _textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     _textField.delegate  = self;
-    [view addSubview:_textField];
+    
+    
+    [textBgView addSubview:_textField];
+    _textField.font = [UIFont systemFontOfSize:15];
     _textField.placeholder = @"搜索课程、企业";
-    self.navigationItem.titleView = view;
+//    self.navigationItem.titleView = textBgView;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldChange) name:UITextFieldTextDidChangeNotification object:_textField];
     
     //搜索按钮
+    UIImage *image = [UIImage imageNamed:@"nav_search"];
     UIButton *searchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    searchBtn.frame = CGRectMake(0, 0,30, 30);
-    [searchBtn setImage:[UIImage imageNamed:@"nav_search"] forState:UIControlStateNormal];
-    [searchBtn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+    searchBtn.frame = CGRectMake(0, 0,30,30);
+    [searchBtn setImage:image forState:UIControlStateNormal];
     [searchBtn addTarget:self action:@selector(search) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:searchBtn];
 }
@@ -237,6 +263,12 @@
 
 #pragma mark 搜索按钮点击
 - (void)search
+{
+    [self searchRequest];
+}
+
+
+- (void)searchRequest
 {
     if (_textField.text.length==0) {
         [RemindView showViewWithTitle:@"搜索内容不能为空" location:TOP];
@@ -555,7 +587,7 @@
                     EnterpriseItem *item = [array2 objectAtIndex:indexPath.row];
                     [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:[UIImage imageNamed:@"index_icon_fail"]];
                     cell.titleLabel.text = item.companyname;
-                    cell.littleLabel.text = [NSString stringWithFormat:@"课程%@",item.scorenums];
+                    cell.littleLabel.text = [NSString stringWithFormat:@"课程 %@",item.scorenums];
                     cell.contentLabel.text = item.introduce;
                     
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -597,7 +629,7 @@
                     EnterpriseItem *item = [array2 objectAtIndex:indexPath.row];
                     [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:[UIImage imageNamed:@"index_icon_fail"]];
                     cell.titleLabel.text = item.companyname;
-                    cell.littleLabel.text = [NSString stringWithFormat:@"课程%@",item.scorenums];
+                    cell.littleLabel.text = [NSString stringWithFormat:@"课程 %@",item.scorenums];
                     cell.contentLabel.text = item.introduce;
                     
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -639,7 +671,7 @@
                 EnterpriseItem *item = [array2 objectAtIndex:indexPath.row];
                 [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:[UIImage imageNamed:@"index_icon_fail"]];
                 cell.titleLabel.text = item.companyname;
-                cell.littleLabel.text = [NSString stringWithFormat:@"课程%@",item.scorenums];
+                cell.littleLabel.text = [NSString stringWithFormat:@"课程 %@",item.scorenums];
                 cell.contentLabel.text = item.introduce;
                 
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -678,7 +710,7 @@
                     EnterpriseItem *item = [array2 objectAtIndex:indexPath.row];
                     [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:[UIImage imageNamed:@""]];
                     cell.titleLabel.text = item.companyname;
-                    cell.littleLabel.text = [NSString stringWithFormat:@"课程%@",item.scorenums];
+                    cell.littleLabel.text = [NSString stringWithFormat:@"课程 %@",item.scorenums];
                     cell.contentLabel.text = item.introduce;
                     
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -865,6 +897,7 @@
 #pragma mark textField_delegate
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+    [self searchRequest];
     [textField resignFirstResponder];
     return YES;
 }

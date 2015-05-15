@@ -65,7 +65,7 @@
     }
     if (!isRefresh) {
         MBProgressHUD *progress =[MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        progress.labelText =@"加载中。。。";
+        progress.labelText =@"加载中...";
     }
     NSLog(@"---->sssssss%@",paraDic);
 //    NSDictionary *paraDic =[NSDictionary dictionaryWithObjectsAndKeys:_tradeId,@"id", nil];
@@ -94,7 +94,7 @@
                    
                    if (arr.count<pageSize) {
                        refreshFooterView.hidden =YES;
-//                       [RemindView showViewWithTitle:@"数据加载完毕！" location:BELLOW];
+//                       [RemindView showViewWithTitle:@"数据加载完毕！" location:MIDDLE];
                    }else{
                        refreshFooterView.hidden =NO;
                    }
@@ -133,6 +133,10 @@
         _tableView.delegate =self;
         _tableView.dataSource =self;
         _tableView.backgroundColor =HexRGB(0xe0e0e0);
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 8)];
+        view.backgroundColor = [UIColor clearColor];
+        _tableView.tableHeaderView = view;
+        
         
         _tableView.showsHorizontalScrollIndicator = NO;
         _tableView.showsVerticalScrollIndicator = NO;

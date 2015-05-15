@@ -94,7 +94,7 @@
     }
     if (!isRefresh) {
         MBProgressHUD *progress =[MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        progress.labelText =@"加载中。。。";
+        progress.labelText =@"加载中...";
     }
 //    NSDictionary *paraDic =[NSDictionary dictionaryWithObjectsAndKeys:_companyId,@"id", nil];
     NSLog(@"---->ffffff%@",paraDic);
@@ -121,7 +121,7 @@
                     [_companyArray addObject:businessModel];
                     if (arr.count<pageSize) {
                         refreshFooterView.hidden =YES;
-//                        [RemindView showViewWithTitle:@"数据加载完毕！" location:BELLOW];
+//                        [RemindView showViewWithTitle:@"数据加载完毕！" location:MIDDLE];
                     }else{
                         refreshFooterView.hidden =NO;
                     }
@@ -396,6 +396,7 @@
   
     }else{
         if (![SystemConfig sharedInstance].isUserLogin ) {
+            [self showLoginView];
             [RemindView showViewWithTitle:@"请登录" location:BELLOW];
         }else{
             if (collect.selected ==YES)

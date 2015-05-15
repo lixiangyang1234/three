@@ -25,15 +25,27 @@
         self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,0,200,42)];
         self.titleLabel.backgroundColor = [UIColor clearColor];
         self.titleLabel.textColor = HexRGB(0x323232);
-        self.titleLabel.font = [UIFont systemFontOfSize:18];
+        self.titleLabel.font = [UIFont systemFontOfSize:17];
         [_bgView addSubview:self.titleLabel];
         
         self.nextImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 9, 15)];
         self.nextImage.center = CGPointMake(kWidth-8*2-15, 42/2);
         self.nextImage.image = [UIImage imageNamed:@"next"];;
         [self.bgView addSubview:self.nextImage];
+        
+        self.line = [[UIView alloc] initWithFrame:CGRectMake(0,self.bgView.frame.size.height-0.5, self.bgView.frame.size.width,0.5)];
+        self.line.backgroundColor = HexRGB(0xeaebec);
+        [self.bgView addSubview:self.line];
     }
     return self;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    if ([UIDevice currentDevice].systemVersion.floatValue<7.0) {
+        self.contentView.frame = self.bounds;
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

@@ -22,7 +22,7 @@
 
 @implementation RigthView
 
-#define titleFont [UIFont systemFontOfSize:14]
+#define titleFont [UIFont systemFontOfSize:15]
 
 - (id)initWithFrame:(CGRect)frame
 {

@@ -26,6 +26,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = HexRGB(0xe8e8e8);
+    [self setLeftTitle:@"搜索结果"];
 
     _dataArray = [[NSMutableArray alloc] initWithCapacity:0];
     
@@ -126,7 +127,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    EnterpriseItem *item = [_dataArray objectAtIndex:indexPath.row];
     CompanyHomeControll *compy = [[CompanyHomeControll alloc] init];
+    compy.companyId = item.uid;
     [self.navigationController pushViewController:compy animated:YES];
 }
 

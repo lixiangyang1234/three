@@ -76,21 +76,11 @@
         [RemindView showViewWithTitle:@"网络未连接" location:MIDDLE];
     }
     
-    [[SystemConfig sharedInstance] addObserver:self forKeyPath:@"systemConfig" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
-    
-    
     [self.window makeKeyAndVisible];
     return YES;
 }
 
 
--(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if([keyPath isEqualToString:@"systemConfig"])
-    {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SystemConfigChange object:nil];
-    }
-}
 
 
 - (void)autoLogin

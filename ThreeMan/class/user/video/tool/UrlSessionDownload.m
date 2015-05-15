@@ -76,6 +76,7 @@
     fileModel.tempfilePath = tempfilePath;
     
     //该文件已下载完成
+    NSLog(@"----------%@",fileModel.targetPath);
     if ([CommonHelper isExistFile:fileModel.targetPath]) {
         
         UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"该文件已经下载过了" delegate:self cancelButtonTitle:@"取消" otherButtonTitles: nil];
@@ -189,82 +190,54 @@
 {
     //查看当前下载数量已满
     int count = 0;
-    for (NSString *key in self.fileDic) {
-        DownloadFileModel *fileModel = [self.fileDic objectForKey:key];
+    for (DownloadFileModel *fileModel in self.unfinishArray) {
         if (fileModel.isDownloading) {
             count++;
         }
     }
+    
     //下载数量未满
     NSString *identify = [self getIdentify:fileModel.fileName];
     DownloadFileModel *file = [self.fileDic objectForKey:identify];
     
     if (count<MAX_DOWN_COUNT) {
         
-        file.isDownloading = YES;
+        if ([self.unfinishArray containsObject:file]) {
+            file.isDownloading = YES;
+            
+            NSURLSession *urlsession = [self.sessionDic objectForKey:identify];
+            
+            if (file.resumeData) {
+                
+                NSURLSessionDownloadTask *downloadTask = [urlsession downloadTaskWithResumeData:file.resumeData];
+                
+                [self.downloadTaskDic setObject:downloadTask forKey:identify];
+                
+                [downloadTask resume];
+                
+            }else{
+                
+                NSURL *url = [NSURL URLWithString:fileModel.urlLink];
+                
+                NSURLRequest *request = [NSURLRequest requestWithURL:url];
+                
+                NSURLSessionDownloadTask *downloadTask = [urlsession downloadTaskWithRequest:request];
+                
+                [downloadTask resume];
+                
+                [self.downloadTaskDic setObject:downloadTask forKey:[self getIdentify:file.fileName]];
+                
+            }
+        }else
+            return;
         
-        NSURLSession *urlsession = [self.sessionDic objectForKey:identify];
-        
-        if (file.resumeData) {
-          
-            NSURLSessionDownloadTask *downloadTask = [urlsession downloadTaskWithResumeData:file.resumeData];
-            
-            [self.downloadTaskDic setObject:downloadTask forKey:identify];
-            
-            [downloadTask resume];
-            
-        }else{
-            
-            NSURL *url = [NSURL URLWithString:fileModel.urlLink];
-            
-            NSURLRequest *request = [NSURLRequest requestWithURL:url];
-            
-            NSURLSessionDownloadTask *downloadTask = [urlsession downloadTaskWithRequest:request];
-            
-            [downloadTask resume];
-            
-            [self.downloadTaskDic setObject:downloadTask forKey:[self getIdentify:file.fileName]];
-            
-        }
         //下载数量已满 改为等待状态
     }else{
         
-        file.willDownloading = YES;
-    
+        if ([self.unfinishArray containsObject:file]) {
+            file.willDownloading = YES;
+        }
     }
-    
-}
-
-- (void)cancelDownload:(DownloadFileModel *)fileModel
-{
-    
-    NSString *identify = [self getIdentify:fileModel.fileName];
-    
-    DownloadFileModel *file = [self.fileDic objectForKey:identify];
-    
-    [self.fileDic removeObjectForKey:identify];
-    
-    [_unfinishArray removeObject:file];
-    
-    NSURLSession *urlsession = [self.sessionDic objectForKey:identify];
-    
-    [urlsession invalidateAndCancel];
-    
-    if ([self.downloadTaskDic objectForKey:identify]) {
-        
-        [self.downloadTaskDic removeObjectForKey:identify];
-        
-    }
-    //移除临时缓存文件
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    
-    if ([fileManager fileExistsAtPath:fileModel.tempfilePath]) {
-        
-        [fileManager removeItemAtPath:fileModel.tempfilePath error:nil];
-        
-    }
-    
-    [self saveunFinishedFile];
 }
 
 
@@ -304,8 +277,9 @@
             file.tempPath = [dic objectForKey:@"temppath"];
             file.fileInfo = [dic objectForKey:@"fileinfo"];
             file.type = [dic objectForKey:@"type"];
-            [self.finishArray addObject:file];
+            
             [self.fileDic setObject:file forKey:[self getIdentify:file.fileName]];
+            [self.finishArray addObject:file];
 
         }
     }
@@ -322,7 +296,6 @@
     for (DownloadFileModel *file in self.unfinishArray) {
         NSDictionary *fileDic = [self setDictionaryForFileModel:file];
         [finishedInfo addObject:fileDic];
-        NSLog(@"------filedic------%@",[fileDic objectForKey:@"fileinfo"]);
     }
     
     if (![finishedInfo writeToFile:plistPath atomically:YES]) {
@@ -355,8 +328,6 @@
             [self.fileDic setObject:file forKey:identify];
             [_unfinishArray addObject:file];
             
-            [self.fileDic setObject:file forKey:identify];
-            
             //创建session对象  这样可以获取上次退出程序时对应session的下载情况
             NSURLSession *urlSession = [self backgroundSession:identify];
             [self.sessionDic setObject:urlSession forKey:identify];
@@ -373,19 +344,55 @@
 
 - (void)deleteFinisedFile:(DownloadFileModel *)file
 {
+    NSString *identify = [self getIdentify:file.fileName];
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    for (DownloadFileModel *fileModel in _finishArray) {
-        if ([file.fileName isEqualToString:fileModel.fileName]) {
-            [_finishArray removeObject:fileModel];
-            [_fileDic removeObjectForKey:[self getIdentify:fileModel.fileName]];
-            if ([fileManager fileExistsAtPath:file.targetPath]) {
-                [fileManager removeItemAtPath:file.targetPath error:nil];
-            }
+    DownloadFileModel *fileModel = [self.fileDic objectForKey:identify];
+    
+    if ([self.finishArray containsObject:fileModel]) {
+        [self.finishArray removeObject:fileModel];
+        if ([fileManager fileExistsAtPath:file.targetPath]) {
+            [fileManager removeItemAtPath:file.targetPath error:nil];
         }
     }
     
+    [self.fileDic removeObjectForKey:identify];
+    //更新磁盘中已下载信息
     [self saveFinishedFile];
 }
+
+- (void)cancelDownload:(DownloadFileModel *)fileModel
+{
+    
+    NSString *identify = [self getIdentify:fileModel.fileName];
+    
+    DownloadFileModel *file = [self.fileDic objectForKey:identify];
+    
+    [_unfinishArray removeObject:file];
+    
+    NSURLSession *urlsession = [self.sessionDic objectForKey:identify];
+    
+    [urlsession invalidateAndCancel];
+    
+    if ([self.downloadTaskDic objectForKey:identify]) {
+        
+        [self.downloadTaskDic removeObjectForKey:identify];
+        
+    }
+    
+    //移除临时缓存文件
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    if ([fileManager fileExistsAtPath:fileModel.tempfilePath]) {
+        
+        [fileManager removeItemAtPath:fileModel.tempfilePath error:nil];
+        
+    }
+    [self.fileDic removeObjectForKey:identify];
+
+    [self saveunFinishedFile];
+}
+
+
 
 - (void)cancelDownloads:(NSArray *)arr
 {
@@ -393,7 +400,6 @@
         [self cancelDownload:fileModel];
     }
 }
-
 
 - (NSURLSession *)backgroundSession:(NSString *)identify
 {
@@ -474,11 +480,9 @@
             [manager removeItemAtPath:fileModel.tempfilePath error:nil];
         }
         
+        [_unfinishArray removeObject:fileModel];
         [_finishArray addObject:fileModel];
         
-        [self.fileDic removeObjectForKey:session.configuration.identifier];
-        
-        [_unfinishArray removeObject:fileModel];
         
         [session finishTasksAndInvalidate];
         
@@ -523,9 +527,11 @@
     [fileManager removeItemAtURL:destinationURL error:NULL];
     BOOL ret =  [fileManager copyItemAtURL:location toURL:destinationURL  error:NULL];
     if (!ret) {
+        //如果复制下载文件失败 则删除相关信息
         if ([_finishArray containsObject:fileModel]) {
             [_finishArray removeObject:fileModel];
             [self.fileDic removeObjectForKey:session.configuration.identifier];
+            [self saveFinishedFile];
         }
     }
 }

@@ -174,7 +174,7 @@
                     [_recommendArray addObject:item];
                     if (array.count<pageSize) {
                         refreshFooterView.hidden = YES;
-                        //                        [RemindView showViewWithTitle:@"数据加载完毕！" location:BELLOW];
+//                        [RemindView showViewWithTitle:@"数据加载完毕！" location:BELLOW];
                     }else{
                         refreshFooterView.hidden = NO;
                     }
@@ -240,7 +240,7 @@
                     [_answerArray addObject:item];
                     if (array.count<pageSize) {
                         refreshFooterView.hidden = YES;
-                        //                        [RemindView showViewWithTitle:@"数据加载完毕！" location:BELLOW];
+//                        [RemindView showViewWithTitle:@"数据加载完毕！" location:BELLOW];
                     }else{
                         refreshFooterView.hidden = NO;
                     }

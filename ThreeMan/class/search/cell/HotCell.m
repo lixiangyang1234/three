@@ -27,7 +27,7 @@
         self.firstBtn.frame = CGRectMake(leftDis, topDis, width, 35);
         [self.firstBtn setTitleColor:HexRGB(0x323232) forState:UIControlStateNormal];
         self.firstBtn.backgroundColor = [UIColor whiteColor];
-        self.firstBtn.titleLabel.font = [UIFont systemFontOfSize:16];
+        self.firstBtn.titleLabel.font = [UIFont systemFontOfSize:14];
         self.firstBtn.layer.cornerRadius = 3.0f;
         self.firstBtn.layer.masksToBounds = YES;
         [self.contentView addSubview:self.firstBtn];
@@ -36,7 +36,7 @@
         self.secondBtn.frame = CGRectMake(leftDis+width+space, topDis, width, 35);
         [self.secondBtn setTitleColor:HexRGB(0x323232) forState:UIControlStateNormal];
         self.secondBtn.backgroundColor = [UIColor whiteColor];
-        self.secondBtn.titleLabel.font = [UIFont systemFontOfSize:16];
+        self.secondBtn.titleLabel.font = [UIFont systemFontOfSize:14];
         self.secondBtn.layer.cornerRadius = 3.0f;
         self.secondBtn.layer.masksToBounds = YES;
         [self.contentView addSubview:self.secondBtn];
@@ -45,7 +45,7 @@
         self.thirdBtn.frame = CGRectMake(leftDis+width*2+space*2, topDis, width, 35);
         [self.thirdBtn setTitleColor:HexRGB(0x323232) forState:UIControlStateNormal];
         self.thirdBtn.backgroundColor = [UIColor whiteColor];
-        self.thirdBtn.titleLabel.font = [UIFont systemFontOfSize:16];
+        self.thirdBtn.titleLabel.font = [UIFont systemFontOfSize:14];
         self.thirdBtn.layer.cornerRadius = 3.0f;
         self.thirdBtn.layer.masksToBounds = YES;
         [self.contentView addSubview:self.thirdBtn];
@@ -53,6 +53,14 @@
 
     }
     return self;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    if ([UIDevice currentDevice].systemVersion.floatValue<7.0) {
+        self.contentView.frame = self.bounds;
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

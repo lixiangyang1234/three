@@ -29,7 +29,7 @@
  *  下载入口
  *
  *  @param url      下载链接
- *  @param type     文件类型  0表示视频  1表示文件
+ *  @param type     文件类型  1表示视频  其他表示文件
  *  @param fileInfo 文件信息 如文件对图片链接 文件标题等
  */
 - (void)downloadFileWithUrl:(NSString *)urlStr type:(NSString *)type fileInfo:(NSDictionary *)fileInfo;
@@ -43,12 +43,9 @@
 
 - (void)cancelDownload:(DownloadFileModel *)fileModel;
 
-//存储未下载完成文件
-- (void)saveunFinishedFile;
-
-- (void)loadunFinishedFile;
 
 - (void)deleteFinisedFiles:(NSArray *)arr;
+
 
 - (void)cancelDownloads:(NSArray *)arr;
 

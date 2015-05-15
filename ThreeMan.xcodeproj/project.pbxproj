@@ -203,8 +203,6 @@
 		55E373C81AC2B54200C794DD /* ShareSDKFlatShareViewUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55E3735D1AC2B54200C794DD /* ShareSDKFlatShareViewUI.framework */; };
 		55E373C91AC2B54200C794DD /* ShareSDKShareActionSheet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55E3735E1AC2B54200C794DD /* ShareSDKShareActionSheet.framework */; };
 		55E373D31AC2B54200C794DD /* HttpTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E3736D1AC2B54200C794DD /* HttpTool.m */; };
-		55E373D61AC2B54200C794DD /* nav_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 55E373751AC2B54200C794DD /* nav_bg@2x.png */; };
-		55E373D71AC2B54200C794DD /* nav_return_pre@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 55E373761AC2B54200C794DD /* nav_return_pre@2x.png */; };
 		55E373F51AC2B93F00C794DD /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55E373F31AC2B77B00C794DD /* SystemConfiguration.framework */; };
 		55E373F61AC2B94B00C794DD /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55E373F11AC2B76A00C794DD /* QuartzCore.framework */; };
 		55E373F71AC2B95500C794DD /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55E373EF1AC2B76300C794DD /* CoreTelephony.framework */; };
@@ -699,8 +697,6 @@
 		55E3735E1AC2B54200C794DD /* ShareSDKShareActionSheet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDKShareActionSheet.framework; sourceTree = "<group>"; };
 		55E3736C1AC2B54200C794DD /* HttpTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpTool.h; sourceTree = "<group>"; };
 		55E3736D1AC2B54200C794DD /* HttpTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpTool.m; sourceTree = "<group>"; };
-		55E373751AC2B54200C794DD /* nav_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_bg@2x.png"; sourceTree = "<group>"; };
-		55E373761AC2B54200C794DD /* nav_return_pre@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_return_pre@2x.png"; sourceTree = "<group>"; };
 		55E373DB1AC2B6EC00C794DD /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		55E373DD1AC2B6F600C794DD /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		55E373DF1AC2B70C00C794DD /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
@@ -1966,8 +1962,6 @@
 				55F947C31B0051AC00B0FBAC /* Default-568h@2x.png */,
 				55C7FA511ADF40DD003EDFE8 /* browser_number_icon@2x.png */,
 				55B828021AC53A54008EAFA4 /* img.png */,
-				55E373751AC2B54200C794DD /* nav_bg@2x.png */,
-				55E373761AC2B54200C794DD /* nav_return_pre@2x.png */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -2133,8 +2127,6 @@
 				5592A62A1AE781B200E8F77C /* slide_friend_btn_pressed@2x.png in Resources */,
 				55E373C71AC2B54200C794DD /* ShareSDKFlatShareViewUI.bundle in Resources */,
 				5592A6271AE781B200E8F77C /* icon_rightarrow@2x.png in Resources */,
-				55E373D61AC2B54200C794DD /* nav_bg@2x.png in Resources */,
-				55E373D71AC2B54200C794DD /* nav_return_pre@2x.png in Resources */,
 				55E373A21AC2B54200C794DD /* MBProgressHUD.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2398,7 +2390,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -2433,7 +2425,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;

@@ -23,6 +23,7 @@
         CGFloat x = _imgView.frame.size.width+_imgView.frame.origin.x+10;
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0, frame.size.width-x, frame.size.height)];
         _titleLabel.backgroundColor = [UIColor clearColor];
+        _titleLabel.font = [UIFont systemFontOfSize:15];
         _titleLabel.textColor = HexRGB(0x7a7a7a);
         [self addSubview:_titleLabel];
         

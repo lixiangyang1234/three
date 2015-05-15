@@ -430,7 +430,8 @@
     DownloadFileModel *file = [_finishedArray objectAtIndex:btn.tag-3000];
     //视频
     if ([file.type isEqualToString:@"1"]) {
-        
+        NSLog(@"++++++++++++++%@",file.targetPath);
+
         NSURL *url = [NSURL fileURLWithPath:file.targetPath];
         DirectionMPMoviePlayerViewController *movieController = [[DirectionMPMoviePlayerViewController alloc] initWithContentURL:url];
         NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -438,7 +439,12 @@
             [self.view.window.rootViewController presentMoviePlayerViewControllerAnimated:movieController];
         }
 
-    }else if([file.type isEqualToString:@"2"]){
+    }else{
+        NSString *targetPath = [file.targetPath lowercaseString];
+        if ([targetPath hasSuffix:@".zip"]|[targetPath hasSuffix:@".rar"]) {
+            [RemindView showViewWithTitle:@"无法打开该文件" location:MIDDLE];
+            return;
+        }
         
         UIDocumentInteractionController *documentController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:file.targetPath]];
         documentController.delegate = self;
@@ -450,7 +456,7 @@
 #pragma mark UIDocumentInteractionControllerDelegate
 - (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)controller
 {
-    return self;
+    return self.view.window.rootViewController;
 }
 
 

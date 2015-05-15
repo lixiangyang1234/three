@@ -26,7 +26,7 @@
     }
     // 3.设置导航栏文字的主题
     [bar setTitleTextAttributes:@{
-      UITextAttributeTextColor : [UIColor blackColor],
+      UITextAttributeTextColor : [UIColor clearColor],
       UITextAttributeTextShadowOffset : [NSValue valueWithUIOffset:UIOffsetZero] ,UITextAttributeFont:[UIFont systemFontOfSize:18]
      }];
     
@@ -34,7 +34,7 @@
     UIBarButtonItem *barItem = [UIBarButtonItem appearance];
         // 修改item上面的文字样式
     NSDictionary *dict = @{
-                           UITextAttributeTextColor : [UIColor blackColor],
+                           UITextAttributeTextColor : [UIColor clearColor],
                            UITextAttributeTextShadowOffset : [NSValue valueWithUIOffset:UIOffsetZero]
                            };
     [barItem setTitleTextAttributes:dict forState:UIControlStateNormal];
