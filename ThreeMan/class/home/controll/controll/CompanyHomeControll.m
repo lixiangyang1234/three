@@ -52,22 +52,27 @@
     _companyLogeArray =[NSMutableArray array];
     isRefresh =NO;
  [_tableView reloadData];
-    
+    [self addTableView];
 
     [self addErrorView];
     [self notCompanyStatuse];
     [self addLoadStatus];
 
-//    [self addRefreshView];
+    [self addRefreshView];
 
     NSLog(@"----%f--->------%f",kWidth,kHeight);
 
     
 }
-//-(void)addRefreshView{
-//    
-//    
-//}
+-(void)addRefreshView{
+    refreshHeaderView =[[MJRefreshHeaderView alloc]init];
+    refreshHeaderView.delegate =self;
+    
+    refreshFooterView =[[MJRefreshFooterView alloc]init];
+    refreshFooterView.delegate =self;
+    
+
+}
 -(void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView{
     if ([refreshView isKindOfClass:[MJRefreshFooterView class]]) {
         isRefresh =YES;
@@ -132,7 +137,7 @@
             
 //               NSLog(@"%@",JSON);
         [self addUIBannerView];
-        [self addTableView];
+
         [_tableView reloadData];
 
         if (_companyArray.count<=0) {
@@ -214,7 +219,7 @@
     titleLabel.shadowColor =HexRGB(0xa2a2a2);
     titleLabel.backgroundColor =[UIColor clearColor];
     
-    UILabel * contentLabel =[[UILabel alloc]initWithFrame:CGRectMake((kWidth-260)/2, 17, 260, 80)];
+    UILabel * contentLabel =[[UILabel alloc]initWithFrame:CGRectMake((kWidth-260)/2, 15, 260, 80)];
     contentLabel.font =[UIFont systemFontOfSize:PxFont(12)];
     titleLabel.textColor =HexRGB(0xffffff);
     contentLabel.textColor =HexRGB(0xf1f1f1);
@@ -228,7 +233,7 @@
     
     contentLabel.text =companyModel.companyIntroduce;
     
-    alpha =[[UIImageView alloc]initWithFrame:CGRectMake(0, 34, kWidth, 60)];
+    alpha =[[UIImageView alloc]initWithFrame:CGRectMake(0, 35, kWidth, 55)];
     [animationView addSubview:alpha];
     alpha.image =[UIImage imageNamed:@"alphabg"];
     alpha.hidden =NO;
@@ -254,16 +259,8 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     [self.view addSubview:_tableView];
-    [self.view bringSubviewToFront:_tableView];
-    
-    refreshHeaderView =[[MJRefreshHeaderView alloc]init];
-    refreshHeaderView.delegate =self;
-    refreshHeaderView.scrollView =_tableView;
-    
-    refreshFooterView =[[MJRefreshFooterView alloc]init];
-    refreshFooterView.delegate =self;
     refreshFooterView.scrollView=_tableView;
-}
+    refreshHeaderView.scrollView =_tableView;}
 
 #pragma mark - Table view data source
 
@@ -340,7 +337,7 @@
         }];
         
         animationView.frame =CGRectMake(0, 45, kWidth, 88);
-        alpha.frame =CGRectMake(0, 95, kWidth, 60);
+        alpha.frame =CGRectMake(0, 90, kWidth, 55);
         
         
         headerImage.frame =CGRectMake((kWidth-70)/2, -100, 70, 70);
@@ -356,7 +353,7 @@
         headerImage.frame =CGRectMake((kWidth-70)/2, 30, 70, 70);
         
         animationView.frame =CGRectMake(0, 105, kWidth, 88);
-        alpha.frame =CGRectMake(0, 34, kWidth, 60);
+        alpha.frame =CGRectMake(0, 35, kWidth, 55);
         
         
         [UIView animateWithDuration:0.001 animations:^{
