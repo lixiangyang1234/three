@@ -141,8 +141,8 @@
         CGRect frame = navigationController.view.frame;
         if (IsIos7) {
             frame.size.height = [UIScreen mainScreen].applicationFrame.size.height+20;
-        }else{
-            frame.size.height = [UIScreen mainScreen].applicationFrame.size.height;
+//        }else{
+//            frame.size.height = [UIScreen mainScreen].applicationFrame.size.height;
         }
         
         navigationController.view.frame = frame;

@@ -150,7 +150,7 @@
     }
     
     [HttpTool postWithPath:@"getRecommendList" params:param success:^(id JSON, int code, NSString *msg) {
-        //        NSLog(@"------>%@",JSON);
+                NSLog(@"------>%@",JSON);
         if (isRefresh) {
             [refreshFooterView endRefreshing];
             
@@ -394,7 +394,7 @@
     detailTitle.text =courseModel.courseTitle;
     detailTitle.font =[UIFont systemFontOfSize:PxFont(18)];
     detailTitle.textColor=HexRGB(0x323232);
-    
+    detailTitle.backgroundColor =[UIColor clearColor];
     CGFloat titleDetailH =detailTitle.frame.size.height+detailTitle.frame.origin.y+5;
     //添加蜕变豆
     //    RecommandCellH =[recommendModel.recommendContent sizeWithFont:[UIFont systemFontOfSize:PxFont(18)] constrainedToSize:CGSizeMake(self.view.frame.size.width-33, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping ].height;
@@ -494,7 +494,7 @@
     recommendTableView.delegate =self;
     recommendTableView.dataSource = self;
     recommendTableView.hidden =NO;
-    recommendTableView.scrollEnabled =NO;
+//    recommendTableView.scrollEnabled =NO;
     refreshHeaderView.scrollView=recommendTableView;
     refreshFooterView.scrollView =recommendTableView;
     
@@ -515,7 +515,7 @@
     answerTableView.showsHorizontalScrollIndicator =NO;
     answerTableView.showsVerticalScrollIndicator= NO;
     answerTableView.hidden =NO;
-    answerTableView.scrollEnabled =NO;
+//    answerTableView.scrollEnabled =NO;
     refreshFooterView.scrollView =answerTableView;
     refreshHeaderView.scrollView =answerTableView;
     
@@ -708,12 +708,12 @@
         if (scrollView.contentOffset.y>=175) {
             //            scrollView.contentOffset =CGPointMake(0, 0);
             detailScrollView.scrollEnabled =YES;
-            recommendTableView.scrollEnabled =YES;
-            answerTableView.scrollEnabled =YES;
+//            recommendTableView.scrollEnabled =YES;
+//            answerTableView.scrollEnabled =YES;
         }else{
             detailScrollView.scrollEnabled =NO;
-            recommendTableView.scrollEnabled =NO;
-            answerTableView.scrollEnabled =NO;
+//            recommendTableView.scrollEnabled =NO;
+//            answerTableView.scrollEnabled =NO;
             
         }
         

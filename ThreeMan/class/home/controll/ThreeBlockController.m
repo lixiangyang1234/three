@@ -10,7 +10,6 @@
 #import "CourseDetailController.h"
 #import "NeedViewCell.h"
 #import "YYSearchButton.h"
-#import "RootNavView.h"
 #import "categoryView.h"
 #import "threeBlockModel.h"
 #define DEGREES_TO_RADIANS(angle) ((angle)/180.0 *M_PI)

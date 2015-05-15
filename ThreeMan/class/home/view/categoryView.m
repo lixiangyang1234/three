@@ -271,11 +271,11 @@
             self.categoryTitleBtn.hidden =NO;
             [self.categoryTitleBtn addTarget:self action:@selector(categoryTitleBtnClick:) forControlEvents:UIControlEventTouchUpInside];
             self.categoryTitleBtn.frame=CGRectMake(210, 55+i%7*(44)-43, 150, 44);
-            self.categoryTitleBtn.titleEdgeInsets=UIEdgeInsetsMake(0, kWidth-300, 0, 0);
+            self.categoryTitleBtn.titleEdgeInsets=UIEdgeInsetsMake(0, kWidth-280, 0, 0);
             if (i==4||i==5||i==6||i==7)
             {
                 self.categoryTitleBtn.frame=CGRectMake(0, 54+i%8*(44)-43, kWidth, 44);
-                self.categoryTitleBtn.titleEdgeInsets =UIEdgeInsetsMake(0, kWidth-90, 0, 20);
+                self.categoryTitleBtn.titleEdgeInsets =UIEdgeInsetsMake(0, kWidth-70, 0, 20);
                 
             }
             

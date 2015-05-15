@@ -52,28 +52,22 @@
     _companyLogeArray =[NSMutableArray array];
     isRefresh =NO;
  [_tableView reloadData];
-    [self addTableView];
+    
 
     [self addErrorView];
     [self notCompanyStatuse];
     [self addLoadStatus];
 
-    [self addRefreshView];
+//    [self addRefreshView];
 
     NSLog(@"----%f--->------%f",kWidth,kHeight);
 
     
 }
--(void)addRefreshView{
-    refreshHeaderView =[[MJRefreshHeaderView alloc]init];
-    refreshHeaderView.delegate =self;
-    refreshHeaderView.scrollView =_tableView;
-    
-    refreshFooterView =[[MJRefreshFooterView alloc]init];
-    refreshFooterView.delegate =self;
-    refreshFooterView.scrollView=_tableView;
-    
-}
+//-(void)addRefreshView{
+//    
+//    
+//}
 -(void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView{
     if ([refreshView isKindOfClass:[MJRefreshFooterView class]]) {
         isRefresh =YES;
@@ -138,7 +132,7 @@
             
 //               NSLog(@"%@",JSON);
         [self addUIBannerView];
-
+        [self addTableView];
         [_tableView reloadData];
 
         if (_companyArray.count<=0) {
@@ -196,11 +190,13 @@
     headerImage.layer.borderColor =[UIColor whiteColor].CGColor;
     headerImage.layer.borderWidth=1.0f;
     
-    UIImageView *headerImg  =[[UIImageView alloc]initWithFrame:CGRectMake(5, 5, 60, 60)];
-    headerImg.layer.cornerRadius =30;
+    UIImageView *headerImg  =[[UIImageView alloc]initWithFrame:CGRectMake(5, 5, 61, 61)];
+    headerImg.layer.cornerRadius =30.5;
     [headerImage addSubview:headerImg];
     [headerImg setImageWithURL:[NSURL URLWithString:companyModel.companyLogo] placeholderImage:placeHoderImage];
     headerImg.layer.masksToBounds =YES;
+//    headerImg.layer.borderColor =[UIColor whiteColor].CGColor;
+//    headerImg.layer.borderWidth=1.0f;
     
     animationView =[[UIView alloc]initWithFrame:CGRectMake(0, 105, kWidth, 88)];
     [bannerImage addSubview:animationView];
@@ -212,13 +208,13 @@
     titleLabel.numberOfLines =1;
     [animationView addSubview:titleLabel];
     titleLabel.text =companyModel.companyCompanyname;
-    titleLabel.textColor =[UIColor cyanColor];
     titleLabel.textAlignment =NSTextAlignmentCenter;
     titleLabel.font =[UIFont systemFontOfSize:PxFont(18)];
     titleLabel.shadowOffset =CGSizeMake(0, 1);
     titleLabel.shadowColor =HexRGB(0xa2a2a2);
-
-    UILabel * contentLabel =[[UILabel alloc]initWithFrame:CGRectMake((kWidth-260)/2, 15, 260, 80)];
+    titleLabel.backgroundColor =[UIColor clearColor];
+    
+    UILabel * contentLabel =[[UILabel alloc]initWithFrame:CGRectMake((kWidth-260)/2, 17, 260, 80)];
     contentLabel.font =[UIFont systemFontOfSize:PxFont(12)];
     titleLabel.textColor =HexRGB(0xffffff);
     contentLabel.textColor =HexRGB(0xf1f1f1);
@@ -226,12 +222,13 @@
     contentLabel.shadowOffset =CGSizeMake(0, 1);
     contentLabel.numberOfLines =6;
     [animationView addSubview:contentLabel];
+    contentLabel.backgroundColor =[UIColor clearColor];
     NSLog(@"%f---%f",headerImage.frame.size.height,headerImage.frame.origin.y);
     
     
     contentLabel.text =companyModel.companyIntroduce;
     
-    alpha =[[UIImageView alloc]initWithFrame:CGRectMake(0, 35, kWidth, 55)];
+    alpha =[[UIImageView alloc]initWithFrame:CGRectMake(0, 34, kWidth, 60)];
     [animationView addSubview:alpha];
     alpha.image =[UIImage imageNamed:@"alphabg"];
     alpha.hidden =NO;
@@ -258,6 +255,14 @@
     
     [self.view addSubview:_tableView];
     [self.view bringSubviewToFront:_tableView];
+    
+    refreshHeaderView =[[MJRefreshHeaderView alloc]init];
+    refreshHeaderView.delegate =self;
+    refreshHeaderView.scrollView =_tableView;
+    
+    refreshFooterView =[[MJRefreshFooterView alloc]init];
+    refreshFooterView.delegate =self;
+    refreshFooterView.scrollView=_tableView;
 }
 
 #pragma mark - Table view data source
@@ -280,7 +285,7 @@
     companyListModel *companyModel =[_companyArray objectAtIndex:indexPath.row];
     [cell.companyHomeImage setImageWithURL:[NSURL URLWithString:companyModel.companyImgurl] placeholderImage:placeHoderImage2];
     CGFloat titleH =[companyModel.companyTitle sizeWithFont:[UIFont systemFontOfSize:PxFont(20)] constrainedToSize:CGSizeMake(kWidth-156, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping].height;
-    cell.companyHomeTitle.frame =CGRectMake(100, 9, kWidth-156, titleH);
+    cell.companyHomeTitle.frame =CGRectMake(132, 9, kWidth-156, titleH);
     cell.companyHomeTitle.text =[NSString stringWithFormat:@"        %@",companyModel.companyTitle];
     [cell.downLoadBtn setTitle:[NSString stringWithFormat:@"%d",companyModel.companyDownloadnum] forState:UIControlStateNormal];
      [cell.zanBtn setTitle:[NSString stringWithFormat:@"%d",companyModel.companyPrice] forState:UIControlStateNormal];
@@ -322,7 +327,7 @@
 }
 
 -(void)animationBtnClick:(UIButton *)sender{
-    NSLog(@"dddd");
+   
     sender.selected=!sender.selected;
     [UIView animateWithDuration:0.001 animations:^{
     sender.transform = CGAffineTransformRotate(sender.transform, DEGREES_TO_RADIANS(180));
@@ -335,7 +340,7 @@
         }];
         
         animationView.frame =CGRectMake(0, 45, kWidth, 88);
-        alpha.frame =CGRectMake(0, 90, kWidth, 55);
+        alpha.frame =CGRectMake(0, 95, kWidth, 60);
         
         
         headerImage.frame =CGRectMake((kWidth-70)/2, -100, 70, 70);
@@ -351,7 +356,7 @@
         headerImage.frame =CGRectMake((kWidth-70)/2, 30, 70, 70);
         
         animationView.frame =CGRectMake(0, 105, kWidth, 88);
-        alpha.frame =CGRectMake(0, 35, kWidth, 55);
+        alpha.frame =CGRectMake(0, 34, kWidth, 60);
         
         
         [UIView animateWithDuration:0.001 animations:^{

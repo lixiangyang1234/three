@@ -70,6 +70,7 @@
     backLineCell.frame=CGRectMake(0, backCell.frame.size.height-1, kWidth-borderwh, 1);
     
     headerRecommendImage.frame =CGRectMake(borderwh, borderwh-5, 40, 40);
+    headerRecommendImage.backgroundColor =[UIColor redColor];
     [headerRecommendImage setImageWithURL:[NSURL URLWithString:item.recommendImg] placeholderImage:placeHoderImage1];
     
     CGFloat imageW =headerRecommendImage.frame.origin.x+headerRecommendImage.frame.size.width;
