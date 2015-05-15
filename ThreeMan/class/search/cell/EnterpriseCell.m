@@ -38,14 +38,14 @@
         
         [bgView addSubview:_imgView];
         
-        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_imgView.frame.origin.x+_imgView.frame.size.width+25, 10, kWidth-10*2-100,20)];
+        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_imgView.frame.origin.x+_imgView.frame.size.width+25, 8, kWidth-10*2-100,18)];
         _titleLabel.textColor = HexRGB(0x323232);
-        _titleLabel.font = [UIFont systemFontOfSize:16];
+        _titleLabel.font = [UIFont systemFontOfSize:14];
         _titleLabel.backgroundColor = [UIColor clearColor];
         [bgView addSubview:_titleLabel];
         
-        _littleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_titleLabel.frame.origin.x, _titleLabel.frame.origin.y+_titleLabel.frame.size.height+5,100, 10)];
-        _littleLabel.font = [UIFont systemFontOfSize:13];
+        _littleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_titleLabel.frame.origin.x, _titleLabel.frame.origin.y+_titleLabel.frame.size.height+2,100, 10)];
+        _littleLabel.font = [UIFont systemFontOfSize:12];
         _littleLabel.textColor = HexRGB(0x959595);
         _littleLabel.backgroundColor = [UIColor clearColor];
         [bgView addSubview:_littleLabel];
@@ -54,13 +54,16 @@
         _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(_titleLabel.frame.origin.x,y, kWidth-10*2-_titleLabel.frame.origin.x,height-y)];
         _contentLabel.numberOfLines = 0;
         _contentLabel.textColor = HexRGB(0x1c8cc6);
-        _contentLabel.font = [UIFont systemFontOfSize:13];
+        _contentLabel.font = [UIFont systemFontOfSize:12];
         _contentLabel.backgroundColor = [UIColor clearColor];
         [bgView addSubview:_contentLabel];
         
         UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, height-0.5, bgView.frame.size.width,0.5)];
         line.backgroundColor = HexRGB(0xe0e0e0);
         [bgView addSubview:line];
+        
+        
+        
     }
     return self;
 }
@@ -69,6 +72,9 @@
 {
     [super layoutSubviews];
     bgView.backgroundColor = HexRGB(0xffffff);
+    if ([UIDevice currentDevice].systemVersion.floatValue<7.0) {
+        self.contentView.frame = self.bounds;
+    }
 }
 
 

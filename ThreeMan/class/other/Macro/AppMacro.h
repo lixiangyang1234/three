@@ -46,7 +46,7 @@
 
 
 
-#define PxFont(px) (((float) px/96)*72)//字体大小转换
+#define PxFont(px) (0.75*px)//字体大小转换
 
 //设备屏幕尺寸
 #define kHeight   [UIScreen mainScreen].bounds.size.height
@@ -73,7 +73,6 @@
 
 
 //通知名称
-#define SystemConfigChange @"systemConfigChange"  //systemConfig改变
 #define addNewDownload @"newDownload"  //添加了一个新的下载
 
 

@@ -14,6 +14,9 @@
 {
     ErrorView *networkError;
 }
+
+@property (nonatomic,strong) UILabel *titleLabel;
+
 - (void)setLeftTitle:(NSString *)leftTitle;
 
 

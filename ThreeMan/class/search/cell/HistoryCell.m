@@ -24,6 +24,7 @@
         self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftDis, 0,kWidth-leftDis,height)];
         self.titleLabel.backgroundColor = [UIColor clearColor];
         self.titleLabel.textColor = HexRGB(0x929292);
+        self.titleLabel.font = [UIFont systemFontOfSize:16];
         [self.contentView addSubview:self.titleLabel];
         
         UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, height-0.5,kWidth,0.5)];
@@ -33,6 +34,15 @@
     }
     return self;
 }
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    if ([UIDevice currentDevice].systemVersion.floatValue<7.0) {
+        self.contentView.frame = self.bounds;
+    }
+}
+
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

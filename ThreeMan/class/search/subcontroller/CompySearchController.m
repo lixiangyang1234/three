@@ -126,7 +126,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    EnterpriseItem *item = [_dataArray objectAtIndex:indexPath.row];
     CompanyHomeControll *compy = [[CompanyHomeControll alloc] init];
+    compy.companyId = item.uid;
     [self.navigationController pushViewController:compy animated:YES];
 }
 

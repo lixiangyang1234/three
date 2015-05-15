@@ -59,6 +59,7 @@
         hud.labelText = @"加载中...";
     }
     [HttpTool postWithPath:@"getSelectList" params:param success:^(id JSON, int code, NSString *msg) {
+        NSLog(@"%@",JSON);
         if (loading) {
             [refreshFootView endRefreshing];
         }else{

@@ -13,19 +13,12 @@
 #import "ResetSecretView.h"
 #import "OperationController.h"
 #import "SystemConfig.h"
-#import "LoginView.h"
-#import "FindPsWordView.h"
 #import "AuthencateTool.h"
-#import "ValidateView.h"
 
-@interface SettingController ()<ResetSecretViewDelegate,KeyboardDelegate,LoginViewDelegate,FindPsWordViewDelegate,ValidateViewDelegate>
+@interface SettingController ()<ResetSecretViewDelegate,KeyboardDelegate>
 {
-    UIView *windownView;
     UIView *footView;
     NSString *download_link;
-    NSString *uid;
-    NSString *pwd;
-    NSString *tel;
 }
 @end
 
@@ -38,6 +31,18 @@
     
     _dataArray = [[NSMutableArray alloc] init];
     
+    [self initView];
+    
+    [self loadData];
+    
+    [_tableView reloadData];
+    
+    [[SystemConfig sharedInstance] addObserver:self forKeyPath:@"isUserLogin" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionInitial context:NULL];
+}
+
+//初始化tableview 和 footview
+- (void)initView
+{
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kHeight-64) style:UITableViewStyleGrouped];
     _tableView.dataSource = self;
     _tableView.delegate = self;
@@ -58,24 +63,21 @@
     [btn setTitleColor:HexRGB(0xffffff) forState:UIControlStateNormal];
     [btn addTarget:self action:@selector(btnDown) forControlEvents:UIControlEventTouchUpInside];
     [footView addSubview:btn];
-
-    
-    if ([SystemConfig sharedInstance].isUserLogin) {
-        _tableView.tableFooterView = footView;
-    }
-    
-    [[SystemConfig sharedInstance].uid addObserver:self forKeyPath:@"uid" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
-
-    
-    [self loadData];
-    [_tableView reloadData];
-    
-    windownView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kHeight)];
-    windownView.backgroundColor = [UIColor blackColor];
-    windownView.alpha = 0.4;
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(configChange) name:SystemConfigChange object:nil];
 }
+
+//键值观察 用来控制footview的显示
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if([keyPath isEqualToString:@"isUserLogin"])
+    {
+        if ([SystemConfig sharedInstance].isUserLogin) {
+            _tableView.tableFooterView = footView;
+        }else{
+            _tableView.tableFooterView = nil;
+        }
+    }
+}
+
 
 
 #pragma mark 注销登录
@@ -93,7 +95,7 @@
 {
     if (alertView.tag == 1000) {
         if (buttonIndex==1) {
-            [self quitLogin];
+            [self clearLoginData];
             [RemindView showViewWithTitle:@"注销成功" location:MIDDLE];
             [self.navigationController popToRootViewControllerAnimated:YES];
         }
@@ -105,7 +107,7 @@
 }
 
 #pragma mark 推出登陆后移除相关数据
-- (void)quitLogin
+- (void)clearLoginData
 {
     [SystemConfig sharedInstance].isUserLogin = NO;
     [SystemConfig sharedInstance].uid = nil;
@@ -145,15 +147,15 @@
     if (cell == nil ) {
         cell = [[SettingCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify];
     }
-    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0,42-0.5, kWidth-8*2,0.5)];
     if (indexPath.row<[[_dataArray objectAtIndex:indexPath.section] count]-1) {
-        line.backgroundColor = HexRGB(0xeaebec);
+        cell.line.backgroundColor = HexRGB(0xeaebec);
     }else{
-        line.backgroundColor = HexRGB(0xcacaca);
+        cell.line.backgroundColor = HexRGB(0xcacaca);
     }
     if (indexPath.section==1&&indexPath.row==0) {
         cell.nextImage.hidden = YES;
         UISegmentedControl *control = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"off",@"on", nil]];
+        control.frame = CGRectMake(0, 0,70, 30);
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         NSString *wifi = [userDefaults objectForKey:@"wifi"];
         if (wifi) {
@@ -181,7 +183,6 @@
         versionLabel.text = [NSString stringWithFormat:@"v%@",version];
         [cell.bgView addSubview:versionLabel];
     }
-    [cell.bgView addSubview:line];
     cell.titleLabel.text = [[_dataArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
@@ -355,10 +356,7 @@
                 return;
             }
             
-            [view.telView.textField resignFirstResponder];
-            [view.originView.textField resignFirstResponder];
-            [view.freshView.textField resignFirstResponder];
-
+            [view resignFirstResponder];
             
             NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:[SystemConfig sharedInstance].userInfo.phone,@"phone",view.telView.textField.text,@"olduserpwd",view.freshView.textField.text,@"newuserpwd",nil];
             [HttpTool postWithPath:@"getChangePwd" params:param success:^(id JSON, int code, NSString *msg) {
@@ -370,11 +368,12 @@
                     [view removeFromSuperview];
                     
                     
-                    [self quitLogin];
+                    [self clearLoginData];
+                    
+                    [RemindView showViewWithTitle:@"修改成功,请重新登录" location:TOP];
                     
                     [self showLoginView];
                     
-                    [RemindView showViewWithTitle:@"修改成功,请重新登录" location:TOP];
                 }else{
                     
                     [RemindView showViewWithTitle:msg location:TOP];
@@ -391,19 +390,9 @@
     }
 }
 
-
-- (void)configChange
-{
-    if ([SystemConfig sharedInstance].isUserLogin) {
-        _tableView.tableFooterView = footView;
-    }else{
-        _tableView.tableFooterView = nil;
-    }
-}
-
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:SystemConfigChange object:nil];
+    [[SystemConfig sharedInstance] removeObserver:self forKeyPath:@"isUserLogin"];
 }
 
 

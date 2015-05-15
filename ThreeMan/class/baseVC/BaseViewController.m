@@ -37,12 +37,18 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = HexRGB(0xe8e8e8);
+    if ([self respondsToSelector:@selector(edgesForExtendedLayout)]) {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    }
     [self loadNavItems];
     
     windowBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,kWidth,kHeight)];
     windowBgView.backgroundColor = [UIColor blackColor];
     windowBgView.alpha = 0.4;
     
+    self.navigationItem.hidesBackButton =YES;
+    
+
 }
 
 - (BOOL)shouldAutorotate
@@ -291,10 +297,11 @@
             
             NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:view.telView.textField.text,@"phone",view.passwordView.textField.text,@"userpwd", nil];
             //登陆请求
-            [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+            UIWindow *window = [[UIApplication sharedApplication].windows lastObject];
+            [MBProgressHUD showHUDAddedTo:window animated:YES];
             [HttpTool postWithPath:@"getLogin" params:param success:^(id JSON, int code, NSString *msg) {
                 NSLog(@"%@",JSON);
-                [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+                [MBProgressHUD hideAllHUDsForView:window animated:YES];
                 if (code == 100) {
                     NSDictionary *result = JSON[@"data"][@"login"];
                     UserInfo *item = [[UserInfo alloc] init];
@@ -332,7 +339,7 @@
                     
                 }
             } failure:^(NSError *error) {
-                [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+                [MBProgressHUD hideAllHUDsForView:window animated:YES];
                 [RemindView showViewWithTitle:offline location:TOP];
             }];
             
@@ -435,7 +442,7 @@
 #pragma mark validateView_delegate 验证码代理
 - (void)validateViewBtnClick:(UIButton *)btn view:(ValidateView *)view
 {
-    UIWindow *window = [UIApplication sharedApplication].keyWindow;
+    UIWindow *window = [[UIApplication sharedApplication].windows lastObject];
     switch (btn.tag) {
         case 1:
         {
@@ -611,7 +618,7 @@
 #pragma mark 注册成功后调用直接登录
 - (void)login:(NSString *)phone pwd:(NSString *)password
 {
-    UIWindow *window = [UIApplication sharedApplication].keyWindow;
+    UIWindow *window = [[UIApplication sharedApplication].windows lastObject];
     NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:phone,@"phone",password,@"userpwd", nil];
     //登陆请求
     [MBProgressHUD showHUDAddedTo:window animated:YES];
@@ -646,7 +653,6 @@
         [MBProgressHUD hideAllHUDsForView:window animated:YES];
         NSLog(@"%@",error);
     }];
-
 }
 
 #pragma mark keyboard_delegate 键盘弹出代理

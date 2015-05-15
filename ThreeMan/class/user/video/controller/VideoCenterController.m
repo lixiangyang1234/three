@@ -28,28 +28,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self setLeftTitle:@"我的成长"];
     [self addUI];
     [self loadRigthNavItems];
     
     
 }
 
-- (void)setLeftTitle:(NSString *)leftTitle
-{
-    UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth,44)];
-    titleView.backgroundColor = [UIColor clearColor];
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(-30, 0, 150, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = HexRGB(0xffffff);
-    label.text = leftTitle;
-    [titleView addSubview:label];
-    self.navigationItem.titleView = titleView;
-}
-
 - (void)loadRigthNavItems
 {
-    
     UIButton *deleteItem =[UIButton buttonWithType:UIButtonTypeCustom];
     deleteItem.frame =CGRectMake(kWidth-50-40, 8, 44, 44);
     [deleteItem setImage:[UIImage imageNamed:@"nav_delete"] forState:UIControlStateNormal];

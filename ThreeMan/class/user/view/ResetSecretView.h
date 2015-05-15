@@ -31,4 +31,6 @@
 @property (nonatomic,assign) id<ResetSecretViewDelegate> delegate;
 @property (nonatomic,assign) id <KeyboardDelegate> keyboardDelegate;
 
+- (void)resignFirstResponder;
+
 @end

@@ -22,6 +22,7 @@
     [self setLeftTitle:@"我要提问"];
     _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0,kWidth,kHeight-64)];
     _scrollView.backgroundColor = HexRGB(0xf3f3f3);
+    [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width, _scrollView.frame.size.height)];
     [self.view addSubview:_scrollView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -32,7 +33,6 @@
     imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
     imageView.center = CGPointMake(kWidth/2,kHeight-64-image.size.height/2-30);
     [_scrollView addSubview:imageView];
-
     
     [self buildUI];
 }
@@ -43,18 +43,16 @@
     NSDictionary *dic = [notify userInfo];
     NSValue *value = [dic objectForKey:UIKeyboardFrameEndUserInfoKey];
     CGRect keyboardFrame = [value CGRectValue];
-    [_scrollView setContentSize:CGSizeMake(kWidth,kHeight-64+keyboardFrame.size.height)];
+    [_scrollView setContentInset:UIEdgeInsetsMake(0, 0, keyboardFrame.size.height,0)];
 }
 
 
 #pragma mark 键盘隐藏
 - (void)keyboardWillHiden
 {
-    [UIView animateWithDuration:0.1 animations:^{
-        [_scrollView setContentSize:CGSizeMake(kWidth,kHeight-64)];
-        
-    }];
+    [_scrollView setContentInset:UIEdgeInsetsMake(0, 0,0,0)];
 }
+
 
 
 - (void)buildUI

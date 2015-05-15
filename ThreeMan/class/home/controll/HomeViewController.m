@@ -62,7 +62,6 @@ static NSString * const reuseIdentifier = @"Cell";
     [self addMBprogressView];
     [self addLoadStatus];
    
- 
 }
 #pragma  mark ------显示指示器
 -(void)addMBprogressView{

@@ -74,7 +74,7 @@
 
 - (void)setObject:(FileModel *)fileModel
 {
-    [_companyHomeImage setImageWithURL:[NSURL URLWithString:fileModel.img] placeholderImage:placeHoderImage2];
+    [_companyHomeImage setImageWithURL:[NSURL URLWithString:fileModel.img] placeholderImage:placeHoderImage3];
     CGSize size = [AdaptationSize getSizeFromString:fileModel.title Font:[UIFont systemFontOfSize:15] withHight:20 withWidth:CGFLOAT_MAX];
     if (size.width<=(kWidth-YYBorderX*2-(_companyHomeSmailImage.frame.origin.x+_companyHomeSmailImage.frame.size.width+15))) {
         _companyHomeTitle.frame = CGRectMake(_companyHomeSmailImage.frame.origin.x+_companyHomeSmailImage.frame.size.width+5,7,size.width,20);

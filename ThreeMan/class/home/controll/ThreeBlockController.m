@@ -99,7 +99,7 @@
     }
     if (!isRefresh) {
         MBProgressHUD *progress =[MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        progress.labelText =@"加载中。。。";
+        progress.labelText =@"加载中...";
     }
 //    NSDictionary *parmDic =[NSDictionary dictionaryWithObjectsAndKeys:_threeId,@"id",typestr,@"type" ,nil];
     [HttpTool postWithPath:@"getNeedList" params:parmDic success:^(id JSON, int code, NSString *msg) {
@@ -147,7 +147,7 @@
                 if (dic2.count<pageSize) {
                     refreshFooterView.hidden =YES;
 
-                    [RemindView showViewWithTitle:@"数据加载完毕！" location:MIDDLE];
+//                    [RemindView showViewWithTitle:@"数据加载完毕！" location:MIDDLE];
                 }else{
                     refreshFooterView.hidden = NO;
 

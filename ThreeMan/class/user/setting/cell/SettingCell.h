@@ -13,5 +13,7 @@
 @property (nonatomic,strong) UIView *bgView;
 @property (nonatomic,strong) UILabel *titleLabel;
 @property (nonatomic,strong) UIImageView *nextImage;
+@property (nonatomic,strong) UIView *line;
+
 
 @end
