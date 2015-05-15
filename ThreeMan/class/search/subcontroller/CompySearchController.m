@@ -26,6 +26,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = HexRGB(0xe8e8e8);
+    [self setLeftTitle:@"搜索结果"];
 
     _dataArray = [[NSMutableArray alloc] initWithCapacity:0];
     

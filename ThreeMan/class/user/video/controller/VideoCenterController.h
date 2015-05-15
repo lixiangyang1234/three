@@ -20,5 +20,6 @@
 @property(nonatomic,strong)RecordController *recordVC;
 @property(nonatomic,strong)SUNSlideSwitchView *sliderSwitchView;
 @property (nonatomic, assign) NSInteger selectedIndex;
+@property (nonatomic,strong) UILabel *titleLabel;
 
 @end

@@ -27,7 +27,12 @@
     
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    [self setLeftTitle:@"搜索结果"];
+    
     _dataArray = [[NSMutableArray alloc] initWithCapacity:0];
+    
+    
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kHeight-64) style:UITableViewStylePlain];
     _tableView.delegate = self;

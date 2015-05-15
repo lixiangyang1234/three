@@ -28,6 +28,7 @@
 {
     ErrorView *noResultView;
     ErrorView *networkError;
+    UIView *textBgView;
 }
 @end
 
@@ -148,15 +149,28 @@
     _resultTableView.hidden = YES;
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController.navigationBar addSubview:textBgView];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [textBgView removeFromSuperview];
+}
+
 #pragma mark 导航栏相关视图
 - (void)loadNavItems
 {
     //搜索框
-    CGFloat width = kWidth-140;
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0,0,width,32)];
-    view.backgroundColor = [UIColor whiteColor];
-    view.layer.cornerRadius = 32/2;
-    view.layer.masksToBounds = YES;
+    CGFloat width = kWidth-50*2;
+    textBgView = [[UIView alloc] initWithFrame:CGRectMake(0,0,width,32)];
+    textBgView.backgroundColor = [UIColor whiteColor];
+    textBgView.center = CGPointMake(kWidth/2,44/2);
+    textBgView.layer.cornerRadius = 32/2;
+    textBgView.layer.masksToBounds = YES;
     _textField = [[UITextField alloc] initWithFrame:CGRectMake(32/2, 0,width-32/2, 32)];
     _textField.backgroundColor = [UIColor clearColor];
     _textField.clearButtonMode = UITextFieldViewModeAlways;
@@ -164,16 +178,17 @@
     _textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     _textField.delegate  = self;
     
-    [view addSubview:_textField];
+    
+    [textBgView addSubview:_textField];
     _textField.font = [UIFont systemFontOfSize:15];
     _textField.placeholder = @"搜索课程、企业";
-    self.navigationItem.titleView = view;
+//    self.navigationItem.titleView = textBgView;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldChange) name:UITextFieldTextDidChangeNotification object:_textField];
     
     //搜索按钮
     UIImage *image = [UIImage imageNamed:@"nav_search"];
     UIButton *searchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    searchBtn.frame = CGRectMake(0, 0,image.size.width,image.size.height);
+    searchBtn.frame = CGRectMake(0, 0,30,30);
     [searchBtn setImage:image forState:UIControlStateNormal];
     [searchBtn addTarget:self action:@selector(search) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:searchBtn];

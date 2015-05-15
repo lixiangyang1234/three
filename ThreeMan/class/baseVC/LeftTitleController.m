@@ -24,44 +24,26 @@
     [self.view addSubview:networkError];
     
     self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(35,0,kWidth/2-44,44)];
-    self.titleLabel.font = [UIFont systemFontOfSize:15];
+    self.titleLabel.font = [UIFont systemFontOfSize:16];
     self.titleLabel.backgroundColor = [UIColor clearColor];
     self.titleLabel.textColor = [UIColor whiteColor];
-    [self.navigationController.navigationBar addSubview:self.titleLabel];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.titleLabel.hidden = NO;
+    [self.navigationController.navigationBar addSubview:self.titleLabel];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    self.titleLabel.hidden = YES;
+    [self.titleLabel removeFromSuperview];
 }
 
 - (void)setLeftTitle:(NSString *)leftTitle
 {
     self.titleLabel.text = leftTitle;
-//    UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth/2,44)];
-//    titleView.backgroundColor = [UIColor clearColor];
-//    
-//    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(-30, 0, 150, 44)];
-//    label.backgroundColor = [UIColor clearColor];
-//    label.textColor = HexRGB(0xffffff);
-//    label.text = leftTitle;
-//    label.font = [UIFont systemFontOfSize:16];
-//    [titleView addSubview:label];
-//    
-//    
-//    
-//   
-//    self.navigationItem.titleView = titleView;
-    //企业首页
-//    
-
 }
 
 - (void)didReceiveMemoryWarning {
