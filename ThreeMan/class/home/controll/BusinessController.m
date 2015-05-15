@@ -94,7 +94,7 @@
                    
                    if (arr.count<pageSize) {
                        refreshFooterView.hidden =YES;
-                       [RemindView showViewWithTitle:@"数据加载完毕！" location:MIDDLE];
+//                       [RemindView showViewWithTitle:@"数据加载完毕！" location:BELLOW];
                    }else{
                        refreshFooterView.hidden =NO;
                    }

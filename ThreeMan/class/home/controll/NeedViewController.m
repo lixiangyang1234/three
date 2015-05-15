@@ -95,6 +95,7 @@
     }else{
         param = @{@"pageid":@"0",@"pagesize":[NSString stringWithFormat:@"%d",pagesize],@"id":_categoryId,@"type":typestr};
     }
+    NSLog(@"---------->%@",param);
     if (!isRefresh) {
         
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -125,7 +126,7 @@
                     [_needListArray addObject:item];
                     if (array.count<pagesize) {
                         refreshFootView.hidden = YES;
-                        [RemindView showViewWithTitle:@"数据加载完毕！" location:BELLOW];
+//                        [RemindView showViewWithTitle:@"数据加载完毕！" location:BELLOW];
                     }else{
                         refreshFootView.hidden = NO;
                     }

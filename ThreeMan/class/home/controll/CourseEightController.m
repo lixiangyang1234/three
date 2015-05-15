@@ -75,7 +75,7 @@
     UIView *eightView =[[UIView alloc]initWithFrame:CGRectMake(0, borderw*2+BANNERH, kWidth-YYBORDERWH*2, 8)];
     [self.backScrollView addSubview:eightView];
     eightView.backgroundColor =HexRGB(0xeeeee9);
-    bannerHeightLine =eightView.frame.size.height+eightView.frame.origin.y+borderw*2;
+    bannerHeightLine =eightView.frame.size.height+eightView.frame.origin.y+borderw;
     UIView *line =[[UIView alloc]initWithFrame:CGRectMake(0, 0, kWidth-YYBORDERWH*2, 1)];
     [eightView addSubview:line];
     line.backgroundColor =HexRGB(0xcacaca);
@@ -84,18 +84,18 @@
     CGFloat titleH =[courseModel.courseTitle sizeWithFont:[UIFont systemFontOfSize:PxFont(22)] constrainedToSize:CGSizeMake(kWidth-YYBORDERWH*2-borderw*2, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping].height;
     
     UILabel *titleLabel =[[UILabel alloc]initWithFrame:CGRectMake(borderw*2, bannerHeightLine, kWidth-YYBORDERWH*2-borderw*4, titleH)];
-    titleLabel.font =[UIFont systemFontOfSize:PxFont(22)];
+    titleLabel.font =[UIFont systemFontOfSize:PxFont(18)];
     [self.backScrollView addSubview:titleLabel];
     titleLabel.textColor =HexRGB(0x323232);
     titleLabel.backgroundColor =[UIColor clearColor];
     titleLabel.textAlignment =NSTextAlignmentLeft;
     titleLabel.numberOfLines =0;
     titleLabel.text =courseModel.courseTitle;
-    CGFloat titleLabelH =titleLabel.frame.origin.y+titleH;
+    CGFloat titleLabelH =titleLabel.frame.origin.y+titleH+2;
     
     //添加浏览量
-    UILabel *redLabel =[[UILabel alloc]initWithFrame:CGRectMake(borderw*2, titleLabelH+borderw, 200, 20)];
-    redLabel.font =[UIFont systemFontOfSize:PxFont(16)];
+    UILabel *redLabel =[[UILabel alloc]initWithFrame:CGRectMake(borderw*2, titleLabelH, 200, 20)];
+    redLabel.font =[UIFont systemFontOfSize:PxFont(14)];
     [self.backScrollView addSubview:redLabel];
     redLabel.textColor =HexRGB(0x959595);
     

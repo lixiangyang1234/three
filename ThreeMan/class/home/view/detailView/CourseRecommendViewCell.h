@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "courseDetailModel.h"
+#import "AdaptationSize.h"
 @interface CourseRecommendViewCell : UITableViewCell
 @property(nonatomic,strong)UIImageView *headerRecommendImage;
 @property(nonatomic,strong)UILabel *nameRecomendLabel;
@@ -15,5 +16,5 @@
 @property(nonatomic,strong)UILabel *contentRecomendLabel;
 @property(nonatomic,strong)UIView *backCell;
 @property(nonatomic,strong)UIView *backLineCell;
-
+-(void)setObjectRecommendItem:(courseDetailModel *)item;
 @end
