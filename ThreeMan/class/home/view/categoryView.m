@@ -401,7 +401,7 @@
         self.selectRowAtIndex(sender.tag);
     }
 
-    NSLog(@"------>%d",sender.tag);
+//    NSLog(@"------>%d",sender.tag);
     [self dismiss:YES];
 }
 

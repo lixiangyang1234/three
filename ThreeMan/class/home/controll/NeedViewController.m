@@ -110,8 +110,8 @@
         }else{
             [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
             [refreshHeaderView endRefreshing];
-        }
-        if (!isRefresh) {
+//        }
+//        if (!isRefresh) {
             [_needListArray removeAllObjects];
         }
         if (code == 100) {

@@ -635,6 +635,11 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     //    NSLog(@"%d",_selectedBtn.tag);
+    static NSString *cellIndex =@"cellIndexfier";
+    UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:cellIndex];
+    if (!cellIndex) {
+        cell =[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndex];
+    }
     if (_selectedBtn.tag ==21) {
         static NSString *cellIndexfider =@"RecommendCell";
         
@@ -665,7 +670,7 @@
         return answerCell;
         
     }
-    return nil;
+    return cell;
     
 }
 

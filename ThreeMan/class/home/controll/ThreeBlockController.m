@@ -36,6 +36,7 @@
 
     // Do any additional setup after loading the view.
     [self.view setBackgroundColor:HexRGB(0xffffff)];
+    _selectedIntem =[UIButton buttonWithType:UIButtonTypeCustom];
     _threeArray =[NSMutableArray array];
     _categoryArray =[NSMutableArray array];
     _threeListArray =[NSMutableArray array];
@@ -59,7 +60,7 @@
     refreshFooterView.scrollView =_tableView;
 }
 -(void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView{
-    
+    NSLog(@"----%ld------%ld",(long)indexBtn,_selectedIntem.tag);
     if (![refreshView isKindOfClass:[MJRefreshHeaderView class]]) {
         isRefresh = YES;
         if (_selectedItem.tag ==10000)
@@ -71,7 +72,7 @@
                 NSString * indexid1=[NSString stringWithFormat:@"%d", threeModel.categoryid];
                 [self addLoadStatus:@"0" indexId:indexid1 ];
                 
-            }else if(indexBtn ==10||indexBtn==11||indexBtn==12||indexBtn ==13||indexBtn==14||indexBtn==15||indexBtn ==16){
+            }else if(indexBtn==10||indexBtn==11||indexBtn==12||indexBtn==13||indexBtn==14||indexBtn==15||indexBtn==16){
                 threeBlockModel *threeModel =[_categoryArray objectAtIndex:indexBtn-10];
                 NSString * indexid2=[NSString stringWithFormat:@"%d", threeModel.cateid];
                 [self addLoadStatus:@"0" indexId:indexid2];
@@ -85,7 +86,7 @@
                 NSString * indexid1=[NSString stringWithFormat:@"%d", threeModel.categoryid];
                 [self addLoadStatus:@"1" indexId:indexid1 ];
                 
-            }else if(indexBtn ==10||indexBtn==11||indexBtn==12||indexBtn ==13||indexBtn==14||indexBtn==15||indexBtn ==16){
+            }else if(indexBtn==10||indexBtn==11||indexBtn==12||indexBtn==13||indexBtn==14||indexBtn==15||indexBtn==16){
                 threeBlockModel *threeModel =[_categoryArray objectAtIndex:indexBtn-10];
                 NSString * indexid2=[NSString stringWithFormat:@"%d", threeModel.cateid];
                 [self addLoadStatus:@"1"indexId:indexid2];
@@ -98,9 +99,9 @@
             if (indexBtn ==101||indexBtn==102||indexBtn==103) {
                 threeBlockModel *threeModel =[_threeArray objectAtIndex:indexBtn-101];
                 NSString * indexid1=[NSString stringWithFormat:@"%d", threeModel.categoryid];
-                [self addLoadStatus:@"2||3||4||5||6||7||8" indexId:_threeId ];
+                [self addLoadStatus:@"2||3||4||5||6||7||8" indexId:indexid1 ];
                 
-            }else if(indexBtn ==10||indexBtn==11||indexBtn==12||indexBtn ==13||indexBtn==14||indexBtn==15||indexBtn ==16){
+            }else if(indexBtn==10||indexBtn==11||indexBtn==12||indexBtn==13||indexBtn==14||indexBtn==15||indexBtn==16){
                 threeBlockModel *threeModel =[_categoryArray objectAtIndex:indexBtn-10];
                 NSString * indexid2=[NSString stringWithFormat:@"%d", threeModel.cateid];
                 [self addLoadStatus:@"2||3||4||5||6||7||8" indexId:indexid2];
@@ -111,6 +112,7 @@
         
         
     }else{
+      
         isRefresh = NO;
         if (_selectedItem.tag ==10000)
         {
@@ -121,7 +123,7 @@
                 NSString * indexid1=[NSString stringWithFormat:@"%d", threeModel.categoryid];
                 [self addLoadStatus:@"0" indexId:indexid1 ];
                 
-            }else if(indexBtn ==10||indexBtn==11||indexBtn==12||indexBtn ==13||indexBtn==14||indexBtn==15||indexBtn ==16){
+            }else if(indexBtn==10||indexBtn==11||indexBtn==12||indexBtn==13||indexBtn==14||indexBtn==15||indexBtn==16){
                 threeBlockModel *threeModel =[_categoryArray objectAtIndex:indexBtn-10];
                 NSString * indexid2=[NSString stringWithFormat:@"%d", threeModel.cateid];
                 [self addLoadStatus:@"0" indexId:indexid2];
@@ -135,7 +137,7 @@
                 NSString * indexid1=[NSString stringWithFormat:@"%d", threeModel.categoryid];
                 [self addLoadStatus:@"1" indexId:indexid1 ];
                 
-            }else if(indexBtn ==10||indexBtn==11||indexBtn==12||indexBtn ==13||indexBtn==14||indexBtn==15||indexBtn ==16){
+            }else if(indexBtn==10||indexBtn==11||indexBtn==12||indexBtn==13||indexBtn==14||indexBtn==15||indexBtn==16) {
                 threeBlockModel *threeModel =[_categoryArray objectAtIndex:indexBtn-10];
                 NSString * indexid2=[NSString stringWithFormat:@"%d", threeModel.cateid];
                 [self addLoadStatus:@"1"indexId:indexid2];
@@ -148,9 +150,9 @@
             if (indexBtn ==101||indexBtn==102||indexBtn==103) {
                 threeBlockModel *threeModel =[_threeArray objectAtIndex:indexBtn-101];
                 NSString * indexid1=[NSString stringWithFormat:@"%d", threeModel.categoryid];
-                [self addLoadStatus:@"2||3||4||5||6||7||8" indexId:_threeId ];
+                [self addLoadStatus:@"2||3||4||5||6||7||8" indexId:indexid1 ];
                 
-            }else if(indexBtn ==10||indexBtn==11||indexBtn==12||indexBtn ==13||indexBtn==14||indexBtn==15||indexBtn ==16){
+            }else if(indexBtn==10||indexBtn==11||indexBtn==12||indexBtn==13||indexBtn==14||indexBtn==15||indexBtn==16){
                 threeBlockModel *threeModel =[_categoryArray objectAtIndex:indexBtn-10];
                 NSString * indexid2=[NSString stringWithFormat:@"%d", threeModel.cateid];
                 [self addLoadStatus:@"2||3||4||5||6||7||8" indexId:indexid2];
@@ -161,33 +163,35 @@
 
        
     }
-//    NSLog(@"------%d",indexBtn);
 
 }
 -(void)addLoadStatus:(NSString *)typestr indexId:(NSString *)indexid{
     NSDictionary *parmDic;
     if (isRefresh) {
-        parmDic =@{@"pageid":[NSString stringWithFormat:@"%ld",(unsigned long)_threeListArray.count],@"pagesize":[NSString stringWithFormat:@"%d",pageSize],@"id":indexid,@"type":typestr    };
+        parmDic =@{@"pageid":[NSString stringWithFormat:@"%ld",(unsigned long)_threeListArray.count],@"pagesize":[NSString stringWithFormat:@"%d",pageSize],@"type":typestr ,@"id":indexid    };
     }else{
-        parmDic =@{@"pageid":@"0",@"pagesize":[NSString stringWithFormat:@"%d",pageSize],@"id":_threeId,@"type":typestr    };
+        parmDic =@{@"pageid":@"0",@"pagesize":[NSString stringWithFormat:@"%d",pageSize],@"type":typestr ,@"id":indexid   };
     }
     if (!isRefresh) {
         MBProgressHUD *progress =[MBProgressHUD showHUDAddedTo:self.view animated:YES];
         progress.labelText =@"加载中...";
     }
-//    NSDictionary *parmDic =[NSDictionary dictionaryWithObjectsAndKeys:_threeId,@"id",typestr,@"type" ,nil];
     [HttpTool postWithPath:@"getNeedList" params:parmDic success:^(id JSON, int code, NSString *msg) {
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        NSLog(@"========>%@",parmDic);
         if (isRefresh) {
             [refreshFooterView endRefreshing];
         }else{
             [refreshHeaderView endRefreshing];
 
             [MBProgressHUD hideAllHUDsForView :self.view animated:YES];
-//        }
-//        if (!isRefresh) {
-            [_threeListArray removeAllObjects];
         }
+        if (!isRefresh) {
+            [_threeListArray removeAllObjects];
+
+        }
+//        [_threeArray removeAllObjects];
+//        [_categoryArray removeAllObjects];
 
         if (code == 100) {
             NSDictionary *dic = [JSON objectForKey:@"data"][@"subcategory_list"];
@@ -200,19 +204,16 @@
 
             
 
-//            NSLog(@"%@",array);
 
             if (![dic isKindOfClass:[NSNull class]]) {
                 for (NSDictionary *dict in dic) {
                     threeBlockModel *item = [[threeBlockModel alloc] initWithForArray:dict];
-//                    [_threeArray removeAllObjects];
                     [_threeArray addObject:item];
                 }
                 
             }
             if (![dic1 isKindOfClass:[NSNull class]]) {
                 for (NSDictionary *dict1 in arrdic) {
-//                    [_categoryArray removeAllObjects];
                     threeBlockModel *cateModel = [[threeBlockModel alloc] initWithForCategory:dict1];
                     [_categoryArray addObject:cateModel];
                 }
@@ -236,14 +237,17 @@
 
             }
             
-            [_tableView reloadData];
-            if (_threeListArray.count<=0) {
-                notStatus.hidden =NO;
-            }else{
-                notStatus.hidden =YES;
-                
-            }
+
         }
+        NSLog(@"------>%d",_threeListArray.count);
+
+        if (_threeListArray.count<=0) {
+            notStatus.hidden =NO;
+        }else{
+            notStatus.hidden =YES;
+            
+        }
+        [_tableView reloadData];
     } failure:^(NSError *error) {
         if (isRefresh) {
             [refreshFooterView endRefreshing];
@@ -273,6 +277,7 @@
             chooseBtn.isSelected =YES;
             _selectedItem =chooseBtn;
         }
+        _selectedIntem.tag =chooseBtn.tag;
         chooseBtn.frame =CGRectMake(8+i%3*55, 6, 50, 28) ;
         [chooseBtn setTitle:chooseTitleArray[i] forState:UIControlStateNormal];
         [chooseBtn addTarget:self action:@selector(tchooseBtnClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -311,6 +316,8 @@
 #pragma mark ----chooseBtn categoryBtn 筛选按钮
 //筛选按钮
 -(void)tchooseBtnClick:(YYSearchButton *)sender{
+    
+
         if (sender!=_selectedItem) {
            
         _selectedItem.isSelected =NO;
@@ -329,11 +336,11 @@
         
         [self addLoadStatus:@"2||3||4||5||6||7||8" indexId:_threeId];
     }
-    
+
     
 }
 -(void)threeCategoryBtnClick:(UIButton *)sender{
-    
+
     [UIView animateWithDuration:0.001 animations:^{
         sender.imageView.transform = CGAffineTransformRotate(sender.imageView.transform, DEGREES_TO_RADIANS(180));
     }];
@@ -353,7 +360,6 @@
         threeBlockModel *threeModel =[_threeArray objectAtIndex:i];
         NSString *str =threeModel.categoryTitle;
                [titles addObject:str];
-//        NSLog(@"%@",titles);
 
     }
     NSMutableArray *category = [NSMutableArray array];
@@ -362,7 +368,6 @@
         threeBlockModel *categoryModel =[_categoryArray objectAtIndex:c];
 
         NSString *cateStr =categoryModel.cateTitle;
-//        NSLog(@"%@",cateStr);
         [category addObject:cateStr];
     }
     
@@ -375,28 +380,31 @@
     {
         isRefresh = NO;
         indexBtn =index;
-//        NSLog(@"%------------>lu",index);
         [UIView animateWithDuration:0.001 animations:^{
             sender.imageView.transform = CGAffineTransformRotate(sender.imageView.transform, DEGREES_TO_RADIANS(180));
         }];
+
         if (_selectedIntem.tag==10000) {
+           
+
             if (index ==100) {
+
                 [self addLoadStatus:@"0" indexId:_threeId];
-                
+
             }
             else  if (index ==101||index==102||index==103) {
                 threeBlockModel *threeModel =[_threeArray objectAtIndex:index-101];
                 NSString * indexid1=[NSString stringWithFormat:@"%d", threeModel.categoryid];
                 [self addLoadStatus:@"0" indexId:indexid1];
-                
+
             }else{
                 threeBlockModel *threeModel =[_categoryArray objectAtIndex:index-10];
                 NSString * indexid2=[NSString stringWithFormat:@"%d", threeModel.cateid];
                 [self addLoadStatus:@"0" indexId:indexid2 ];
-                
+
             }
 
-        }if (_selectedIntem.tag==10001) {
+        }else if (_selectedIntem.tag==10001) {
             if (index ==100) {
                 [self addLoadStatus:@"1" indexId:_threeId];
                 
@@ -413,7 +421,7 @@
                 
             }
             
-        }if (_selectedIntem.tag==10002) {
+        }else if (_selectedIntem.tag==10002) {
             if (index ==100) {
                 [self addLoadStatus:@"2||3||4||5||6||7||8" indexId:_threeId];
                 
@@ -455,17 +463,20 @@
         [cell setBackgroundColor:HexRGB(0xe0e0e0)];
         cell.selectionStyle =UITableViewCellSelectionStyleNone;
     }
-    threeBlockModel *threeModel =[_threeListArray objectAtIndex:indexPath.row];
+    
+    if (_threeListArray.count>0) {
+        threeBlockModel *threeModel =[_threeListArray objectAtIndex:indexPath.row];
+
+    
     [cell.needImage setImageWithURL:[NSURL URLWithString:threeModel.threeImgurl] placeholderImage:placeHoderImage];
     CGFloat titleH =[threeModel.threeTitle sizeWithFont:[UIFont systemFontOfSize:PxFont(18)] constrainedToSize:CGSizeMake(kWidth-156, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping].height;
     cell.needTitle.frame =CGRectMake(135, 9, kWidth-156, titleH);
     cell.needTitle.text =[NSString stringWithFormat:@"        %@",threeModel.threeTitle];
     cell.companyName.text =threeModel.threeCompanyname;
     [cell.zanBtn setTitle:[NSString stringWithFormat:@"%d",threeModel.threeHits ] forState:UIControlStateNormal];
-    //    NSLog(@"%f---%d",cell.frame.size.height,indexPath.row);
     [cell.needSmailImage typeID:threeModel.threeType];
    
-    
+    }
     
     
     
