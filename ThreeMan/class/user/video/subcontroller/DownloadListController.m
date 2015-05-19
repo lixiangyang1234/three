@@ -107,7 +107,6 @@
         SectionHeadView *headView = [[SectionHeadView alloc] initWithFrame:CGRectMake(0, 0,kWidth,36)];
         [headView setImgView:[UIImage imageNamed:@"finish"] title:@"完成"];
         [_headViewArray addObject:headView];
-        
     }
     
     if (_unFinishedArray.count!=0) {
@@ -120,8 +119,11 @@
     [_tableView reloadData];
     
     if (_dataArray.count==0) {
+        
         noDataView.hidden = NO;
+        
     }else{
+        
         noDataView.hidden = YES;
     }
 }
@@ -318,7 +320,6 @@
     return [_headViewArray objectAtIndex:section];
 }
 
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (!isEditting) {
@@ -430,16 +431,13 @@
     DownloadFileModel *file = [_finishedArray objectAtIndex:btn.tag-3000];
     //视频
     if ([file.type isEqualToString:@"1"]) {
-        NSLog(@"++++++++++++++%@",file.targetPath);
 
         NSURL *url = [NSURL fileURLWithPath:file.targetPath];
         DirectionMPMoviePlayerViewController *movieController = [[DirectionMPMoviePlayerViewController alloc] initWithContentURL:url];
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        if ([fileManager fileExistsAtPath:file.targetPath]) {
-            [self.view.window.rootViewController presentMoviePlayerViewControllerAnimated:movieController];
-        }
+        [self.view.window.rootViewController presentMoviePlayerViewControllerAnimated:movieController];
 
     }else{
+        
         NSString *targetPath = [file.targetPath lowercaseString];
         if ([targetPath hasSuffix:@".zip"]|[targetPath hasSuffix:@".rar"]) {
             [RemindView showViewWithTitle:@"无法打开该文件" location:MIDDLE];
@@ -449,8 +447,17 @@
         UIDocumentInteractionController *documentController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:file.targetPath]];
         documentController.delegate = self;
         [documentController presentPreviewAnimated:YES];
-
     }
+    NSDictionary *param = @{@"sid":[file.fileInfo objectForKey:@"id"]};
+    NSLog(@"%@",param);
+    [HttpTool postWithPath:@"getHistoryAdd" params:param success:^(id JSON, int code, NSString *msg) {
+        NSLog(@"%@",JSON);
+        if (code == 100) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:playMessage object:nil];
+        }
+    } failure:^(NSError *error) {
+       NSLog(@"%@",error);
+    }];
 }
 
 #pragma mark UIDocumentInteractionControllerDelegate
@@ -458,7 +465,6 @@
 {
     return self.view.window.rootViewController;
 }
-
 
 #pragma mark CircularProgressView_delegate
 - (void)progressViewClicked:(CircularProgressView *)view

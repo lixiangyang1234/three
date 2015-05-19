@@ -7,11 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PatternItem.h"
 
 @interface PatternCell : UITableViewCell
 
 @property (nonatomic,strong) UIImageView *imgView;
 @property (nonatomic,strong) UILabel *titleLabel;
 @property (nonatomic,strong) UILabel *readLabel;
+
+- (void)configureForPattern:(PatternItem *)item;
+
 
 @end

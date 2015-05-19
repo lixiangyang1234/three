@@ -20,7 +20,6 @@
 @interface MainControllerViewController ()<UINavigationControllerDelegate>
 {
     UIView *windowView;
-    UIButton *backItem;
 }
 @end
 
@@ -63,20 +62,6 @@
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0,78,27)];
     imageView.image = [UIImage imageNamed:@"logo"];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:imageView];
-    CGFloat y = 0;
-//    if (IsIos7) {
-//        y = 20;
-//    }
-    UIImage *image = [UIImage imageNamed:@"nav_return"];
-    backItem = [UIButton buttonWithType:UIButtonTypeCustom];
-    backItem.frame = CGRectMake(0,0,35,44);
-    [backItem setImage:image forState:UIControlStateNormal];
-    backItem.center = CGPointMake(backItem.frame.size.width/2,y+44/2);
-    backItem.imageEdgeInsets = UIEdgeInsetsMake(0,backItem.frame.size.width-image.size.width, 0, 0);
-    [backItem addTarget:self action:@selector(backItem) forControlEvents:UIControlEventTouchUpInside];
-    [self.navigationController.navigationBar addSubview:backItem];
-    backItem.hidden = YES;
-    
 }
 //添加容器
 -(void)addUI{
@@ -162,11 +147,10 @@
         }
         
         navigationController.view.frame = frame;
-        backItem.hidden = NO;
         // 3.添加左上角的返回按钮
-//        viewController.navigationItem.leftBarButtonItem = [UIBarButtonItem itemWithIcon:@"nav_return" highlightedIcon:@"nav_return.png" target:self action:@selector(backItem)];
-    }else{
-        backItem.hidden = YES;
+        if (!viewController.navigationItem.leftBarButtonItem) {
+            viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithIcon:@"nav_return.png" title:@"" target:self action:@selector(backItem)];
+        }
     }
 }
 

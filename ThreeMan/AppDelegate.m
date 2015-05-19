@@ -16,7 +16,11 @@
 
 @interface AppDelegate ()
 
+
+
 @end
+
+NSString *download_link;
 
 @implementation AppDelegate
 
@@ -64,6 +68,8 @@
         
         // 显示版本新特性界面
         self.window.rootViewController = [[NewfeatureController alloc] init];
+            
+        
     }
     
     [self autoLogin];
@@ -79,9 +85,6 @@
     [self.window makeKeyAndVisible];
     return YES;
 }
-
-
-
 
 - (void)autoLogin
 {
@@ -105,9 +108,44 @@
             if (img&&img.length!=0) {
                 userItem.img = img;
             }
-            
             [SystemConfig sharedInstance].userInfo = userItem;
         }
+    }
+}
+
+- (void)checkVersion
+{
+    [HttpTool postWithPath:@"getUpdate" params:nil success:^(id JSON, int code, NSString *msg) {
+        
+        if (code == 100) {
+            
+            //当前版本
+            NSString *currentVersion = [[NSBundle mainBundle].infoDictionary objectForKey:@"CFBundleShortVersionString"];
+            float currentVersion_float = [currentVersion floatValue];
+            
+            //服务器存储版本
+            NSString *version = JSON[@"data"][@"edition"];
+            
+            float version_float = [version floatValue];
+            //当前版本号小于服务器获取的版本号 不需更新
+            if (currentVersion_float<version_float) {
+                
+                download_link = JSON[@"data"][@"downloadurl"];
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"检测到新版本,是否前往更新" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"前往更新", nil];
+                alertView.tag = 1001;
+                [alertView show];
+                
+            }
+        }
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+    }];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:download_link]];
     }
 }
 

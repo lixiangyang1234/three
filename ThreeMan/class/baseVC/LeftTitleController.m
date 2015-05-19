@@ -7,6 +7,7 @@
 //
 
 #import "LeftTitleController.h"
+#import "UIBarButtonItem+MJ.h"
 
 @interface LeftTitleController ()
 
@@ -29,22 +30,17 @@
     self.titleLabel.textColor = [UIColor whiteColor];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self.navigationController.navigationBar addSubview:self.titleLabel];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [self.titleLabel removeFromSuperview];
-}
-
 - (void)setLeftTitle:(NSString *)leftTitle
 {
-    self.titleLabel.text = leftTitle;
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithIcon:@"nav_return.png" title:leftTitle target:self action:@selector(backItem)];
 }
+
+- (void)backItem
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

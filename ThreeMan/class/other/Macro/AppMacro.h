@@ -68,13 +68,12 @@
 //判断字典dic中键key对应的值是否为空
 #define isNull(dic,key) [[dic objectForKey:key] isKindOfClass:[NSNull class]]?YES:NO
 
-#define kBaseURL @"http://ebingoo.bingoso.com"
-#define kUrl @"http://fish.ebingoo.com"
+#define kBaseURL @"http://192.168.1.122/sanshenxing/index.php?s=/Home/Api/"
 
 
 //通知名称
 #define addNewDownload @"newDownload"  //添加了一个新的下载
-
+#define playMessage @"playMessage"   //播放或打开文件时 发送的通知
 
 // 2.日志输出宏定义
 #ifdef DEBUG

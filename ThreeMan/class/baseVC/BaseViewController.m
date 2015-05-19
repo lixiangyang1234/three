@@ -22,6 +22,7 @@
 #import "AuthencateTool.h"
 #import "BaseViewController.h"
 #import "CompFavoriteController.h"
+#import "EditInfoController.h"
 
 @interface BaseViewController ()<TYPopoverViewDelegate,LoginViewDelegate,FindPsWordViewDelegate,KeyboardDelegate,ValidateViewDelegate,RegistViewDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 {
@@ -46,7 +47,7 @@
     windowBgView.backgroundColor = [UIColor blackColor];
     windowBgView.alpha = 0.4;
     
-    self.navigationItem.hidesBackButton =YES;
+//    self.navigationItem.hidesBackButton =YES;
     
 
 }
@@ -148,6 +149,12 @@
                 loginView.center = CGPointMake(kWidth/2, kHeight/2);
             }];
             
+        }
+            break;
+        case -3:
+        {
+            EditInfoController *edit = [[EditInfoController alloc] init];
+            [self.view.window.rootViewController presentViewController:edit animated:YES completion:nil];
         }
             break;
         //我的成长

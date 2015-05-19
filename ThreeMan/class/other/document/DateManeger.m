@@ -28,7 +28,10 @@
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy.MM.dd"];
     NSString *dateSMS = [formatter stringFromDate:date];
+
     NSString *dateNow = [formatter stringFromDate:[NSDate date]];
+    NSLog(@"%@  %@",dateSMS,dateNow);
+
     if ([dateSMS isEqualToString:dateNow]) {
         return YES;
     }

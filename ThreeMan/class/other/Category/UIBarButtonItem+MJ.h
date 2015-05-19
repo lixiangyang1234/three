@@ -14,4 +14,8 @@
 - (id)initWithSearch:(NSString *)search highlightedSearch:(NSString *)highlighted target:(id)target action:(SEL)action;
 + (id)itemWithSearch:(NSString *)search highlightedSearch:(NSString *)highlighted target:(id)target action:(SEL)action;
 
+- (id)initWithIcon:(NSString *)icon title:(NSString *)title target:(id)target action:(SEL)action;
+
++ (id)initWithIcon:(NSString *)icon title:(NSString *)title target:(id)target action:(SEL)action;
+
 @end
