@@ -28,7 +28,7 @@ static DBTool *_instance;
     NSPersistentStoreCoordinator *store = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
     
     NSString *path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:@"Model.sqlite"];
-    NSLog(@"0---------%@",path);
+//    NSLog(@"0---------%@",path);
     
     
     NSURL *url = [NSURL fileURLWithPath:path];
@@ -85,7 +85,7 @@ static DBTool *_instance;
         
         if ([_context save:nil])
         {
-            NSLog(@"保存成功！");
+//            NSLog(@"保存成功！");
         }
         else
         {
@@ -126,7 +126,7 @@ static DBTool *_instance;
     
     if ([_context save:nil])
     {
-        NSLog(@"保存成功！");
+//        NSLog(@"保存成功！");
     }
     else
     {
@@ -158,7 +158,7 @@ static DBTool *_instance;
 
     if ([_context save:nil])
     {
-        NSLog(@"删除成功！");
+//        NSLog(@"删除成功！");
     }
     else
     {

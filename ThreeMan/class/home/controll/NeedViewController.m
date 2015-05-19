@@ -153,6 +153,7 @@
             [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
         }
         if (_needListArray.count==0) {
+            notStatus.hidden =YES;
             networkError.hidden = NO;
         }
     }];

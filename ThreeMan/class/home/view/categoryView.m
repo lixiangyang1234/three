@@ -378,12 +378,7 @@
         [[DBTool shareDBToolClass] updateSelectedStyleByTTag:[NSString stringWithFormat:@"%ld",(long)_selectedButton.tag] withCTag:@"10"];
     }
     
-    NSLog(@"%ld",(long)_selectedButton.tag);
-    
-    
-    
-    
-    
+     
 }
 
 

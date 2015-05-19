@@ -120,8 +120,11 @@
            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
 
        }
-
-       networkError.hidden =NO;
+       if (_businessArray.count<=0) {
+           notStatus.hidden =YES;
+           networkError.hidden =NO;
+       }
+       
    }];
 }
 

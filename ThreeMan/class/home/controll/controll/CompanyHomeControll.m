@@ -152,8 +152,10 @@
             [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
             
         }
-        
-        networkError.hidden =NO;
+        if (_companyArray.count<=0) {
+            failView.hidden =YES;
+            networkError.hidden =NO;
+        }
     }];
 }
 -(void)addUIBannerView{
