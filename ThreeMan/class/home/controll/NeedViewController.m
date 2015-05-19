@@ -102,8 +102,7 @@
         hud.labelText = @"加载中...";
     }
     [HttpTool postWithPath:@"getNeedList" params:param success:^(id JSON, int code, NSString *msg) {
-//        [_needListArray removeAllObjects];
-        NSLog(@"%@",param);
+        NSLog(@"%@",JSON);
         if (isRefresh) {
             [refreshFootView endRefreshing];
 

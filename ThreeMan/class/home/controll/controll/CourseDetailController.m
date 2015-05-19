@@ -591,7 +591,6 @@
             categoryBtn.frame =CGRectMake(80, 9, kWidth-160, 32) ;
             categoryBtn.titleLabel.font =[UIFont systemFontOfSize:PxFont(20)];
             [categoryBtn setBackgroundImage:[UIImage imageNamed:@"buy_img"] forState:UIControlStateNormal];
-            NSLog(@"------111111-----》%d",coureseModel.courseIsbuy);
             if (coureseModel.coursePrice <=0||coureseModel.courseIsbuy==1) {
                 [categoryBtn setTitle:@"立即下载" forState:UIControlStateNormal];
             }else{

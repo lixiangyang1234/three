@@ -67,7 +67,7 @@
 //    if (IsIos7) {
 //        y = 20;
 //    }
-    UIImage *image = [UIImage imageNamed:@"nav_return"];
+    UIImage *image = [UIImage imageNamed:@"nav_back"];
     backItem = [UIButton buttonWithType:UIButtonTypeCustom];
     backItem.frame = CGRectMake(0,0,35,44);
     [backItem setImage:image forState:UIControlStateNormal];
