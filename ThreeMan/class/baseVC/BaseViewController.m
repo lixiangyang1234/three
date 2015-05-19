@@ -75,12 +75,16 @@
     UIButton * searchItem =[UIButton buttonWithType:UIButtonTypeCustom];
     searchItem.frame =CGRectMake(kWidth-150, 0, 30, 30);
     [searchItem setImage:[UIImage imageNamed:@"nav_search"] forState:UIControlStateNormal];
+    [searchItem setImage:[UIImage imageNamed:@"nav_search_pre"] forState:UIControlStateHighlighted];
+
     [searchItem addTarget:self action:@selector(search) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *item1= [[UIBarButtonItem alloc] initWithCustomView:searchItem];
     
     UIButton * menuItem =[UIButton buttonWithType:UIButtonTypeCustom];
     menuItem.frame =CGRectMake(searchItem.frame.origin.x+searchItem.frame.size.width-4, 0, 30, 30);
     [menuItem setImage:[UIImage imageNamed:@"nav_more"] forState:UIControlStateNormal];
+    [menuItem setImage:[UIImage imageNamed:@"nav_more_pre"] forState:UIControlStateHighlighted];
+
     UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithCustomView:menuItem];
     [menuItem addTarget:self action:@selector(navItemRight:) forControlEvents:UIControlEventTouchUpInside];
     

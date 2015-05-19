@@ -378,12 +378,7 @@
         [[DBTool shareDBToolClass] updateSelectedStyleByTTag:[NSString stringWithFormat:@"%ld",(long)_selectedButton.tag] withCTag:@"10"];
     }
     
-    NSLog(@"%ld",(long)_selectedButton.tag);
-    
-    
-    
-    
-    
+     
 }
 
 
@@ -401,7 +396,7 @@
         self.selectRowAtIndex(sender.tag);
     }
 
-    NSLog(@"------>%d",sender.tag);
+//    NSLog(@"------>%d",sender.tag);
     [self dismiss:YES];
 }
 

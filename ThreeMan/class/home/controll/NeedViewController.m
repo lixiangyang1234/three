@@ -102,16 +102,15 @@
         hud.labelText = @"加载中...";
     }
     [HttpTool postWithPath:@"getNeedList" params:param success:^(id JSON, int code, NSString *msg) {
-//        [_needListArray removeAllObjects];
-        NSLog(@"%@",param);
+        NSLog(@"%@",JSON);
         if (isRefresh) {
             [refreshFootView endRefreshing];
 
         }else{
             [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
             [refreshHeaderView endRefreshing];
-        }
-        if (!isRefresh) {
+//        }
+//        if (!isRefresh) {
             [_needListArray removeAllObjects];
         }
         if (code == 100) {
@@ -154,6 +153,7 @@
             [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
         }
         if (_needListArray.count==0) {
+            notStatus.hidden =YES;
             networkError.hidden = NO;
         }
     }];

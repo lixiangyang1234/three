@@ -96,7 +96,6 @@
         MBProgressHUD *progress =[MBProgressHUD showHUDAddedTo:self.view animated:YES];
         progress.labelText =@"加载中...";
     }
-//    NSDictionary *paraDic =[NSDictionary dictionaryWithObjectsAndKeys:_companyId,@"id", nil];
     NSLog(@"---->ffffff%@",paraDic);
     [HttpTool postWithPath:@"getCompanyCourseList" params:paraDic success:^(id JSON, int code, NSString *msg) {
         if (isRefresh) {
@@ -153,8 +152,10 @@
             [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
             
         }
-        
-        networkError.hidden =NO;
+        if (_companyArray.count<=0) {
+            failView.hidden =YES;
+            networkError.hidden =NO;
+        }
     }];
 }
 -(void)addUIBannerView{
@@ -170,7 +171,7 @@
         returnItem.backgroundColor =[UIColor clearColor];
         [bannerImage addSubview:returnItem];
         returnItem.tag =55+i;
-        [returnItem setImage:[UIImage imageNamed:@"nav_return"] forState:UIControlStateNormal];
+        [returnItem setImage:[UIImage imageNamed:@"nav_back"] forState:UIControlStateNormal];
 
         if (i==1) {
             [returnItem setImage:[UIImage imageNamed:@"com_collect"] forState:UIControlStateNormal];
@@ -228,12 +229,11 @@
     contentLabel.numberOfLines =6;
     [animationView addSubview:contentLabel];
     contentLabel.backgroundColor =[UIColor clearColor];
-    NSLog(@"%f---%f",headerImage.frame.size.height,headerImage.frame.origin.y);
     
     
     contentLabel.text =companyModel.companyIntroduce;
     
-    alpha =[[UIImageView alloc]initWithFrame:CGRectMake(0, 35, kWidth, 55)];
+    alpha =[[UIImageView alloc]initWithFrame:CGRectMake(0, 33, kWidth, 57)];
     [animationView addSubview:alpha];
     alpha.image =[UIImage imageNamed:@"alphabg"];
     alpha.hidden =NO;
@@ -246,7 +246,6 @@
     [animationBtn setImage:[UIImage imageNamed:@"animationBtn"] forState:UIControlStateNormal];
     [animationBtn addTarget:self action:@selector(animationBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
-    NSLog(@"%f",bannerImage.frame.size.height);
 }
 -(void)addTableView{
     _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, BannerH, kWidth, kHeight-BannerH) style:UITableViewStylePlain];
@@ -353,7 +352,7 @@
         headerImage.frame =CGRectMake((kWidth-70)/2, 30, 70, 70);
         
         animationView.frame =CGRectMake(0, 105, kWidth, 88);
-        alpha.frame =CGRectMake(0, 35, kWidth, 55);
+        alpha.frame =CGRectMake(0, 33, kWidth, 57);
         
         
         [UIView animateWithDuration:0.001 animations:^{
