@@ -32,7 +32,7 @@
 
 - (void)setLeftTitle:(NSString *)leftTitle
 {
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithIcon:@"nav_return.png" title:leftTitle target:self action:@selector(backItem)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithIcon:@"nav_back" title:leftTitle target:self action:@selector(backItem)];
 }
 
 - (void)backItem

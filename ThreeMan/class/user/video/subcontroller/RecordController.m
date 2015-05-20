@@ -249,13 +249,12 @@
                 }
             }
         }
-
+#warning 删除成长记录接口还没写
         [_dataArray removeAllObjects];
         if (mutableArr.count!=0) {
             [_dataArray addObjectsFromArray:mutableArr];
         }
         [_tableView reloadData];
-//        [_tableView deleteRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationNone];
     }
 }
 

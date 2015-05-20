@@ -12,7 +12,7 @@
 
 typedef enum
 {
-    startState = 0,
+    loadingState = 0,
     stopState,
     waitingState
     

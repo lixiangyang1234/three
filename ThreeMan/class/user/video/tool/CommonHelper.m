@@ -8,20 +8,20 @@
 
 @implementation CommonHelper
 
-//+(NSString *)transformToM:(NSString *)size
-//{
-//    float oldSize=[size floatValue];
-//    float newSize=oldSize/1024.0f;
-//    newSize=newSize/1024.0f;
-//    return [NSString stringWithFormat:@"%f",newSize];
-//}
-//
-//+(float)transformToBytes:(NSString *)size
-//{
-//    float totalSize=[size floatValue];
-////    NSLog(@"文件总大小跟踪：%f",totalSize);
-//    return totalSize*1024*1024;
-//}
++(NSString *)transformToM:(NSString *)size
+{
+    float oldSize=[size floatValue];
+    float newSize=oldSize/1024.0f;
+    newSize=newSize/1024.0f;
+    return [NSString stringWithFormat:@"%.2fM",newSize];
+}
+
++(float)transformToBytes:(NSString *)size
+{
+    float totalSize=[size floatValue];
+//    NSLog(@"文件总大小跟踪：%f",totalSize);
+    return totalSize*1024*1024;
+}
 + (NSString *)md5StringForData:(NSData*)data{
     // const char *str = [string UTF8String];
     unsigned char r[CC_MD5_DIGEST_LENGTH];

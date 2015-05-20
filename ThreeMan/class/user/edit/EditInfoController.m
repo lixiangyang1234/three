@@ -14,10 +14,12 @@
 
 @interface EditInfoController ()<UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 {
+    UIScrollView *scrollView;
     UIImageView *iconImageView;
     UILabel *nickLabel;
     DisplayEditView *telView;
     ModifyEditView *nickView;
+    UIImage *selectImage;
 }
 @end
 
@@ -27,22 +29,47 @@
     [super viewDidLoad];
     self.view.backgroundColor = HexRGB(0xe8e8e8);
     // Do any additional setup after loading the view.
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHiden) name:UIKeyboardWillHideNotification object:nil];
+
     [self buildUI];
+}
+#pragma mark 键盘弹出
+- (void)keyboardWillShow:(NSNotification *)notify
+{
+    NSDictionary *dic = [notify userInfo];
+    NSValue *value = [dic objectForKey:UIKeyboardFrameEndUserInfoKey];
+    CGRect keyboardFrame = [value CGRectValue];
+    [scrollView setContentInset:UIEdgeInsetsMake(0, 0, keyboardFrame.size.height,0)];
+}
+
+
+#pragma mark 键盘隐藏
+- (void)keyboardWillHiden
+{
+    [UIView animateWithDuration:0.2 animations:^{
+        [scrollView setContentInset:UIEdgeInsetsMake(0, 0,0,0)];
+    }];
 }
 
 - (void)buildUI
 {
+    scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0,kWidth,kHeight)];
+    [scrollView setContentSize:CGSizeMake(kWidth, kHeight)];
+    [self.view addSubview:scrollView];
     
     UIImageView *topImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kWidth,388/2)];
     topImageView.image = [UIImage imageNamed:@"banner_bg"];
     topImageView.userInteractionEnabled = YES;
-    [self.view addSubview:topImageView];
+    [scrollView addSubview:topImageView];
     //返回按钮
     CGFloat y = 0;
     if (IsIos7) {
         y=20;
     }
-    UIImage *image = [UIImage imageNamed:@"nav_return.png"];
+    
+    UIImage *image = [UIImage imageNamed:@"nav_back"];
     NSString *str = @"修改资料";
     UIButton *backItem = [UIButton buttonWithType:UIButtonTypeCustom];
     backItem.titleLabel.font = btnTitleFont;
@@ -77,7 +104,7 @@
     bgView.layer.masksToBounds = YES;
     bgView.layer.borderColor = HexRGB(0xcacaca).CGColor;
     bgView.layer.borderWidth = 0.5;
-    [self.view addSubview:bgView];
+    [scrollView addSubview:bgView];
     UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, bgView.frame.size.height/2,bgView.frame.size.width,0.5)];
     line.backgroundColor = HexRGB(0xcacaca);
     [bgView addSubview:line];
@@ -98,7 +125,7 @@
     [btn setTitleColor:HexRGB(0xffffff) forState:UIControlStateNormal];
     [btn addTarget:self action:@selector(btnDown) forControlEvents:UIControlEventTouchUpInside];
     [btn setBackgroundImage:[UIImage imageNamed:@"sure"] forState:UIControlStateNormal];
-    [self.view addSubview:btn];
+    [scrollView addSubview:btn];
 }
 
 - (void)back
@@ -145,6 +172,27 @@
     
 }
 
+#pragma mark UIImagePickerControllerDelegate
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
+    UIImage *portraitImg = [info objectForKey:@"UIImagePickerControllerEditedImage"];
+    //上传图片
+    selectImage = portraitImg;
+    iconImageView.image = portraitImg;
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

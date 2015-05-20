@@ -149,7 +149,7 @@
         navigationController.view.frame = frame;
         // 3.添加左上角的返回按钮
         if (!viewController.navigationItem.leftBarButtonItem) {
-            viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithIcon:@"nav_return.png" title:@"" target:self action:@selector(backItem)];
+            viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithIcon:@"nav_back" title:@"" target:self action:@selector(backItem)];
         }
     }
 }

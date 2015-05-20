@@ -50,7 +50,9 @@
 #pragma mark 键盘隐藏
 - (void)keyboardWillHiden
 {
-    [_scrollView setContentInset:UIEdgeInsetsMake(0, 0,0,0)];
+    [UIView animateWithDuration:0.21 animations:^{
+        [_scrollView setContentInset:UIEdgeInsetsMake(0, 0,0,0)];
+    }];
 }
 
 
@@ -118,6 +120,11 @@
     [self.view endEditing:YES];
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

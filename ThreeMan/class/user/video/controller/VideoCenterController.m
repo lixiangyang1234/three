@@ -36,8 +36,8 @@
     self.titleLabel.backgroundColor = [UIColor clearColor];
     self.titleLabel.textColor = [UIColor whiteColor];
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithIcon:@"nav_return.png" title:@"我的成长" target:self action:@selector(backItem)];
-
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithIcon:@"nav_back" title:@"我的成长" target:self action:@selector(backItem)];
+    
 }
 
 - (void)backItem
