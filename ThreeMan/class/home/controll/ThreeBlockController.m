@@ -30,9 +30,7 @@
 @end
 
 @implementation ThreeBlockController
--(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-    NSLog(@"1111");
-}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
    
@@ -54,6 +52,7 @@
     [self addCategoryBtn];
     [self addLoadStatus:@"0" indexId:_threeId];
 }
+//-(void)touc
 -(void)addRefreshView{
     refreshHeaderView =[[MJRefreshHeaderView alloc]init];
     refreshHeaderView.delegate =self;

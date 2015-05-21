@@ -154,10 +154,10 @@
     viewLine.alpha =.6;
     
     
-    for (int i=0; i<4; i++)
+    for (int i=0; i<self.titleArray.count; i++)
     {
         _titleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _titleBtn.frame=CGRectMake(0, 54+i%4*(44)-43, kWidth, 44);
+        _titleBtn.frame=CGRectMake(0, 54+i%self.titleArray.count*(44)-43, kWidth, 44);
         
         [_titleBtn setTitleColor:HexRGB(0x808080) forState:UIControlStateNormal];
         [_titleBtn setTitleColor:HexRGB(0x178ac5) forState:UIControlStateSelected];
@@ -259,7 +259,7 @@
     }
     else
     {
-        for (int i=0; i<7; i++)
+        for (int i=0; i<self.categoryArray.count; i++)
         {
             
             self.categoryTitleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
