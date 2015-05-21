@@ -7,6 +7,9 @@
 //
 
 #import "UIBarButtonItem+MJ.h"
+#import "AdaptationSize.h"
+
+#define btnTitleFont [UIFont systemFontOfSize:16]
 
 @implementation UIBarButtonItem (MJ)
 - (id)initWithIcon:(NSString *)icon highlightedIcon:(NSString *)highlighted target:(id)target action:(SEL)action
@@ -58,5 +61,26 @@
 {
     return [[self alloc]initWithSearch:search highlightedSearch:highlighted target:target action:action];
 }
+
+- (id)initWithIcon:(NSString *)icon title:(NSString *)title target:(id)target action:(SEL)action
+{
+    UIImage *image = [UIImage imageNamed:icon];
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn.titleLabel.font = btnTitleFont;
+    CGSize size = [AdaptationSize getSizeFromString:title Font:btnTitleFont withHight:44 withWidth:CGFLOAT_MAX];
+    btn.frame = CGRectMake(0, 0, size.width+image.size.width,44);
+    // 设置普通背景图片
+    [btn setImage:image forState:UIControlStateNormal];
+    [btn setTitle:title forState:UIControlStateNormal];
+    [btn addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    return [self initWithCustomView:btn];
+}
+
+
++ (id)initWithIcon:(NSString *)icon title:(NSString *)title target:(id)target action:(SEL)action
+{
+   return [self initWithIcon:icon title:title target:target action:action];
+}
+
 
 @end

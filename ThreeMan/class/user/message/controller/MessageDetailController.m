@@ -49,20 +49,28 @@
     
     CGFloat topDes = 8;
     CGFloat leftDes = 8;
+    CGFloat y = topDes;
+    
     //图片背景
-    UIView *imgBgView = [[UIView alloc] initWithFrame:CGRectMake(leftDes, topDes, kWidth-leftDes*2, 187)];
+    UIView *imgBgView = [[UIView alloc] initWithFrame:CGRectMake(leftDes, y, kWidth-leftDes*2, 187)];
     imgBgView.backgroundColor = HexRGB(0xffffff);
     UIView *line1 = [[UIView alloc] initWithFrame:CGRectMake(0, imgBgView.frame.size.height,imgBgView.frame.size.width, 0.5)];
     line1.backgroundColor = HexRGB(0xcacaca);
     [imgBgView addSubview:line1];
     [_scrollView addSubview:imgBgView];
-    
+        
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5,imgBgView.frame.size.width-5*2,imgBgView.frame.size.height-5*2)];
-    [imageView setImageWithURL:[NSURL URLWithString:item.image] placeholderImage:[UIImage imageNamed:@""]];
     [imgBgView addSubview:imageView];
+
+    if (![item.image isKindOfClass:[NSNull class]]&&item.image&&item.image.length!=0) {
+        imageView.image = [UIImage imageNamed:@""];
+    }else{
+        [imageView setImageWithURL:[NSURL URLWithString:item.image] placeholderImage:placeHoderImage];
+    }
     
+    y = y+imgBgView.frame.size.height+8;
     //标题背景
-    UIView *titleBgView = [[UIView alloc] initWithFrame:CGRectMake(leftDes,imgBgView.frame.origin.y+imgBgView.frame.size.height+8, kWidth-leftDes*2, 57)];
+    UIView *titleBgView = [[UIView alloc] initWithFrame:CGRectMake(leftDes,y, kWidth-leftDes*2, 57)];
     titleBgView.backgroundColor = HexRGB(0xffffff);
     UIView *line2 = [[UIView alloc] initWithFrame:CGRectMake(0, titleBgView.frame.size.height,titleBgView.frame.size.width, 0.5)];
     line2.backgroundColor = HexRGB(0xcacaca);
@@ -89,8 +97,10 @@
     NSString *content = [NSString stringWithFormat:@"    %@",item.content];
     UIFont *font = [UIFont systemFontOfSize:15];
     CGSize size = [AdaptationSize getSizeFromString:content Font:font withHight:CGFLOAT_MAX withWidth:(kWidth-20)];
+    
+    y = y+titleBgView.frame.size.height+8;
     //内容背景
-    UIView *contenteBgView = [[UIView alloc] initWithFrame:CGRectMake(leftDes,titleBgView.frame.origin.y+titleBgView.frame.size.height+8, kWidth-leftDes*2,size.height+24)];
+    UIView *contenteBgView = [[UIView alloc] initWithFrame:CGRectMake(leftDes,y, kWidth-leftDes*2,size.height+24)];
     contenteBgView.backgroundColor = HexRGB(0xffffff);
     UIView *line3 = [[UIView alloc] initWithFrame:CGRectMake(0, contenteBgView.frame.size.height,contenteBgView.frame.size.width, 0.5)];
     line3.backgroundColor = HexRGB(0xcacaca);

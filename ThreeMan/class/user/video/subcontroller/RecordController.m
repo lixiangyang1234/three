@@ -46,6 +46,8 @@
     [self.view addSubview:editView];
     
     [self loadData];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:playMessage object:self];
 }
 
 - (void)loadData
@@ -69,9 +71,19 @@
     }];
 }
 
+
+//重新加载数据 更新页面
+- (void)reloadData
+{
+    [self loadData];
+}
+
 //分离出今天和之前的
 - (void)seperateData:(NSMutableArray *)mutableArr
 {
+    [_dataArray removeAllObjects];
+    [headViewArray removeAllObjects];
+    
     //今天的
     NSMutableArray *arr1 = [[NSMutableArray alloc] initWithCapacity:0];
     //更早的
@@ -85,6 +97,7 @@
             [arr2 addObject:item];
         }
     }
+    
     if (arr1.count!=0) {
         [_dataArray addObject:arr1];
         
@@ -92,6 +105,7 @@
         [headView setImgView:[UIImage imageNamed:@"today"] title:@"今天"];
         [headViewArray addObject:headView];
     }
+    
     if (arr2.count!=0) {
         [_dataArray addObject:arr2];
         SectionHeadView *headView = [[SectionHeadView alloc] initWithFrame:CGRectMake(0, 0,kWidth,36)];
@@ -110,6 +124,7 @@
         if (editView) {
             editView = nil;
         }
+        
         editView = [[EditView alloc] init];
         editView.delegate = self;
         editView.frame = CGRectMake(0,self.view.frame.size.height,editView.frame.size.width, editView.frame.size.height);
@@ -146,11 +161,12 @@
     view.backgroundColor = [UIColor clearColor];
     cell.selectedBackgroundView = [[UIView alloc] init];
     cell.multipleSelectionBackgroundView = [[UIView alloc] init];
+    
     NSMutableArray *arr;
     arr = [_dataArray objectAtIndex:indexPath.section];
     RecordItem *item = [arr objectAtIndex:indexPath.row];
     cell.titleLabel.text = item.title;
-    [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:placeHoderImage];
+    [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:placeHoderImage3];
     cell.desLabel.text = item.companyname;
     return cell;
 }
@@ -233,13 +249,12 @@
                 }
             }
         }
-
+#warning 删除成长记录接口还没写
         [_dataArray removeAllObjects];
         if (mutableArr.count!=0) {
             [_dataArray addObjectsFromArray:mutableArr];
         }
         [_tableView reloadData];
-//        [_tableView deleteRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationNone];
     }
 }
 

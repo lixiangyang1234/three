@@ -11,6 +11,7 @@
 #import "AccountController.h"
 #import "MessageController.h"
 #import "ErrorView.h"
+#import "UIBarButtonItem+MJ.h"
 
 
 @interface VideoCenterController ()
@@ -33,20 +34,15 @@
     self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(35,0,kWidth/2-44,44)];
     self.titleLabel.font = [UIFont systemFontOfSize:16];
     self.titleLabel.backgroundColor = [UIColor clearColor];
-    self.titleLabel.text = @"我的成长";
     self.titleLabel.textColor = [UIColor whiteColor];
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithIcon:@"nav_back" title:@"我的成长" target:self action:@selector(backItem)];
+    
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)backItem
 {
-    [super viewWillAppear:animated];
-    [self.navigationController.navigationBar addSubview:self.titleLabel];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [self.titleLabel removeFromSuperview];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)loadRigthNavItems

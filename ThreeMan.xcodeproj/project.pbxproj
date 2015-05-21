@@ -82,6 +82,10 @@
 		04D0872D1AD4C0AD0070184A /* RecommendController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D0872C1AD4C0AC0070184A /* RecommendController.m */; };
 		04D087301AD4C0C00070184A /* QuestionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D0872F1AD4C0C00070184A /* QuestionController.m */; };
 		04D087331AD508230070184A /* MemorySizeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D087321AD508230070184A /* MemorySizeView.m */; };
+		04D715391B0B1A35008E3A9E /* EditInfoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D715381B0B1A35008E3A9E /* EditInfoController.m */; };
+		04D7153C1B0B2812008E3A9E /* BaseEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D7153B1B0B2812008E3A9E /* BaseEditView.m */; };
+		04D7153F1B0B2CAA008E3A9E /* DisplayEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D7153E1B0B2CAA008E3A9E /* DisplayEditView.m */; };
+		04D715421B0B2CC8008E3A9E /* ModifyEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D715411B0B2CC8008E3A9E /* ModifyEditView.m */; };
 		04DA99D91AFCABC3004A5BCD /* DownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DA99D81AFCABC3004A5BCD /* DownloadManager.m */; };
 		04DA99DC1AFCABF8004A5BCD /* UrlSessionDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DA99DB1AFCABF8004A5BCD /* UrlSessionDownload.m */; };
 		04DA99DF1AFCAC08004A5BCD /* AFDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DA99DE1AFCAC08004A5BCD /* AFDownload.m */; };
@@ -456,6 +460,14 @@
 		04D0872F1AD4C0C00070184A /* QuestionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuestionController.m; sourceTree = "<group>"; };
 		04D087311AD508230070184A /* MemorySizeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemorySizeView.h; sourceTree = "<group>"; };
 		04D087321AD508230070184A /* MemorySizeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemorySizeView.m; sourceTree = "<group>"; };
+		04D715371B0B1A35008E3A9E /* EditInfoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditInfoController.h; sourceTree = "<group>"; };
+		04D715381B0B1A35008E3A9E /* EditInfoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditInfoController.m; sourceTree = "<group>"; };
+		04D7153A1B0B2811008E3A9E /* BaseEditView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseEditView.h; sourceTree = "<group>"; };
+		04D7153B1B0B2812008E3A9E /* BaseEditView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseEditView.m; sourceTree = "<group>"; };
+		04D7153D1B0B2CAA008E3A9E /* DisplayEditView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayEditView.h; sourceTree = "<group>"; };
+		04D7153E1B0B2CAA008E3A9E /* DisplayEditView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisplayEditView.m; sourceTree = "<group>"; };
+		04D715401B0B2CC8008E3A9E /* ModifyEditView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModifyEditView.h; sourceTree = "<group>"; };
+		04D715411B0B2CC8008E3A9E /* ModifyEditView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModifyEditView.m; sourceTree = "<group>"; };
 		04DA99D71AFCABC3004A5BCD /* DownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadManager.h; sourceTree = "<group>"; };
 		04DA99D81AFCABC3004A5BCD /* DownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadManager.m; sourceTree = "<group>"; };
 		04DA99DA1AFCABF8004A5BCD /* UrlSessionDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UrlSessionDownload.h; sourceTree = "<group>"; };
@@ -895,6 +907,7 @@
 		04C64B611ACCEAC700825EF0 /* user */ = {
 			isa = PBXGroup;
 			children = (
+				04D715361B0B1A05008E3A9E /* edit */,
 				04C64B811ACCF57500825EF0 /* view */,
 				04C64B721ACCECFB00825EF0 /* account */,
 				04C64B741ACCECFB00825EF0 /* message */,
@@ -1193,6 +1206,21 @@
 				045636AA1AEE27D500558776 /* DocumentCell.m */,
 			);
 			path = cell;
+			sourceTree = "<group>";
+		};
+		04D715361B0B1A05008E3A9E /* edit */ = {
+			isa = PBXGroup;
+			children = (
+				04D715371B0B1A35008E3A9E /* EditInfoController.h */,
+				04D715381B0B1A35008E3A9E /* EditInfoController.m */,
+				04D7153A1B0B2811008E3A9E /* BaseEditView.h */,
+				04D7153B1B0B2812008E3A9E /* BaseEditView.m */,
+				04D7153D1B0B2CAA008E3A9E /* DisplayEditView.h */,
+				04D7153E1B0B2CAA008E3A9E /* DisplayEditView.m */,
+				04D715401B0B2CC8008E3A9E /* ModifyEditView.h */,
+				04D715411B0B2CC8008E3A9E /* ModifyEditView.m */,
+			);
+			path = edit;
 			sourceTree = "<group>";
 		};
 		04DECD991AD616F100EC53D2 /* fmdb */ = {
@@ -1999,6 +2027,7 @@
 				55E373B11AC2B54200C794DD /* UIButton+WebCache.m in Sources */,
 				55C122E71ACE19BA00D53630 /* CourseRecommendViewCell.m in Sources */,
 				04D0872D1AD4C0AD0070184A /* RecommendController.m in Sources */,
+				04D715421B0B2CC8008E3A9E /* ModifyEditView.m in Sources */,
 				55E3739B1AC2B54200C794DD /* UIScrollView+UITouch.m in Sources */,
 				04CC33391ACA808B008A85B5 /* SearchViewController.m in Sources */,
 				55B7B9FB1ADE00D100787E39 /* courseEightModel.m in Sources */,
@@ -2037,6 +2066,7 @@
 				55E3738C1AC2B54200C794DD /* NewfeatureController.m in Sources */,
 				04C64B861ACD0ED900825EF0 /* SettingCell.m in Sources */,
 				0490022E1AEDD9AA00EF6AD1 /* base64.m in Sources */,
+				04D715391B0B1A35008E3A9E /* EditInfoController.m in Sources */,
 				55C24F891ACB8EE500BFEBED /* NineBlockController.m in Sources */,
 				04CC66671ADCAB8900BFE4CD /* AuthencateTool.m in Sources */,
 				55E373AB1AC2B54200C794DD /* SDWebImageCompat.m in Sources */,
@@ -2086,6 +2116,7 @@
 				55E99B6D1AF209F700CA4F1C /* AFHTTPRequestOperation.m in Sources */,
 				04D0872A1AD4B7480070184A /* CommenHelper.m in Sources */,
 				04CC33331ACA8062008A85B5 /* PatternDetailController.m in Sources */,
+				04D7153C1B0B2812008E3A9E /* BaseEditView.m in Sources */,
 				55C24F901ACB8EE500BFEBED /* YYSearchButton.m in Sources */,
 				04B9A28F1AD3E4BE009446D1 /* UnfinishedCell.m in Sources */,
 				04C91A621ADB5B1C00D1B5ED /* PatternDetailItem.m in Sources */,
@@ -2133,6 +2164,7 @@
 				04C73A351ACE7CB5007B1283 /* ResultHeaderView.m in Sources */,
 				55E373B51AC2B54200C794DD /* UIImageView+WebCache.m in Sources */,
 				55E3738E1AC2B54200C794DD /* TYPopoverView.m in Sources */,
+				04D7153F1B0B2CAA008E3A9E /* DisplayEditView.m in Sources */,
 				04C73A241ACE40BF007B1283 /* FavoriteCell.m in Sources */,
 				55B8BDF91ADB61390008C21F /* NetFailView.m in Sources */,
 				04DECDAF1AD61CCD00EC53D2 /* RecordDbService.m in Sources */,

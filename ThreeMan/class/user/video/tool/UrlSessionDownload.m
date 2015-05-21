@@ -15,8 +15,8 @@
 #define BASE_PATH @"DownloadFile"  //存储的最上层目录名
 #define VIDEO_PATH  @"Video"    //存储完成下载的视频目录名
 #define TEMP_PATH @"Temp"      //临时存储目录
-#define FINISHED_PATH_NAME @"finished.dat"  //下载完成文件信息存储路径名
-#define UNFINISHED_PATH_NAME @"unfinished.dat"  //未下载完成文件信息存储路径名
+#define FINISHED_PATH_NAME @"finished"  //下载完成文件信息存储路径名
+#define UNFINISHED_PATH_NAME @"unfinished"  //未下载完成文件信息存储路径名
 
 @implementation UrlSessionDownload
 + (UrlSessionDownload *)shareInstance
@@ -50,25 +50,25 @@
 - (void)downloadFileWithUrl:(NSString *)urlStr type:(NSString *)type fileInfo:(NSDictionary *)fileInfo
 {
     NSAssert(type != nil&&![type isEqualToString:@""], @"datasource must not nil or empty");
-    NSURL *url = [NSURL URLWithString:urlStr];
+    NSURL *url = [NSURL URLWithString:[urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    
     DownloadFileModel *fileModel = [[DownloadFileModel alloc] init];
-    fileModel.fileName = [self getFileNameForKey:urlStr];
+    fileModel.fileName = url.lastPathComponent;
     fileModel.urlLink = urlStr;
     fileModel.fileInfo = [NSDictionary dictionaryWithDictionary:fileInfo];
     fileModel.type = type;
     fileModel.willDownloading = YES;
     fileModel.isDownloading = NO;
-
     
-    NSString *targetPath = [CommonHelper getTargetPathWithBasepath:BASE_PATH subpath:VIDEO_PATH];
+    NSString *targetPath = [CommonHelper getTargetPathWithBasepath:BASE_PATH subpath:[NSString stringWithFormat:@"%@_%@",VIDEO_PATH,[SystemConfig sharedInstance].uid]];
     
-    NSString *basetempPath = [CommonHelper getTargetPathWithBasepath:BASE_PATH subpath:TEMP_PATH];
-    NSString *baseTempFilePath = [CommonHelper getTargetPathWithBasepath:BASE_PATH subpath:TEMP_PATH];
+    NSString *basetempPath = [CommonHelper getTargetPathWithBasepath:BASE_PATH subpath:[NSString stringWithFormat:@"%@_%@",TEMP_PATH,[SystemConfig sharedInstance].uid]];
+    NSString *baseTempFilePath = [CommonHelper getTargetPathWithBasepath:BASE_PATH subpath:[NSString stringWithFormat:@"%@_%@",TEMP_PATH,[SystemConfig sharedInstance].uid]];
     
     //下载最终路径
-    targetPath = [targetPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@",fileModel.fileName,url.lastPathComponent]];
+    targetPath = [targetPath stringByAppendingPathComponent:url.lastPathComponent];
     //ios7以下系统用 临时缓存路径
-    NSString *tempPath = [basetempPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@",fileModel.fileName,url.lastPathComponent]];
+    NSString *tempPath = [basetempPath stringByAppendingPathComponent:url.lastPathComponent];
     fileModel.targetPath = targetPath;
     fileModel.tempPath = tempPath;
     
@@ -76,7 +76,6 @@
     fileModel.tempfilePath = tempfilePath;
     
     //该文件已下载完成
-    NSLog(@"----------%@",fileModel.targetPath);
     if ([CommonHelper isExistFile:fileModel.targetPath]) {
         
         UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"该文件已经下载过了" delegate:self cancelButtonTitle:@"取消" otherButtonTitles: nil];
@@ -119,18 +118,16 @@
 //当某个文件下载完成后  查看可否其他下载任务 有则加入下载队列下载
 - (void)nextRequest
 {
-    if (self.fileDic.count==0) {
+    if (self.unfinishArray.count==0) {
         return;
     }
     int count = 0;
     DownloadFileModel *file;
     //检查当前正在下载的文件个数  并找出第一个等待下载的文件
-    for (NSString *key in self.fileDic) {
-        DownloadFileModel *fileModel = [self.fileDic objectForKey:key];
+    for (DownloadFileModel *fileModel in self.unfinishArray) {
         if (fileModel.isDownloading) {
             count++;
         }
-        //找出一个可以下载的文件
         if (fileModel.isDownloading==NO&&fileModel.willDownloading) {
             if (!file) {
                 file = fileModel;
@@ -156,7 +153,7 @@
                 
             }else{
                 
-                NSURL *url = [NSURL URLWithString:file.urlLink];
+                NSURL *url = [NSURL URLWithString:[file.urlLink stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
                 NSURLRequest *request = [NSURLRequest requestWithURL:url];
                 NSURLSessionDownloadTask *downloadTask = [urlsession downloadTaskWithRequest:request];
                 
@@ -217,7 +214,7 @@
                 
             }else{
                 
-                NSURL *url = [NSURL URLWithString:fileModel.urlLink];
+                NSURL *url = [NSURL URLWithString:[fileModel.urlLink stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
                 
                 NSURLRequest *request = [NSURLRequest requestWithURL:url];
                 
@@ -252,7 +249,7 @@
     }
     
     NSString *document = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
-    NSString *plistPath = [document stringByAppendingPathComponent:FINISHED_PATH_NAME];
+    NSString *plistPath = [document stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%@.dat",FINISHED_PATH_NAME,[SystemConfig sharedInstance].uid]];
     
     if (![finishedInfo writeToFile:plistPath atomically:YES]) {
         NSLog(@"write phist fail");
@@ -264,7 +261,7 @@
 - (void)loadFinishedFile
 {
     NSString *document = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
-    NSString *plistPath = [document stringByAppendingPathComponent:FINISHED_PATH_NAME];
+    NSString *plistPath = [document stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%@.dat",FINISHED_PATH_NAME,[SystemConfig sharedInstance].uid]];
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if ([fileManager fileExistsAtPath:plistPath]) {
         NSMutableArray *finishedArr = [[NSMutableArray alloc] initWithContentsOfFile:plistPath];
@@ -289,7 +286,7 @@
 - (void)saveunFinishedFile
 {
     NSString *document = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
-    NSString *plistPath = [document stringByAppendingPathComponent:UNFINISHED_PATH_NAME];
+    NSString *plistPath = [document stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%@.dat",UNFINISHED_PATH_NAME,[SystemConfig sharedInstance].uid]];
     
     NSMutableArray *finishedInfo = [[NSMutableArray alloc] init];
     
@@ -307,7 +304,7 @@
 - (void)loadunFinishedFile
 {
     NSString *document = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
-    NSString *plistPath = [document stringByAppendingPathComponent:UNFINISHED_PATH_NAME];
+    NSString *plistPath = [document stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%@.dat",UNFINISHED_PATH_NAME,[SystemConfig sharedInstance].uid]];
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if ([fileManager fileExistsAtPath:plistPath]) {
         NSMutableArray *unfinishedArr = [[NSMutableArray alloc] initWithContentsOfFile:plistPath];
@@ -435,21 +432,6 @@
         [dict setObject:file.fileReceivedSize forKey:@"filerecievesize"];
     }
     return [dict copy];
-}
-
-
-- (NSString *)getFileNameForKey:(NSString *)key
-{
-    const char *str = [key UTF8String];
-    if (str == NULL)
-    {
-        str = "";
-    }
-    unsigned char r[CC_MD5_DIGEST_LENGTH];
-    CC_MD5(str, (CC_LONG)strlen(str), r);
-    NSString *filename = [NSString stringWithFormat:@"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
-                          r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7], r[8], r[9], r[10], r[11], r[12], r[13], r[14], r[15]];
-    return filename;
 }
 
 - (NSString *)getIdentify:(NSString *)str

@@ -85,8 +85,6 @@
     noDataView.hidden = YES;
     [self.view addSubview:noDataView];
     
-
-    
     [DownloadManager setDelegate:self];
 }
 
@@ -107,7 +105,6 @@
         SectionHeadView *headView = [[SectionHeadView alloc] initWithFrame:CGRectMake(0, 0,kWidth,36)];
         [headView setImgView:[UIImage imageNamed:@"finish"] title:@"完成"];
         [_headViewArray addObject:headView];
-        
     }
     
     if (_unFinishedArray.count!=0) {
@@ -120,8 +117,11 @@
     [_tableView reloadData];
     
     if (_dataArray.count==0) {
+        
         noDataView.hidden = NO;
+        
     }else{
+        
         noDataView.hidden = YES;
     }
 }
@@ -216,15 +216,17 @@
             [cell.imgView setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:placeHoderImage];
             
             if (fileInfo.isDownloading) {
-                cell.progressView.downloadState = stopState;
+                cell.progressView.downloadState = loadingState;
+                cell.progressLabel.text = [NSString stringWithFormat:@"%@/%@",[CommonHelper transformToM:fileInfo.fileReceivedSize],[CommonHelper transformToM:fileInfo.totalSize]];
             }else{
                 
                 if (fileInfo.willDownloading) {
                     cell.progressView.downloadState = waitingState;
+                    cell.progressLabel.text = @"等 待";
                     
                 }else{
-                    cell.progressView.downloadState = startState;
-                    
+                    cell.progressView.downloadState = stopState;
+                    cell.progressLabel.text = @"暂 停";
                 }
             }
             cell.progressView.tag = 1000+indexPath.row;
@@ -257,15 +259,17 @@
             [cell.imgView setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:placeHoderImage];
             
             if (fileInfo.isDownloading) {
-                cell.progressView.downloadState = stopState;
+                cell.progressView.downloadState = loadingState;
+                cell.progressLabel.text = [NSString stringWithFormat:@"%@/%@",[CommonHelper transformToM:fileInfo.fileReceivedSize],[CommonHelper transformToM:fileInfo.totalSize]];
             }else{
                 
                 if (fileInfo.willDownloading) {
                     cell.progressView.downloadState = waitingState;
+                    cell.progressLabel.text = @"等 待";
                     
                 }else{
-                    cell.progressView.downloadState = startState;
-                    
+                    cell.progressView.downloadState = stopState;
+                    cell.progressLabel.text = @"暂 停";
                 }
             }
             cell.progressView.tag = 1000+indexPath.row;
@@ -317,7 +321,6 @@
 {
     return [_headViewArray objectAtIndex:section];
 }
-
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -392,16 +395,7 @@
             //取消当前选中的下载任务
             [DownloadManager cancelDownloads:arr2];
         }
-        
-        //移除当前数据中的所有数据  重新导入
-        
-        [_dataArray removeAllObjects];
-        
-        [_finishedArray removeAllObjects];
-        
-        [_unFinishedArray removeAllObjects];
-        
-        [_tableView reloadData];
+        [self loadData];
     }
 }
 
@@ -430,27 +424,26 @@
     DownloadFileModel *file = [_finishedArray objectAtIndex:btn.tag-3000];
     //视频
     if ([file.type isEqualToString:@"1"]) {
-        NSLog(@"++++++++++++++%@",file.targetPath);
 
         NSURL *url = [NSURL fileURLWithPath:file.targetPath];
         DirectionMPMoviePlayerViewController *movieController = [[DirectionMPMoviePlayerViewController alloc] initWithContentURL:url];
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        if ([fileManager fileExistsAtPath:file.targetPath]) {
-            [self.view.window.rootViewController presentMoviePlayerViewControllerAnimated:movieController];
-        }
+        [self.view.window.rootViewController presentMoviePlayerViewControllerAnimated:movieController];
 
     }else{
-        NSString *targetPath = [file.targetPath lowercaseString];
-        if ([targetPath hasSuffix:@".zip"]|[targetPath hasSuffix:@".rar"]) {
-            [RemindView showViewWithTitle:@"无法打开该文件" location:MIDDLE];
-            return;
-        }
         
         UIDocumentInteractionController *documentController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:file.targetPath]];
         documentController.delegate = self;
         [documentController presentPreviewAnimated:YES];
-
     }
+    NSDictionary *param = @{@"sid":[file.fileInfo objectForKey:@"id"]};
+    [HttpTool postWithPath:@"getHistoryAdd" params:param success:^(id JSON, int code, NSString *msg) {
+        NSLog(@"%@",JSON);
+        if (code == 100) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:playMessage object:nil];
+        }
+    } failure:^(NSError *error) {
+       NSLog(@"%@",error);
+    }];
 }
 
 #pragma mark UIDocumentInteractionControllerDelegate
@@ -458,7 +451,6 @@
 {
     return self.view.window.rootViewController;
 }
-
 
 #pragma mark CircularProgressView_delegate
 - (void)progressViewClicked:(CircularProgressView *)view
@@ -504,7 +496,7 @@
             UnfinishedCell *cell = (UnfinishedCell *)[_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:count inSection:_dataArray.count-1]];
             
             cell.progressView.progress = progress;
-            
+            cell.progressLabel.text = [NSString stringWithFormat:@"%@/%@",[CommonHelper transformToM:file.fileReceivedSize],[CommonHelper transformToM:file.totalSize]];
             return;
         }
     }

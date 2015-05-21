@@ -80,8 +80,17 @@
         nameLabel.numberOfLines = 0;
         nameLabel.textColor = HexRGB(0x323232);
         nameLabel.font = [UIFont systemFontOfSize:16];
+        nameLabel.userInteractionEnabled = YES;
         [self addSubview:nameLabel];
-        
+        if ([[SystemConfig sharedInstance].userInfo.type isEqualToString:@"0"]) {
+            UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+            btn.frame  = CGRectMake(0, 0, nameLabel.frame.size.width, nameLabel.frame.size.height);
+            
+            btn.backgroundColor = [UIColor clearColor];
+            btn.tag = -3;
+            [btn addTarget:self action:@selector(btnDown:) forControlEvents:UIControlEventTouchUpInside];
+            [nameLabel addSubview:btn];
+        }
     }else{
         NSArray *array = [NSArray arrayWithObjects:@"登录",@"注册", nil];
         for (int i = 0 ; i<2; i++) {
@@ -144,6 +153,8 @@
         [self.delegate imageViewClick:self];
     }
 }
+
+
 
 - (void)btnDown:(UIButton *)btn
 {

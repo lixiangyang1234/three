@@ -14,10 +14,10 @@
 
 +(NSString *)getDiskSpaceInfo;
 
-////将字节转化成M单位，不附带M
-//+(NSString *)transformToM:(NSString *)size;
-////将不M的字符串转化成字节
-//+(float)transformToBytes:(NSString *)size;
+//将字节转化成M单位，不附带M
++(NSString *)transformToM:(NSString *)size;
+//将不M的字符串转化成字节
++(float)transformToBytes:(NSString *)size;
 //将文件大小转化成M单位或者B单位
 +(NSString *)getFileSizeString:(NSString *)size;
 

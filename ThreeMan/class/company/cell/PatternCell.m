@@ -8,6 +8,8 @@
 
 #import "PatternCell.h"
 
+#define titleFont [UIFont systemFontOfSize:16]
+
 @implementation PatternCell
 
 - (void)awakeFromNib {
@@ -31,8 +33,10 @@
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(x,5,bgView.frame.size.width-x-10,50)];
         _titleLabel.backgroundColor = [UIColor clearColor];
         _titleLabel.textColor = HexRGB(0x323232);
+        _titleLabel.font = titleFont;
         _titleLabel.numberOfLines = 2;
         [bgView addSubview:_titleLabel];
+        
         
         
         UILabel *readTitle = [[UILabel alloc] initWithFrame:CGRectMake(x, 60,45,15)];
@@ -50,6 +54,14 @@
         
     }
     return self;
+}
+
+
+- (void)configureForPattern:(PatternItem *)item
+{
+    [self.imgView setImageWithURL:[NSURL URLWithString:item.imgurl] placeholderImage:placeHoderImage3];
+    self.titleLabel.text = item.title;
+    self.readLabel.text = item.number;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

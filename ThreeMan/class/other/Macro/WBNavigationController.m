@@ -34,7 +34,7 @@
     UIBarButtonItem *barItem = [UIBarButtonItem appearance];
         // 修改item上面的文字样式
     NSDictionary *dict = @{
-                           UITextAttributeTextColor : [UIColor clearColor],
+                           UITextAttributeTextColor : [UIColor whiteColor],
                            UITextAttributeTextShadowOffset : [NSValue valueWithUIOffset:UIOffsetZero]
                            };
     [barItem setTitleTextAttributes:dict forState:UIControlStateNormal];
