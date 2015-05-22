@@ -77,7 +77,7 @@
     nameRecomendLabel.frame =CGRectMake(imageW+borderwh, borderwh+5, backCell.frame.size.width-YYBORDERWH-130, 20);
     nameRecomendLabel.text =item.recommendUseame;
     
-    timeRecomendLabel.frame =CGRectMake(self.frame.size.width-90, borderwh+3, 70, 20);
+    timeRecomendLabel.frame =CGRectMake(self.frame.size.width-90, borderwh+5, 70, 20);
     timeRecomendLabel.text =item.recommednAddtime;
     CGFloat needH =backCell. frame.size.height-recommendSize.height-8;
 

@@ -207,7 +207,7 @@
     NSArray *array = [[DBTool shareDBToolClass] getNewTitleButtonArray];
     
     
-    for (int j=0; j < self.titleArray.count; j++)
+    for (int j=0; j < 4; j++)
     {
         if (array.count == 0)
         {
@@ -259,7 +259,7 @@
     }
     else
     {
-        for (int i=0; i<self.categoryArray.count; i++)
+        for (int i=0; i<7; i++)
         {
             
             self.categoryTitleBtn = [UIButton buttonWithType:UIButtonTypeCustom];

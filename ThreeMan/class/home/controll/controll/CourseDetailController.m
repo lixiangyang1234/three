@@ -636,7 +636,7 @@
     //    NSLog(@"%d",_selectedBtn.tag);
     static NSString *cellIndex =@"cellIndexfier";
     UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:cellIndex];
-    if (!cellIndex) {
+    if (cell==nil) {
         cell =[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndex];
     }
     if (_selectedBtn.tag ==21) {
@@ -654,7 +654,7 @@
         [RecommandCell setObjectRecommendItem:recommendModel];
         return RecommandCell;
         
-    }else if (_selectedBtn.tag ==22){
+    } if (_selectedBtn.tag ==22){
         static NSString *cellIndexfider =@"AnswerCell";
         
         CourseAnswerViewCell *answerCell = [tableView dequeueReusableCellWithIdentifier:cellIndexfider];
@@ -669,6 +669,7 @@
         return answerCell;
         
     }
+    
     return cell;
     
 }

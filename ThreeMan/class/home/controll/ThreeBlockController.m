@@ -287,7 +287,8 @@
 #pragma mark ----chooseBtn categoryBtn 筛选按钮
 //筛选按钮
 -(void)tchooseBtnClick:(YYSearchButton *)sender{
-    
+//    [_threeArray removeAllObjects];
+//    [_categoryArray removeAllObjects];
 _selectedIntem.tag =sender.tag;
         if (sender!=_selectedItem) {
            
