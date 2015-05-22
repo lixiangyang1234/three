@@ -177,9 +177,7 @@
     }
     
     FavoriteItem *item = [_dataArray objectAtIndex:indexPath.row];
-    cell.titleLabel.text = item.title;
-    [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:placeHoderImage3];
-    cell.desLabel.text = item.companyname;
+    [cell configureForCell:item];
     return cell;
 }
 

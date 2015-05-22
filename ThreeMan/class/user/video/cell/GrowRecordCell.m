@@ -1,28 +1,26 @@
 //
-//  FavoriteCell.m
+//  GrowRecordCell.m
 //  ThreeMan
 //
-//  Created by tianj on 15/4/3.
+//  Created by tianj on 15/5/22.
 //  Copyright (c) 2015年 ___普马克___. All rights reserved.
 //
 
-#import "FavoriteCell.h"
-#include "AdaptationSize.h"
-
+#import "GrowRecordCell.h"
 #define titleFont [UIFont systemFontOfSize:15]
 
-@interface FavoriteCell ()
+@interface GrowRecordCell ()
 {
     UIView *bgView;
 }
+
 @end
 
-@implementation FavoriteCell
+@implementation GrowRecordCell
 
 - (void)awakeFromNib {
     // Initialization code
 }
-
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -54,13 +52,13 @@
         
         self.selectedBackgroundView = [[UIView alloc] init];
         self.multipleSelectionBackgroundView = [[UIView alloc] init];
-
+        
     }
     return self;
 }
 
 
-- (void)configureForCell:(FavoriteItem *)item
+- (void)configureForCell:(RecordItem *)item
 {
     self.titleLabel.text = item.title;
     CGSize size = [AdaptationSize getSizeFromString:item.title Font:titleFont withHight:CGFLOAT_MAX withWidth:self.titleLabel.frame.size.width];
@@ -71,7 +69,7 @@
     }
     [self.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:placeHoderImage3];
     self.desLabel.text = item.companyname;
-
+    
 }
 
 
@@ -88,8 +86,8 @@
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
     bgView.backgroundColor = HexRGB(0xffffff);
-
-
+    
+    
     // Configure the view for the selected state
 }
 

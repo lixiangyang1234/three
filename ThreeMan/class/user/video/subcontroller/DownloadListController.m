@@ -175,11 +175,7 @@
             }
             
             DownloadFileModel *fileInfo = [_finishedArray objectAtIndex:indexPath.row];
-            NSDictionary *dic = fileInfo.fileInfo;
-            NSString *imageurl = [dic objectForKey:@"imgurl"];
-            NSString *title = [dic objectForKey:@"title"];
-            cell.titleLabel.text = title;
-            [cell.imgView setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:placeHoderImage];
+            [cell configureForCell:fileInfo];
             
             cell.recommendBtn.tag = 1000+indexPath.row;
             cell.questionBtn.tag = 2000+indexPath.row;
@@ -198,35 +194,12 @@
             }
             
             DownloadFileModel *fileInfo = [_unFinishedArray objectAtIndex:indexPath.row];
-            NSDictionary *dic = fileInfo.fileInfo;
-            NSString *imageurl = [dic objectForKey:@"imgurl"];
-            NSString *title = [dic objectForKey:@"title"];
-            cell.titleLabel.text = title;
-            [cell.imgView setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:placeHoderImage];
+            [cell configureForCell:fileInfo];
             
-            if (fileInfo.isDownloading) {
-                cell.progressView.downloadState = loadingState;
-                cell.progressLabel.text = [NSString stringWithFormat:@"%@/%@",[CommonHelper transformToM:fileInfo.fileReceivedSize],[CommonHelper transformToM:fileInfo.totalSize]];
-            }else{
-                
-                if (fileInfo.willDownloading) {
-                    cell.progressView.downloadState = waitingState;
-                    cell.progressLabel.text = @"等 待";
-                    
-                }else{
-                    cell.progressView.downloadState = stopState;
-                    cell.progressLabel.text = @"暂 停";
-                }
-            }
             cell.progressView.tag = 1000+indexPath.row;
             cell.progressView.delegate = self;
             
-            if (fileInfo.fileReceivedSize) {
-            }else{
-            }
-            
             return cell;
-            
         }
     }else{
         if (_finishedArray.count==0) {
@@ -237,26 +210,8 @@
             }
             
             DownloadFileModel *fileInfo = [_unFinishedArray objectAtIndex:indexPath.row];
-            NSDictionary *dic = fileInfo.fileInfo;
-            NSString *imageurl = [dic objectForKey:@"imgurl"];
-            NSString *title = [dic objectForKey:@"title"];
-            cell.titleLabel.text = title;
-            [cell.imgView setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:placeHoderImage];
+            [cell configureForCell:fileInfo];
             
-            if (fileInfo.isDownloading) {
-                cell.progressView.downloadState = loadingState;
-                cell.progressLabel.text = [NSString stringWithFormat:@"%@/%@",[CommonHelper transformToM:fileInfo.fileReceivedSize],[CommonHelper transformToM:fileInfo.totalSize]];
-            }else{
-                
-                if (fileInfo.willDownloading) {
-                    cell.progressView.downloadState = waitingState;
-                    cell.progressLabel.text = @"等 待";
-                    
-                }else{
-                    cell.progressView.downloadState = stopState;
-                    cell.progressLabel.text = @"暂 停";
-                }
-            }
             cell.progressView.tag = 1000+indexPath.row;
             cell.progressView.delegate = self;
             
@@ -269,16 +224,12 @@
             }
             
             DownloadFileModel *fileInfo = [_finishedArray objectAtIndex:indexPath.row];
-            NSDictionary *dic = fileInfo.fileInfo;
-            NSString *imageurl = [dic objectForKey:@"imgurl"];
-            NSString *title = [dic objectForKey:@"title"];
-            cell.titleLabel.text = title;
-            
-            [cell.imgView setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:placeHoderImage];
+            [cell configureForCell:fileInfo];
             
             cell.recommendBtn.tag = 1000+indexPath.row;
             cell.questionBtn.tag = 2000+indexPath.row;
             cell.playBtn.tag = 3000+indexPath.row;
+            
             [cell.recommendBtn addTarget:self action:@selector(recommend:) forControlEvents:UIControlEventTouchUpInside];
             [cell.questionBtn addTarget:self action:@selector(question:) forControlEvents:UIControlEventTouchUpInside];
             [cell.playBtn addTarget:self action:@selector(play:) forControlEvents:UIControlEventTouchUpInside];
@@ -326,7 +277,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return 0.00000000000000001;
+    return 0.0001;
 }
 
 #pragma mark editView_delegate

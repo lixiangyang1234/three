@@ -271,6 +271,9 @@
 
 //添加广告图片
 -(void)addUIBannerView{
+    if (_detailArray.count==0) {
+        return;
+    }
     courseDetailModel *courseModel =[_detailArray objectAtIndex:0];
     //添加滑动背景
     self.backScrollView =[[UIScrollView alloc]initWithFrame:CGRectMake(YYBORDERWH, YYBORDERWH, kWidth-YYBORDERWH*2, kHeight-YYBORDERWH)];
@@ -373,6 +376,9 @@
 }
 #pragma mark----详情
 -(void)addDetailView{
+    if (_detailArray.count==0) {
+        return;
+    }
     courseDetailModel *courseModel =[_detailArray objectAtIndex:0];
     detailScrollView =[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, kWidth-YYBORDERWH*2, categoryScrollView.frame.size.height)];
     detailScrollView.contentSize = CGSizeMake(kWidth-YYBORDERWH*2, 500);
@@ -557,6 +563,9 @@
 
 //添加底部下载  download  buyCourse collect
 -(void)addUIDownloadView{
+    if (_detailArray.count==0) {
+        return;
+    }
     courseDetailModel *couseModel =[_detailArray objectAtIndex:0];
     UIView *downloadView =[[UIView alloc]initWithFrame:CGRectMake(YYBORDERWH, kHeight-64-50, kWidth-YYBORDERWH*2, 50)];
     [self.view addSubview:downloadView];

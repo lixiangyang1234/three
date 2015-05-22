@@ -11,6 +11,7 @@
 		0414AC7B1AEDE7B500631B8E /* AliPayTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 0414AC781AEDE7B500631B8E /* AliPayTool.m */; };
 		0414AC7C1AEDE7B500631B8E /* Order.m in Sources */ = {isa = PBXBuildFile; fileRef = 0414AC7A1AEDE7B500631B8E /* Order.m */; };
 		0414AC801AEE194900631B8E /* FileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0414AC7F1AEE194900631B8E /* FileModel.m */; };
+		0439B0B91B0EC52500F153C8 /* GrowRecordCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0439B0B81B0EC52500F153C8 /* GrowRecordCell.m */; };
 		043FD06B1AE0E58700F18FEA /* ErrorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 043FD06A1AE0E58700F18FEA /* ErrorView.m */; };
 		045636AB1AEE27D500558776 /* DocumentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 045636AA1AEE27D500558776 /* DocumentCell.m */; };
 		0463870C1ADFAEE700A35D16 /* MessageDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0463870B1ADFAEE700A35D16 /* MessageDetailController.m */; };
@@ -241,6 +242,8 @@
 		0414AC7D1AEDE8F300631B8E /* PartnerConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PartnerConfig.h; sourceTree = "<group>"; };
 		0414AC7E1AEE194900631B8E /* FileModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileModel.h; sourceTree = "<group>"; };
 		0414AC7F1AEE194900631B8E /* FileModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileModel.m; sourceTree = "<group>"; };
+		0439B0B71B0EC52500F153C8 /* GrowRecordCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowRecordCell.h; sourceTree = "<group>"; };
+		0439B0B81B0EC52500F153C8 /* GrowRecordCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowRecordCell.m; sourceTree = "<group>"; };
 		043FD0691AE0E58700F18FEA /* ErrorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ErrorView.h; sourceTree = "<group>"; };
 		043FD06A1AE0E58700F18FEA /* ErrorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ErrorView.m; sourceTree = "<group>"; };
 		045636A91AEE27D500558776 /* DocumentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentCell.h; sourceTree = "<group>"; };
@@ -1137,6 +1140,8 @@
 			children = (
 				04C73A221ACE40BF007B1283 /* FavoriteCell.h */,
 				04C73A231ACE40BF007B1283 /* FavoriteCell.m */,
+				0439B0B71B0EC52500F153C8 /* GrowRecordCell.h */,
+				0439B0B81B0EC52500F153C8 /* GrowRecordCell.m */,
 				04B9A28D1AD3E4BE009446D1 /* UnfinishedCell.h */,
 				04B9A28E1AD3E4BE009446D1 /* UnfinishedCell.m */,
 				04B9A2901AD3E4D6009446D1 /* FinishedCell.h */,
@@ -2043,6 +2048,7 @@
 				04CC33361ACA8072008A85B5 /* PatternItem.m in Sources */,
 				04CC33501ACA8118008A85B5 /* EnterpriseItem.m in Sources */,
 				55E373A61AC2B54200C794DD /* MJRefreshFooterView.m in Sources */,
+				0439B0B91B0EC52500F153C8 /* GrowRecordCell.m in Sources */,
 				55C122EA1ACE19E900D53630 /* CourseAnswerViewCell.m in Sources */,
 				55C5F23B1AE490C30046DC28 /* businessListModel.m in Sources */,
 				55B8BDF01ADB5A3A0008C21F /* Model.xcdatamodeld in Sources */,

@@ -182,7 +182,6 @@
     [textBgView addSubview:_textField];
     _textField.font = [UIFont systemFontOfSize:15];
     _textField.placeholder = @"搜索课程、企业";
-//    self.navigationItem.titleView = textBgView;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldChange) name:UITextFieldTextDidChangeNotification object:_textField];
     
     //搜索按钮

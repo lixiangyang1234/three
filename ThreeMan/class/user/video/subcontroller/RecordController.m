@@ -9,7 +9,7 @@
 #import "RecordController.h"
 #import "EditView.h"
 #import "RecordItem.h"
-#import "FavoriteCell.h"
+#import "GrowRecordCell.h"
 #import "SectionHeadView.h"
 #import "CourseDetailController.h"
 #import "DateManeger.h"
@@ -153,17 +153,15 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identify = @"identify";
-    FavoriteCell *cell = [tableView dequeueReusableCellWithIdentifier:identify];
+    GrowRecordCell *cell = [tableView dequeueReusableCellWithIdentifier:identify];
     if (cell == nil) {
-        cell = [[FavoriteCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify];
+        cell = [[GrowRecordCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify];
     }
     
     NSMutableArray *arr;
     arr = [_dataArray objectAtIndex:indexPath.section];
     RecordItem *item = [arr objectAtIndex:indexPath.row];
-    cell.titleLabel.text = item.title;
-    [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:placeHoderImage3];
-    cell.desLabel.text = item.companyname;
+    [cell configureForCell:item];
     return cell;
 }
 
