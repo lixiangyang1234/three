@@ -688,9 +688,9 @@
         CGFloat cellHeight = 0;
         courseDetailModel *recomModel =[_recommendArray objectAtIndex:indexPath.row];
         CGSize size = [AdaptationSize getSizeFromString:recomModel.recommendContent Font:[UIFont systemFontOfSize:PxFont(16)] withHight:CGFLOAT_MAX withWidth:kWidth-33];
-     CGSize nameRecommendSize =[AdaptationSize getSizeFromString:recomModel.recommendUseame Font:[UIFont systemFontOfSize:PxFont(18)] withHight:CGFLOAT_MAX withWidth:kWidth-YYBORDERWH*2-130];
+    
         //        NSLog(@"fffff------11111------>>>%f",size.height);
-        cellHeight =55+size.height+nameRecommendSize.height;
+        cellHeight =55+size.height+15;
         return cellHeight;
     }
     if (type==2) {

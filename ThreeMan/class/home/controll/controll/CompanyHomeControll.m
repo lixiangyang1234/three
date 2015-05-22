@@ -215,13 +215,13 @@
     [animationView addSubview:titleLabel];
     titleLabel.text =companyModel.companyCompanyname;
     titleLabel.textAlignment =NSTextAlignmentCenter;
-    titleLabel.font =[UIFont systemFontOfSize:PxFont(18)];
+    titleLabel.font =[UIFont systemFontOfSize:PxFont(19)];
     titleLabel.shadowOffset =CGSizeMake(0, 1);
     titleLabel.shadowColor =HexRGB(0xa2a2a2);
     titleLabel.backgroundColor =[UIColor clearColor];
     
     UILabel * contentLabel =[[UILabel alloc]initWithFrame:CGRectMake((kWidth-260)/2, 15, 260, 80)];
-    contentLabel.font =[UIFont systemFontOfSize:PxFont(12)];
+    contentLabel.font =[UIFont systemFontOfSize:PxFont(13)];
     titleLabel.textColor =HexRGB(0xffffff);
     contentLabel.textColor =HexRGB(0xf1f1f1);
     contentLabel.shadowColor =HexRGB(0xa2a2a2);
