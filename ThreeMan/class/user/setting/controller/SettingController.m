@@ -154,22 +154,24 @@
     }
     if (indexPath.section==1&&indexPath.row==0) {
         cell.nextImage.hidden = YES;
-        UISegmentedControl *control = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"off",@"on", nil]];
-        control.frame = CGRectMake(0, 0,70, 30);
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [btn setBackgroundImage:[UIImage imageNamed:@"wifi_off"] forState:UIControlStateNormal];
+        [btn setBackgroundImage:[UIImage imageNamed:@"wifi_on"] forState:UIControlStateSelected];
+        btn.frame = CGRectMake(0, 0, 45, 29);
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         NSString *wifi = [userDefaults objectForKey:@"wifi"];
         if (wifi) {
             if ([wifi isEqualToString:@"0"]) {
-                control.selectedSegmentIndex = 0;
+                btn.selected = NO;
             }else{
-                control.selectedSegmentIndex = 1;
+                btn.selected = YES;
             }
         }else{
-            control.selectedSegmentIndex = 0;
+            cell.selected =  NO;
         }
-        [control addTarget:self action:@selector(valueChange:) forControlEvents:UIControlEventValueChanged];
-        control.center = CGPointMake(kWidth-8*2-15-control.frame.size.width/2,42/2);
-        [cell.bgView addSubview:control];
+        [btn addTarget:self action:@selector(wifiBtnTouch:) forControlEvents:UIControlEventTouchUpInside];
+        btn.center = CGPointMake(kWidth-8*2-15-btn.frame.size.width/2,42/2);
+        [cell.bgView addSubview:btn];
     }else{
         cell.nextImage.hidden = NO;
     }
@@ -295,17 +297,19 @@
 }
 
 #pragma mark wifi按钮点击
-- (void)valueChange:(UISegmentedControl *)control
+- (void)wifiBtnTouch:(UIButton*)btn
 {
+    btn.selected = !btn.selected;
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *wifi;
-    if (control.selectedSegmentIndex == 0) {
-        wifi = @"0";
-    }else{
+    if (btn.selected) {
         wifi = @"1";
+    }else{
+        wifi = @"0";
     }
     [userDefaults setObject:wifi forKey:@"wifi"];
     [userDefaults synchronize];
+
 }
 
 #pragma mark keyboard_delegate

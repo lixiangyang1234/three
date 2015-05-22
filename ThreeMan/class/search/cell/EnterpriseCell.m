@@ -62,7 +62,9 @@
         line.backgroundColor = HexRGB(0xe0e0e0);
         [bgView addSubview:line];
         
-        
+        self.selectedBackgroundView = [[UIView alloc] init];
+        self.multipleSelectionBackgroundView = [[UIView alloc] init];
+
         
     }
     return self;
@@ -80,7 +82,7 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
+    bgView.backgroundColor = HexRGB(0xffffff);
     // Configure the view for the selected state
 }
 

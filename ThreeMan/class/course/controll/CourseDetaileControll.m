@@ -75,7 +75,12 @@
     [self.backScrollView addSubview:bannerImage];
     bannerImage.backgroundColor =HexRGB(0xe8e8e8);
     bannerImage.userInteractionEnabled =YES;
-    [bannerImage setImageWithURL:[NSURL URLWithString:courseModel.detaileImgurl]placeholderImage:placeHoderImage];
+    if (![courseModel.detaileImgurl isKindOfClass:[NSNull class]]&&courseModel.detaileImgurl&&courseModel.detaileImgurl.length!=0) {
+        [bannerImage setImageWithURL:[NSURL URLWithString:courseModel.detaileImgurl] placeholderImage:placeHoderImage];
+    }else{
+        bannerImage.image = [UIImage imageNamed:@"course_showpic"];
+    }
+
     
     CGFloat bannerh =BANNERH+bannerImage.frame.origin.y+5;
     UIView *backLine =[[UIView alloc]initWithFrame:CGRectMake(0, bannerh, kWidth, YYBORDER)];

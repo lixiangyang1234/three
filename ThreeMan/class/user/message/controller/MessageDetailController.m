@@ -32,21 +32,18 @@
 {
     NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:self.uid,@"id", nil];
     [HttpTool postWithPath:@"getMessageList" params:param success:^(id JSON, int code, NSString *msg) {
-        NSLog(@"%@",JSON);
         if (code == 100) {
             MessageDetailItem *item = [[MessageDetailItem alloc] init];
             [item setValuesForKeysWithDictionary:JSON[@"data"][@"message"]];
             [self buildUI:item];
         }
     } failure:^(NSError *error) {
-        NSLog(@"%@",error);
         [RemindView showViewWithTitle:offline location:MIDDLE];
     }];
 }
 
 - (void)buildUI:(MessageDetailItem *)item
 {
-    
     CGFloat topDes = 8;
     CGFloat leftDes = 8;
     CGFloat y = topDes;
@@ -61,11 +58,11 @@
         
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5,imgBgView.frame.size.width-5*2,imgBgView.frame.size.height-5*2)];
     [imgBgView addSubview:imageView];
-
+    
     if (![item.image isKindOfClass:[NSNull class]]&&item.image&&item.image.length!=0) {
-        imageView.image = [UIImage imageNamed:@""];
-    }else{
         [imageView setImageWithURL:[NSURL URLWithString:item.image] placeholderImage:placeHoderImage];
+    }else{
+        imageView.image = [UIImage imageNamed:@"course_showpic"];
     }
     
     y = y+imgBgView.frame.size.height+8;
@@ -117,7 +114,7 @@
     [contenteBgView addSubview:contentLabel];
     
     [_scrollView setContentSize:CGSizeMake(kWidth, contenteBgView.frame.origin.y+contenteBgView.frame.size.height+20)];
-
+    
 }
 
 - (void)didReceiveMemoryWarning {

@@ -62,7 +62,7 @@
 #define openURL(appScheme) [[UIApplication sharedApplication] openURL:[NSURL URLWithString:appScheme]]
 #endif
 
-#define offline @"网络断开，请连网"
+#define offline @"网络异常"
 #define serviceWrong @"服务器故障，请稍后再试"
 
 //判断字典dic中键key对应的值是否为空

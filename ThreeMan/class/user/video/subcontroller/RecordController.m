@@ -157,10 +157,6 @@
     if (cell == nil) {
         cell = [[FavoriteCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify];
     }
-    UIView *view = [[UIView alloc] initWithFrame:cell.frame];
-    view.backgroundColor = [UIColor clearColor];
-    cell.selectedBackgroundView = [[UIView alloc] init];
-    cell.multipleSelectionBackgroundView = [[UIView alloc] init];
     
     NSMutableArray *arr;
     arr = [_dataArray objectAtIndex:indexPath.section];
