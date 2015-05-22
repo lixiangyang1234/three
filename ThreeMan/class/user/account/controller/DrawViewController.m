@@ -15,6 +15,7 @@
     UITextField *_textField;
     UILabel *_payLabel;
     UITextField *_zfbTextField;
+    CGFloat _scale;
 }
 
 
@@ -27,10 +28,30 @@
     // Do any additional setup after loading the view.
     [self setLeftTitle:@"提现"];
     
-    [self buildUI];
+    [self loadData];
 }
 
-- (void)buildUI
+- (void)loadData
+{
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [HttpTool postWithPath:@"getReturn" params:nil success:^(id JSON, int code, NSString *msg) {
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        NSLog(@"%@",JSON);
+        if (code == 100) {
+            NSDictionary *dict = JSON[@"data"];
+            [self buildUI:dict];
+            _scale = [[dict objectForKey:@"scale"] doubleValue];
+        }else{
+            [RemindView showViewWithTitle:msg location:TOP];
+        }
+    } failure:^(NSError *error) {
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        [RemindView showViewWithTitle:offline location:TOP];
+    }];
+}
+
+
+- (void)buildUI:(NSDictionary *)dict
 {
     UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(8, 8, kWidth-8*2, 31+50*3)];
     bgView.backgroundColor = [UIColor whiteColor];
@@ -54,11 +75,13 @@
         [bgView addSubview:line];
     }
     
-    
+    UserInfo *userinfo = [SystemConfig sharedInstance].userInfo;
+    NSString *scale = [dict objectForKey:@"scale"];
+    NSString *num = [[dict objectForKey:@"user"] objectForKey:@"num"];
     //账号
     UILabel *telLabel = [[UILabel alloc] initWithFrame:CGRectMake(12,0,140,50)];
     telLabel.backgroundColor = [UIColor clearColor];
-    telLabel.text = @"15012545412";
+    telLabel.text = userinfo.phone;
     telLabel.textColor = HexRGB(0x323232);
     telLabel.font = [UIFont systemFontOfSize:17];
     [bgView addSubview:telLabel];
@@ -66,7 +89,7 @@
     //昵称
     UILabel *nickLabel = [[UILabel alloc] initWithFrame:CGRectMake(bgView.frame.size.width-12-150,0,150,50)];
     nickLabel.backgroundColor = [UIColor clearColor];
-    nickLabel.text = @"张玉泉";
+    nickLabel.text = userinfo.username;
     nickLabel.textAlignment = NSTextAlignmentRight;
     nickLabel.textColor = HexRGB(0x323232);
     nickLabel.font = [UIFont systemFontOfSize:17];
@@ -75,7 +98,7 @@
     //剩余蜕变豆
     UILabel *amountLabel = [[UILabel alloc] initWithFrame:CGRectMake(12,telLabel.frame.origin.y+telLabel.frame.size.height,140,31)];
     amountLabel.backgroundColor = [UIColor clearColor];
-    amountLabel.text = @"剩余蜕变豆:28";
+    amountLabel.text = [NSString stringWithFormat:@"剩余蜕变豆:%@",num];
     amountLabel.textColor = HexRGB(0x959595);
     amountLabel.font = [UIFont systemFontOfSize:14];
     [bgView addSubview:amountLabel];
@@ -90,7 +113,7 @@
 
     
     _textField = [[UITextField alloc] initWithFrame:CGRectMake(12,_zfbTextField.frame.origin.y+_zfbTextField.frame.size.height, bgView.frame.size.width-12,50)];
-    _textField.placeholder = @"请输入提现金额(1元=1蜕变豆)";
+    _textField.placeholder = [NSString stringWithFormat:@"请输入蜕变豆数量(%@蜕变豆＝1元)",scale];
     _textField.keyboardType = UIKeyboardTypeNumberPad;
     _textField.backgroundColor = [UIColor clearColor];
     _textField.delegate = self;
@@ -98,7 +121,7 @@
     [bgView addSubview:_textField];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldChange) name:UITextFieldTextDidChangeNotification object:_textField];
     
-    NSString *str = @"支付宝付款:";
+    NSString *str = @"提现金额:";
     CGSize size = [AdaptationSize getSizeFromString:str Font:[UIFont systemFontOfSize:17] withHight:20 withWidth:CGFLOAT_MAX];
     UILabel *payTitle = [[UILabel alloc] initWithFrame:CGRectMake(20,bgView.frame.origin.y+bgView.frame.size.height+20,size.width,20)];
     payTitle.backgroundColor = [UIColor clearColor];
@@ -118,7 +141,7 @@
     
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.frame = CGRectMake(bgView.frame.origin.x, _payLabel.frame.origin.y+_payLabel.frame.size.height+20, bgView.frame.size.width, 40);
-    [btn setTitle:@"支付宝提现" forState:UIControlStateNormal];
+    [btn setTitle:@"提现" forState:UIControlStateNormal];
     [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [btn addTarget:self action:@selector(btnDown) forControlEvents:UIControlEventTouchUpInside];
     [btn setBackgroundImage:[UIImage imageNamed:@"sure"] forState:UIControlStateNormal];

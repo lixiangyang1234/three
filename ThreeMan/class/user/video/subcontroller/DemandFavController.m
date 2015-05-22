@@ -175,10 +175,6 @@
     if (cell == nil) {
         cell = [[FavoriteCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify];
     }
-    UIView *view = [[UIView alloc] initWithFrame:cell.frame];
-    view.backgroundColor = [UIColor clearColor];
-    cell.selectedBackgroundView = [[UIView alloc] init];
-    cell.multipleSelectionBackgroundView = [[UIView alloc] init];
     
     FavoriteItem *item = [_dataArray objectAtIndex:indexPath.row];
     cell.titleLabel.text = item.title;

@@ -181,6 +181,7 @@
                     NSString *requestRange = [NSString stringWithFormat:@"bytes=%llu-", downloadedBytes];
                     [mutableURLRequest setValue:requestRange forHTTPHeaderField:@"Range"];
                     request = mutableURLRequest;
+                    
                 }
             }
             //不使用缓存，避免断点续传出现问题

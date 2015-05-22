@@ -81,6 +81,8 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.sectionFooterHeight = 0;
     _tableView.sectionHeaderHeight = 0;
+    _tableView.showsHorizontalScrollIndicator = NO;
+    _tableView.showsVerticalScrollIndicator = NO;
     [self.view addSubview:_tableView];
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 8)];
     _tableView.tableHeaderView = view;
@@ -284,10 +286,6 @@
         if (cell == nil) {
             cell = [[FavoriteCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify1];
         }
-        UIView *view = [[UIView alloc] initWithFrame:cell.frame];
-        view.backgroundColor = [UIColor clearColor];
-        cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.multipleSelectionBackgroundView = [[UIView alloc] init];
         
         FavoriteItem *item = [_demandArray objectAtIndex:indexPath.row];
         cell.titleLabel.text = item.title;
@@ -300,11 +298,6 @@
         if (cell == nil) {
             cell = [[EnterpriseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify2];
         }
-        UIView *view = [[UIView alloc] initWithFrame:cell.frame];
-        view.backgroundColor = [UIColor clearColor];
-        cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.multipleSelectionBackgroundView = [[UIView alloc] init];
-
         
         EnterpriseItem *item = [_companyArray objectAtIndex:indexPath.row];
         [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:placeHoderImage1];

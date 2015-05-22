@@ -173,11 +173,6 @@
             if (cell == nil) {
                 cell = [[FinishedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify1];
             }
-            UIView *view = [[UIView alloc] initWithFrame:cell.frame];
-            view.backgroundColor = [UIColor clearColor];
-            cell.selectedBackgroundView = [[UIView alloc] init];
-            cell.multipleSelectionBackgroundView = [[UIView alloc] init];
-
             
             DownloadFileModel *fileInfo = [_finishedArray objectAtIndex:indexPath.row];
             NSDictionary *dic = fileInfo.fileInfo;
@@ -201,12 +196,6 @@
             if (cell == nil) {
                 cell = [[UnfinishedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify2];
             }
-            
-            UIView *view = [[UIView alloc] initWithFrame:cell.frame];
-            view.backgroundColor = [UIColor clearColor];
-            cell.selectedBackgroundView = [[UIView alloc] init];
-            cell.multipleSelectionBackgroundView = [[UIView alloc] init];
-
             
             DownloadFileModel *fileInfo = [_unFinishedArray objectAtIndex:indexPath.row];
             NSDictionary *dic = fileInfo.fileInfo;
@@ -246,11 +235,7 @@
             if (cell == nil) {
                 cell = [[UnfinishedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify2];
             }
-            UIView *view = [[UIView alloc] initWithFrame:cell.frame];
-            view.backgroundColor = [UIColor clearColor];
-            cell.selectedBackgroundView = [[UIView alloc] init];
-            cell.multipleSelectionBackgroundView = [[UIView alloc] init];
-
+            
             DownloadFileModel *fileInfo = [_unFinishedArray objectAtIndex:indexPath.row];
             NSDictionary *dic = fileInfo.fileInfo;
             NSString *imageurl = [dic objectForKey:@"imgurl"];
@@ -282,11 +267,6 @@
             if (cell == nil) {
                 cell = [[FinishedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify1];
             }
-            UIView *view = [[UIView alloc] initWithFrame:cell.frame];
-            view.backgroundColor = [UIColor clearColor];
-            cell.selectedBackgroundView = [[UIView alloc] init];
-            cell.multipleSelectionBackgroundView = [[UIView alloc] init];
-
             
             DownloadFileModel *fileInfo = [_finishedArray objectAtIndex:indexPath.row];
             NSDictionary *dic = fileInfo.fileInfo;

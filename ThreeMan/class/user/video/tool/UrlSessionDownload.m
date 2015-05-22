@@ -401,8 +401,12 @@
 - (NSURLSession *)backgroundSession:(NSString *)identify
 {
     NSURLSession *backgroundSession =nil;
-    
-    NSURLSessionConfiguration *config = [NSURLSessionConfiguration backgroundSessionConfiguration:identify];
+    NSURLSessionConfiguration *config;
+    if ([self respondsToSelector:@selector(backgroundSessionConfigurationWithIdentifier:)]) {
+        config = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:identify];
+    }else{
+        config = [NSURLSessionConfiguration backgroundSessionConfiguration:identify];
+    }
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *wifi = [userDefaults objectForKey:@"wifi"];
@@ -500,7 +504,6 @@
 #pragma mark NSURLSessionDownloadDelegate
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location
 {
-    
     //将临时缓存文件移到目标目标路径下
     DownloadFileModel *fileModel = [self.fileDic objectForKey:session.configuration.identifier];
     
@@ -523,7 +526,6 @@
 {
     //更新进度
     double progress = (double)totalBytesWritten / (double)totalBytesExpectedToWrite;
-//    NSLog(@"%f",progress);
     DownloadFileModel *fileModel = [self.fileDic objectForKey:session.configuration.identifier];
     fileModel.fileReceivedSize = [NSString stringWithFormat:@"%lld",totalBytesWritten];
     fileModel.totalSize = [NSString stringWithFormat:@"%lld",totalBytesExpectedToWrite];
