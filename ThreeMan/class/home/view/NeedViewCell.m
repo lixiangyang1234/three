@@ -54,7 +54,7 @@
         companyName =[[UILabel alloc]initWithFrame:CGRectMake(borderW*2+imageW, backCell.frame.size.height-20, 100, 16)];
         companyName.backgroundColor =[UIColor clearColor];
         [backCell addSubview:companyName];
-        companyName.font =[UIFont systemFontOfSize:9];
+        companyName.font =[UIFont systemFontOfSize:11];
         companyName.textColor=HexRGB(0x959595);
     
         zanBtn =[UIButton buttonWithType:UIButtonTypeCustom];
