@@ -13,7 +13,6 @@
  #import "HttpTool.h"
 #import"AFNetworking.h"
 #import "MBProgressHUD.h"
-#import "ShareView.h"
 #import "UIButton+WebCache.h"
 #import "RemindView.h"
 #import "MJRefresh.h"

@@ -30,9 +30,7 @@
 @end
 
 @implementation ThreeBlockController
--(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-    NSLog(@"1111");
-}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
    
@@ -54,6 +52,7 @@
     [self addCategoryBtn];
     [self addLoadStatus:@"0" indexId:_threeId];
 }
+//-(void)touc
 -(void)addRefreshView{
     refreshHeaderView =[[MJRefreshHeaderView alloc]init];
     refreshHeaderView.delegate =self;
@@ -149,7 +148,7 @@
     }
     [HttpTool postWithPath:@"getNeedList" params:parmDic success:^(id JSON, int code, NSString *msg) {
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-        NSLog(@"========>%@",parmDic);
+        NSLog(@"========>%@",JSON);
         if (isRefresh) {
             [refreshFooterView endRefreshing];
         }else{
@@ -162,7 +161,8 @@
 
         }
 
-
+//        [_categoryArray removeAllObjects];
+//        [_threeArray removeAllObjects];
         if (code == 100) {
             NSDictionary *dic = [JSON objectForKey:@"data"][@"subcategory_list"];
             
@@ -263,7 +263,7 @@
     UIButton*  categoryBtn =[UIButton buttonWithType:UIButtonTypeCustom];
     [self.view addSubview:categoryBtn];
     categoryBtn.frame =CGRectMake(kWidth-120, 7, 120, 30) ;
-    [categoryBtn setTitle:@"委员会类型" forState:UIControlStateNormal];
+    [categoryBtn setTitle:@"全部类型" forState:UIControlStateNormal];
     [categoryBtn setImage:[UIImage imageNamed:@"downlower"] forState:UIControlStateNormal];
     [categoryBtn addTarget:self action:@selector(threeCategoryBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [categoryBtn.titleLabel setFont:[UIFont systemFontOfSize:PxFont(18)]];
@@ -301,6 +301,7 @@ _selectedIntem.tag =sender.tag;
     
 }
 -(void)threeCategoryBtnClick:(UIButton *)sender{
+   
     [UIView animateWithDuration:0.001 animations:^{
         sender.imageView.transform = CGAffineTransformRotate(sender.imageView.transform, DEGREES_TO_RADIANS(180));
     }];
@@ -338,6 +339,19 @@ _selectedIntem.tag =sender.tag;
         popView.threeCount1 =_categoryArray.count;
     popView.selectRowAtIndex = ^(NSInteger index)
     {
+       
+        NSLog(@"------>%ld",(long)index);
+        if (index==100||index==101||index==102||index==103) {
+            [sender setTitle:titles[index-100] forState:UIControlStateNormal];
+            if (index==101) {
+                [sender setTitle:category[index-101] forState:UIControlStateNormal];
+
+            }
+
+        }else{
+            [sender setTitle:category[index-10] forState:UIControlStateNormal];
+
+        }
         
         indexBtn =index;
         if (index==101) {
@@ -353,6 +367,7 @@ _selectedIntem.tag =sender.tag;
     };
         
     [popView show];
+      
         
     }
    
