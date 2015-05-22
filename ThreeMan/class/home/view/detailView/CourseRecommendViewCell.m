@@ -40,7 +40,6 @@
         nameRecomendLabel =[[UILabel alloc]init];
         nameRecomendLabel.backgroundColor =[UIColor clearColor];
         [backCell addSubview:nameRecomendLabel];
-        nameRecomendLabel.numberOfLines =2;
         nameRecomendLabel.font =[UIFont systemFontOfSize:PxFont(18)];
         nameRecomendLabel.textColor =HexRGB(0x323232);
         
@@ -64,9 +63,9 @@
 }
 -(void)setObjectRecommendItem:(courseDetailModel *)item{
     CGSize recommendSize =[AdaptationSize getSizeFromString:item.recommendContent Font:[UIFont systemFontOfSize:PxFont(16)] withHight:CGFLOAT_MAX withWidth:kWidth-borderwh*3];
-    CGSize nameRecommendSize =[AdaptationSize getSizeFromString:item.recommendUseame Font:[UIFont systemFontOfSize:PxFont(18)] withHight:CGFLOAT_MAX withWidth:kWidth-YYBORDERWH*2-130];
+   
 
-    backCell.frame =CGRectMake(YYBORDERWH, 0, kWidth-YYBORDERWH, recommendSize.height+47+nameRecommendSize.height);
+    backCell.frame =CGRectMake(YYBORDERWH, 0, kWidth-YYBORDERWH, recommendSize.height+47+15);
     backLineCell.frame=CGRectMake(0, backCell.frame.size.height-1, kWidth-borderwh, 1);
     
     headerRecommendImage.frame =CGRectMake(borderwh, borderwh-5, 40, 40);
@@ -75,10 +74,10 @@
     
     CGFloat imageW =headerRecommendImage.frame.origin.x+headerRecommendImage.frame.size.width;
     
-    nameRecomendLabel.frame =CGRectMake(imageW+borderwh, borderwh, backCell.frame.size.width-YYBORDERWH-130, nameRecommendSize.height);
+    nameRecomendLabel.frame =CGRectMake(imageW+borderwh, borderwh+5, backCell.frame.size.width-YYBORDERWH-130, 20);
     nameRecomendLabel.text =item.recommendUseame;
     
-    timeRecomendLabel.frame =CGRectMake(self.frame.size.width-90, borderwh+3, 70, 20);
+    timeRecomendLabel.frame =CGRectMake(self.frame.size.width-90, borderwh+5, 70, 20);
     timeRecomendLabel.text =item.recommednAddtime;
     CGFloat needH =backCell. frame.size.height-recommendSize.height-8;
 

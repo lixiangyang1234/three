@@ -119,7 +119,7 @@
 -(void)dismiss
 {
     [self dismiss:YES];
-    
+
 }
 
 -(void)dismiss:(BOOL)animate
@@ -127,6 +127,7 @@
     if (!animate)
     {
         [_handerView removeFromSuperview];
+
         return;
     }
     
@@ -135,6 +136,7 @@
         self.alpha = 0.f;
     } completion:^(BOOL finished) {
         [_handerView removeFromSuperview];
+
 
     }];
     
@@ -154,10 +156,10 @@
     viewLine.alpha =.6;
     
     
-    for (int i=0; i<self.titleArray.count; i++)
+    for (int i=0; i<4; i++)
     {
         _titleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _titleBtn.frame=CGRectMake(0, 54+i%self.titleArray.count*(44)-43, kWidth, 44);
+        _titleBtn.frame=CGRectMake(0, 54+i%4*(44)-43, kWidth, 44);
         
         [_titleBtn setTitleColor:HexRGB(0x808080) forState:UIControlStateNormal];
         [_titleBtn setTitleColor:HexRGB(0x178ac5) forState:UIControlStateSelected];
@@ -197,17 +199,13 @@
         viewLine.frame=CGRectMake(0, 43, kWidth, .5);
         [_titleBtn addSubview:viewLine];
         viewLine.backgroundColor =HexRGB(0xeaebec);
-        //          viewLine.backgroundColor =[UIColor redColor];
-        
-        
-        
     }
     
     
     NSArray *array = [[DBTool shareDBToolClass] getNewTitleButtonArray];
     
     
-    for (int j=0; j < self.titleArray.count; j++)
+    for (int j=0; j < 4; j++)
     {
         if (array.count == 0)
         {
@@ -259,7 +257,7 @@
     }
     else
     {
-        for (int i=0; i<self.categoryArray.count; i++)
+        for (int i=0; i<7; i++)
         {
             
             self.categoryTitleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
