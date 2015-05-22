@@ -8,7 +8,7 @@
 
 #import "SUNSlideSwitchView.h"
 
-static const CGFloat kHeightOfTopScrollView = 40.0f;
+static const CGFloat kHeightOfTopScrollView = 42.0f;
 static const CGFloat kWidthOfButtonMargin = 16.0f-8-5;
 static const CGFloat kFontSizeOfTabButton = 14;
 static const NSUInteger kTagOfRightSideButton = 999;
@@ -29,6 +29,7 @@ static const CGFloat kShowdowFirstX =0;
     _topScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, kHeightOfTopScrollView)];
     _topScrollView.delegate = self;
     _topScrollView.backgroundColor = HexRGB(0xffffff);
+//    _topScrollView.backgroundColor =[UIColor redColor];
     _topScrollView.pagingEnabled = NO;
     _topScrollView.showsHorizontalScrollIndicator = NO;
     _topScrollView.showsVerticalScrollIndicator = NO;
@@ -39,6 +40,7 @@ static const CGFloat kShowdowFirstX =0;
     UIView *topLine =[[UIView alloc]initWithFrame:CGRectMake(0, kHeightOfTopScrollView-1, kWidth, 1)];
     [_topScrollView addSubview:topLine];
     topLine.backgroundColor =HexRGB(0xe9eaec);
+
     
     //创建主滚动视图
     _rootScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, kHeightOfTopScrollView, self.bounds.size.width, self.bounds.size.height - kHeightOfTopScrollView)];

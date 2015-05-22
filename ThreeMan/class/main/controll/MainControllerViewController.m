@@ -48,6 +48,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor =[UIColor greenColor];
     // Do any additional setup after loading the view.
     [self addUI];//添加容器
     [self addNavItem];//添加导航按钮

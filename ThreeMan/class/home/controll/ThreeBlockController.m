@@ -80,9 +80,12 @@
                 [self addLoadStatus:@"0" indexId:indexid1 ];
                 
             }else if(indexBtn==10||indexBtn==11||indexBtn==12||indexBtn==13||indexBtn==14||indexBtn==15||indexBtn==16){
-                threeBlockModel *threeModel =[_categoryArray objectAtIndex:indexBtn-10];
-                NSString * indexid2=[NSString stringWithFormat:@"%d", threeModel.cateid];
-                [self addLoadStatus:@"0" indexId:indexid2];
+                if (_categoryArray.count>0) {
+                    threeBlockModel *threeModel =[_categoryArray objectAtIndex:indexBtn-10];
+                    NSString * indexid2=[NSString stringWithFormat:@"%d", threeModel.cateid];
+                    [self addLoadStatus:@"0" indexId:indexid2];
+                }
+                
                 
             }
             
@@ -100,9 +103,12 @@
                 [self addLoadStatus:@"1" indexId:indexid1 ];
                 
             }else if(indexBtn==10||indexBtn==11||indexBtn==12||indexBtn==13||indexBtn==14||indexBtn==15||indexBtn==16){
-                threeBlockModel *threeModel =[_categoryArray objectAtIndex:indexBtn-10];
-                NSString * indexid2=[NSString stringWithFormat:@"%d", threeModel.cateid];
-                [self addLoadStatus:@"1"indexId:indexid2];
+                if (_categoryArray.count>0) {
+                    threeBlockModel *threeModel =[_categoryArray objectAtIndex:indexBtn-10];
+                    NSString * indexid2=[NSString stringWithFormat:@"%d", threeModel.cateid];
+                    [self addLoadStatus:@"1"indexId:indexid2];
+                }
+                
                 
             }
             
@@ -119,10 +125,11 @@
                 [self addLoadStatus:@"2||3||4||5||6||7||8" indexId:indexid1 ];
                 
             }else if(indexBtn==10||indexBtn==11||indexBtn==12||indexBtn==13||indexBtn==14||indexBtn==15||indexBtn==16){
+                if (_categoryArray.count>0) {
                 threeBlockModel *threeModel =[_categoryArray objectAtIndex:indexBtn-10];
                 NSString * indexid2=[NSString stringWithFormat:@"%d", threeModel.cateid];
                 [self addLoadStatus:@"2||3||4||5||6||7||8" indexId:indexid2];
-                
+                }
             }
             
         }
@@ -161,9 +168,11 @@
 
         }
 
-//        [_categoryArray removeAllObjects];
-//        [_threeArray removeAllObjects];
         if (code == 100) {
+//            [_categoryArray removeAllObjects];
+//            [_threeArray removeAllObjects];
+
+            
             NSDictionary *dic = [JSON objectForKey:@"data"][@"subcategory_list"];
             
             NSDictionary *dic1 = [JSON objectForKey:@"data"];
@@ -262,14 +271,15 @@
 -(void)addCategoryBtn{
     UIButton*  categoryBtn =[UIButton buttonWithType:UIButtonTypeCustom];
     [self.view addSubview:categoryBtn];
-    categoryBtn.frame =CGRectMake(kWidth-120, 7, 120, 30) ;
+    categoryBtn.frame =CGRectMake(kWidth-100, 7, 100, 30) ;
     [categoryBtn setTitle:@"全部类型" forState:UIControlStateNormal];
     [categoryBtn setImage:[UIImage imageNamed:@"downlower"] forState:UIControlStateNormal];
     [categoryBtn addTarget:self action:@selector(threeCategoryBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [categoryBtn.titleLabel setFont:[UIFont systemFontOfSize:PxFont(18)]];
     [categoryBtn setTitleColor:HexRGB(0x959595) forState:UIControlStateNormal];
-    categoryBtn.imageEdgeInsets =UIEdgeInsetsMake(0, 90, 0, 0);
-    categoryBtn.titleEdgeInsets =UIEdgeInsetsMake(0, 0, 0, 30);
+    categoryBtn.imageEdgeInsets =UIEdgeInsetsMake(0, 75, 0, 0);
+    categoryBtn.titleEdgeInsets =UIEdgeInsetsMake(0, 0, 0, 25);
+    categoryBtn.backgroundColor =[UIColor clearColor];
     
 }
 -(void)addTableView{
@@ -287,8 +297,7 @@
 #pragma mark ----chooseBtn categoryBtn 筛选按钮
 //筛选按钮
 -(void)tchooseBtnClick:(YYSearchButton *)sender{
-//    [_threeArray removeAllObjects];
-//    [_categoryArray removeAllObjects];
+    
 _selectedIntem.tag =sender.tag;
         if (sender!=_selectedItem) {
            
@@ -302,6 +311,7 @@ _selectedIntem.tag =sender.tag;
     
 }
 -(void)threeCategoryBtnClick:(UIButton *)sender{
+    
    
     [UIView animateWithDuration:0.001 animations:^{
         sender.imageView.transform = CGAffineTransformRotate(sender.imageView.transform, DEGREES_TO_RADIANS(180));
@@ -455,9 +465,12 @@ _selectedIntem.tag =sender.tag;
             [self addLoadStatus:@"0" indexId:indexid1 ];
             
         }else if(indexBtn==10||indexBtn==11||indexBtn==12||indexBtn==13||indexBtn==14||indexBtn==15||indexBtn==16){
-            threeBlockModel *threeModel =[_categoryArray objectAtIndex:indexBtn-10];
-            NSString * indexid2=[NSString stringWithFormat:@"%d", threeModel.cateid];
-            [self addLoadStatus:@"0" indexId:indexid2];
+            if (_categoryArray.count>0) {
+                threeBlockModel *threeModel =[_categoryArray objectAtIndex:indexBtn-10];
+                NSString * indexid2=[NSString stringWithFormat:@"%d", threeModel.cateid];
+                [self addLoadStatus:@"0" indexId:indexid2];
+            }
+            
         } else  {
             [self addLoadStatus:@"0" indexId:_threeId ];
         }
@@ -470,9 +483,12 @@ _selectedIntem.tag =sender.tag;
             [self addLoadStatus:@"1" indexId:indexid1 ];
             
         }else if(indexBtn==10||indexBtn==11||indexBtn==12||indexBtn==13||indexBtn==14||indexBtn==15||indexBtn==16) {
-            threeBlockModel *threeModel =[_categoryArray objectAtIndex:indexBtn-10];
-            NSString * indexid2=[NSString stringWithFormat:@"%d", threeModel.cateid];
-            [self addLoadStatus:@"1"indexId:indexid2];
+            if (_categoryArray.count>0) {
+                threeBlockModel *threeModel =[_categoryArray objectAtIndex:indexBtn-10];
+                NSString * indexid2=[NSString stringWithFormat:@"%d", threeModel.cateid];
+                [self addLoadStatus:@"1"indexId:indexid2];
+            }
+           
         }else  {
             [self addLoadStatus:@"1" indexId:_threeId ];
         }
@@ -484,9 +500,12 @@ _selectedIntem.tag =sender.tag;
             NSString * indexid1=[NSString stringWithFormat:@"%d", threeModel.categoryid];
             [self addLoadStatus:@"2||3||4||5||6||7||8" indexId:indexid1 ];
         }else if(indexBtn==10||indexBtn==11||indexBtn==12||indexBtn==13||indexBtn==14||indexBtn==15||indexBtn==16){
-            threeBlockModel *threeModel =[_categoryArray objectAtIndex:indexBtn-10];
-            NSString * indexid2=[NSString stringWithFormat:@"%d", threeModel.cateid];
-            [self addLoadStatus:@"2||3||4||5||6||7||8" indexId:indexid2];
+            if (_categoryArray.count>0) {
+                threeBlockModel *threeModel =[_categoryArray objectAtIndex:indexBtn-10];
+                NSString * indexid2=[NSString stringWithFormat:@"%d", threeModel.cateid];
+                [self addLoadStatus:@"2||3||4||5||6||7||8" indexId:indexid2];
+            }
+            
         }else  {
             [self addLoadStatus:@"2||3||4||5||6||7||8" indexId:_threeId ];
         }

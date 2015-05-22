@@ -349,7 +349,7 @@
     
     _orangLin =[[UIView alloc]init];
     [self.backScrollView addSubview:_orangLin];
-    _orangLin.frame =CGRectMake(0, bannerHeightLine+BUTTONH-2, (kWidth-YYBORDERWH*2)/3, 2);
+    _orangLin.frame =CGRectMake(0, bannerHeightLine+BUTTONH-2, (kWidth-YYBORDERWH*4)/3, 2);
     _orangLin.backgroundColor =HexRGB(0x1c8cc6);
 }
 #pragma mark分类背景CategoryScrollview
@@ -558,10 +558,10 @@
 //添加底部下载  download  buyCourse collect
 -(void)addUIDownloadView{
     courseDetailModel *couseModel =[_detailArray objectAtIndex:0];
-    UIView *downloadView =[[UIView alloc]initWithFrame:CGRectMake(YYBORDERWH, kHeight-64-50, kWidth-YYBORDERWH*2, 50)];
+    UIView *downloadView =[[UIView alloc]initWithFrame:CGRectMake(YYBORDERWH, kHeight-64-50, kWidth, 50)];
     [self.view addSubview:downloadView];
     downloadView.backgroundColor =[UIColor whiteColor];
-    UIView *line =[[UIView alloc]initWithFrame:CGRectMake(0, 0, kWidth-YYBORDERWH*2, 1)];
+    UIView *line =[[UIView alloc]initWithFrame:CGRectMake(0, 0, kWidth, 0.5)];
     [downloadView addSubview:line];
     line.backgroundColor =HexRGB(0xd1d1d1);
     
@@ -734,7 +734,7 @@
             scrollView.contentOffset = CGPointMake(kWidth*2, 0);
         }
         [UIView animateWithDuration:0.01 animations:^{
-            _orangLin.frame = CGRectMake(scrollView.contentOffset.x/3,bannerHeightLine+BUTTONH-2, kWidth/3, 2);
+            _orangLin.frame = CGRectMake((scrollView.contentOffset.x-YYBORDERWH*2)/3,bannerHeightLine+BUTTONH-2, (kWidth-YYBORDERWH*2)/3, 2);
         }];
         
         
@@ -985,7 +985,7 @@
 -(void)notByAnswer{
     courseDetailModel *courseModel =[_detailArray objectAtIndex:0];
     if (courseModel.courseIsbuy==1||courseModel.coursePrice==0) {
-        failView =[[NetFailView alloc]initWithFrameForDetail:CGRectMake((kWidth-NETFAILIMGWH-YYBORDERWH*2)/2+kWidth*2, 15, NETFAILIMGWH, NETFAILIMGWH) backImage:[UIImage imageNamed:@"netFailImg_2"] promptTitle:@"抱歉！该需求暂时还没有答疑！"];
+        failView =[[NetFailView alloc]initWithFrameForDetail:CGRectMake((kWidth-NETFAILIMGWH-YYBORDERWH*2)/2+kWidth*2, 15, NETFAILIMGWH, NETFAILIMGWH) backImage:[UIImage imageNamed:@"netFailImg_1"] promptTitle:@"抱歉！该需求暂时还没有答疑！"];
     }else {
         failView =[[NetFailView alloc]initWithFrameForDetail:CGRectMake((kWidth-NETFAILIMGWH-YYBORDERWH*2)/2+kWidth*2, 15, NETFAILIMGWH, NETFAILIMGWH) backImage:[UIImage imageNamed:@"netFailImg_2"] promptTitle:@"抱歉！您还未购买该课程！点击下方“购买”按钮购买！"];
     }

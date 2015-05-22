@@ -14,9 +14,12 @@
     // 1.appearance方法返回一个导航栏的外观对象
     // 修改了这个外观对象，相当于修改了整个项目中的外观
     UINavigationBar *bar = [UINavigationBar appearance];
-    
-    // 2.设置导航栏的背景图片
+//    2.去除导航栏底部灰色线条
+    [bar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
+    bar.shadowImage = [[UIImage alloc] init];
+    // 3.设置导航栏的背景图片
 //    bar.backgroundColor =RGBNAVbackGroundColor;
+   
     if (IsIos7) {
         [bar setBackgroundImage:[UIImage imageNamed:@"nav_bg.png"] forBarMetrics:UIBarMetricsDefault];
 
@@ -24,6 +27,7 @@
         [bar setBackgroundImage:[UIImage imageNamed:@"nav_bg.png"] forBarMetrics:UIBarMetricsDefault];
 
     }
+   
     // 3.设置导航栏文字的主题
     [bar setTitleTextAttributes:@{
       UITextAttributeTextColor : [UIColor clearColor],
