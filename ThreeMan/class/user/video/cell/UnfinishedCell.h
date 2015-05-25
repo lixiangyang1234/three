@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "CircularProgressView.h"
+#import "DownloadFileModel.h"
 
 @interface UnfinishedCell : UITableViewCell
 
@@ -16,5 +17,6 @@
 @property (nonatomic,strong) CircularProgressView *progressView;
 @property (nonatomic,strong) UILabel *progressLabel;
 
+- (void)configureForCell:(DownloadFileModel *)fileModel;
 
 @end

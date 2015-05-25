@@ -91,6 +91,7 @@
     nickLabel.backgroundColor = [UIColor clearColor];
     nickLabel.text = userinfo.username;
     nickLabel.textAlignment = NSTextAlignmentRight;
+    nickLabel.numberOfLines = 0;
     nickLabel.textColor = HexRGB(0x323232);
     nickLabel.font = [UIFont systemFontOfSize:17];
     [bgView addSubview:nickLabel];
@@ -177,7 +178,7 @@
 
 - (void)textFieldChange
 {
-    _payLabel.text = [NSString stringWithFormat:@"%.2f元",[_textField.text floatValue]];
+    _payLabel.text = [NSString stringWithFormat:@"%.2f元",[_textField.text floatValue]/_scale];
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string

@@ -51,7 +51,7 @@
         [bgView addSubview:_littleLabel];
         
         CGFloat y =  _littleLabel.frame.origin.y+_littleLabel.frame.size.height;
-        _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(_titleLabel.frame.origin.x,y, kWidth-10*2-_titleLabel.frame.origin.x,height-y)];
+        _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(_titleLabel.frame.origin.x,y, kWidth-10*2-_titleLabel.frame.origin.x,height-y-3)];
         _contentLabel.numberOfLines = 0;
         _contentLabel.textColor = HexRGB(0x1c8cc6);
         _contentLabel.font = [UIFont systemFontOfSize:12];

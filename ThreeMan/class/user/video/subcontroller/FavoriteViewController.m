@@ -288,9 +288,7 @@
         }
         
         FavoriteItem *item = [_demandArray objectAtIndex:indexPath.row];
-        cell.titleLabel.text = item.title;
-        [cell.imgView setImageWithURL:[NSURL URLWithString:item.img] placeholderImage:placeHoderImage3];
-        cell.desLabel.text = item.companyname;
+        [cell configureForCell:item];
         return cell;
     }else{
         static NSString *identify2 = @"identify2";

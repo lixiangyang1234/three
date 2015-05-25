@@ -1,21 +1,21 @@
 //
-//  FavoriteCell.h
+//  GrowRecordCell.h
 //  ThreeMan
 //
-//  Created by tianj on 15/4/3.
+//  Created by tianj on 15/5/22.
 //  Copyright (c) 2015年 ___普马克___. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
-#import "FavoriteItem.h"
+#import "RecordItem.h"
 
-@interface FavoriteCell : UITableViewCell
+@interface GrowRecordCell : UITableViewCell
 
 @property (nonatomic,strong) UIImageView *imgView;
 @property (nonatomic,strong) UILabel *titleLabel;
 @property (nonatomic,strong) UILabel *desLabel;
 
+- (void)configureForCell:(RecordItem *)item;
 
-- (void)configureForCell:(FavoriteItem *)item;
 
 @end

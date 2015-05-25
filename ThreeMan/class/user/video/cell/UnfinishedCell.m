@@ -7,6 +7,9 @@
 //
 
 #import "UnfinishedCell.h"
+#import "CommonHelper.h"
+
+#define titleFont [UIFont systemFontOfSize:15]
 
 @interface UnfinishedCell ()
 {
@@ -36,7 +39,7 @@
         CGFloat x = _imgView.frame.size.width+_imgView.frame.origin.x+10;
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(x,5,bgView.frame.size.width-x-10-25,50)];
         _titleLabel.backgroundColor = [UIColor clearColor];
-        _titleLabel.font = [UIFont systemFontOfSize:14];
+        _titleLabel.font = titleFont;
         _titleLabel.textColor = HexRGB(0x323232);
         _titleLabel.numberOfLines = 2;
         [bgView addSubview:_titleLabel];
@@ -58,6 +61,41 @@
         
     }
     return self;
+}
+
+- (void)configureForCell:(DownloadFileModel *)fileModel
+{
+    NSDictionary *dic = fileModel.fileInfo;
+    NSString *imageurl = [dic objectForKey:@"imgurl"];
+    NSString *title = [dic objectForKey:@"title"];
+    self.titleLabel.text = title;
+    CGSize size = [AdaptationSize getSizeFromString:title Font:titleFont withHight:CGFLOAT_MAX withWidth:self.titleLabel.frame.size.width];
+    if (size.width>self.titleLabel.frame.size.width) {
+        self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x, self.titleLabel.frame.origin.y, self.titleLabel.frame.size.width,50);
+    }else{
+        self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x, self.titleLabel.frame.origin.y, self.titleLabel.frame.size.width,size.height+2);
+    }
+    
+    [self.imgView setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:placeHoderImage];
+    
+    if (fileModel.fileReceivedSize&&fileModel.fileReceivedSize.length!=0&&fileModel.totalSize&&fileModel.totalSize.length!=0) {
+        self.progressLabel.text = [NSString stringWithFormat:@"%@/%@",[CommonHelper transformToM:fileModel.fileReceivedSize],[CommonHelper transformToM:fileModel.totalSize]];
+        self.progressView.progress = [fileModel.fileReceivedSize floatValue]/[fileModel.totalSize floatValue];
+    }
+    if (fileModel.isDownloading) {
+        self.progressView.downloadState = loadingState;
+    }else{
+        
+        if (fileModel.willDownloading) {
+            self.progressView.downloadState = waitingState;
+            self.progressLabel.text = @"等 待";
+            
+        }else{
+            self.progressView.downloadState = stopState;
+            self.progressLabel.text = @"暂 停";
+        }
+    }
+
 }
 
 

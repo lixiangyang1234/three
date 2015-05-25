@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "CustomBtn.h"
+#import "DownloadFileModel.h"
 
 @interface FinishedCell : UITableViewCell
 @property (nonatomic,strong) UIImageView *imgView;
@@ -15,5 +16,7 @@
 @property (nonatomic,strong) CustomBtn *recommendBtn;
 @property (nonatomic,strong) CustomBtn *questionBtn;
 @property (nonatomic,strong) UIButton *playBtn;
+
+- (void)configureForCell:(DownloadFileModel *)fileModel;
 
 @end
