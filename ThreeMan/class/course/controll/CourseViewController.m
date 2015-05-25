@@ -27,7 +27,13 @@
     [self addTableView];
     [self addErrorView];
     [self addMBprogressView];
-    [self addLoadStatus];
+    
+    AFNetworkReachabilityManager *reachability =[AFNetworkReachabilityManager sharedManager];
+    [reachability setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        [self addLoadStatus];
+ 
+    }];
+    [reachability startMonitoring];
 }
 -(void)addErrorView{
     networkError = [[ErrorView alloc] initWithImage:@"netFailImg_1" title:@"对不起,网络不给力! 请检查您的网络设置!"];
@@ -45,7 +51,7 @@
 -(void)addLoadStatus{
     [HttpTool postWithPath:@"getSsxList" params:nil success:^(id JSON, int code, NSString *msg) {
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-
+        [_courseArray removeAllObjects];
         if (code == 100) {
             NSDictionary *dic = [JSON objectForKey:@"data"];
             NSArray *array = [dic objectForKey:@"ssx"];

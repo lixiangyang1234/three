@@ -94,7 +94,7 @@
     self.handerView = [UIButton buttonWithType:UIButtonTypeCustom];
     [_handerView setFrame:[UIScreen mainScreen].bounds];
     [_handerView setBackgroundColor:[UIColor clearColor]];
-    [_handerView addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
+    [_handerView addTarget:self action:@selector(handerViewBtn:) forControlEvents:UIControlEventTouchUpInside];
     [_handerView addSubview:self];
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
     
@@ -116,8 +116,11 @@
     }];
 }
 
--(void)dismiss
+-(void)handerViewBtn:(UIButton *)dis
 {
+    if ([self.delegate respondsToSelector:@selector(ThreeChooseBtn:)]) {
+        [self.delegate ThreeChooseBtn:dis];
+    }
     [self dismiss:YES];
 
 }
