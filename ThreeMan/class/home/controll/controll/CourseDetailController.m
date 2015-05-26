@@ -76,15 +76,19 @@
     _byFailStr=@"";
     _bySuccessStr=@"";
     
-    [self addMBprogressView];
+    
    
     
 
     [self addLoadStatus];
-    [self addRecommendLoadStatus];
+    [self performSelector:@selector(recomTimer) withObject:nil afterDelay:0.0f];
 
     [self addAnswerStates   ];
     // Do any additional setup after loading the view.
+}
+-(void)recomTimer{
+    [self addRecommendLoadStatus];
+
 }
 -(void)addMBprogressView{
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -107,6 +111,7 @@
 }
 #pragma mark ---添加数据
 -(void)addLoadStatus{
+    [self addMBprogressView];
     NSDictionary *paramDic =[NSDictionary dictionaryWithObjectsAndKeys:_courseDetailID,@"id", nil];
     [HttpTool postWithPath:@"getNeedDetail" params:paramDic success:^(id JSON, int code, NSString *msg) {
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];

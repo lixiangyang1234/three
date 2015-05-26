@@ -27,13 +27,9 @@
     [self addTableView];
     [self addErrorView];
     [self addMBprogressView];
-    
-    AFNetworkReachabilityManager *reachability =[AFNetworkReachabilityManager sharedManager];
-    [reachability setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-        [self addLoadStatus];
- 
-    }];
-    [reachability startMonitoring];
+
+    [self addLoadStatus];
+
 }
 -(void)addErrorView{
     networkError = [[ErrorView alloc] initWithImage:@"netFailImg_1" title:@"对不起,网络不给力! 请检查您的网络设置!"];
