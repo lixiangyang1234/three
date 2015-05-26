@@ -79,9 +79,10 @@
     [self addMBprogressView];
    
     
-    [self addRecommendLoadStatus];
 
     [self addLoadStatus];
+    [self addRecommendLoadStatus];
+
     [self addAnswerStates   ];
     // Do any additional setup after loading the view.
 }
@@ -124,7 +125,6 @@
         [failView removeFromSuperview];
         
         [self addUIBannerView];
-        [self addUICategoryView];
         [self addUIDownloadView];
         [self addCategoryBackScrollView];
         
@@ -185,6 +185,8 @@
             [self notByRecommend];
             [recommendTableView setHidden:YES];
         }
+        [self addUICategoryView];
+
         [recommendTableView reloadData];
     } failure:^(NSError *error) {
         if (isRefresh) {

@@ -9,7 +9,12 @@
 #import <UIKit/UIKit.h>
 
 #import "TitleButtonModel.h"
+@class categoryViewDelegate;
+@protocol categoryViewDelegate <NSObject>
 
+-(void)ThreeChooseBtn:(UIButton *)choose;
+
+@end
 @interface categoryView : UIView
 
 
@@ -18,7 +23,7 @@
 
 
 @property (nonatomic,retain) TitleButtonModel *titleBModle;
-
+@property(nonatomic,unsafe_unretained)id<categoryViewDelegate> delegate;
 
 
 @property (nonatomic, strong) NSArray       *titleArray;

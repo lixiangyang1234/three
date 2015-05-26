@@ -36,7 +36,6 @@
 @end
 
 @implementation HomeViewController
-static NSString * const reuseIdentifier = @"Cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -53,16 +52,61 @@ static NSString * const reuseIdentifier = @"Cell";
     self.categoryArrayOffLine =[NSMutableArray array];
     self.tradeArrayOffLine =[NSMutableArray array];
     self.adsImageOffLine =[NSMutableArray array];
-    [self addADSimageBtn:_adsImageOffLine];
-    [self addUIBanner];//1区
-    [self addUICourse:_courseArrayOffLine];//2区添加八大课程体系
-    
-    [self addUICategory:_categoryArrayOffLine];
-    [self addUITrade:_tradeArrayOffLine];
+//    [self addADSimageBtn:_adsImageOffLine];
+//    [self addUIBanner];//1区
+//    [self addUICourse:_courseArrayOffLine];//2区添加八大课程体系
+//    
+//    [self addUICategory:_categoryArrayOffLine];
+//    [self addUITrade:_tradeArrayOffLine];
     [self addMBprogressView];
-    [self addLoadStatus];
-    NSLog(@"----%f--->------%f",kWidth,kHeight);
-   
+//    [self addLoadStatus];
+//    NSLog(@"----%f--->------%f",kWidth,kHeight);
+    [self performSelector:@selector(login) withObject:nil afterDelay:0.1f];
+
+}
+-(void)login{
+    AFNetworkReachabilityManager *reachability=[AFNetworkReachabilityManager sharedManager];
+    [reachability setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        
+//        switch (status) {
+//                
+//            case AFNetworkReachabilityStatusNotReachable:{
+//                
+        
+                [self addLoadStatus];
+//
+//                break;
+//                
+//            }
+//                
+//            case AFNetworkReachabilityStatusReachableViaWiFi:{
+//                
+//                NSLog(@"WiFi网络");
+//                [self addLoadStatus];
+//
+//                break;
+//                
+//            }
+//                
+//            case AFNetworkReachabilityStatusReachableViaWWAN:{
+//                
+//                NSLog(@"无线网络");
+//                [self addLoadStatus];
+//
+//                break;
+//                
+//            }
+//                
+//            default:
+//                
+//                break;
+//                
+//        }
+        
+    }];
+    
+    [reachability startMonitoring];
+
 }
 #pragma  mark ------显示指示器
 -(void)addMBprogressView{
@@ -75,7 +119,10 @@ static NSString * const reuseIdentifier = @"Cell";
 
     [homeViewControllTool statusesWithSuccess:^(NSMutableArray *statues) {
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-
+        [_adsImage removeAllObjects];
+        [_courseArray removeAllObjects];
+        [_tradeArray removeAllObjects];
+        [_categoryArray removeAllObjects];
         homeViewArrayModel * homeArrayModel =[statues objectAtIndex:0];
         for (NSDictionary *dict in homeArrayModel.ads) {
             
@@ -172,7 +219,7 @@ static NSString * const reuseIdentifier = @"Cell";
         
         UIImageView *courseImage =[[UIImageView alloc]init];
         courseImage.frame =CGRectMake(courseBorderW+c%4*(betweenW+imageWith),courseBorderH+ BANNER+c/4*(21+imageWith), imageWith,imageWith);
-        NSLog(@"---->%f",imageWith);
+//        NSLog(@"---->%f",imageWith);
         [courseImage setBackgroundColor:[UIColor lightGrayColor]];
         courseImage.layer.cornerRadius =(kWidth-courseBorderW*2-betweenW*3)/8;
         courseImage.layer.masksToBounds=YES;
@@ -286,7 +333,7 @@ static NSString * const reuseIdentifier = @"Cell";
             [needBtn .titleLabel setFont:[UIFont systemFontOfSize:PxFont(25)]];
             needBtn.titleEdgeInsets =UIEdgeInsetsMake(0, 0, 30, 0);
             needLabel.frame =CGRectMake(0, needHeight+90, kWidth-160, 20);
-            [needBtn setImage:placeHoderImage4 forState:UIControlStateNormal];
+//            [needBtn setImage:placeHoderImage4 forState:UIControlStateNormal];
 
             
         }else if (i==1){

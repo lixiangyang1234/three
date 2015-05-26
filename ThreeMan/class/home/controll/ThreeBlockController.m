@@ -15,7 +15,7 @@
 #define DEGREES_TO_RADIANS(angle) ((angle)/180.0 *M_PI)
 #define pageSize 6
 
-@interface ThreeBlockController ()<UITableViewDelegate,UITableViewDataSource,MJRefreshBaseViewDelegate>
+@interface ThreeBlockController ()<UITableViewDelegate,UITableViewDataSource,MJRefreshBaseViewDelegate,categoryViewDelegate>
 {
     ErrorView *networkError;
     ErrorView *notStatus;
@@ -25,6 +25,8 @@
     MJRefreshFooterView *refreshFooterView;
     BOOL isRefresh;
     NSInteger indexBtn;
+    
+    UIButton *_categoryBtn;
     
 }
 @end
@@ -280,6 +282,7 @@
     categoryBtn.imageEdgeInsets =UIEdgeInsetsMake(0, 75, 0, 0);
     categoryBtn.titleEdgeInsets =UIEdgeInsetsMake(0, 0, 0, 25);
     categoryBtn.backgroundColor =[UIColor clearColor];
+    _categoryBtn=categoryBtn;
     
 }
 -(void)addTableView{
@@ -346,6 +349,7 @@ _selectedIntem.tag =sender.tag;
     
     
     categoryView *popView = [[categoryView alloc] initWithPoint:point titles:titles categoryTitles:category];
+        popView.delegate =self;
         popView.threeCount =_threeArray.count;
         popView.threeCount1 =_categoryArray.count;
     popView.selectRowAtIndex = ^(NSInteger index)
@@ -383,7 +387,12 @@ _selectedIntem.tag =sender.tag;
     }
    
 }
-
+-(void)ThreeChooseBtn:(UIButton *)choose{
+    choose =_categoryBtn;
+    [UIView animateWithDuration:0.001 animations:^{
+        choose.imageView.transform = CGAffineTransformRotate(choose.imageView.transform, DEGREES_TO_RADIANS(180));
+    }];
+}
 #pragma mark - Table view data source
 
 
