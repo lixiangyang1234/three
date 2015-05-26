@@ -360,7 +360,7 @@
                 return;
             }
             
-            [view resignFirstResponder];
+            [view resignResponder];
             
             NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:[SystemConfig sharedInstance].userInfo.phone,@"phone",view.telView.textField.text,@"olduserpwd",view.freshView.textField.text,@"newuserpwd",nil];
             [HttpTool postWithPath:@"getChangePwd" params:param success:^(id JSON, int code, NSString *msg) {

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EnterpriseItem.h"
 
 @interface EnterpriseCell : UITableViewCell
 
@@ -15,4 +16,9 @@
 @property (nonatomic,strong) UILabel *littleLabel;
 @property (nonatomic,strong) UILabel *contentLabel;
 @property (nonatomic,strong) UIView *line;
+
+
+- (void)configureForCell:(EnterpriseItem *)item;
+
+
 @end

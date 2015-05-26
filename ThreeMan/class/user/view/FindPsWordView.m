@@ -37,7 +37,7 @@
 }
 
 
-- (void)resignFirstResponder
+- (void)resignResponder
 {
     [self.telView.textField resignFirstResponder];
     [self.passwordView.textField resignFirstResponder];

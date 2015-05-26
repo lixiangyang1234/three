@@ -298,10 +298,8 @@
         }
         
         EnterpriseItem *item = [_companyArray objectAtIndex:indexPath.row];
-        [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:placeHoderImage1];
-        cell.titleLabel.text = item.companyname;
-        cell.littleLabel.text = [NSString stringWithFormat:@"课程 %@",item.scorenums];
-        cell.contentLabel.text = item.introduce;
+        
+        [cell configureForCell:item];
         
         return cell;
 
