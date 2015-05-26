@@ -70,7 +70,8 @@
     
     refreshFooterView =[[MJRefreshFooterView alloc]init];
     refreshFooterView.delegate =self;
-    
+    refreshFooterView.scrollView=_tableView;
+    refreshHeaderView.scrollView =_tableView;
 
 }
 -(void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView{
@@ -258,8 +259,8 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     [self.view addSubview:_tableView];
-    refreshFooterView.scrollView=_tableView;
-    refreshHeaderView.scrollView =_tableView;}
+   
+}
 
 #pragma mark - Table view data source
 
