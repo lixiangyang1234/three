@@ -72,7 +72,8 @@
 //                
 //            case AFNetworkReachabilityStatusNotReachable:{
 //                
-        
+                  NSLog(@"WiFi网络");
+
                 [self addLoadStatus];
 //
 //                break;
