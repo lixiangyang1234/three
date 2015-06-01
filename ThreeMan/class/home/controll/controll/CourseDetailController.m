@@ -364,11 +364,7 @@
             
             
         }
-        if (_answerArray.count<=0) {
-//            [failView removeFromSuperview];
-            [self notByAnswer];
-            [answerTableView setHidden:YES];
-        }
+        
         [answerTableView reloadData];
     } failure:^(NSError *error) {
         if (isRefresh1) {
@@ -624,8 +620,7 @@ UIImageView *bannerImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderw, 
 #pragma mark ----分类的点击事件
 //添加分类
 -(void)categoryBtnClick:(UIButton *)sender{
-    NSLog(@"%d",sender.tag);
-
+   
    
     _selectedBtn = sender;
     if (_selectedBtn.tag == 20)
@@ -642,6 +637,11 @@ UIImageView *bannerImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderw, 
     else if(_selectedBtn.tag ==22)
     {
          isRefresh1 =NO;
+        if (_answerArray.count<=0) {
+                        [failView removeFromSuperview];
+            [self notByAnswer];
+            [answerTableView setHidden:YES];
+        }
         [answerTableView reloadData];
         
        
@@ -878,7 +878,11 @@ UIImageView *bannerImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderw, 
                     if (btn.tag ==22) {
                         _selectedBtn=btn;
                         _selectedBtn.selected=YES;
-
+                        if (_answerArray.count<=0) {
+                                        [failView removeFromSuperview];
+                            [self notByAnswer];
+                            [answerTableView setHidden:YES];
+                        }
                         [answerTableView reloadData];
                         isRefresh1 =NO;
                         

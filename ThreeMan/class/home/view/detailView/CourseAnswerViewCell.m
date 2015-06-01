@@ -80,7 +80,7 @@
 }
 -(void)setObjectCell:(courseDetailModel *)object{
     CGSize contentSize =[AdaptationSize getSizeFromString:object.answerContent Font:[UIFont systemFontOfSize:PxFont(18)] withHight:CGFLOAT_MAX withWidth:kWidth-borderwh*3-borderwh*2];
-    NSLog(@"fffff------------>>>%f",contentSize.height);
+//    NSLog(@"fffff------------>>>%f",contentSize.height);
     if (contentSize.height>110) {
         contentSize.height =contentSize.height-16;
     }
