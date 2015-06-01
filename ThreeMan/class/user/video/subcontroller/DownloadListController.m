@@ -354,7 +354,7 @@
 {
     DownloadFileModel *file = [_finishedArray objectAtIndex:btn.tag-3000];
     //视频
-    if ([file.type isEqualToString:@"1"]) {
+    if ([file isVideo]) {
 
         NSURL *url = [NSURL fileURLWithPath:file.targetPath];
         DirectionMPMoviePlayerViewController *movieController = [[DirectionMPMoviePlayerViewController alloc] initWithContentURL:url];

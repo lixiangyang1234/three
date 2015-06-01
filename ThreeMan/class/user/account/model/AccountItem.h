@@ -17,5 +17,7 @@
 @property (nonatomic,copy) NSString *sid;
 @property (nonatomic,copy) NSString *type;
 
+- (BOOL)isPayout;
+
 
 @end

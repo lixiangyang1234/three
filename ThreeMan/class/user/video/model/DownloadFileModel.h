@@ -26,4 +26,7 @@
 
 @property (nonatomic,strong) NSDictionary *fileInfo;
 
+
+- (BOOL)isVideo;
+
 @end

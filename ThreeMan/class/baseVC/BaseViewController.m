@@ -110,7 +110,7 @@
 {
     CGPoint point = CGPointMake(kWidth-60, btn.frame.origin.y + btn.frame.size.height+15);
     NSArray *titles;
-    if ([SystemConfig sharedInstance].isUserLogin&&[[SystemConfig sharedInstance].userInfo.type isEqualToString:@"1"]) {
+    if ([SystemConfig sharedInstance].isUserLogin&&[[SystemConfig sharedInstance].userInfo isBusinessUser]) {
         titles = @[@"我的收藏", @"账户", @"消息",@"设置"];
     }else{
         titles = @[@"我的成长", @"账户", @"消息",@"设置"];
@@ -167,28 +167,27 @@
             if ([SystemConfig sharedInstance].isUserLogin) {
                 
                 UserInfo *userinfo = [SystemConfig sharedInstance].userInfo;
-                if ([userinfo.type isEqualToString:@"0"]) {
-                    for (UIViewController *subVC in array) {
-                        if ([subVC isKindOfClass:[VideoCenterController class]]) {
-                            [self.navigationController popToViewController:subVC animated:NO];
-                            return;
-                        }
-                    }
-
-                    VideoCenterController *center = [[VideoCenterController alloc] init];
-                    [self.navigationController pushViewController:center animated:YES];
-
-                }else{
+                if ([userinfo isBusinessUser]) {
                     for (UIViewController *subVC in array) {
                         if ([subVC isKindOfClass:[CompFavoriteController class]]) {
                             [self.navigationController popToViewController:subVC animated:NO];
                             return;
                         }
                     }
-
+                    
                     CompFavoriteController *cf = [[CompFavoriteController alloc] init];
                     [self.navigationController pushViewController:cf animated:YES];
+
+                }else{
+                    for (UIViewController *subVC in array) {
+                        if ([subVC isKindOfClass:[VideoCenterController class]]) {
+                            [self.navigationController popToViewController:subVC animated:NO];
+                            return;
+                        }
+                    }
                     
+                    VideoCenterController *center = [[VideoCenterController alloc] init];
+                    [self.navigationController pushViewController:center animated:YES];
                 }
             }else{
                 
@@ -328,7 +327,7 @@
                     [dict setValue:item.uid forKey:@"uid"];
                     [dict setValue:item.phone forKey:@"phone"];
                     [dict setValue:item.type forKey:@"type"];
-                    if (item.img&&item.img.length!=0) {
+                    if ([item imageExists]) {
                         [dict setValue:item.img forKey:@"img"];
                     }
                     [userDefaults setValue:dict forKey:@"userInfo"];
@@ -651,7 +650,7 @@
             [dict setValue:item.uid forKey:@"uid"];
             [dict setValue:item.phone forKey:@"phone"];
             [dict setValue:item.type forKey:@"type"];
-            if (item.img&&item.img.length!=0) {
+            if ([item imageExists]) {
                 [dict setValue:item.img forKey:@"img"];
             }
             [userDefaults setValue:dict forKey:@"userInfo"];

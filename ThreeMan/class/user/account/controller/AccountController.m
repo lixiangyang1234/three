@@ -68,15 +68,14 @@
 - (void)btnDown
 {
     UserInfo *userinfo = [SystemConfig sharedInstance].userInfo;
-    if ([userinfo.type isEqualToString:@"0"]) {
-        //支付
-        PayViewController *pay = [[PayViewController alloc] init];
-        [self.navigationController pushViewController:pay animated:YES];
-
-    }else{
+    if ([userinfo isBusinessUser]) {
         //提现
         DrawViewController *draw = [[DrawViewController alloc] init];
         [self.navigationController pushViewController:draw animated:YES];
+    }else{
+        //支付
+        PayViewController *pay = [[PayViewController alloc] init];
+        [self.navigationController pushViewController:pay animated:YES];
     }
 }
 
@@ -106,12 +105,13 @@
             NSString *type = [user objectForKey:@"type"];
             _tableView.tableHeaderView = headView;
             headView.amountLabel.text = num;
-            UserInfo *userinfo = [SystemConfig sharedInstance].userInfo;
-            if ([type isEqualToString:@"0"]&&[userinfo.type isEqualToString:@"0"]) {
-                [headView.btn setTitle:@"充值" forState:UIControlStateNormal];
-            }else{
+            
+            if ([UserInfo isBusinessUserWithType:type]) {
                 [headView.btn setTitle:@"提现" forState:UIControlStateNormal];
+            }else{
+                [headView.btn setTitle:@"充值" forState:UIControlStateNormal];
             }
+            
         }else{
             [RemindView showViewWithTitle:msg location:TOP];
         }
@@ -137,16 +137,15 @@
     AccountItem *item = [_dataArray objectAtIndex:indexPath.row];
     cell.titleLabel.text = item.title;
     cell.desLabel.text = item.companyname;
-    if ([item.type isEqualToString:@"1"]) {
+    
+    if ([item isPayout]) {
         cell.amountLabel.text = [NSString stringWithFormat:@"-%@",item.price];
         cell.amountLabel.textColor = HexRGB(0x1c8cc6);
-    }else if([item.type isEqualToString:@"2"]){
+    }else{
         cell.amountLabel.textColor = HexRGB(0xd83847);
         cell.amountLabel.text = [NSString stringWithFormat:@"+%@",item.price];
-    }else if([item.type isEqualToString:@"3"]){
-        cell.amountLabel.textColor = HexRGB(0x1c8cc6);
-        cell.amountLabel.text = [NSString stringWithFormat:@"-%@",item.price];
     }
+    
     cell.dateLabel.text = item.addtime;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if (indexPath.row<_dataArray.count-1) {

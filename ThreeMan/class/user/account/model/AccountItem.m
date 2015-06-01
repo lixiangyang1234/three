@@ -10,4 +10,14 @@
 
 @implementation AccountItem
 
+- (BOOL)isPayout
+{
+    if (self.type&&self.type.length!=0) {
+        if ([self.type isEqualToString:@"1"]||[self.type isEqualToString:@"3"]) {
+            return YES;
+        }
+    }
+    return YES;
+}
+
 @end
