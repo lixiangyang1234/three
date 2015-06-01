@@ -97,7 +97,7 @@
         MBProgressHUD *progress =[MBProgressHUD showHUDAddedTo:self.view animated:YES];
         progress.labelText =@"加载中...";
     }
-    NSLog(@"---->ffffff%@",paraDic);
+//    NSLog(@"---->ffffff%@",paraDic);
     [HttpTool postWithPath:@"getCompanyCourseList" params:paraDic success:^(id JSON, int code, NSString *msg) {
         if (isRefresh) {
             [refreshFooterView endRefreshing];
