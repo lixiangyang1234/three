@@ -70,6 +70,16 @@
     return self;
 }
 
+
+- (void)configureForCell:(EnterpriseItem *)item
+{
+    [self.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:placeHoderImage1];
+    self.titleLabel.text = item.companyname;
+    self.littleLabel.text = [NSString stringWithFormat:@"课程 %@",item.scorenums];
+    self.contentLabel.text = item.introduce;
+}
+
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];

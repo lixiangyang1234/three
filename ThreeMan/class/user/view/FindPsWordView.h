@@ -26,6 +26,6 @@
 @property (nonatomic,strong) id<FindPsWordViewDelegate> delegate;
 @property (nonatomic,assign) id <KeyboardDelegate> keyboardDelegate;
 
-- (void)resignFirstResponder;
+- (void)resignResponder;
 
 @end

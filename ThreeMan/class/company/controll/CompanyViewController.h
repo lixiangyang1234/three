@@ -13,4 +13,5 @@
     UITableView *_tableView;
     NSMutableArray *_dataArray;
 }
+
 @end

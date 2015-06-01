@@ -148,7 +148,7 @@
     return YES;
 }
 
-- (void)resignFirstResponder
+- (void)resignResponder
 {
     [self.telView.textField resignFirstResponder];
     [self.originView.textField resignFirstResponder];

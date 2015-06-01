@@ -584,12 +584,11 @@
                         cell.line.backgroundColor = HexRGB(0xe0e0e0);
                     }
                     EnterpriseItem *item = [array2 objectAtIndex:indexPath.row];
-                    [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:[UIImage imageNamed:@"index_icon_fail"]];
-                    cell.titleLabel.text = item.companyname;
-                    cell.littleLabel.text = [NSString stringWithFormat:@"课程 %@",item.scorenums];
-                    cell.contentLabel.text = item.introduce;
+                    
+                    [cell configureForCell:item];
                     
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    
                     return cell;
                 }
             //只有一组搜索结果
@@ -626,10 +625,8 @@
                     }
 
                     EnterpriseItem *item = [array2 objectAtIndex:indexPath.row];
-                    [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:[UIImage imageNamed:@"index_icon_fail"]];
-                    cell.titleLabel.text = item.companyname;
-                    cell.littleLabel.text = [NSString stringWithFormat:@"课程 %@",item.scorenums];
-                    cell.contentLabel.text = item.introduce;
+                    
+                    [cell configureForCell:item];
                     
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     return cell;
@@ -668,12 +665,11 @@
                     cell.line.backgroundColor = HexRGB(0xe0e0e0);
                 }
                 EnterpriseItem *item = [array2 objectAtIndex:indexPath.row];
-                [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:[UIImage imageNamed:@"index_icon_fail"]];
-                cell.titleLabel.text = item.companyname;
-                cell.littleLabel.text = [NSString stringWithFormat:@"课程 %@",item.scorenums];
-                cell.contentLabel.text = item.introduce;
+                
+                [cell configureForCell:item];
                 
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                
                 return cell;
             }else{
                 //无视频或企业搜索结果  第二组为课件搜索列表
@@ -707,12 +703,11 @@
                         cell.line.backgroundColor = HexRGB(0xe0e0e0);
                     }
                     EnterpriseItem *item = [array2 objectAtIndex:indexPath.row];
-                    [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:[UIImage imageNamed:@""]];
-                    cell.titleLabel.text = item.companyname;
-                    cell.littleLabel.text = [NSString stringWithFormat:@"课程 %@",item.scorenums];
-                    cell.contentLabel.text = item.introduce;
+                    
+                    [cell configureForCell:item];
                     
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    
                     return cell;
                 }
             }

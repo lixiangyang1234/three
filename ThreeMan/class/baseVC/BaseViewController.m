@@ -304,7 +304,7 @@
                 return;
             }
             
-            [view resignFirstResponder];
+            [view resignResponder];
             
             NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:view.telView.textField.text,@"phone",view.passwordView.textField.text,@"userpwd", nil];
             //登陆请求
@@ -412,7 +412,7 @@
                 return;
             }
             
-            [view resignFirstResponder];
+            [view resignResponder];
             
             NSDictionary *param = @{@"phone":view.telView.textField.text,@"userpwd":view.passwordView.textField.text};
             [MBProgressHUD showHUDAddedTo:self.view animated:YES];

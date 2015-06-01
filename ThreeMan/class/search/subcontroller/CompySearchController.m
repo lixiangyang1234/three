@@ -111,11 +111,9 @@
         cell = [[EnterpriseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify];
     }
     EnterpriseItem *item = [_dataArray objectAtIndex:indexPath.row];
-    [cell.imgView setImageWithURL:[NSURL URLWithString:item.logo] placeholderImage:placeHoderImage1];
-    cell.titleLabel.text = item.companyname;
-    cell.littleLabel.text = [NSString stringWithFormat:@"课程%@",item.scorenums];
-    cell.contentLabel.text = item.introduce;
-
+    
+    [cell configureForCell:item];
+    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
