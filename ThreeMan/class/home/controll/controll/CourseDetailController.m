@@ -236,11 +236,7 @@
                 refreshFooterView.hidden =NO;
             }
         }
-        if (_recommendArray.count<=0) {
-            //            [failView removeFromSuperview];
-            [self notByRecommend];
-            [recommendTableView setHidden:YES];
-        }
+        
         
         [self addUICategoryView];
 
@@ -442,7 +438,7 @@ UIImageView *bannerImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderw, 
         if (companyBtn.tag ==20)
         {
             companyBtn.selected = YES;
-//            _selectedBtn = companyBtn;
+            _selectedBtn = companyBtn;
             
         }
         [companyBtn addTarget:self action:@selector(categoryBtnClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -501,7 +497,6 @@ UIImageView *bannerImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderw, 
     detailTitle.backgroundColor =[UIColor clearColor];
     CGFloat titleDetailH =detailTitle.frame.size.height+detailTitle.frame.origin.y+5;
     //添加蜕变豆
-    //    RecommandCellH =[recommendModel.recommendContent sizeWithFont:[UIFont systemFontOfSize:PxFont(18)] constrainedToSize:CGSizeMake(self.view.frame.size.width-33, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping ].height;
     
     CGFloat douW =[[NSString stringWithFormat:@"%d", courseModel.coursePrice] sizeWithFont:[UIFont systemFontOfSize:PxFont(24)]constrainedToSize:CGSizeMake(MAXFLOAT, 30)].width;
     UIButton *detailDou =[UIButton buttonWithType:UIButtonTypeCustom];
@@ -618,19 +613,26 @@ UIImageView *bannerImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderw, 
     
 }
 #pragma mark ----分类的点击事件
+
 //添加分类
 -(void)categoryBtnClick:(UIButton *)sender{
-   
-   
-    _selectedBtn = sender;
+    _selectedBtn.selected =NO;
+    sender.selected =YES;
+     _selectedBtn = sender;
     if (_selectedBtn.tag == 20)
     {
-        self.backScrollView.contentOffset=CGPointMake(0, 0);
         [categoryScrollView setContentOffset:CGPointMake(0, 0) animated:YES];
+
+        self.backScrollView.contentOffset=CGPointMake(0, 0);
     }
     else if(_selectedBtn.tag ==21)
     {
          isRefresh =NO;
+        if (_recommendArray.count<=0) {
+            [failView removeFromSuperview];
+            [self notByRecommend];
+            [recommendTableView setHidden:YES];
+        }
         [recommendTableView reloadData];
         [categoryScrollView setContentOffset:CGPointMake(kWidth, 0) animated:YES];
     }
@@ -638,7 +640,7 @@ UIImageView *bannerImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderw, 
     {
          isRefresh1 =NO;
         if (_answerArray.count<=0) {
-                        [failView removeFromSuperview];
+            [failView removeFromSuperview];
             [self notByAnswer];
             [answerTableView setHidden:YES];
         }
@@ -648,7 +650,8 @@ UIImageView *bannerImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderw, 
         [categoryScrollView setContentOffset:CGPointMake(kWidth*2, 0) animated:YES];
     }
     
-    
+    NSLog(@"%d",_selectedBtn.selected);
+   
 }
 
 
@@ -822,11 +825,12 @@ UIImageView *bannerImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderw, 
     }
     
     if (scrollView.tag ==9999) {
+        
         if (scrollView.contentOffset.x <=0) {
             scrollView.contentOffset = CGPointMake(0, 0);
         }
         
-        if (scrollView.contentOffset.x >= kWidth*2) {
+        if (scrollView.contentOffset.x >= kWidth*2-0*2) {
             scrollView.contentOffset = CGPointMake(kWidth*2, 0);
         }
         [UIView animateWithDuration:0.01 animations:^{
@@ -858,7 +862,11 @@ UIImageView *bannerImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderw, 
                     if (btn.tag ==21) {
                         _selectedBtn=btn;
                         _selectedBtn.selected=YES;
-
+                        if (_recommendArray.count<=0) {
+                            [failView removeFromSuperview];
+                            [self notByRecommend];
+                            [recommendTableView setHidden:YES];
+                        }
                         [recommendTableView reloadData];
                         isRefresh =NO;
                        
