@@ -19,4 +19,10 @@
 
 - (void)setValue:(id)value forUndefinedKey:(NSString *)key;
 
+- (BOOL)imageExists;
+
+- (BOOL)isBusinessUser;
+
++ (BOOL)isBusinessUserWithType:(NSString *)type;
+
 @end

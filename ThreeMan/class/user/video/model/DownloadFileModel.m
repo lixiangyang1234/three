@@ -10,4 +10,12 @@
 
 @implementation DownloadFileModel
 
+- (BOOL)isVideo
+{
+    if (self.type&&[self.type isEqualToString:@"1"]) {
+        return YES;
+    }
+    return NO;
+}
+
 @end

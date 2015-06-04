@@ -17,4 +17,29 @@
     }
 }
 
+
+- (BOOL)imageExists
+{
+    if (self.img&&![self.img isKindOfClass:[NSNull class]]&&self.img.length!=0) {
+        return YES;
+    }
+    return NO;
+}
+
+- (BOOL)isBusinessUser
+{
+    if ([self.type isEqualToString:@"1"]) {
+        return YES;
+    }
+    return NO;
+}
+
++ (BOOL)isBusinessUserWithType:(NSString *)type
+{
+    if ([type isEqualToString:@"1"]) {
+        return YES;
+    }
+    return NO;
+}
+
 @end
