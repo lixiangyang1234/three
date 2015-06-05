@@ -15,13 +15,14 @@
 #import "DownloadManager.h"
 #import "PayViewController.h"
 #import "AdaptationSize.h"
+#import "courseDetailView.h"
 #define pageSize 6
 #define BANNERH         167   //banner高度
 #define YYBORDERWH        8  //外边界
 #define borderw            5 //内边界
 #define BUTTONH           40  //按钮高度
 #define  NETFAILIMGWH  165   //没有数据的图片宽高
-@interface CourseDetailController ()<UIScrollViewDelegate,UITableViewDataSource,UITableViewDelegate,byCourseViewDelegate,UIWebViewDelegate,MJRefreshBaseViewDelegate>
+@interface CourseDetailController ()<UIScrollViewDelegate,UITableViewDataSource,UITableViewDelegate,byCourseViewDelegate,UIWebViewDelegate,MJRefreshBaseViewDelegate,courseDetailViewDelegate>
 {
     NetFailView *failView;
     UIView *_orangLin;
@@ -32,7 +33,7 @@
     UIScrollView *categoryScrollView;
     CGFloat bannerHeightLine   ;
     
-    UIScrollView * detailScrollView;
+    courseDetailView * detailScrollView;
     UITableView *recommendTableView;
     UITableView * answerTableView;
     
@@ -397,12 +398,7 @@ UIImageView *bannerImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderw, 
     [eightView addSubview:line];
     line.backgroundColor =HexRGB(0xcacaca);
     
-    
-    
     self.backScrollView.contentSize =CGSizeMake(kWidth-YYBORDERWH*2, kHeight+bannerHeightLine);
-    
-    
-    
     
 }
 #pragma  mark =====添加分类滑动
@@ -458,7 +454,7 @@ UIImageView *bannerImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderw, 
     categoryScrollView.showsHorizontalScrollIndicator = NO;
     categoryScrollView.showsVerticalScrollIndicator = NO;
     categoryScrollView.pagingEnabled = YES;
-    categoryScrollView.bounces = YES;
+    categoryScrollView.bounces = NO;
     categoryScrollView.tag = 9999;
     categoryScrollView.userInteractionEnabled = YES;
     categoryScrollView.backgroundColor =HexRGB(0xffffff);
@@ -474,117 +470,17 @@ UIImageView *bannerImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderw, 
         return;
     }
     courseDetailModel *courseModel =[_detailArray objectAtIndex:0];
-    detailScrollView =[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, kWidth-YYBORDERWH*2, categoryScrollView.frame.size.height)];
-    detailScrollView.contentSize = CGSizeMake(kWidth-YYBORDERWH*2, 500);
-    detailScrollView.showsHorizontalScrollIndicator = NO;
-    detailScrollView.showsVerticalScrollIndicator = NO;
-    detailScrollView.pagingEnabled = YES;
-    //        detailScrollView.bounces = NO;
-    detailScrollView.userInteractionEnabled = YES;
-    detailScrollView.backgroundColor =HexRGB(0xffffff);
-    //    detailScrollView.backgroundColor =[UIColor cyanColor];
-    detailScrollView.delegate = self;
+    
+    detailScrollView =[[courseDetailView alloc]initWithFrame:CGRectMake(0, 0, kWidth, categoryScrollView.frame.size.height) statusLoad:courseModel];
+    detailScrollView.scroll =self;
     [categoryScrollView addSubview:detailScrollView];
-    detailScrollView.scrollEnabled =NO;
-    detailScrollView.tag =990;
-    CGFloat detailWH =9;
-    //添加标题
-    UILabel *detailTitle =[[UILabel alloc]initWithFrame:CGRectMake(detailWH, detailWH, kWidth-detailWH*2-YYBORDERWH*2, 20)];
-    [detailScrollView addSubview:detailTitle];
-    detailTitle.text =courseModel.courseTitle;
-    detailTitle.font =[UIFont systemFontOfSize:PxFont(18)];
-    detailTitle.textColor=HexRGB(0x323232);
-    detailTitle.backgroundColor =[UIColor clearColor];
-    CGFloat titleDetailH =detailTitle.frame.size.height+detailTitle.frame.origin.y+5;
-    //添加蜕变豆
-    
-    CGFloat douW =[[NSString stringWithFormat:@"%d", courseModel.coursePrice] sizeWithFont:[UIFont systemFontOfSize:PxFont(24)]constrainedToSize:CGSizeMake(MAXFLOAT, 30)].width;
-    UIButton *detailDou =[UIButton buttonWithType:UIButtonTypeCustom];
-    detailDou.frame =CGRectMake(detailWH, titleDetailH, douW+30, 30);
-    [detailDou setImage:[UIImage imageNamed:@"browser_number_icon"] forState:UIControlStateNormal];
-    [detailDou setTitle:[NSString stringWithFormat:@"%d", courseModel.coursePrice] forState:UIControlStateNormal];
-    [detailScrollView addSubview:detailDou];
-    detailDou.titleEdgeInsets =UIEdgeInsetsMake(0, 5, 0, 0);
-    detailDou.backgroundColor =[UIColor clearColor];
-    [detailDou setTitleColor:HexRGB(0x1c8cc6) forState:UIControlStateNormal];
-    [detailDou.titleLabel setFont:[UIFont systemFontOfSize:PxFont(24)]];
-    detailDou.contentHorizontalAlignment =UIControlContentHorizontalAlignmentLeft;
-    
-    CGFloat douDetailW =detailDou.frame.size.width+detailDou.frame.origin.x;
-    UILabel *detailDouLabel =[[UILabel alloc]initWithFrame:CGRectMake(douDetailW, titleDetailH+3, 45, 30)];
-    [detailScrollView addSubview:detailDouLabel];
-    detailDouLabel.text =@"蜕变豆";
-    detailDouLabel.font =[UIFont systemFontOfSize:PxFont(14)];
-    detailDouLabel.textColor=HexRGB(0x323232);
-    detailDouLabel.backgroundColor =[UIColor clearColor];
-    
-    CGFloat companyHomeW =douDetailW+detailDouLabel.frame.size.width;
-    //企业首页
-    CGFloat homeNameW =[courseModel.courseCompanyname sizeWithFont:[UIFont systemFontOfSize:PxFont(14)]constrainedToSize:CGSizeMake(MAXFLOAT, 19)].width;
-    
-    UIButton *companyHomeDetail =[UIButton buttonWithType:UIButtonTypeCustom];
-    companyHomeDetail.frame =CGRectMake(companyHomeW, titleDetailH+6, homeNameW+10, 19);
-    [detailScrollView addSubview:companyHomeDetail];
-    [companyHomeDetail setTitle:courseModel.courseCompanyname forState:UIControlStateNormal];
-    companyHomeDetail.titleEdgeInsets =UIEdgeInsetsMake(0, 20, 0, 5);
-    [companyHomeDetail setTitleColor:HexRGB(0x1c8cc6) forState:UIControlStateNormal];
-    [companyHomeDetail.titleLabel setFont:[UIFont systemFontOfSize:PxFont(12)]];
-    companyHomeDetail.backgroundColor =[UIColor clearColor];
-    companyHomeDetail.layer.masksToBounds =YES;
-    companyHomeDetail.layer.borderColor =HexRGB(0x178ac5).CGColor;
-    companyHomeDetail.layer.borderWidth=0.8f;
-    companyHomeDetail.layer.cornerRadius =10;
-    //banner图片
-    UIImageView *companyHomeImg =[[UIImageView alloc]initWithFrame:CGRectMake(-1, 0,19 , 19)];
-    [companyHomeDetail addSubview:companyHomeImg];
-    companyHomeImg.userInteractionEnabled=YES;
-    companyHomeImg.image =[UIImage imageNamed:@"company_name"];
-    [companyHomeDetail addTarget:self action:@selector(companyhomeDetailBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    CGFloat eightH =detailDou.frame.size.height+detailDou.frame.origin.y+borderw;
-    //添加8像素高度灰条
-    UIView *eightView =[[UIView alloc]initWithFrame:CGRectMake(0, eightH, kWidth-YYBORDERWH*2, 8)];
-    [detailScrollView addSubview:eightView];
-    eightView.backgroundColor =HexRGB(0xeeeee9);
-    UIView *line =[[UIView alloc]initWithFrame:CGRectMake(0, 0, kWidth-YYBORDERWH*2, 1)];
-    [eightView addSubview:line];
-    line.backgroundColor =HexRGB(0xcacaca);
-    webh =eightH+borderw+8;
-    
-    //添加WebView
-    _courseWeb = [[UIWebView alloc]initWithFrame:CGRectMake(0, webh, kWidth-YYBORDERWH*2, kHeight-webh-64)];
-    
-    [_courseWeb loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://www.baidu.com/"]]];
-    _courseWeb.userInteractionEnabled = NO;
-    _courseWeb.delegate =self;
-    [detailScrollView addSubview:_courseWeb];
-    //    NSLog(@"1111-----%f----%f",_courseWeb.frame.size.height,detailScrollView.contentSize.height);
-    
-    
-}
--(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
-{
-    
-    return YES;
-}
-- (void)webViewDidFinishLoad:(UIWebView *)webView
-{
-    
-    CGFloat webheight = [[webView stringByEvaluatingJavaScriptFromString:@"document.body.offsetHeight;"] floatValue];
-    
-    _courseWeb.frame = CGRectMake(0, webh, kWidth-YYBORDERWH*2, webheight);
-    
-    detailScrollView.contentSize = CGSizeMake(kWidth-YYBORDERWH*2,webheight+webh);
-    
-    //    NSLog(@"-----%f-%f---%f",_courseWeb.frame.size.height,detailScrollView.frame.size.height,webheight);
-    
+
 }
 
 #pragma mark ----推荐
 -(void)addRecommendTableview
 {
-    recommendTableView =[[UITableView alloc]initWithFrame:CGRectMake(kWidth-YYBORDERWH*2, 0, kWidth,categoryScrollView.frame.size.height ) style:UITableViewStylePlain];
+    recommendTableView =[[UITableView alloc]initWithFrame:CGRectMake(kWidth, 0, kWidth,categoryScrollView.frame.size.height ) style:UITableViewStylePlain];
     recommendTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [categoryScrollView addSubview:recommendTableView];
     recommendTableView.backgroundColor =HexRGB(0xe0e0e0);
@@ -595,8 +491,6 @@ UIImageView *bannerImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderw, 
     recommendTableView.hidden =NO;
     
 }
-
-
 
 #pragma mark----- 答疑
 -(void)addAnswerTableview
@@ -774,7 +668,6 @@ UIImageView *bannerImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderw, 
         return answerCell;
         
     }
-    
     return cell;
     
 }
@@ -825,22 +718,20 @@ UIImageView *bannerImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderw, 
     }
     
     if (scrollView.tag ==9999) {
-        
-        if (scrollView.contentOffset.x <=0) {
-            scrollView.contentOffset = CGPointMake(0, 0);
-        }
-        
-        if (scrollView.contentOffset.x >= kWidth*2-0*2) {
-            scrollView.contentOffset = CGPointMake(kWidth*2, 0);
-        }
+//        if (scrollView.contentOffset.x <=0) {
+//
+//            scrollView.contentOffset = CGPointMake(0, 0);
+//        }
+//        
+//        if (scrollView.contentOffset.x >= kWidth*2) {
+//
+//            scrollView.contentOffset = CGPointMake(kWidth*2, 0);
+//        }
         [UIView animateWithDuration:0.01 animations:^{
             _orangLin.frame = CGRectMake((scrollView.contentOffset.x-YYBORDERWH*2)/3,bannerHeightLine+BUTTONH-2, (kWidth-YYBORDERWH*2)/3, 2);
         }];
         
-        
         if (scrollView.contentOffset.x==0) {
-            
-            //            _footer.scrollView = _allTableView;
             for (UIView *subView in categoryView.subviews) {
                 if ([subView isKindOfClass:[UIButton class]]) {
                     UIButton *btn =(UIButton *)subView;
@@ -856,6 +747,7 @@ UIImageView *bannerImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderw, 
             }
             
         }else if(scrollView.contentOffset.x==kWidth){
+            
             for (UIView *subView in categoryView.subviews) {
                 if ([subView isKindOfClass:[UIButton class]]) {
                     UIButton *btn =(UIButton *)subView;
@@ -1067,10 +959,8 @@ UIImageView *bannerImage =[[UIImageView alloc]initWithFrame:CGRectMake(borderw, 
 }
 
 
--(void)companyhomeDetailBtnClick:(UIButton *)sender{
-    //    [self.navigationController popViewControllerAnimated:YES];
+-(void)companyHome{
     courseDetailModel *courseModel =[_detailArray objectAtIndex:0];
-    
     CompanyHomeControll *companyHomeVC=[[CompanyHomeControll alloc]init];
     companyHomeVC.companyId =[NSString stringWithFormat:@"%d", courseModel.companyId];
     [self.navigationController pushViewController:companyHomeVC animated:YES];

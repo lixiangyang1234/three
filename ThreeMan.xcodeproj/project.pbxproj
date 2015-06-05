@@ -219,6 +219,7 @@
 		55E99B731AF209F700CA4F1C /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E99B681AF209F700CA4F1C /* AFURLRequestSerialization.m */; };
 		55E99B741AF209F700CA4F1C /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E99B6A1AF209F700CA4F1C /* AFURLResponseSerialization.m */; };
 		55E99B751AF209F700CA4F1C /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E99B6C1AF209F700CA4F1C /* AFURLSessionManager.m */; };
+		55EB5B611B202D850094452F /* courseDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 55EB5B601B202D850094452F /* courseDetailView.m */; };
 		55F947C41B0051AC00B0FBAC /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 55F947C31B0051AC00B0FBAC /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
@@ -713,6 +714,8 @@
 		55E99B6A1AF209F700CA4F1C /* AFURLResponseSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLResponseSerialization.m; sourceTree = "<group>"; };
 		55E99B6B1AF209F700CA4F1C /* AFURLSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLSessionManager.h; sourceTree = "<group>"; };
 		55E99B6C1AF209F700CA4F1C /* AFURLSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLSessionManager.m; sourceTree = "<group>"; };
+		55EB5B5F1B202D850094452F /* courseDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = courseDetailView.h; sourceTree = "<group>"; };
+		55EB5B601B202D850094452F /* courseDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = courseDetailView.m; sourceTree = "<group>"; };
 		55F947C31B0051AC00B0FBAC /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1397,6 +1400,8 @@
 				55C122E61ACE19BA00D53630 /* CourseRecommendViewCell.m */,
 				55C122E81ACE19E900D53630 /* CourseAnswerViewCell.h */,
 				55C122E91ACE19E900D53630 /* CourseAnswerViewCell.m */,
+				55EB5B5F1B202D850094452F /* courseDetailView.h */,
+				55EB5B601B202D850094452F /* courseDetailView.m */,
 			);
 			path = detailView;
 			sourceTree = "<group>";
@@ -2072,6 +2077,7 @@
 				55E3738C1AC2B54200C794DD /* NewfeatureController.m in Sources */,
 				04C64B861ACD0ED900825EF0 /* SettingCell.m in Sources */,
 				0490022E1AEDD9AA00EF6AD1 /* base64.m in Sources */,
+				55EB5B611B202D850094452F /* courseDetailView.m in Sources */,
 				04D715391B0B1A35008E3A9E /* EditInfoController.m in Sources */,
 				55C24F891ACB8EE500BFEBED /* NineBlockController.m in Sources */,
 				04CC66671ADCAB8900BFE4CD /* AuthencateTool.m in Sources */,

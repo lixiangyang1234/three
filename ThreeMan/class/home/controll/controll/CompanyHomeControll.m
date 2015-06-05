@@ -53,16 +53,10 @@
     isRefresh =NO;
  [_tableView reloadData];
     [self addTableView];
-
     [self addErrorView];
     [self notCompanyStatuse];
     [self addLoadStatus];
-
     [self addRefreshView];
-
-    NSLog(@"----%f--->------%f",kWidth,kHeight);
-
-    
 }
 -(void)addRefreshView{
     refreshHeaderView =[[MJRefreshHeaderView alloc]init];
@@ -89,7 +83,6 @@
     NSDictionary *paraDic;
     if (isRefresh) {
         paraDic =@{@"pageid" :[NSString stringWithFormat:@"%ld",(unsigned long)_companyArray.count],@"pagesize":[NSString stringWithFormat:@"%d",pageSize],@"id":_companyId };
-        NSLog(@"------->%lu",(unsigned long)_companyArray.count);
     }else{
         paraDic =@{@"pageid" :@"0",@"pagesize":[NSString stringWithFormat:@"%d",pageSize],@"id":_companyId };
     }
@@ -97,7 +90,6 @@
         MBProgressHUD *progress =[MBProgressHUD showHUDAddedTo:self.view animated:YES];
         progress.labelText =@"加载中...";
     }
-//    NSLog(@"---->ffffff%@",paraDic);
     [HttpTool postWithPath:@"getCompanyCourseList" params:paraDic success:^(id JSON, int code, NSString *msg) {
         if (isRefresh) {
             [refreshFooterView endRefreshing];
@@ -121,7 +113,6 @@
                     [_companyArray addObject:businessModel];
                     if (arr.count<pageSize) {
                         refreshFooterView.hidden =YES;
-//                        [RemindView showViewWithTitle:@"数据加载完毕！" location:MIDDLE];
                     }else{
                         refreshFooterView.hidden =NO;
                     }
@@ -135,7 +126,6 @@
             refreshFooterView.hidden =NO;
         }
             
-//               NSLog(@"%@",JSON);
         [self addUIBannerView];
 
         [_tableView reloadData];
@@ -202,14 +192,9 @@
     [headerImage addSubview:headerImg];
     [headerImg setImageWithURL:[NSURL URLWithString:companyModel.companyLogo] placeholderImage:placeHoderImage];
     headerImg.layer.masksToBounds =YES;
-//    headerImg.layer.borderColor =[UIColor whiteColor].CGColor;
-//    headerImg.layer.borderWidth=1.0f;
-    
     animationView =[[UIView alloc]initWithFrame:CGRectMake(0, 105, kWidth, 88)];
     [bannerImage addSubview:animationView];
     animationView.backgroundColor =[UIColor clearColor];
-    
-    
     
     UILabel * titleLabel =[[UILabel alloc]initWithFrame:CGRectMake((kWidth-180)/2, 0, 180, 20)];
     titleLabel.numberOfLines =1;
@@ -230,7 +215,6 @@
     contentLabel.numberOfLines =6;
     [animationView addSubview:contentLabel];
     contentLabel.backgroundColor =[UIColor clearColor];
-    
     
     contentLabel.text =companyModel.companyIntroduce;
     
@@ -259,17 +243,12 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     [self.view addSubview:_tableView];
-   
 }
 
 #pragma mark - Table view data source
-
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return _companyArray.count;
 }
-
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *cellIndexfider =@"CourseCell";
     
@@ -287,9 +266,6 @@
     [cell.downLoadBtn setTitle:[NSString stringWithFormat:@"%d",companyModel.companyDownloadnum] forState:UIControlStateNormal];
      [cell.zanBtn setTitle:[NSString stringWithFormat:@"%d",companyModel.companyPrice] forState:UIControlStateNormal];
     [cell.companyHomeSmailImage typeID:companyModel.companyType];
-
-    
-    
     
     return cell;
 }
@@ -298,8 +274,6 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     NSArray *array = self.navigationController.viewControllers;
-    
-
     int count = 0;
     for (UIViewController *viewController in array) {
         if ([viewController isKindOfClass:[CourseDetailController class]]) {
@@ -345,7 +319,6 @@
         [UIView commitAnimations];
         
         
-        
     }else{
         [UIView beginAnimations:@"label" context:nil];
         [UIView setAnimationDuration:2];
@@ -354,17 +327,13 @@
         
         animationView.frame =CGRectMake(0, 105, kWidth, 88);
         alpha.frame =CGRectMake(0, 33, kWidth, 57);
-        
-        
         [UIView animateWithDuration:0.001 animations:^{
             headerImage.transform = CGAffineTransformRotate(headerImage.transform, DEGREES_TO_RADIANS(180));
         }];
         [UIView commitAnimations];
         
     }
-    
-    NSLog(@"ddddd;;");
-    
+        
 }
 
 //没有网络

@@ -65,7 +65,7 @@
     CGSize recommendSize =[AdaptationSize getSizeFromString:item.recommendContent Font:[UIFont systemFontOfSize:PxFont(16)] withHight:CGFLOAT_MAX withWidth:kWidth-borderwh*3];
    
 
-    backCell.frame =CGRectMake(YYBORDERWH, 0, kWidth-YYBORDERWH, recommendSize.height+47+15);
+    backCell.frame =CGRectMake(0, 0, kWidth-YYBORDERWH, recommendSize.height+47+15);
     backLineCell.frame=CGRectMake(0, backCell.frame.size.height-1, kWidth-borderwh, 1);
     
     headerRecommendImage.frame =CGRectMake(borderwh, borderwh-5, 40, 40);

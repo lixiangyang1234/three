@@ -52,62 +52,21 @@
     self.categoryArrayOffLine =[NSMutableArray array];
     self.tradeArrayOffLine =[NSMutableArray array];
     self.adsImageOffLine =[NSMutableArray array];
-//    [self addADSimageBtn:_adsImageOffLine];
-//    [self addUIBanner];//1区
-//    [self addUICourse:_courseArrayOffLine];//2区添加八大课程体系
-//    
-//    [self addUICategory:_categoryArrayOffLine];
-//    [self addUITrade:_tradeArrayOffLine];
+
     [self addMBprogressView];
-//    [self addLoadStatus];
-//    NSLog(@"----%f--->------%f",kWidth,kHeight);
+//    延迟加载
     [self performSelector:@selector(login) withObject:nil afterDelay:0.1f];
 
 }
+
 -(void)login{
     AFNetworkReachabilityManager *reachability=[AFNetworkReachabilityManager sharedManager];
     [reachability setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-        
-//        switch (status) {
-//                
-//            case AFNetworkReachabilityStatusNotReachable:{
-//                
-                  NSLog(@"WiFi网络");
-
-                [self addLoadStatus];
-//
-//                break;
-//                
-//            }
-//                
-//            case AFNetworkReachabilityStatusReachableViaWiFi:{
-//                
-//                NSLog(@"WiFi网络");
-//                [self addLoadStatus];
-//
-//                break;
-//                
-//            }
-//                
-//            case AFNetworkReachabilityStatusReachableViaWWAN:{
-//                
-//                NSLog(@"无线网络");
-//                [self addLoadStatus];
-//
-//                break;
-//                
-//            }
-//                
-//            default:
-//                
-//                break;
-//                
-//        }
-        
+        NSLog(@"WiFi网络");
+        [self addLoadStatus];
     }];
     
     [reachability startMonitoring];
-
 }
 #pragma  mark ------显示指示器
 -(void)addMBprogressView{
@@ -117,7 +76,6 @@
 
 //添加数据
 -(void)addLoadStatus{
-
     [homeViewControllTool statusesWithSuccess:^(NSMutableArray *statues) {
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
         [_adsImage removeAllObjects];
@@ -204,15 +162,9 @@
 }
 //2八大课程体系
 -(void)addUICourse:(NSMutableArray *)course{
-   
-//    NSLog(@"ffffffff%@",course);
-
-   
-    for (int c=0; c<course.count; c++)
+     for (int c=0; c<course.count; c++)
     {
         homeViewControllModel *homeModel =[course objectAtIndex:c];
-//        NSLog(@"-----%@",homeModel.courseImgurl);
-
         CGFloat courseBorderW = 36;//边界宽
         CGFloat courseBorderH = 7.5;//边界高
         CGFloat betweenW = 32;// 间距宽
@@ -220,16 +172,13 @@
         
         UIImageView *courseImage =[[UIImageView alloc]init];
         courseImage.frame =CGRectMake(courseBorderW+c%4*(betweenW+imageWith),courseBorderH+ BANNER+c/4*(21+imageWith), imageWith,imageWith);
-//        NSLog(@"---->%f",imageWith);
         [courseImage setBackgroundColor:[UIColor lightGrayColor]];
         courseImage.layer.cornerRadius =(kWidth-courseBorderW*2-betweenW*3)/8;
         courseImage.layer.masksToBounds=YES;
         courseImage.image =placeHoderImage1;
-        
         [_backScrollView addSubview:courseImage];
         
         UIButton *courseButtTitle =[UIButton buttonWithType:UIButtonTypeCustom];
-        
         courseButtTitle.frame =CGRectMake(courseBorderW-5+c%4*(courseImage.frame.size.width+betweenW), courseImage.frame.origin.y+33+c/4, imageWith+10, 30);
         [self.backScrollView addSubview:courseButtTitle];
         [courseButtTitle setTitle:homeModel.courseName forState:UIControlStateNormal];
@@ -244,7 +193,6 @@
         [courseBtn setTitle:self.noticeArray[c] forState:UIControlStateNormal  ];
         [courseBtn setTitleColor:[UIColor clearColor] forState:UIControlStateNormal];
         courseBtn.backgroundColor =[UIColor clearColor];
-//        courseBtn.alpha =.4;
         [_backScrollView addSubview:courseBtn];
         courseBtn.tag =100+c;
         courseImage.userInteractionEnabled = NO;
@@ -269,7 +217,7 @@
     [self.nav pushViewController:courseEightVc animated:YES];
     }
 }
-//
+
 //3、添加需求
 -(void)addUICategory:(NSMutableArray *)category
 {
@@ -303,15 +251,11 @@
         [titleBtn setBackgroundColor:[UIColor clearColor]];
         
     }
-    
     UIView *needBackView =[[UIView alloc]initWithFrame:CGRectMake(0, needHeight+50-0.5, kWidth, NEEDH+1.5)];
     [self.backScrollView addSubview:needBackView];
     needBackView.backgroundColor =HexRGB(0xeaebec);
-//    needBackView.backgroundColor =[UIColor redColor];
     for (int i=0; i<category.count; i++) {
-        
         homeViewControllModel *homeModel =[category objectAtIndex:i];
-
         UIButton* needBtn =[UIButton buttonWithType:UIButtonTypeCustom];
         [self.backScrollView addSubview:needBtn];
         [needBtn setImage:placeHoderImage2 forState:UIControlStateNormal];
@@ -320,7 +264,6 @@
         [needBtn setTitle:homeModel.categoryName forState:UIControlStateNormal];
         [needBtn setTitleColor:HexRGB(0x404040) forState:UIControlStateNormal];
         needBtn.backgroundColor =[UIColor whiteColor];
-        
         
         UILabel *  needLabel =[[UILabel alloc]init];
         needLabel.backgroundColor =[UIColor clearColor];
@@ -334,9 +277,6 @@
             [needBtn .titleLabel setFont:[UIFont systemFontOfSize:PxFont(25)]];
             needBtn.titleEdgeInsets =UIEdgeInsetsMake(0, 0, 30, 0);
             needLabel.frame =CGRectMake(0, needHeight+90, kWidth-160, 20);
-//            [needBtn setImage:placeHoderImage4 forState:UIControlStateNormal];
-
-            
         }else if (i==1){
             
             needBtn.frame =CGRectMake(kWidth-149, needHeight+50, 149.5, 44.5);
@@ -347,8 +287,6 @@
             needBtn.frame =CGRectMake(kWidth-149, needHeight+50+45, 149.5, 45);
             needBtn.titleEdgeInsets =UIEdgeInsetsMake(0, -80, 0, 0);
             needBtn.imageEdgeInsets =UIEdgeInsetsMake(0, 80, 0, 0);
-
-            
         }else{
             needBtn.frame =CGRectMake(i%3*(kWidth/3+.5), needHeight+50+90.5, kWidth/3, 45.5);
         }
@@ -357,9 +295,6 @@
         needBtn.tag =i+NEEDTAG;
         
     }
-    
-    
-    
 }
 //4、添加行业
 -(void)addUITrade:(NSMutableArray *)trade{
@@ -367,10 +302,8 @@
     UIView *needBackView =[[UIView alloc]initWithFrame:CGRectMake(0, NEEDH+BANNER+EIGHTH+144, kWidth, BUSINESS-.5)];
     [self.backScrollView addSubview:needBackView];
     needBackView.backgroundColor =HexRGB(0xeaebec);
-//        needBackView.backgroundColor =[UIColor redColor];
     for (int i=0; i<trade.count; i++) {
         homeViewControllModel *homeModel =[trade objectAtIndex:i];
-//        NSLog(@"%@---%2----%@---%@",homeModel.tradeImgurl,homeModel.tradeName,homeModel.tradeSubTitle);
         UIButton* businessBtn =[UIButton buttonWithType:UIButtonTypeCustom];
         businessBtn.frame =CGRectMake(i%2*(kWidth/2+.5),NEEDH+ BANNER+EIGHTH+144.5+i/2*60.5, (kWidth)/2, 60 );
         [self.backScrollView addSubview:businessBtn];
@@ -382,9 +315,7 @@
         [businessBtn setTitleColor:HexRGB(0x404040) forState:UIControlStateNormal];
         [businessBtn .titleLabel setFont:[UIFont systemFontOfSize:PxFont(19)]];
         businessBtn.backgroundColor =[UIColor whiteColor];
-        
         [businessBtn addTarget:self action:@selector(businessBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-        
         businessBtn.tag =i+50;
         
         UILabel *subTitleLabel =[[UILabel alloc]initWithFrame:CGRectMake(42+i%2*(kWidth/2), NEEDH+BANNER+EIGHTH+158+i/2*60, kWidth/2, 60)];
@@ -393,10 +324,7 @@
         [subTitleLabel setTextColor:HexRGB(0x9a9a9a)];
         subTitleLabel.font =[UIFont systemFontOfSize:PxFont(16)];
         subTitleLabel.backgroundColor =[UIColor clearColor];
-        
-
-    }
-    
+        }
 }
 //3、需求
 -(void)needBtnClick:(UIButton *)more{
@@ -421,7 +349,6 @@
             [self.nav pushViewController:needVc animated:YES];
         }
     }
-   
 }
 //行业
 -(void)businessBtnClick:(UIButton *)sender{
@@ -445,19 +372,16 @@
     {
         homeViewControllModel *ads =[tody objectAtIndex:i];
         [_slideImages addObject:ads.imgurl];
-        
     }
 }
 - (NSArray *)numberOfKDCycleBannerView:(KDCycleBannerView *)bannerView
 {
     return _slideImages;
 }
-
 - (UIViewContentMode)contentModeForImageIndex:(NSUInteger)index
 {
     return UIViewContentModeScaleAspectFill;
 }
-
 //广告占位图
 - (UIImage *)placeHolderImageOfBannerView:(KDCycleBannerView *)bannerView atIndex:(NSUInteger)index
 {
@@ -473,19 +397,6 @@
 //        [self.navigationController pushViewController:detail animated:YES];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
 
 @end
