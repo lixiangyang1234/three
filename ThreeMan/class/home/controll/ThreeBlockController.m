@@ -224,6 +224,8 @@
 
         if (_threeListArray.count<=0) {
             notStatus.hidden =NO;
+            networkError.hidden =YES;
+
             refreshFooterView.hidden =YES;
         }else{
             notStatus.hidden =YES;

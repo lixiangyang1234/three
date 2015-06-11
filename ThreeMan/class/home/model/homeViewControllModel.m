@@ -75,7 +75,7 @@
         self.categoryImgurl =[decoder decodeObjectForKey:@"imgurl3"];
         self.categoryName =[decoder decodeObjectForKey:@"title3"];
         self.categorySubTitle =[decoder decodeObjectForKey:@"mark3"];
-//
+
         self.tradeImgurl =[decoder decodeObjectForKey:@"imgurl4"];
         self.tradeName =[decoder decodeObjectForKey:@"title4"];
         self.tradeSubTitle =[decoder decodeObjectForKey:@"mark4"];
